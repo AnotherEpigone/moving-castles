@@ -6,6 +6,9 @@ namespace MovingCastles.Ui
 {
     public sealed class UiManager
     {
+        public const string TilesetFontPath = "Fonts\\kenney.font";
+        public const string TilesetFontName = "kenney";
+
         private readonly Lazy<ContainerConsole> _screen;
 
         public UiManager()
@@ -22,7 +25,7 @@ namespace MovingCastles.Ui
 
         private ContainerConsole InitScreen()
         {
-            MapConsole = new MapScreen(500, 500, ViewPortWidth, ViewPortHeight);
+            MapConsole = new MapScreen(40, 25, ViewPortWidth, ViewPortHeight);
 
             var screen = new ContainerConsole();
             screen.Children.Add(MapConsole);

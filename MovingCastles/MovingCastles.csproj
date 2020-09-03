@@ -13,4 +13,13 @@
     <PackageReference Include="SadConsole.GoRogueHelpers" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Fonts\kenney.font">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\kenney.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

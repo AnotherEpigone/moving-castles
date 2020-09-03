@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Ui;
+using SadConsole;
 using System;
 
 namespace MovingCastles
@@ -16,11 +17,11 @@ namespace MovingCastles
 
         public void Run()
         {
-            SadConsole.Game.Create(_uiManager.ViewPortWidth, _uiManager.ViewPortHeight);
-            SadConsole.Game.OnInitialize = Init;
+            Game.Create(_uiManager.ViewPortWidth, _uiManager.ViewPortHeight);
+            Game.OnInitialize = Init;
 
             // Start the game.
-            SadConsole.Game.Instance.Run();
+            Game.Instance.Run();
         }
 
         public void Dispose()
@@ -31,7 +32,10 @@ namespace MovingCastles
 
         private void Init()
         {
-            SadConsole.Global.CurrentScreen = _uiManager.Screen;
+            Global.LoadFont(UiManager.TilesetFontPath);
+            Global.FontDefault = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+
+            Global.CurrentScreen = _uiManager.Screen;
         }
 
         private void Dispose(bool disposing)
@@ -43,7 +47,7 @@ namespace MovingCastles
 
             if (disposing)
             {
-                SadConsole.Game.Instance.Dispose();
+                Game.Instance.Dispose();
             }
 
             disposedValue = true;

@@ -28,8 +28,21 @@ namespace MovingCastles
         public int FOVRadius;
 
         public Player(Coord position)
-            : base(Color.Yellow, Color.Black, '@', position, (int)MapLayer.PLAYER, isWalkable: false, isTransparent: true) => FOVRadius = 10;
+            : this(position, Global.FontDefault)
+        { }
 
+        public Player(Coord position, Font font)
+            : base(Color.White,
+                  Color.Transparent,
+                  2,
+                  position,
+                  (int)MapLayer.PLAYER,
+                  isWalkable: false,
+                  isTransparent: true)
+        {
+            FOVRadius = 10;
+            Font = font;
+        }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
         {

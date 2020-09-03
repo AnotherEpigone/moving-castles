@@ -3,7 +3,9 @@ using GoRogue.GameFramework;
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
+using MovingCastles.Ui;
 using SadConsole;
+using System.Runtime.InteropServices;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles
@@ -55,14 +57,16 @@ namespace MovingCastles
             for (int i = 0; i < 10; i++)
             {
                 posToSpawn = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
-                var goblin = new BasicEntity(Color.Red, Color.Transparent, 'g', posToSpawn, (int)MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
+                var goblin = new BasicEntity(Color.Red, Color.Transparent, 2, posToSpawn, (int)MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
                 map.AddEntity(goblin);
             }
 
             // Spawn player
             posToSpawn = map.WalkabilityView.RandomPosition(true);
-            map.ControlledGameObject = new Player(posToSpawn);
-            map.AddEntity(map.ControlledGameObject);
+
+            var player = new Player(posToSpawn);
+            map.ControlledGameObject = player;
+            map.AddEntity(player);
 
             return map;
         }
@@ -77,10 +81,17 @@ namespace MovingCastles
         {
             // Floor or wall.  This could use the Factory system, or instantiate Floor and Wall classes, or something else if you prefer;
             // this simplistic if-else is just used for example
-            if (mapGenValue) // Floor
-                return new BasicTerrain(Color.SandyBrown, Color.Black, '.', position, isWalkable: true, isTransparent: true);
-            else             // Wall
-                return new BasicTerrain(Color.Brown, Color.Black, '#', position, isWalkable: false, isTransparent: false);
+            if (mapGenValue)
+            {
+                // Floor
+                var x = new BasicTerrain(Color.White, new Color(61, 35, 50, 255), 3, position, isWalkable: true, isTransparent: true);
+                return x;
+            }
+            else
+            {
+                // Wall
+                return new BasicTerrain(Color.White, new Color(61, 35, 50, 255), 4, position, isWalkable: false, isTransparent: false);
+            }
         }
     }
 }
