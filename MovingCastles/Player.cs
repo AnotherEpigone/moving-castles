@@ -2,6 +2,7 @@
 using GoRogue;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MovingCastles.Fonts;
 using MovingCastles.Maps;
 using SadConsole;
 
@@ -35,7 +36,7 @@ namespace MovingCastles
         public Player(Coord position, Font font)
             : base(Color.White,
                   Color.Transparent,
-                  2,
+                  SpriteAtlas.PlayerDefault,
                   position,
                   (int)MapLayer.PLAYER,
                   isWalkable: false,

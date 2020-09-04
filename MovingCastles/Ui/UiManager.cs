@@ -7,8 +7,8 @@ namespace MovingCastles.Ui
 {
     public sealed class UiManager
     {
-        public const string TilesetFontPath = "Fonts\\kenney.font";
-        public const string TilesetFontName = "kenney";
+        public const string TilesetFontPath = "Fonts\\sprites.font";
+        public const string TilesetFontName = "sprites";
 
         private readonly Lazy<ContainerConsole> _screen;
 
