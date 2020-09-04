@@ -2,6 +2,7 @@
 using GoRogue;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MovingCastles.Maps;
 using SadConsole;
 
 namespace MovingCastles

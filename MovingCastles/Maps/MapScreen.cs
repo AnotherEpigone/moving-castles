@@ -3,12 +3,10 @@ using GoRogue.GameFramework;
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
-using MovingCastles.Ui;
 using SadConsole;
-using System.Runtime.InteropServices;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
-namespace MovingCastles
+namespace MovingCastles.Maps
 {
     internal class MapScreen : ContainerConsole
     {
@@ -21,7 +19,7 @@ namespace MovingCastles
             Map = GenerateDungeon(mapWidth, mapHeight);
 
             // Get a console that's set up to render the map, and add it as a child of this container so it renders
-            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), SadConsole.Global.FontDefault);
+            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), Global.FontDefault);
             Children.Add(MapRenderer);
             Map.ControlledGameObject.IsFocused = true; // Set player to receive input, since in this example the player handles movement
 

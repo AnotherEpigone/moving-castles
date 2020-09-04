@@ -3,7 +3,7 @@ using GoRogue;
 using Microsoft.Xna.Framework;
 using SadConsole;
 
-namespace MovingCastles
+namespace MovingCastles.Maps
 {
     internal enum MapLayer
     {
