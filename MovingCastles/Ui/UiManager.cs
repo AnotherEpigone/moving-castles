@@ -10,36 +10,28 @@ namespace MovingCastles.Ui
         public const string TilesetFontPath = "Fonts\\sprites.font";
         public const string TilesetFontName = "sprites";
 
-        private readonly Lazy<ContainerConsole> _screen;
+        public Font GuiTextFont { get; set; }
+        public int ViewPortWidth { get; } = 160; // 160 x 8 = 1280
+        public int ViewPortHeight { get; } = 45; // 45 x 16 = 720
 
-        public UiManager()
+        public Console CreateMainMenu(Font font)
         {
-            _screen = new Lazy<ContainerConsole>(InitScreen);
+            return new MainMenu(font, this);
         }
 
-        public Font GuiTextFont { get; set; }
-        public int ViewPortWidth { get; } = 80;
-        public int ViewPortHeight { get; } = 25;
-        public Console MapConsole { get; private set; }
-        public MessageLog EventLog { get; private set; }
-
-        public ContainerConsole Screen => _screen.Value;
-
-        private ContainerConsole InitScreen()
+        public ContainerConsole CreateMapScreen()
         {
             var mapConsole = new MapScreen(40, 25, ViewPortWidth, (int)Math.Round(ViewPortHeight * 0.9));
 
-            EventLog = new MessageLog(ViewPortWidth, ViewPortHeight - mapConsole.Height, GuiTextFont);
-            EventLog.Position = new Microsoft.Xna.Framework.Point(0, mapConsole.MapRenderer.ViewPort.Height);
-            EventLog.Add("test message1");
-            EventLog.Add("test message2");
-            EventLog.Add("test message3");
-
-            MapConsole = mapConsole;
+            var eventLog = new MessageLog(ViewPortWidth, ViewPortHeight - mapConsole.Height, GuiTextFont);
+            eventLog.Position = new Microsoft.Xna.Framework.Point(0, mapConsole.MapRenderer.ViewPort.Height);
+            eventLog.Add("test message1");
+            eventLog.Add("test message2");
+            eventLog.Add("test message3");
 
             var screen = new ContainerConsole();
             screen.Children.Add(mapConsole);
-            screen.Children.Add(EventLog);
+            screen.Children.Add(eventLog);
 
             return screen;
         }

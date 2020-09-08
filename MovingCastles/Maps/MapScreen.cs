@@ -52,6 +52,7 @@ namespace MovingCastles.Maps
             map.ApplyTerrainOverlay(tempMap, SpawnTerrain);
 
             Coord posToSpawn;
+
             // Spawn a few mock enemies
             for (int i = 0; i < 10; i++)
             {
