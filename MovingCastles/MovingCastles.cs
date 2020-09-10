@@ -55,11 +55,11 @@ namespace MovingCastles
 
             colors.Lines = colors.Gray;
 
-            colors.ControlBack = colors.Black;
-            colors.ControlBackLight = colors.Black;
+            colors.ControlBack = UiManager.MidnightestBlue;
+            colors.ControlBackLight = UiManager.MidnightestBlue;
             colors.ControlBackSelected = colors.GrayDark;
-            colors.ControlBackDark = colors.Black;
-            colors.ControlHostBack = colors.Black;
+            colors.ControlBackDark = UiManager.MidnightestBlue;
+            colors.ControlHostBack = UiManager.MidnightestBlue;
             colors.ControlHostFore = colors.Text;
 
             colors.RebuildAppearances();

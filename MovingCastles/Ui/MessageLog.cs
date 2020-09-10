@@ -19,6 +19,7 @@ namespace MovingCastles.Ui
 
             // add the message console, reposition, and add it to the window
             _messageConsole = new ScrollingConsole(width, height, font);
+            _messageConsole.DefaultBackground = UiManager.MidnightestBlue;
             Children.Add(_messageConsole);
         }
 
@@ -32,7 +33,9 @@ namespace MovingCastles.Ui
 
             // Move the cursor to the last line and print the message.
             _messageConsole.Cursor.Position = new Point(1, _lines.Count - 1);
-            _messageConsole.Cursor.Print(message + "\n");
+
+            var coloredMessage = new ColoredString(message + "\n", new Cell(Color.Gainsboro, UiManager.MidnightestBlue));
+            _messageConsole.Cursor.Print(coloredMessage);
         }
     }
 }
