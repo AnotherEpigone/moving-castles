@@ -67,6 +67,27 @@ namespace MovingCastles.Maps
                 map.AddEntity(goblin);
             }
 
+            // Spawn a few items
+            for (int i = 0; i < 12; i++)
+            {
+                posToSpawn = map.WalkabilityView.RandomPosition(true);
+
+                var item = new BasicEntity(
+                    Color.White,
+                    Color.Transparent,
+                    SpriteAtlas.EtheriumShard,
+                    posToSpawn,
+                    (int)MapLayer.ITEMS,
+                    isWalkable: true,
+                    isTransparent: true);
+
+                // workaround Entity construction bugs by setting font afterward
+                item.Font = tilesetFont;
+                item.OnCalculateRenderPosition();
+
+                map.AddEntity(item);
+            }
+
             // Spawn player
             posToSpawn = map.WalkabilityView.RandomPosition(true);
 
