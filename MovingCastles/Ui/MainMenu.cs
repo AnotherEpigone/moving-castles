@@ -6,19 +6,21 @@ namespace MovingCastles.Ui
 {
     public sealed class MainMenu : ContainerConsole
     {
-        public MainMenu(Font font, UiManager uiManager)
+        public MainMenu(UiManager uiManager)
         {
             DefaultBackground = Color.Black;
 
-            var titleFont = font.Master.GetFont(Font.FontSizes.Three);
+            var titleFont = Global.FontDefault.Master.GetFont(Font.FontSizes.Three);
             var titleConsole = new Console(160, 45, titleFont);
 
             titleConsole.Fill(null, Color.Black, null);
             titleConsole.Print(21, 3, "MOVING CASTLES");
             titleConsole.DefaultBackground = Color.Black;
 
-            var menuConsole = new ControlsConsole(160, 33, font);
-            menuConsole.Position = new Point(0, 12);
+            var menuConsole = new ControlsConsole(160, 33)
+            {
+                Position = new Point(0, 12),
+            };
 
             var continueButton = new SadConsole.Controls.Button(12, 1)
             {

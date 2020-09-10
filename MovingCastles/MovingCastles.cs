@@ -33,12 +33,10 @@ namespace MovingCastles
         private void Init()
         {
             Global.LoadFont(UiManager.TilesetFontPath);
-            _uiManager.GuiTextFont = Global.FontDefault;
-            Global.FontDefault = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
 
             InitColors();
 
-            Global.CurrentScreen = _uiManager.CreateMainMenu(_uiManager.GuiTextFont);
+            Global.CurrentScreen = _uiManager.CreateMainMenu();
         }
 
         private void InitColors()

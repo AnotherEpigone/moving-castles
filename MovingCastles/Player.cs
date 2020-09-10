@@ -29,10 +29,6 @@ namespace MovingCastles
 
         public int FOVRadius;
 
-        public Player(Coord position)
-            : this(position, Global.FontDefault)
-        { }
-
         public Player(Coord position, Font font)
             : base(Color.White,
                   Color.Transparent,
@@ -43,7 +39,10 @@ namespace MovingCastles
                   isTransparent: true)
         {
             FOVRadius = 10;
+
+            // workaround Entity construction bugs by setting font afterward
             Font = font;
+            OnCalculateRenderPosition();
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)

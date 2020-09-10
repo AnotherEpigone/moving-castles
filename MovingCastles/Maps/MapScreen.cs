@@ -15,12 +15,12 @@ namespace MovingCastles.Maps
 
         public ScrollingConsole MapRenderer { get; }
 
-        public MapScreen(int mapWidth, int mapHeight, int viewportWidth, int viewportHeight)
+        public MapScreen(int mapWidth, int mapHeight, int viewportWidth, int viewportHeight, Font tilesetFont)
         {
-            Map = GenerateDungeon(mapWidth, mapHeight);
+            Map = GenerateDungeon(mapWidth, mapHeight, tilesetFont);
 
             // Get a console that's set up to render the map, and add it as a child of this container so it renders
-            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), Global.FontDefault);
+            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
             Children.Add(MapRenderer);
             Map.ControlledGameObject.IsFocused = true; // Set player to receive input, since in this example the player handles movement
 
@@ -41,7 +41,7 @@ namespace MovingCastles.Maps
 
             ((BasicMap)s).ControlledGameObject.Moved += Player_Moved;
         }
-        private static MovingCastlesMap GenerateDungeon(int width, int height)
+        private static MovingCastlesMap GenerateDungeon(int width, int height, Font tilesetFont)
         {
             // Same size as screen, but we set up to center the camera on the player so expanding beyond this should work fine with no other changes.
             var map = new MovingCastlesMap(width, height);
@@ -57,14 +57,20 @@ namespace MovingCastles.Maps
             for (int i = 0; i < 10; i++)
             {
                 posToSpawn = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
+
                 var goblin = new BasicEntity(Color.White, Color.Transparent, SpriteAtlas.Goblin, posToSpawn, (int)MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
+                
+                // workaround Entity construction bugs by setting font afterward
+                goblin.Font = tilesetFont;
+                goblin.OnCalculateRenderPosition();
+                
                 map.AddEntity(goblin);
             }
 
             // Spawn player
             posToSpawn = map.WalkabilityView.RandomPosition(true);
 
-            var player = new Player(posToSpawn);
+            var player = new Player(posToSpawn, tilesetFont);
             map.ControlledGameObject = player;
             map.AddEntity(player);
 

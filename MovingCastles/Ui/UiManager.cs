@@ -10,20 +10,20 @@ namespace MovingCastles.Ui
         public const string TilesetFontPath = "Fonts\\sprites.font";
         public const string TilesetFontName = "sprites";
 
-        public Font GuiTextFont { get; set; }
         public int ViewPortWidth { get; } = 160; // 160 x 8 = 1280
         public int ViewPortHeight { get; } = 45; // 45 x 16 = 720
 
-        public Console CreateMainMenu(Font font)
+        public Console CreateMainMenu()
         {
-            return new MainMenu(font, this);
+            return new MainMenu(this);
         }
 
         public ContainerConsole CreateMapScreen()
         {
-            var mapConsole = new MapScreen(40, 25, ViewPortWidth, (int)Math.Round(ViewPortHeight * 0.9));
+            var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
+            var mapConsole = new MapScreen(80, 45, ViewPortWidth, (int)Math.Round(ViewPortHeight * 0.9), tilesetFont);
 
-            var eventLog = new MessageLog(ViewPortWidth, ViewPortHeight - mapConsole.Height, GuiTextFont);
+            var eventLog = new MessageLog(ViewPortWidth, ViewPortHeight - mapConsole.Height, Global.FontDefault);
             eventLog.Position = new Microsoft.Xna.Framework.Point(0, mapConsole.MapRenderer.ViewPort.Height);
             eventLog.Add("test message1");
             eventLog.Add("test message2");
