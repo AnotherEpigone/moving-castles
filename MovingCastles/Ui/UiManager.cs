@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using MovingCastles.Components;
+using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using SadConsole;
-using System;
+using System.Linq;
 using Console = SadConsole.Console;
 
 namespace MovingCastles.Ui
@@ -41,9 +43,15 @@ namespace MovingCastles.Ui
             var mapConsole = new MapScreen(80, 45, rightSectionWidth/tileSizeXFactor, ViewPortHeight - eventLogHeight - topPaneHeight, tilesetFont);
             mapConsole.Position = new Point(leftPaneWidth, topPaneHeight);
 
+
             var eventLog = new MessageLog(ViewPortWidth, eventLogHeight, Global.FontDefault);
             eventLog.Position = new Point(leftPaneWidth, mapConsole.MapRenderer.ViewPort.Height + topPaneHeight);
+
+
+            // test data...
+            mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem("trusty oak staff"));
             eventLog.Add("Hello world.");
+            leftPane.Print(3, 1, "Test dungeon");
 
             var screen = new ContainerConsole();
             screen.Children.Add(leftPane);
