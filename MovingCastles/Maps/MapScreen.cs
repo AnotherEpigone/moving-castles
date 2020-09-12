@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.Ui;
 using SadConsole;
 using SadConsole.Input;
 using System.Collections.Generic;
@@ -33,14 +34,24 @@ namespace MovingCastles.Maps
             { Keys.Right, Direction.RIGHT }
         };
 
+        private readonly IMenuProvider _menuProvider;
+
         public MovingCastlesMap Map { get; }
 
         public ScrollingConsole MapRenderer { get; }
 
         public Player Player { get; private set; }
 
-        public MapScreen(int mapWidth, int mapHeight, int viewportWidth, int viewportHeight, Font tilesetFont)
+        public MapScreen(
+            int mapWidth,
+            int mapHeight,
+            int viewportWidth,
+            int viewportHeight,
+            Font tilesetFont,
+            IMenuProvider menuProvider)
         {
+            _menuProvider = menuProvider;
+
             Map = GenerateDungeon(mapWidth, mapHeight, tilesetFont);
 
             // Get a console that's set up to render the map, and add it as a child of this container so it renders
@@ -63,9 +74,11 @@ namespace MovingCastles.Maps
         {
             if (info.IsKeyPressed(Keys.I))
             {
-                Window.Message(
-                    $"Inventory: {string.Join(", ", Player.GetGoRogueComponent<IInventoryComponent>().Items.Select(i => i.Name))}",
-                    "Close");
+                //Window.Message(
+                //    $"Inventory: {string.Join(", ", Player.GetGoRogueComponent<IInventoryComponent>().Items.Select(i => i.Name))}",
+                //    "Close");
+
+                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
 
