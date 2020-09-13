@@ -36,7 +36,8 @@ namespace MovingCastles
 
             InitColors();
 
-            Global.CurrentScreen = _uiManager.CreateMainMenu();
+            ////Global.CurrentScreen = _uiManager.CreateMainMenu();
+            Global.CurrentScreen = _uiManager.CreateMapScreen();
         }
 
         private void InitColors()

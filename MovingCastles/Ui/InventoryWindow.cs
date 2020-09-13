@@ -13,6 +13,7 @@ namespace MovingCastles.Ui
         private readonly DrawingSurface _descriptionArea;
         private readonly Button _useButton;
         private readonly Button _closeButton;
+        private readonly int _itemButtomWidth;
         private string _selectedItemDesc;
 
         public InventoryWindow(int width, int height)
@@ -22,11 +23,14 @@ namespace MovingCastles.Ui
             Contract.Requires(width > 10, "Menu width must be > 100");
 
             _selectedItemDesc = "description";
+            _itemButtomWidth = width / 3;
+
+            Center();
 
             _useButton = new Button(7)
             {
                 Text = "Use",
-                Position = new Microsoft.Xna.Framework.Point(width/2 + 2, height - 2),
+                Position = new Microsoft.Xna.Framework.Point(_itemButtomWidth + 3, height - 2),
             };
 
             _closeButton = new Button(9)
@@ -38,9 +42,9 @@ namespace MovingCastles.Ui
 
             CloseOnEscKey = true;
 
-            _descriptionArea = new DrawingSurface(width/2, height - 3)
+            _descriptionArea = new DrawingSurface(_itemButtomWidth, height - 3)
             {
-                Position = new Microsoft.Xna.Framework.Point(width/2, 0),
+                Position = new Microsoft.Xna.Framework.Point(_itemButtomWidth, 0),
                 OnDraw = ds =>
                 {
                     if (!ds.IsDirty)
@@ -66,9 +70,9 @@ namespace MovingCastles.Ui
         private List<ControlBase> BuildItemControls(IEnumerable<IInventoryItem> items)
         {
             var yCount = 0;
-            return items.Select(i => new Button(i.Name.Length + 4)
+            return items.Select(i => new Button(_itemButtomWidth)
             {
-                Text = i.Name,
+                Text = TruncateName(i.Name, _itemButtomWidth - 4),
                 Position = new Microsoft.Xna.Framework.Point(0, yCount++),
             })
                 .ToList<ControlBase>();
@@ -89,6 +93,16 @@ namespace MovingCastles.Ui
             {
                 Add(control);
             }
+        }
+
+        private string TruncateName(string name, int maxLen)
+        {
+            if (name.Length > maxLen)
+            {
+                return name.Substring(0, maxLen - 3) + "...";
+            }
+
+            return name;
         }
     }
 }

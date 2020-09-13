@@ -27,10 +27,7 @@ namespace MovingCastles.Ui
 
         private IMenuProvider CreateMenuProvider()
         {
-            var inventory = new InventoryWindow(60, 20)
-            { 
-                Position = new Point(50, 10),
-            };
+            var inventory = new InventoryWindow(120, 30);
 
             return new MenuProvider(inventory);
         }
@@ -68,6 +65,7 @@ namespace MovingCastles.Ui
 
             // test data...
             mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem("trusty oak staff"));
+            mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem("an absolutely, incredibly, impossibly long scroll"));
             eventLog.Add("Hello world.");
             leftPane.Print(3, 1, "Test dungeon");
 
