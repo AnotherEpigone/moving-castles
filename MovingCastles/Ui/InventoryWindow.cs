@@ -1,4 +1,5 @@
-﻿using MovingCastles.Components;
+﻿using Microsoft.Xna.Framework;
+using MovingCastles.Components;
 using MovingCastles.GameSystems.Items;
 using SadConsole;
 using SadConsole.Controls;
@@ -10,7 +11,7 @@ namespace MovingCastles.Ui
 {
     public class InventoryWindow : Window
     {
-        private readonly DrawingSurface _descriptionArea;
+        private readonly Console _descriptionArea;
         private readonly Button _useButton;
         private readonly Button _closeButton;
         private readonly int _itemButtomWidth;
@@ -24,39 +25,30 @@ namespace MovingCastles.Ui
 
             _selectedItemDesc = "description";
             _itemButtomWidth = width / 3;
+            CloseOnEscKey = true;
 
             Center();
 
             _useButton = new Button(7)
             {
                 Text = "Use",
-                Position = new Microsoft.Xna.Framework.Point(_itemButtomWidth + 3, height - 2),
+                Position = new Point(_itemButtomWidth + 1, height - 2),
             };
 
             _closeButton = new Button(9)
             {
                 Text = "Close",
-                Position = new Microsoft.Xna.Framework.Point(width - 9, height - 2),
+                Position = new Point(width - 9, height - 2),
             };
             _closeButton.Click += (_, __) => Hide();
 
-            CloseOnEscKey = true;
-
-            _descriptionArea = new DrawingSurface(_itemButtomWidth, height - 3)
+            _descriptionArea = new Console(width - _itemButtomWidth, height - 3)
             {
-                Position = new Microsoft.Xna.Framework.Point(_itemButtomWidth, 0),
-                OnDraw = ds =>
-                {
-                    if (!ds.IsDirty)
-                    {
-                        return;
-                    }
-
-                    ds.Surface.Fill(null, UiManager.MidnighterBlue, null);
-                    ds.Surface.Print(2, 2, _selectedItemDesc);
-                    ds.IsDirty = true;
-                },
+                Position = new Point(_itemButtomWidth, 0),
             };
+            _descriptionArea.Fill(null, UiManager.MidnighterBlue, null);
+
+            Children.Add(_descriptionArea);
         }
 
         public void Show(IInventoryComponent inventory)
@@ -71,21 +63,17 @@ namespace MovingCastles.Ui
         {
             var yCount = 0;
             return items.Select(i => new Button(_itemButtomWidth)
-            {
-                Text = TruncateName(i.Name, _itemButtomWidth - 4),
-                Position = new Microsoft.Xna.Framework.Point(0, yCount++),
-            })
+                {
+                    Text = TruncateName(i.Name, _itemButtomWidth - 4),
+                    Position = new Point(0, yCount++),
+                })
                 .ToList<ControlBase>();
         }
 
         private void RefreshControls(List<ControlBase> controls)
         {
-            foreach (var existingControl in Controls.ToList())
-            {
-                Remove(existingControl);
-            }
+            RemoveAll();
 
-            Add(_descriptionArea);
             Add(_useButton);
             Add(_closeButton);
 

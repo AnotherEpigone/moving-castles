@@ -65,7 +65,6 @@ namespace MovingCastles.Ui
 
             // test data...
             mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem("trusty oak staff"));
-            mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem("an absolutely, incredibly, impossibly long scroll"));
             eventLog.Add("Hello world.");
             leftPane.Print(3, 1, "Test dungeon");
 
