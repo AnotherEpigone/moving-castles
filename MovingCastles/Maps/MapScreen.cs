@@ -74,10 +74,6 @@ namespace MovingCastles.Maps
         {
             if (info.IsKeyPressed(Keys.I))
             {
-                //Window.Message(
-                //    $"Inventory: {string.Join(", ", Player.GetGoRogueComponent<IInventoryComponent>().Items.Select(i => i.Name))}",
-                //    "Close");
-
                 _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }

@@ -31,7 +31,7 @@ namespace MovingCastles.Ui
             _useButton = new Button(7)
             {
                 Text = "Use",
-                Position = new Point(_itemButtomWidth + 1, height - 2),
+                Position = new Point(_itemButtomWidth + 2, height - 2),
             };
 
             _closeButton = new Button(9)
@@ -41,9 +41,11 @@ namespace MovingCastles.Ui
             };
             _closeButton.Click += (_, __) => Hide();
 
-            _descriptionArea = new Console(width - _itemButtomWidth, height - 3)
+            var colors = SadConsole.Themes.Library.Default.Colors.Clone();
+            _descriptionArea = new Console(width - _itemButtomWidth - 3, height - 4)
             {
-                Position = new Point(_itemButtomWidth, 0),
+                Position = new Point(_itemButtomWidth + 2, 1),
+                DefaultBackground = UiManager.MidnighterBlue,
             };
             _descriptionArea.Fill(null, UiManager.MidnighterBlue, null);
 
@@ -63,8 +65,11 @@ namespace MovingCastles.Ui
         public override void Update(System.TimeSpan time)
         {
             _descriptionArea.Clear();
-            _descriptionArea.Cursor.Position = new Point(0, 1);
-            _descriptionArea.Cursor.Print(_selectedItem?.Description ?? string.Empty);
+            _descriptionArea.Cursor.Position = new Point(0, 0);
+            _descriptionArea.Cursor.Print(
+                new ColoredString(
+                    _selectedItem?.Description ?? string.Empty,
+                    new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
 
             base.Update(time);
         }

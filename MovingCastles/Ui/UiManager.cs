@@ -38,6 +38,7 @@ namespace MovingCastles.Ui
             const int topPaneHeight = 3;
             const int eventLogHeight = 4;
 
+            // primary panes
             var leftPane = new Console(leftPaneWidth, ViewPortHeight);
             leftPane.Fill(null, MidnightestBlue, null);
 
@@ -52,16 +53,16 @@ namespace MovingCastles.Ui
             var mapConsole = new MapScreen(
                 80,
                 45,
-                rightSectionWidth/tileSizeXFactor,
+                rightSectionWidth / tileSizeXFactor,
                 ViewPortHeight - eventLogHeight - topPaneHeight,
                 tilesetFont,
-                CreateMenuProvider());
-            mapConsole.Position = new Point(leftPaneWidth, topPaneHeight);
-
+                CreateMenuProvider())
+            {
+                Position = new Point(leftPaneWidth, topPaneHeight)
+            };
 
             var eventLog = new MessageLog(ViewPortWidth, eventLogHeight, Global.FontDefault);
             eventLog.Position = new Point(leftPaneWidth, mapConsole.MapRenderer.ViewPort.Height + topPaneHeight);
-
 
             // test data...
             mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem(
