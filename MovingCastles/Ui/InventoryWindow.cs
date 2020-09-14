@@ -15,7 +15,7 @@ namespace MovingCastles.Ui
         private readonly Button _useButton;
         private readonly Button _closeButton;
         private readonly int _itemButtomWidth;
-        private string _selectedItemDesc;
+        private IInventoryItem _selectedItem;
 
         public InventoryWindow(int width, int height)
             : base(width, height)
@@ -23,7 +23,6 @@ namespace MovingCastles.Ui
             Contract.Requires(width > 40, "Menu width must be > 200");
             Contract.Requires(width > 10, "Menu width must be > 100");
 
-            _selectedItemDesc = "description";
             _itemButtomWidth = width / 3;
             CloseOnEscKey = true;
 
@@ -49,6 +48,8 @@ namespace MovingCastles.Ui
             _descriptionArea.Fill(null, UiManager.MidnighterBlue, null);
 
             Children.Add(_descriptionArea);
+
+            Closed += (_, __) => _selectedItem = null;
         }
 
         public void Show(IInventoryComponent inventory)
@@ -59,13 +60,27 @@ namespace MovingCastles.Ui
             base.Show(true);
         }
 
+        public override void Update(System.TimeSpan time)
+        {
+            _descriptionArea.Clear();
+            _descriptionArea.Cursor.Position = new Point(0, 1);
+            _descriptionArea.Cursor.Print(_selectedItem?.Description ?? string.Empty);
+
+            base.Update(time);
+        }
+
         private List<ControlBase> BuildItemControls(IEnumerable<IInventoryItem> items)
         {
             var yCount = 0;
-            return items.Select(i => new Button(_itemButtomWidth)
+            return items.Select(i => 
                 {
-                    Text = TruncateName(i.Name, _itemButtomWidth - 4),
-                    Position = new Point(0, yCount++),
+                    var itemButton = new Button(_itemButtomWidth - 1)
+                    {
+                        Text = TruncateName(i.Name, _itemButtomWidth - 5),
+                        Position = new Point(0, yCount++),
+                    };
+                    itemButton.Click += (_, __) => _selectedItem = i;
+                    return itemButton;
                 })
                 .ToList<ControlBase>();
         }

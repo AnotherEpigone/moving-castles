@@ -141,7 +141,9 @@ namespace MovingCastles.Maps
                     (int)MapLayer.ITEMS,
                     isWalkable: true,
                     isTransparent: true);
-                item.AddGoRogueComponent(new PickupableComponent(new InventoryItem("Etherium shard")));
+                item.AddGoRogueComponent(new PickupableComponent(new InventoryItem(
+                    "Etherium shard",
+                    "Crystalized by the precise artistry of master artificers, etherium is the essence of magic.")));
 
                 // workaround Entity construction bugs by setting font afterward
                 item.Font = tilesetFont;

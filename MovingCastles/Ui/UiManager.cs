@@ -64,7 +64,9 @@ namespace MovingCastles.Ui
 
 
             // test data...
-            mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem("trusty oak staff"));
+            mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem(
+                "trusty oak staff",
+                "Cut from the woods of the Academy at Kurisau, this staff has served you since you first learned to sense the Wellspring."));
             eventLog.Add("Hello world.");
             leftPane.Print(3, 1, "Test dungeon");
 
