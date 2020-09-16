@@ -9,14 +9,13 @@ using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.Ui;
 using SadConsole;
-using SadConsole.Input;
 using System.Collections.Generic;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Maps
 {
-    internal class MapScreen : ContainerConsole
+    internal class MapConsole : ContainerConsole
     {
         private static readonly Dictionary<Keys, Direction> MovementDirectionMapping = new Dictionary<Keys, Direction>
         {
@@ -42,7 +41,7 @@ namespace MovingCastles.Maps
 
         public Player Player { get; private set; }
 
-        public MapScreen(
+        public MapConsole(
             int mapWidth,
             int mapHeight,
             int viewportWidth,

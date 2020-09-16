@@ -4,7 +4,6 @@ using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Controls;
-using System.Linq;
 using Console = SadConsole.Console;
 
 namespace MovingCastles.Ui
@@ -16,6 +15,7 @@ namespace MovingCastles.Ui
 
         public static Color MidnightestBlue = new Color(3, 3, 15);
         public static Color MidnighterBlue = new Color(5, 5, 25);
+        public static Color ManaBlue = new Color(15, 45, 85);
 
         public int ViewPortWidth { get; } = 160; // 160 x 8 = 1280
         public int ViewPortHeight { get; } = 45; // 45 x 16 = 720
@@ -38,9 +38,26 @@ namespace MovingCastles.Ui
             const int topPaneHeight = 3;
             const int eventLogHeight = 4;
 
-            // primary panes
-            var leftPane = new Console(leftPaneWidth, ViewPortHeight);
-            leftPane.Fill(null, MidnightestBlue, null);
+
+            var leftPane = new ControlsConsole(leftPaneWidth, ViewPortHeight);
+            var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            {
+                Position = new Point(0, 4),
+            };
+            manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, ManaBlue);
+            manaBar.Progress = 1;
+            leftPane.Add(manaBar);
+
+            var healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            {
+                Position = new Point(0, 3),
+            };
+            healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, Color.Red);
+            healthBar.Progress = 1;
+            leftPane.Add(healthBar);
+            leftPane.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.White });
+            leftPane.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
+            leftPane.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
 
             var rightSectionWidth = ViewPortWidth - leftPaneWidth;
 
@@ -50,7 +67,7 @@ namespace MovingCastles.Ui
 
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
-            var mapConsole = new MapScreen(
+            var mapConsole = new MapConsole(
                 80,
                 45,
                 rightSectionWidth / tileSizeXFactor,
@@ -69,7 +86,6 @@ namespace MovingCastles.Ui
                 "trusty oak staff",
                 "Cut from the woods of the Academy at Kurisau, this staff has served you since you first learned to sense the Wellspring."));
             eventLog.Add("Hello world.");
-            leftPane.Print(3, 1, "Test dungeon");
 
             var screen = new ContainerConsole();
             screen.Children.Add(leftPane);
