@@ -9,6 +9,8 @@ using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.Ui;
 using SadConsole;
+using SadConsole.Components;
+using SadConsole.Input;
 using System.Collections.Generic;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
@@ -34,6 +36,7 @@ namespace MovingCastles.Maps
         };
 
         private readonly IMenuProvider _menuProvider;
+        private readonly Console _mouseHighlight;
 
         public MovingCastlesMap Map { get; }
 
@@ -51,11 +54,16 @@ namespace MovingCastles.Maps
         {
             _menuProvider = menuProvider;
 
+            _mouseHighlight = new Console(1, 1, tilesetFont);
+            var transparentWhite = new Color(255, 255, 255, 200);
+            _mouseHighlight.SetGlyph(0, 0, 1, transparentWhite);
+            _mouseHighlight.UseMouse = false;
+
             Map = GenerateDungeon(mapWidth, mapHeight, tilesetFont);
 
             // Get a console that's set up to render the map, and add it as a child of this container so it renders
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
-            Children.Add(MapRenderer);
+            MapRenderer.UseMouse = false;
             IsFocused = true;
             //Map.ControlledGameObject.IsFocused = true; // Set player to receive input, since in this example the player handles movement
 
@@ -67,6 +75,9 @@ namespace MovingCastles.Maps
             // Calculate initial FOV and center camera
             Map.CalculateFOV(Map.ControlledGameObject.Position, Map.ControlledGameObject.FOVRadius, Radius.SQUARE);
             MapRenderer.CenterViewPortOnPoint(Map.ControlledGameObject.Position);
+
+            Children.Add(MapRenderer);
+            Children.Add(_mouseHighlight);
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
@@ -90,6 +101,16 @@ namespace MovingCastles.Maps
             return base.ProcessKeyboard(info);
         }
 
+        public override bool ProcessMouse(MouseConsoleState state)
+        {
+            var mapState = new MouseConsoleState(MapRenderer, state.Mouse);
+
+            _mouseHighlight.IsVisible = mapState.IsOnConsole;
+            _mouseHighlight.Position = mapState.ConsoleCellPosition;
+
+            return base.ProcessMouse(state);
+        }
+
         private void ControlledGameObjectChanged(object s, ControlledGameObjectChangedArgs e)
         {
             if (e.OldObject != null)
@@ -97,6 +118,7 @@ namespace MovingCastles.Maps
 
             ((BasicMap)s).ControlledGameObject.Moved += Player_Moved;
         }
+
         private MovingCastlesMap GenerateDungeon(int width, int height, Font tilesetFont)
         {
             // Same size as screen, but we set up to center the camera on the player so expanding beyond this should work fine with no other changes.

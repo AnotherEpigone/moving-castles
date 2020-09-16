@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using GoRogue;
+﻿using GoRogue;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
 using MovingCastles.Maps;
