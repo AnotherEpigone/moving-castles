@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.GameSystems.Logging;
 using SadConsole;
 
 namespace MovingCastles.Entities
@@ -9,10 +10,12 @@ namespace MovingCastles.Entities
     public class EntityFactory : IEntityFactory
     {
         private readonly Font _font;
+        private readonly ILogManager _logManager;
 
-        public EntityFactory(Font font)
+        public EntityFactory(Font font, ILogManager logManager)
         {
             _font = font;
+            _logManager = logManager;
         }
 
         public BasicEntity CreateActor(int glyph, Coord position, string name)
@@ -42,9 +45,9 @@ namespace MovingCastles.Entities
             {
                 Name = name,
             };
-            item.AddGoRogueComponent(new PickupableComponent(new InventoryItem(
-                name,
-                desc)));
+            item.AddGoRogueComponent(new PickupableComponent(
+                _logManager,
+                new InventoryItem(name, desc)));
 
             // workaround Entity construction bugs by setting font afterward
             item.Font = _font;

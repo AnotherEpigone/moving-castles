@@ -2,6 +2,7 @@
 using MovingCastles.Components;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Controls;
@@ -19,7 +20,8 @@ namespace MovingCastles.Ui
             int height,
             Font tilesetFont,
             IMenuProvider menuProvider,
-            IEntityFactory entityFactory)
+            IEntityFactory entityFactory,
+            ILogManager logManager)
         {
             var leftPane = new ControlsConsole(leftPaneWidth, height);
             var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
@@ -61,12 +63,13 @@ namespace MovingCastles.Ui
 
             var eventLog = new MessageLog(width, eventLogHeight, Global.FontDefault);
             eventLog.Position = new Point(leftPaneWidth, mapConsole.MapRenderer.ViewPort.Height + topPaneHeight);
+            logManager.RegisterEventListener(s => eventLog.Add(s));
 
             // test data...
             mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem(
                     "trusty oak staff",
                     "Cut from the woods of the Academy at Kurisau, this staff has served you since you first learned to sense the Wellspring."));
-            eventLog.Add("Hello world.");
+            eventLog.Add("Find the tower's core.");
 
             Children.Add(leftPane);
             Children.Add(topPane);
