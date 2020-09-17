@@ -27,26 +27,6 @@ namespace MovingCastles.Ui
             IEntityFactory entityFactory,
             ILogManager logManager)
         {
-            _leftPane = new ControlsConsole(leftPaneWidth, height);
-            var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
-            {
-                Position = new Point(0, 4),
-            };
-            manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, ColorHelper.ManaBlue);
-            manaBar.Progress = 1;
-            _leftPane.Add(manaBar);
-
-            var healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
-            {
-                Position = new Point(0, 3),
-            };
-            healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, Color.DarkRed);
-            healthBar.Progress = 1;
-            _leftPane.Add(healthBar);
-            _leftPane.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.Gainsboro });
-            _leftPane.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
-            _leftPane.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
-
             var rightSectionWidth = width - leftPaneWidth;
 
             var topPane = new Console(rightSectionWidth, topPaneHeight);
@@ -66,6 +46,25 @@ namespace MovingCastles.Ui
             };
             mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
 
+            _leftPane = new ControlsConsole(leftPaneWidth, height);
+            var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            {
+                Position = new Point(0, 4),
+            };
+            manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, ColorHelper.ManaBlue);
+            manaBar.Progress = 1;
+
+            var healthComponent = mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            var healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            {
+                Position = new Point(0, 3),
+            };
+            healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, Color.DarkRed);
+            healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
+
+            _leftPane.Add(manaBar);
+            _leftPane.Add(healthBar);
+
             var eventLog = new MessageLog(width, eventLogHeight, Global.FontDefault);
             eventLog.Position = new Point(leftPaneWidth, mapConsole.MapRenderer.ViewPort.Height + topPaneHeight);
             logManager.RegisterEventListener(s => eventLog.Add(s));
@@ -75,6 +74,9 @@ namespace MovingCastles.Ui
                     "trusty oak staff",
                     "Cut from the woods of the Academy at Kurisau, this staff has served you since you first learned to sense the Wellspring."));
             eventLog.Add("Find the tower's core.");
+            _leftPane.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.Gainsboro });
+            _leftPane.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
+            _leftPane.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
 
             Children.Add(_leftPane);
             Children.Add(topPane);
@@ -88,7 +90,7 @@ namespace MovingCastles.Ui
 
             _entitySummaryConsoles = consoles;
 
-            var yOffset = 6;
+            var yOffset = 8;
             _entitySummaryConsoles.ForEach(c =>
             {
                 c.Position = new Point(0, yOffset);

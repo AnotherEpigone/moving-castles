@@ -28,6 +28,7 @@ namespace MovingCastles
             Font = font;
             OnCalculateRenderPosition();
 
+            AddGoRogueComponent(new HealthComponent(1));
             AddGoRogueComponent(new InventoryComponent());
         }
 

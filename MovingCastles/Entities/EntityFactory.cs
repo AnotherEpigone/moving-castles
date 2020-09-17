@@ -25,6 +25,7 @@ namespace MovingCastles.Entities
                 Name = name,
             };
 
+            actor.AddGoRogueComponent(new HealthComponent(1));
             actor.AddGoRogueComponent(new SummaryControlComponent());
 
             // workaround Entity construction bugs by setting font afterward
