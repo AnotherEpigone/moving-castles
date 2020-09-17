@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Controls;
-using SadConsole.Input;
 
 namespace MovingCastles.Ui
 {
@@ -14,7 +14,12 @@ namespace MovingCastles.Ui
         private const int topPaneHeight = 3;
         private const int eventLogHeight = 4;
 
-        public MapScreen(int width, int height, IMenuProvider menuProvider)
+        public MapScreen(
+            int width,
+            int height,
+            Font tilesetFont,
+            IMenuProvider menuProvider,
+            IEntityFactory entityFactory)
         {
             var leftPane = new ControlsConsole(leftPaneWidth, height);
             var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
@@ -41,7 +46,6 @@ namespace MovingCastles.Ui
             var topPane = new Console(rightSectionWidth, topPaneHeight);
             topPane.Position = new Point(leftPaneWidth, 0);
 
-            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             var mapConsole = new MapConsole(
                 80,
@@ -49,7 +53,8 @@ namespace MovingCastles.Ui
                 rightSectionWidth / tileSizeXFactor,
                 height - eventLogHeight - topPaneHeight,
                 tilesetFont,
-                menuProvider)
+                menuProvider,
+                entityFactory)
             {
                 Position = new Point(leftPaneWidth, topPaneHeight)
             };

@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using MovingCastles.Components;
-using MovingCastles.GameSystems.Items;
-using MovingCastles.Maps;
+using MovingCastles.Entities;
 using SadConsole;
-using SadConsole.Controls;
 using Console = SadConsole.Console;
 
 namespace MovingCastles.Ui
@@ -34,7 +31,13 @@ namespace MovingCastles.Ui
 
         public ContainerConsole CreateMapScreen()
         {
-            return new MapScreen(ViewPortWidth, ViewPortHeight, CreateMenuProvider());
+            var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
+            return new MapScreen(
+                ViewPortWidth,
+                ViewPortHeight,
+                tilesetFont,
+                CreateMenuProvider(),
+                new EntityFactory(tilesetFont));
         }
     }
 }

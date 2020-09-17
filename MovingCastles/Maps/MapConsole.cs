@@ -5,6 +5,7 @@ using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
+using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.Ui;
@@ -37,6 +38,7 @@ namespace MovingCastles.Maps
 
         private readonly IMenuProvider _menuProvider;
         private readonly Console _mouseHighlight;
+        private readonly IEntityFactory _entityFactory;
 
         public MovingCastlesMap Map { get; }
 
@@ -50,9 +52,11 @@ namespace MovingCastles.Maps
             int viewportWidth,
             int viewportHeight,
             Font tilesetFont,
-            IMenuProvider menuProvider)
+            IMenuProvider menuProvider,
+            IEntityFactory entityFactory)
         {
             _menuProvider = menuProvider;
+            _entityFactory = entityFactory;
 
             _mouseHighlight = new Console(1, 1, tilesetFont);
             var transparentWhite = new Color(255, 255, 255, 200);
@@ -136,12 +140,7 @@ namespace MovingCastles.Maps
             {
                 posToSpawn = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
 
-                var goblin = new BasicEntity(Color.White, Color.Transparent, SpriteAtlas.Goblin, posToSpawn, (int)MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
-                
-                // workaround Entity construction bugs by setting font afterward
-                goblin.Font = tilesetFont;
-                goblin.OnCalculateRenderPosition();
-                
+                var goblin = _entityFactory.CreateActor(SpriteAtlas.Goblin, posToSpawn, "Goblin");
                 map.AddEntity(goblin);
             }
 
@@ -150,21 +149,11 @@ namespace MovingCastles.Maps
             {
                 posToSpawn = map.WalkabilityView.RandomPosition(true);
 
-                var item = new BasicEntity(
-                    Color.White,
-                    Color.Transparent,
+                var item = _entityFactory.CreateItem(
                     SpriteAtlas.EtheriumShard,
                     posToSpawn,
-                    (int)MapLayer.ITEMS,
-                    isWalkable: true,
-                    isTransparent: true);
-                item.AddGoRogueComponent(new PickupableComponent(new InventoryItem(
                     "Etherium shard",
-                    "Crystalized by the precise artistry of master artificers, etherium is the essence of magic.")));
-
-                // workaround Entity construction bugs by setting font afterward
-                item.Font = tilesetFont;
-                item.OnCalculateRenderPosition();
+                    "Crystalized by the precise artistry of master artificers, etherium is the essence of magic.");
 
                 map.AddEntity(item);
             }
