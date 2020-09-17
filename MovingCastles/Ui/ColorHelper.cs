@@ -5,6 +5,11 @@ namespace MovingCastles.Ui
 {
     public static class ColorHelper
     {
+        public static Color MidnightestBlue = new Color(3, 3, 15);
+        public static Color MidnighterBlue = new Color(5, 5, 25);
+        public static Color ManaBlue = new Color(25, 55, 95);
+        public static Color WhiteHighlight = new Color(255, 255, 255, 200);
+
         public static Colors GetTransparentBackgroundThemeColors()
         {
             var colors = Library.Default.Colors.Clone();

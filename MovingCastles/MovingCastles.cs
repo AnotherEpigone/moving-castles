@@ -56,11 +56,11 @@ namespace MovingCastles
 
             colors.Lines = colors.Gray;
 
-            colors.ControlBack = UiManager.MidnightestBlue;
-            colors.ControlBackLight = UiManager.MidnightestBlue;
+            colors.ControlBack = ColorHelper.MidnightestBlue;
+            colors.ControlBackLight = ColorHelper.MidnightestBlue;
             colors.ControlBackSelected = colors.GrayDark;
-            colors.ControlBackDark = UiManager.MidnightestBlue;
-            colors.ControlHostBack = UiManager.MidnightestBlue;
+            colors.ControlBackDark = ColorHelper.MidnightestBlue;
+            colors.ControlHostBack = ColorHelper.MidnightestBlue;
             colors.ControlHostFore = colors.Text;
 
             colors.RebuildAppearances();

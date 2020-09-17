@@ -13,9 +13,9 @@ namespace MovingCastles.Ui
             var titleFont = Global.FontDefault.Master.GetFont(Font.FontSizes.Three);
             var titleConsole = new Console(160, 45, titleFont);
 
-            titleConsole.Fill(null, UiManager.MidnightestBlue, null);
+            titleConsole.Fill(null, ColorHelper.MidnightestBlue, null);
             titleConsole.Print(21, 3, "MOVING CASTLES");
-            titleConsole.DefaultBackground = UiManager.MidnightestBlue;
+            titleConsole.DefaultBackground = ColorHelper.MidnightestBlue;
 
             var menuConsole = new ControlsConsole(160, 33)
             {

@@ -25,6 +25,8 @@ namespace MovingCastles.Entities
                 Name = name,
             };
 
+            actor.AddGoRogueComponent(new SummaryControlComponent());
+
             // workaround Entity construction bugs by setting font afterward
             actor.Font = _font;
             actor.OnCalculateRenderPosition();
@@ -45,6 +47,7 @@ namespace MovingCastles.Entities
             {
                 Name = name,
             };
+            item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(
                 _logManager,
                 new InventoryItem(name, desc)));

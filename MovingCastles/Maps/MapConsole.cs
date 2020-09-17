@@ -5,6 +5,7 @@ using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
+using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
@@ -40,6 +41,10 @@ namespace MovingCastles.Maps
         private readonly Console _mouseHighlight;
         private readonly IEntityFactory _entityFactory;
 
+        private Point _lastSummaryConsolePosition;
+
+        public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
+
         public MovingCastlesMap Map { get; }
 
         public ScrollingConsole MapRenderer { get; }
@@ -59,8 +64,7 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
 
             _mouseHighlight = new Console(1, 1, tilesetFont);
-            var transparentWhite = new Color(255, 255, 255, 200);
-            _mouseHighlight.SetGlyph(0, 0, 1, transparentWhite);
+            _mouseHighlight.SetGlyph(0, 0, 1, ColorHelper.WhiteHighlight);
             _mouseHighlight.UseMouse = false;
 
             Map = GenerateDungeon(mapWidth, mapHeight, tilesetFont);
@@ -97,6 +101,7 @@ namespace MovingCastles.Maps
                 if (info.IsKeyPressed(key))
                 {
                     Player.Move(MovementDirectionMapping[key]);
+                    _lastSummaryConsolePosition = default;
                     return true;
                 }
             }
@@ -111,6 +116,27 @@ namespace MovingCastles.Maps
 
             _mouseHighlight.IsVisible = mapState.IsOnConsole;
             _mouseHighlight.Position = mapState.ConsoleCellPosition;
+
+            var mapCoord = new Coord(
+                mapState.ConsoleCellPosition.X + MapRenderer.ViewPort.X,
+                mapState.ConsoleCellPosition.Y + MapRenderer.ViewPort.Y);
+            if (mapState.IsOnConsole
+                && _lastSummaryConsolePosition != mapState.ConsoleCellPosition
+                && Map.FOV.CurrentFOV.Contains(mapCoord))
+            {
+                var summaryControls = new List<Console>();
+                foreach (var entity in Map.GetEntities<BasicEntity>(mapCoord))
+                {
+                    var control = entity.GetGoRogueComponent<ISummaryControlComponent>()?.GetSidebarSummary();
+                    if (control != null)
+                    {
+                        summaryControls.Add(control);
+                    }
+                }
+
+                _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
+                SummaryConsolesChanged.Invoke(this, new ConsoleListEventArgs(summaryControls));
+            }
 
             return base.ProcessMouse(state);
         }
