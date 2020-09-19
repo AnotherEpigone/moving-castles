@@ -1,4 +1,6 @@
 ﻿using GoRogue;
+using GoRogue.GameFramework;
+using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using SadConsole;
 
@@ -21,6 +23,21 @@ namespace MovingCastles.Entities
             : base(foreground, background, glyph, position, layer, isWalkable, isTransparent)
         {
             Name = name;
+        }
+
+        public event System.EventHandler<ItemMovedEventArgs<McEntity>> Bumped;
+
+        public void Move(Direction direction)
+        {
+            if (CurrentMap.WalkabilityView[Position + direction])
+            {
+                Position += direction;
+            }
+            else
+            {
+                // can't move because we just bumped into something solid
+                Bumped?.Invoke(this, new ItemMovedEventArgs<McEntity>(this, Position, Position + direction));
+            }
         }
     }
 }

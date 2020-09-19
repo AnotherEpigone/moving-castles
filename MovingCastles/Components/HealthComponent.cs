@@ -13,16 +13,18 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public int Health { get; private set; }
+        public float Health { get; private set; }
 
-        public int MaxHealth { get; }
+        public float MaxHealth { get; }
 
-        public void ApplyDamage(int damage)
+        public bool Dead => Health < 0.001;
+
+        public void ApplyDamage(float damage)
         {
-            Health -= damage;
+            Health = System.Math.Max(0, Health - damage);
         }
 
-        public void ApplyHealing(int healing)
+        public void ApplyHealing(float healing)
         {
             Health = System.Math.Min(MaxHealth, Health + healing);
         }

@@ -9,6 +9,7 @@ using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.GameSystems.Logging;
 using MovingCastles.Ui;
 using SadConsole;
 using SadConsole.Components;
@@ -42,6 +43,7 @@ namespace MovingCastles.Maps
         private readonly IEntityFactory _entityFactory;
 
         private Point _lastSummaryConsolePosition;
+        private readonly ILogManager _logManager;
 
         public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
 
@@ -58,10 +60,12 @@ namespace MovingCastles.Maps
             int viewportHeight,
             Font tilesetFont,
             IMenuProvider menuProvider,
-            IEntityFactory entityFactory)
+            IEntityFactory entityFactory,
+            ILogManager logManager)
         {
             _menuProvider = menuProvider;
             _entityFactory = entityFactory;
+            _logManager = logManager;
 
             _mouseHighlight = new Console(1, 1, tilesetFont);
             _mouseHighlight.SetGlyph(0, 0, 1, ColorHelper.WhiteHighlight);
@@ -77,7 +81,6 @@ namespace MovingCastles.Maps
 
             // Set up to recalculate FOV and set camera position appropriately when the player moves.  Also make sure we hook the new
             // Player if that object is reassigned.
-            Map.ControlledGameObject.Moved += Player_Moved;
             Map.ControlledGameObjectChanged += ControlledGameObjectChanged;
 
             // Calculate initial FOV and center camera
@@ -144,9 +147,9 @@ namespace MovingCastles.Maps
         private void ControlledGameObjectChanged(object s, ControlledGameObjectChangedArgs e)
         {
             if (e.OldObject != null)
-                e.OldObject.Moved -= Player_Moved;
+                e.OldObject.Moved -= Entity_Moved;
 
-            ((BasicMap)s).ControlledGameObject.Moved += Player_Moved;
+            ((BasicMap)s).ControlledGameObject.Moved += Entity_Moved;
         }
 
         private MovingCastlesMap GenerateDungeon(int width, int height, Font tilesetFont)
@@ -167,6 +170,8 @@ namespace MovingCastles.Maps
                 posToSpawn = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
 
                 var goblin = _entityFactory.CreateActor(SpriteAtlas.Goblin, posToSpawn, "Goblin");
+                goblin.Moved += Entity_Moved;
+                goblin.Bumped += Entity_Bumped;
                 map.AddEntity(goblin);
             }
 
@@ -188,13 +193,49 @@ namespace MovingCastles.Maps
             posToSpawn = map.WalkabilityView.RandomPosition(true);
 
             Player = new Player(posToSpawn, tilesetFont);
+            Player.Moved += Entity_Moved;
+            Player.Bumped += Entity_Bumped;
             map.ControlledGameObject = Player;
             map.AddEntity(Player);
 
             return map;
         }
 
-        private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
+        private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)
+        {
+            _logManager.DebugLog($"{e.Item.Name} bumped into something.");
+            var meleeAttackComponent = e.Item.GetGoRogueComponent<IMeleeAttackerComponent>();
+            if (meleeAttackComponent != null)
+            {
+                var healthComponent = Map.GetEntities<BasicEntity>(e.NewPosition)
+                    .SelectMany(e =>
+                    {
+                        if (!(e is IHasComponents entity))
+                        {
+                            return new IHealthComponent[0];
+                        }
+
+                        return entity.GetComponents<IHealthComponent>();
+                    })
+                    .FirstOrDefault();
+                if (healthComponent != null)
+                {
+                    var damage = meleeAttackComponent.GetDamage();
+                    healthComponent.ApplyDamage(damage);
+
+                    var targetName = (healthComponent.Parent as BasicEntity)?.Name ?? "something";
+                    _logManager.EventLog($"{e.Item.Name} hit {targetName} for {damage:F0} damage.");
+
+                    if (healthComponent.Dead)
+                    {
+                        _logManager.EventLog($"{targetName} was slain.");
+                        Map.RemoveEntity(healthComponent.Parent);
+                    }
+                }
+            }
+        }
+
+        private void Entity_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
         {
             Map.CalculateFOV(Map.ControlledGameObject.Position, Map.ControlledGameObject.FOVRadius, Radius.SQUARE);
             MapRenderer.CenterViewPortOnPoint(Map.ControlledGameObject.Position);

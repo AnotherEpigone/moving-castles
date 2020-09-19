@@ -1,11 +1,15 @@
-﻿namespace MovingCastles.Components
-{
-    public interface IHealthComponent
-    {
-        int Health { get; }
-        int MaxHealth { get; }
+﻿using GoRogue.GameFramework.Components;
 
-        void ApplyDamage(int damage);
-        void ApplyHealing(int healing);
+namespace MovingCastles.Components
+{
+    public interface IHealthComponent : IGameObjectComponent
+    {
+        float Health { get; }
+        float MaxHealth { get; }
+
+        bool Dead { get; }
+
+        void ApplyDamage(float damage);
+        void ApplyHealing(float healing);
     }
 }

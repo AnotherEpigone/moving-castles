@@ -40,7 +40,8 @@ namespace MovingCastles.Ui
                 height - eventLogHeight - topPaneHeight,
                 tilesetFont,
                 menuProvider,
-                entityFactory)
+                entityFactory,
+                logManager)
             {
                 Position = new Point(leftPaneWidth, topPaneHeight)
             };
@@ -68,6 +69,7 @@ namespace MovingCastles.Ui
             var eventLog = new MessageLog(width, eventLogHeight, Global.FontDefault);
             eventLog.Position = new Point(leftPaneWidth, mapConsole.MapRenderer.ViewPort.Height + topPaneHeight);
             logManager.RegisterEventListener(s => eventLog.Add(s));
+            logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
 
             // test data...
             mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem(

@@ -18,13 +18,11 @@ namespace MovingCastles.Entities
             _logManager = logManager;
         }
 
-        public BasicEntity CreateActor(int glyph, Coord position, string name)
+        public McEntity CreateActor(int glyph, Coord position, string name)
         {
-            var actor = new BasicEntity(Color.White, Color.Transparent, glyph, position, (int)Maps.MapLayer.MONSTERS, isWalkable: false, isTransparent: true)
-            {
-                Name = name,
-            };
+            var actor = new McEntity(name, Color.White, Color.Transparent, glyph, position, (int)Maps.MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
 
+            actor.AddGoRogueComponent(new MeleeAttackerComponent());
             actor.AddGoRogueComponent(new HealthComponent(1));
             actor.AddGoRogueComponent(new SummaryControlComponent());
 
@@ -35,19 +33,17 @@ namespace MovingCastles.Entities
             return actor;
         }
 
-        public BasicEntity CreateItem(int glyph, Coord position, string name, string desc)
+        public McEntity CreateItem(int glyph, Coord position, string name, string desc)
         {
-            var item = new BasicEntity(
+            var item = new McEntity(
+                    name,
                     Color.White,
                     Color.Transparent,
                     glyph,
                     position,
                     (int)Maps.MapLayer.ITEMS,
                     isWalkable: true,
-                    isTransparent: true)
-            {
-                Name = name,
-            };
+                    isTransparent: true);
             item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(
                 _logManager,
