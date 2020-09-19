@@ -5,11 +5,11 @@ using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
-using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
 using SadConsole.Components;
@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
-namespace MovingCastles.Maps
+namespace MovingCastles.Consoles
 {
     internal class MapConsole : ContainerConsole
     {
@@ -77,15 +77,10 @@ namespace MovingCastles.Maps
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
             MapRenderer.UseMouse = false;
             IsFocused = true;
-            //Map.ControlledGameObject.IsFocused = true; // Set player to receive input, since in this example the player handles movement
-
-            // Set up to recalculate FOV and set camera position appropriately when the player moves.  Also make sure we hook the new
-            // Player if that object is reassigned.
-            Map.ControlledGameObjectChanged += ControlledGameObjectChanged;
 
             // Calculate initial FOV and center camera
-            Map.CalculateFOV(Map.ControlledGameObject.Position, Map.ControlledGameObject.FOVRadius, Radius.SQUARE);
-            MapRenderer.CenterViewPortOnPoint(Map.ControlledGameObject.Position);
+            Map.CalculateFOV(Player.Position, Player.FOVRadius, Radius.SQUARE);
+            MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Children.Add(MapRenderer);
             Children.Add(_mouseHighlight);
@@ -144,14 +139,6 @@ namespace MovingCastles.Maps
             return base.ProcessMouse(state);
         }
 
-        private void ControlledGameObjectChanged(object s, ControlledGameObjectChangedArgs e)
-        {
-            if (e.OldObject != null)
-                e.OldObject.Moved -= Entity_Moved;
-
-            ((BasicMap)s).ControlledGameObject.Moved += Entity_Moved;
-        }
-
         private MovingCastlesMap GenerateDungeon(int width, int height, Font tilesetFont)
         {
             // Same size as screen, but we set up to center the camera on the player so expanding beyond this should work fine with no other changes.
@@ -195,7 +182,6 @@ namespace MovingCastles.Maps
             Player = new Player(posToSpawn, tilesetFont);
             Player.Moved += Entity_Moved;
             Player.Bumped += Entity_Bumped;
-            map.ControlledGameObject = Player;
             map.AddEntity(Player);
 
             return map;
@@ -237,10 +223,18 @@ namespace MovingCastles.Maps
 
         private void Entity_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
         {
-            Map.CalculateFOV(Map.ControlledGameObject.Position, Map.ControlledGameObject.FOVRadius, Radius.SQUARE);
-            MapRenderer.CenterViewPortOnPoint(Map.ControlledGameObject.Position);
+            if (!(e.Item is BasicEntity movingEntity))
+            {
+                return;
+            }
+
+            if (movingEntity == Player)
+            {
+                Map.CalculateFOV(Player.Position, Player.FOVRadius, Radius.SQUARE);
+                MapRenderer.CenterViewPortOnPoint(Player.Position);
+            }
             
-            var stepTriggers = Map.GetEntities<BasicEntity>(Map.ControlledGameObject.Position)
+            var stepTriggers = Map.GetEntities<BasicEntity>(movingEntity.Position)
                 .SelectMany(e =>
                 {
                     if (!(e is IHasComponents entity))
@@ -253,7 +247,7 @@ namespace MovingCastles.Maps
 
             foreach (var trigger in stepTriggers)
             {
-                trigger.OnStep(Map.ControlledGameObject);
+                trigger.OnStep(movingEntity);
             }
         }
 

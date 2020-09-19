@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
