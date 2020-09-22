@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.Components.AiComponents;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using SadConsole;
@@ -22,6 +23,7 @@ namespace MovingCastles.Entities
         {
             var actor = new McEntity(name, Color.White, Color.Transparent, glyph, position, (int)Maps.MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
 
+            actor.AddGoRogueComponent(new RandomWalkComponent());
             actor.AddGoRogueComponent(new MeleeAttackerComponent());
             actor.AddGoRogueComponent(new HealthComponent(1));
             actor.AddGoRogueComponent(new SummaryControlComponent());

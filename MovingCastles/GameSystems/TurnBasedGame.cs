@@ -2,6 +2,7 @@
 using GoRogue.GameFramework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
+using MovingCastles.Components.AiComponents;
 using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
@@ -39,11 +40,13 @@ namespace MovingCastles.GameSystems
         private readonly ILogManager _logManager;
 
         private Player _player;
+        private List<McEntity> _aiEntities;
 
         public TurnBasedGame(
             ILogManager logManager)
         {
             _logManager = logManager;
+            _aiEntities = new List<McEntity>();
         }
 
         public MovingCastlesMap Map { get; set; }
@@ -55,7 +58,8 @@ namespace MovingCastles.GameSystems
                 if (info.IsKeyPressed(key))
                 {
                     _player.Move(MovementDirectionMapping[key]);
-                    //_logManager.DebugLog("AI decided to do nothing.");
+
+                    ProcessTurn();
                     return true;
                 }
             }
@@ -71,14 +75,31 @@ namespace MovingCastles.GameSystems
 
         public void RegisterEntity(McEntity entity)
         {
+            _aiEntities.Add(entity);
             entity.Moved += Entity_Moved;
             entity.Bumped += Entity_Bumped;
+            entity.RemovedFromMap += (_, __) => UnregisterEntity(entity);
         }
 
         public void UnregisterEntity(McEntity entity)
         {
+            _aiEntities.Remove(entity);
             entity.Moved -= Entity_Moved;
             entity.Bumped -= Entity_Bumped;
+        }
+
+        private void ProcessTurn()
+        {
+            foreach (var entity in _aiEntities.ToArray())
+            {
+                if (entity.CurrentMap != Map)
+                {
+                    continue;
+                }
+
+                var ai = entity.GetGoRogueComponent<IAiComponent>();
+                ai?.Run(Map);
+            }
         }
 
         private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)
@@ -109,7 +130,15 @@ namespace MovingCastles.GameSystems
                     if (healthComponent.Dead)
                     {
                         _logManager.EventLog($"{targetName} was slain.");
-                        Map.RemoveEntity(healthComponent.Parent);
+
+                        if (healthComponent.Parent is McEntity mcTarget)
+                        {
+                            mcTarget.Remove();
+                        }
+                        else
+                        {
+                            Map.RemoveEntity(healthComponent.Parent);
+                        }
                     }
                 }
             }
