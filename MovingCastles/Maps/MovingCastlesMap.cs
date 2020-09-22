@@ -1,6 +1,5 @@
 ﻿using System;
 using GoRogue;
-using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using SadConsole;
 
@@ -14,7 +13,7 @@ namespace MovingCastles.Maps
         PLAYER
     }
 
-    internal class MovingCastlesMap : BasicMap
+    public class MovingCastlesMap : BasicMap
     {
         public FOVVisibilityHandler FovVisibilityHandler { get; }
 

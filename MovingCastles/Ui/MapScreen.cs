@@ -2,6 +2,7 @@
 using MovingCastles.Components;
 using MovingCastles.Consoles;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
@@ -33,6 +34,7 @@ namespace MovingCastles.Ui
             var topPane = new Console(rightSectionWidth, topPaneHeight);
             topPane.Position = new Point(leftPaneWidth, 0);
 
+            var game = new TurnBasedGame(logManager);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             var mapConsole = new MapConsole(
                 80,
@@ -42,6 +44,7 @@ namespace MovingCastles.Ui
                 tilesetFont,
                 menuProvider,
                 entityFactory,
+                game,
                 logManager)
             {
                 Position = new Point(leftPaneWidth, topPaneHeight)
