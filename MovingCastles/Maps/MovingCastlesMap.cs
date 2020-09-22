@@ -1,5 +1,6 @@
 ﻿using System;
 using GoRogue;
+using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using SadConsole;
 
