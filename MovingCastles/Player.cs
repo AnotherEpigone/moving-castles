@@ -9,7 +9,7 @@ using SadConsole;
 
 namespace MovingCastles
 {
-    public sealed class Player : McEntity
+    internal class Player : McEntity
     {
         public int FOVRadius;
 
