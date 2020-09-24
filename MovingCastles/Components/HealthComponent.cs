@@ -5,15 +5,36 @@ namespace MovingCastles.Components
 {
     public class HealthComponent : IGameObjectComponent, IHealthComponent
     {
+        private float _health;
+
         public HealthComponent(int maxHealth)
         {
             MaxHealth = maxHealth;
             Health = maxHealth;
         }
 
+        /// <summary>
+        /// e = previous health
+        /// </summary>
+        public event System.EventHandler<float> HealthChanged;
+
         public IGameObject Parent { get; set; }
 
-        public float Health { get; private set; }
+        public float Health
+        {
+            get { return _health; }
+            private set
+            {
+                if (value == _health)
+                {
+                    return;
+                }
+
+                var prevHealth = _health;
+                _health = value;
+                HealthChanged?.Invoke(this, prevHealth);
+            }
+        }
 
         public float MaxHealth { get; }
 
@@ -21,6 +42,7 @@ namespace MovingCastles.Components
 
         public void ApplyDamage(float damage)
         {
+            var prevHealth = Health;
             Health = System.Math.Max(0, Health - damage);
         }
 

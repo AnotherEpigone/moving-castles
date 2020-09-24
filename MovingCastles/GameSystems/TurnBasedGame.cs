@@ -40,13 +40,11 @@ namespace MovingCastles.GameSystems
         private readonly ILogManager _logManager;
 
         private Player _player;
-        private List<McEntity> _aiEntities;
 
         public TurnBasedGame(
             ILogManager logManager)
         {
             _logManager = logManager;
-            _aiEntities = new List<McEntity>();
         }
 
         public MovingCastlesMap Map { get; set; }
@@ -75,7 +73,6 @@ namespace MovingCastles.GameSystems
 
         public void RegisterEntity(McEntity entity)
         {
-            _aiEntities.Add(entity);
             entity.Moved += Entity_Moved;
             entity.Bumped += Entity_Bumped;
             entity.RemovedFromMap += (_, __) => UnregisterEntity(entity);
@@ -83,14 +80,13 @@ namespace MovingCastles.GameSystems
 
         public void UnregisterEntity(McEntity entity)
         {
-            _aiEntities.Remove(entity);
             entity.Moved -= Entity_Moved;
             entity.Bumped -= Entity_Bumped;
         }
 
         private void ProcessTurn()
         {
-            foreach (var entity in _aiEntities.ToArray())
+            foreach (var entity in Map.Entities.Items.OfType<McEntity>().ToList())
             {
                 if (entity.CurrentMap != Map)
                 {

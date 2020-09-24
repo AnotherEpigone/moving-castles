@@ -56,7 +56,7 @@ namespace MovingCastles.Ui
             {
                 Position = new Point(0, 4),
             };
-            manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, ColorHelper.ManaBlue);
+            manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedManaBlue, ColorHelper.ManaBlue);
             manaBar.Progress = 1;
 
             var healthComponent = mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
@@ -64,7 +64,11 @@ namespace MovingCastles.Ui
             {
                 Position = new Point(0, 3),
             };
-            healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, Color.DarkRed);
+            healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
+            mapConsole.Player.GetGoRogueComponent<IHealthComponent>().HealthChanged += (_, __) =>
+            {
+                healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
+            };
             healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
             _leftPane.Add(manaBar);

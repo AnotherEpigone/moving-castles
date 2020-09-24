@@ -5,11 +5,18 @@ namespace MovingCastles.Components
 {
     public class MeleeAttackerComponent : IGameObjectComponent, IMeleeAttackerComponent
     {
+        private readonly int _damage;
+
+        public MeleeAttackerComponent(int damage)
+        {
+            _damage = damage;
+        }
+
         public IGameObject Parent { get; set; }
 
         public float GetDamage()
         {
-            return 1f;
+            return _damage;
         }
     }
 }

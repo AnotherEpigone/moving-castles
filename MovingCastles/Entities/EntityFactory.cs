@@ -24,8 +24,8 @@ namespace MovingCastles.Entities
             var actor = new McEntity(name, Color.White, Color.Transparent, glyph, position, (int)Maps.MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
 
             actor.AddGoRogueComponent(new RandomWalkComponent());
-            actor.AddGoRogueComponent(new MeleeAttackerComponent());
-            actor.AddGoRogueComponent(new HealthComponent(1));
+            actor.AddGoRogueComponent(new MeleeAttackerComponent(5));
+            actor.AddGoRogueComponent(new HealthComponent(10));
             actor.AddGoRogueComponent(new SummaryControlComponent());
 
             // workaround Entity construction bugs by setting font afterward
