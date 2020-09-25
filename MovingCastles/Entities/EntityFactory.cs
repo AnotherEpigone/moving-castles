@@ -57,5 +57,10 @@ namespace MovingCastles.Entities
 
             return item;
         }
+
+        public Player CreatePlayer(Coord position)
+        {
+            return new Player(position, _font);
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace MovingCastles.Ui
             int height,
             Font tilesetFont,
             IMenuProvider menuProvider,
-            IEntityFactory entityFactory,
+            IMapFactory mapFactory,
             ILogManager logManager)
         {
             var rightSectionWidth = width - leftPaneWidth;
@@ -36,16 +36,14 @@ namespace MovingCastles.Ui
 
             var game = new TurnBasedGame(logManager);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
+            var map = mapFactory.Create(80, 45);
             var mapConsole = new MapConsole(
-                80,
-                45,
                 rightSectionWidth / tileSizeXFactor,
                 height - eventLogHeight - topPaneHeight,
                 tilesetFont,
                 menuProvider,
-                entityFactory,
                 game,
-                logManager)
+                map)
             {
                 Position = new Point(leftPaneWidth, topPaneHeight)
             };

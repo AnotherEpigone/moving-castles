@@ -1,5 +1,6 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Maps;
 using SadConsole;
 using Console = SadConsole.Console;
 
@@ -36,12 +37,13 @@ namespace MovingCastles.Ui
         {
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            var mapFactory = new MapFactory(entityFactory);
             return new MapScreen(
                 ViewPortWidth,
                 ViewPortHeight,
                 tilesetFont,
                 CreateMenuProvider(),
-                entityFactory,
+                mapFactory,
                 _logManager);
         }
     }

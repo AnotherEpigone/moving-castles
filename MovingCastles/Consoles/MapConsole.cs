@@ -25,8 +25,6 @@ namespace MovingCastles.Consoles
     {
         private readonly IMenuProvider _menuProvider;
         private readonly Console _mouseHighlight;
-        private readonly IEntityFactory _entityFactory;
-        private readonly ILogManager _logManager;
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
@@ -37,29 +35,37 @@ namespace MovingCastles.Consoles
 
         public ScrollingConsole MapRenderer { get; }
 
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         public MapConsole(
-            int mapWidth,
-            int mapHeight,
             int viewportWidth,
             int viewportHeight,
             Font tilesetFont,
             IMenuProvider menuProvider,
-            IEntityFactory entityFactory,
             ITurnBasedGame game,
-            ILogManager logManager)
+            MovingCastlesMap map)
         {
             _menuProvider = menuProvider;
-            _entityFactory = entityFactory;
-            _logManager = logManager;
             _game = game;
 
             _mouseHighlight = new Console(1, 1, tilesetFont);
             _mouseHighlight.SetGlyph(0, 0, 1, ColorHelper.WhiteHighlight);
             _mouseHighlight.UseMouse = false;
 
-            Map = GenerateDungeon(mapWidth, mapHeight, tilesetFont);
+            Map = map;
+            _game.Map = map;
+
+            foreach (var entity in map.Entities.Items.OfType<McEntity>())
+            {
+                if (entity is Player player)
+                {
+                    Player = player;
+                    _game.RegisterPlayer(player);
+                    Player.Moved += Player_Moved;
+                }
+
+                _game.RegisterEntity(entity);
+            }
 
             // Get a console that's set up to render the map, and add it as a child of this container so it renders
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
@@ -123,73 +129,9 @@ namespace MovingCastles.Consoles
             return base.ProcessMouse(state);
         }
 
-        private MovingCastlesMap GenerateDungeon(int width, int height, Font tilesetFont)
-        {
-            // Same size as screen, but we set up to center the camera on the player so expanding beyond this should work fine with no other changes.
-            var map = new MovingCastlesMap(width, height);
-            _game.Map = map;
-
-            // Generate map via GoRogue, and update the real map with appropriate terrain.
-            var tempMap = new ArrayMap<bool>(map.Width, map.Height);
-            QuickGenerators.GenerateRandomRoomsMap(tempMap, maxRooms: 180, roomMinSize: 8, roomMaxSize: 12);
-            map.ApplyTerrainOverlay(tempMap, SpawnTerrain);
-
-            Coord posToSpawn;
-
-            // Spawn a few mock enemies
-            for (int i = 0; i < 40; i++)
-            {
-                posToSpawn = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
-
-                var goblin = _entityFactory.CreateActor(SpriteAtlas.Goblin, posToSpawn, "Goblin");
-                _game.RegisterEntity(goblin);
-                map.AddEntity(goblin);
-            }
-
-            // Spawn a few items
-            for (int i = 0; i < 12; i++)
-            {
-                posToSpawn = map.WalkabilityView.RandomPosition(true);
-
-                var item = _entityFactory.CreateItem(
-                    SpriteAtlas.EtheriumShard,
-                    posToSpawn,
-                    "Etherium shard",
-                    "Crystalized by the precise artistry of master artificers, etherium is the essence of magic.");
-
-                map.AddEntity(item);
-            }
-
-            // Spawn player
-            posToSpawn = map.WalkabilityView.RandomPosition(true);
-
-            Player = new Player(posToSpawn, tilesetFont);
-            Player.Moved += Player_Moved;
-            _game.RegisterPlayer(Player);
-            map.AddEntity(Player);
-
-            return map;
-        }
-
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
         {
             MapRenderer.CenterViewPortOnPoint(Player.Position);
-        }
-
-        private static IGameObject SpawnTerrain(Coord position, bool mapGenValue)
-        {
-            // Floor or wall.  This could use the Factory system, or instantiate Floor and Wall classes, or something else if you prefer;
-            // this simplistic if-else is just used for example
-            if (mapGenValue)
-            {
-                // Floor
-                return new BasicTerrain(Color.White, new Color(61, 35, 50, 255), SpriteAtlas.Ground_Dirt, position, isWalkable: true, isTransparent: true);
-            }
-            else
-            {
-                // Wall
-                return new BasicTerrain(Color.White, new Color(61, 35, 50, 255), SpriteAtlas.Wall_Brick, position, isWalkable: false, isTransparent: false);
-            }
         }
     }
 }
