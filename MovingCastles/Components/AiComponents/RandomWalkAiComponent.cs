@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MovingCastles.Components.AiComponents
 {
-    public class RandomWalkComponent : IAiComponent
+    public class RandomWalkAiComponent : IAiComponent
     {
         public IGameObject Parent { get; set; }
 

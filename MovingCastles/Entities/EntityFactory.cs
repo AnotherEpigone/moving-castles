@@ -23,7 +23,7 @@ namespace MovingCastles.Entities
         {
             var actor = new McEntity(name, Color.White, Color.Transparent, glyph, position, (int)Maps.MapLayer.MONSTERS, isWalkable: false, isTransparent: true);
 
-            actor.AddGoRogueComponent(new RandomWalkComponent());
+            actor.AddGoRogueComponent(new WalkAtPlayerAiComponent(6));
             actor.AddGoRogueComponent(new MeleeAttackerComponent(5));
             actor.AddGoRogueComponent(new HealthComponent(10));
             actor.AddGoRogueComponent(new SummaryControlComponent());

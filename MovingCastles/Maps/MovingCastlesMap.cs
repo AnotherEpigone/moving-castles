@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GoRogue;
 using Microsoft.Xna.Framework;
 using SadConsole;
@@ -15,7 +16,7 @@ namespace MovingCastles.Maps
 
     public class MovingCastlesMap : BasicMap
     {
-        public FOVVisibilityHandler FovVisibilityHandler { get; }
+        private readonly Lazy<Player> _player;
 
         public MovingCastlesMap(int width, int height)
             : base(
@@ -26,6 +27,11 @@ namespace MovingCastles.Maps
                   entityLayersSupportingMultipleItems: LayerMasker.DEFAULT.Mask((int)MapLayer.ITEMS))
         {
             FovVisibilityHandler = new DefaultFOVVisibilityHandler(this, ColorAnsi.BlackBright);
+            _player = new Lazy<Player>(() => Entities.Items.OfType<Player>().First());
         }
+
+        public FOVVisibilityHandler FovVisibilityHandler { get; }
+
+        public Player Player => _player.Value;
     }
 }

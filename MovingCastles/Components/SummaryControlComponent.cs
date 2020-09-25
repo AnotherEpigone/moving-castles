@@ -30,7 +30,7 @@ namespace MovingCastles.Components
                 {
                     Position = new Point(0, 1),
                 };
-                healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(Color.White, Color.DarkRed);
+                healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
                 healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
                 controlsList.Add(healthBar);
             }
