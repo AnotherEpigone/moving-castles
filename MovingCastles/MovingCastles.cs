@@ -1,4 +1,5 @@
-﻿using MovingCastles.Ui;
+﻿using MovingCastles.GameSystems.Items;
+using MovingCastles.Ui;
 using SadConsole;
 using System;
 
@@ -35,6 +36,10 @@ namespace MovingCastles
             Global.LoadFont(UiManager.TilesetFontPath);
 
             InitColors();
+
+            // gonna put these in a game manager
+            var itemLoader = new ItemTemplateLoader();
+            var items = itemLoader.Load();
 
             ////Global.CurrentScreen = _uiManager.CreateMainMenu();
             Global.CurrentScreen = _uiManager.CreateMapScreen();
