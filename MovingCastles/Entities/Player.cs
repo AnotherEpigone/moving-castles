@@ -2,12 +2,11 @@
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
-using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.Maps;
 using SadConsole;
 
-namespace MovingCastles
+namespace MovingCastles.Entities
 {
     public sealed class Player : McEntity
     {

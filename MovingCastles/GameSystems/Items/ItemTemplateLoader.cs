@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace MovingCastles.GameSystems.Items
 {
-    public class ItemTemplateLoader
+    public class ItemTemplateLoader : IItemTemplateLoader
     {
         private const string ItemTemplateXml = "Content\\ItemTemplates.xml";
 

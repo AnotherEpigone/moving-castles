@@ -2,6 +2,7 @@
 using System.Linq;
 using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.Entities;
 using SadConsole;
 
 namespace MovingCastles.Maps

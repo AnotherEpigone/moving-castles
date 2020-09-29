@@ -9,13 +9,13 @@ namespace MovingCastles
 {
     internal sealed class MovingCastles : IDisposable
     {
-        private readonly UiManager _uiManager;
+        private readonly IUiManager _uiManager;
 
         private bool disposedValue;
 
-        public MovingCastles()
+        public MovingCastles(IUiManager uiManager)
         {
-            _uiManager = new UiManager();
+            _uiManager = uiManager;
         }
 
         public void Run()

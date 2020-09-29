@@ -3,7 +3,6 @@ using GoRogue.GameFramework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
-using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
@@ -11,7 +10,7 @@ using SadConsole;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MovingCastles.GameSystems
+namespace MovingCastles.GameSystems.TurnBasedGame
 {
     public enum State
     {

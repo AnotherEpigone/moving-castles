@@ -6,7 +6,7 @@ using Console = SadConsole.Console;
 
 namespace MovingCastles.Ui
 {
-    public sealed class UiManager
+    public sealed class UiManager : IUiManager
     {
         private readonly ILogManager _logManager;
 
@@ -26,13 +26,6 @@ namespace MovingCastles.Ui
             return new MainMenu(this);
         }
 
-        private IMenuProvider CreateMenuProvider()
-        {
-            var inventory = new InventoryWindow(120, 30);
-
-            return new MenuProvider(inventory);
-        }
-
         public ContainerConsole CreateMapScreen(IMapPlan mapPlan)
         {
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
@@ -46,6 +39,13 @@ namespace MovingCastles.Ui
                 mapFactory,
                 mapPlan,
                 _logManager);
+        }
+
+        private IMenuProvider CreateMenuProvider()
+        {
+            var inventory = new InventoryWindow(120, 30);
+
+            return new MenuProvider(inventory);
         }
     }
 }

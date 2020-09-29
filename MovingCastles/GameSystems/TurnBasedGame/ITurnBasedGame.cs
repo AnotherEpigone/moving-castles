@@ -1,7 +1,7 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.Maps;
 
-namespace MovingCastles.GameSystems
+namespace MovingCastles.GameSystems.TurnBasedGame
 {
     public interface ITurnBasedGame
     {
