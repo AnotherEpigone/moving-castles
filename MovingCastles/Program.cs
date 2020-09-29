@@ -1,10 +1,14 @@
-﻿namespace MovingCastles
+﻿using Autofac;
+
+namespace MovingCastles
 {
     internal static class Program
     {
         private static void Main()
         {
-            using var game = new MovingCastles();
+            var container = AutofacSetup.CreateContainer();
+
+            using var game = container.Resolve<MovingCastles>();
             game.Run();
         }
     }
