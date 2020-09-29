@@ -2,6 +2,6 @@
 {
     public interface IMapFactory
     {
-        MovingCastlesMap Create(int width, int height);
+        MovingCastlesMap Create(int width, int height, IMapPlan mapPlan);
     }
 }

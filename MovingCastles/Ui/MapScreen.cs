@@ -27,6 +27,7 @@ namespace MovingCastles.Ui
             Font tilesetFont,
             IMenuProvider menuProvider,
             IMapFactory mapFactory,
+            IMapPlan mapPlan,
             ILogManager logManager)
         {
             var rightSectionWidth = width - leftPaneWidth;
@@ -36,7 +37,7 @@ namespace MovingCastles.Ui
 
             var game = new TurnBasedGame(logManager);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
-            var map = mapFactory.Create(80, 45);
+            var map = mapFactory.Create(80, 45, mapPlan);
             var mapConsole = new MapConsole(
                 rightSectionWidth / tileSizeXFactor,
                 height - eventLogHeight - topPaneHeight,
@@ -77,11 +78,6 @@ namespace MovingCastles.Ui
             logManager.RegisterEventListener(s => eventLog.Add(s));
             logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
 
-            // test data...
-            mapConsole.Player.GetGoRogueComponent<IInventoryComponent>().Items.Add(new InventoryItem(
-                    "trusty oak staff",
-                    "Cut from the woods of the Academy at Kurisau, this staff has served you since you first learned to sense the Wellspring."));
-            eventLog.Add("Find the tower's core.");
             _leftPane.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.Gainsboro });
             _leftPane.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
             _leftPane.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });

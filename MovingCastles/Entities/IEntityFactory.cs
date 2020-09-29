@@ -1,13 +1,12 @@
 ﻿using GoRogue;
-using SadConsole;
+using MovingCastles.GameSystems.Items;
 
 namespace MovingCastles.Entities
 {
     public interface IEntityFactory
     {
         McEntity CreateActor(int glyph, Coord position, string name);
-
-        McEntity CreateItem(int glyph, Coord position, string name, string desc);
+        McEntity CreateItem(Coord position, ItemTemplate itemTemplate);
         Player CreatePlayer(Coord position);
     }
 }

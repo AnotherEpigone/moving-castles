@@ -35,7 +35,9 @@ namespace MovingCastles.Ui
                 Text = "New Game",
                 Position = new Point(76, 10),
             };
-            newGameButton.Click += (_, __) => Global.CurrentScreen = uiManager.CreateMapScreen();
+            
+            // todo: gonna have to call into that game manager instead
+            //newGameButton.Click += (_, __) => Global.CurrentScreen = uiManager.CreateMapScreen();
             menuConsole.Add(newGameButton);
 
             var exitButton = new SadConsole.Controls.Button(12, 1)

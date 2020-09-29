@@ -1,7 +1,9 @@
 ﻿using MovingCastles.GameSystems.Items;
+using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
 using System;
+using System.Linq;
 
 namespace MovingCastles
 {
@@ -41,8 +43,13 @@ namespace MovingCastles
             var itemLoader = new ItemTemplateLoader();
             var items = itemLoader.Load();
 
+            var mapLoader = new MapTemplateLoader();
+            var mapTemplates = mapLoader.Load();
+            var mapPlanFactory = new MapPlanFactory();
+            var maps = mapTemplates.ToDictionary(t => t.Key, t => mapPlanFactory.Create(t.Value, items));
+
             ////Global.CurrentScreen = _uiManager.CreateMainMenu();
-            Global.CurrentScreen = _uiManager.CreateMapScreen();
+            Global.CurrentScreen = _uiManager.CreateMapScreen(maps["MAP_TESTAREA"]);
         }
 
         private void InitColors()

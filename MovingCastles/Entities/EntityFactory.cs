@@ -35,13 +35,13 @@ namespace MovingCastles.Entities
             return actor;
         }
 
-        public McEntity CreateItem(int glyph, Coord position, string name, string desc)
+        public McEntity CreateItem(Coord position, ItemTemplate itemTemplate)
         {
             var item = new McEntity(
-                    name,
+                    itemTemplate.Name,
                     Color.White,
                     Color.Transparent,
-                    glyph,
+                    itemTemplate.Glyph,
                     position,
                     (int)Maps.MapLayer.ITEMS,
                     isWalkable: true,
@@ -49,7 +49,7 @@ namespace MovingCastles.Entities
             item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(
                 _logManager,
-                new InventoryItem(name, desc)));
+                new InventoryItem(itemTemplate)));
 
             // workaround Entity construction bugs by setting font afterward
             item.Font = _font;

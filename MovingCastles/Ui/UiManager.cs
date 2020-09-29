@@ -33,7 +33,7 @@ namespace MovingCastles.Ui
             return new MenuProvider(inventory);
         }
 
-        public ContainerConsole CreateMapScreen()
+        public ContainerConsole CreateMapScreen(IMapPlan mapPlan)
         {
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
@@ -44,6 +44,7 @@ namespace MovingCastles.Ui
                 tilesetFont,
                 CreateMenuProvider(),
                 mapFactory,
+                mapPlan,
                 _logManager);
         }
     }

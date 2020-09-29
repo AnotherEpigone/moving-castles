@@ -62,6 +62,7 @@ namespace MovingCastles.Consoles
                     Player = player;
                     _game.RegisterPlayer(player);
                     Player.Moved += Player_Moved;
+                    continue;
                 }
 
                 _game.RegisterEntity(entity);

@@ -22,7 +22,7 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
         }
 
-        public MovingCastlesMap Create(int width, int height)
+        public MovingCastlesMap Create(int width, int height, IMapPlan mapPlan)
         {
             var map = new MovingCastlesMap(width, height);
 
@@ -34,7 +34,7 @@ namespace MovingCastles.Maps
             Coord posToSpawn;
 
             // Spawn a few mock enemies
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 30; i++)
             {
                 posToSpawn = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
 
@@ -43,15 +43,11 @@ namespace MovingCastles.Maps
             }
 
             // Spawn a few items
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 30; i++)
             {
                 posToSpawn = map.WalkabilityView.RandomPosition(true);
 
-                var item = _entityFactory.CreateItem(
-                    SpriteAtlas.EtheriumShard,
-                    posToSpawn,
-                    "Etherium shard",
-                    "Crystalized by the precise artistry of master artificers, etherium is the essence of magic.");
+                var item = _entityFactory.CreateItem(posToSpawn, mapPlan.FloorItems.RandomItem());
 
                 map.AddEntity(item);
             }
