@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using MovingCastles.GameSystems;
+using MovingCastles.GameSystems.Items;
+using MovingCastles.Maps;
 using MovingCastles.Ui;
 
 namespace MovingCastles
@@ -11,6 +14,12 @@ namespace MovingCastles
 
             builder.RegisterType<UiManager>()
                 .As<IUiManager>();
+            builder.RegisterType<GameManager>()
+                .As<IGameManager>();
+            builder.RegisterType<ItemTemplateLoader>()
+                .As<IItemTemplateLoader>();
+            builder.RegisterType<MapTemplateLoader>()
+                .As<IMapTemplateLoader>();
 
             builder.RegisterType<MovingCastles>().AsSelf();
             return builder.Build();

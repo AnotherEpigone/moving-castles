@@ -21,11 +21,6 @@ namespace MovingCastles.Ui
             _logManager = new LogManager();
         }
 
-        public Console CreateMainMenu()
-        {
-            return new MainMenu(this);
-        }
-
         public ContainerConsole CreateMapScreen(IMapPlan mapPlan)
         {
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);

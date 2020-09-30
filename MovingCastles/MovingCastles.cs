@@ -1,4 +1,5 @@
-﻿using MovingCastles.GameSystems.Items;
+﻿using MovingCastles.GameSystems;
+using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
@@ -10,12 +11,14 @@ namespace MovingCastles
     internal sealed class MovingCastles : IDisposable
     {
         private readonly IUiManager _uiManager;
+        private readonly IGameManager _gameManager;
 
         private bool disposedValue;
 
-        public MovingCastles(IUiManager uiManager)
+        public MovingCastles(IUiManager uiManager, IGameManager gameManager)
         {
             _uiManager = uiManager;
+            _gameManager = gameManager;
         }
 
         public void Run()
@@ -38,18 +41,8 @@ namespace MovingCastles
             Global.LoadFont(UiManager.TilesetFontPath);
 
             InitColors();
-
-            // gonna put these in a game manager
-            var itemLoader = new ItemTemplateLoader();
-            var items = itemLoader.Load();
-
-            var mapLoader = new MapTemplateLoader();
-            var mapTemplates = mapLoader.Load();
-            var mapPlanFactory = new MapPlanFactory();
-            var maps = mapTemplates.ToDictionary(t => t.Key, t => mapPlanFactory.Create(t.Value, items));
-
-            ////Global.CurrentScreen = _uiManager.CreateMainMenu();
-            Global.CurrentScreen = _uiManager.CreateMapScreen(maps["MAP_TESTAREA"]);
+            
+            Global.CurrentScreen = new MainMenu(_gameManager);
         }
 
         private void InitColors()

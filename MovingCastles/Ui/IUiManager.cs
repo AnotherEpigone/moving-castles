@@ -1,4 +1,5 @@
-﻿using MovingCastles.Maps;
+﻿using MovingCastles.GameSystems;
+using MovingCastles.Maps;
 using SadConsole;
 
 namespace MovingCastles.Ui
@@ -8,7 +9,6 @@ namespace MovingCastles.Ui
         int ViewPortHeight { get; }
         int ViewPortWidth { get; }
 
-        Console CreateMainMenu();
         ContainerConsole CreateMapScreen(IMapPlan mapPlan);
     }
 }

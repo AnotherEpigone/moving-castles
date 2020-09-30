@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using MovingCastles.GameSystems;
 using SadConsole;
-using SadConsole.Themes;
 
 namespace MovingCastles.Ui
 {
     public sealed class MainMenu : ContainerConsole
     {
-        public MainMenu(UiManager uiManager)
+        public MainMenu(IGameManager gameManager)
         {
             DefaultBackground = Color.Black;
 
@@ -35,9 +35,8 @@ namespace MovingCastles.Ui
                 Text = "New Game",
                 Position = new Point(76, 10),
             };
-            
-            // todo: gonna have to call into that game manager instead
-            //newGameButton.Click += (_, __) => Global.CurrentScreen = uiManager.CreateMapScreen();
+
+            newGameButton.Click += (_, __) => gameManager.Start();
             menuConsole.Add(newGameButton);
 
             var exitButton = new SadConsole.Controls.Button(12, 1)
