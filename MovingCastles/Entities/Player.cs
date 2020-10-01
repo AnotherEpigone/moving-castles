@@ -1,5 +1,4 @@
 ﻿using GoRogue;
-using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;

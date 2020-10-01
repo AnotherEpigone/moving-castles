@@ -30,7 +30,7 @@ namespace MovingCastles.GameSystems
             var mapPlanFactory = new MapPlanFactory();
             var maps = mapTemplates.ToDictionary(t => t.Key, t => mapPlanFactory.Create(t.Value, items));
 
-            Global.CurrentScreen = _uiManager.CreateMapScreen(maps["MAP_TESTAREA"]);
+            Global.CurrentScreen = _uiManager.CreateMapScreen(maps["MAP_TESTAREA"], this);
         }
     }
 }

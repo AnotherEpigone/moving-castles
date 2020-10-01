@@ -27,6 +27,8 @@ namespace MovingCastles.Entities
 
         public event System.EventHandler RemovedFromMap;
 
+        public bool HasMap => CurrentMap != null;
+
         public void Move(Direction direction)
         {
             if (CurrentMap.WalkabilityView[Position + direction])

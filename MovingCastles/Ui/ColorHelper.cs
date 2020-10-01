@@ -12,6 +12,7 @@ namespace MovingCastles.Ui
         public static Color HealthRed = new Color(135, 0, 0);
         public static Color DepletedHealthRed = new Color(30, 0, 0);
         public static Color WhiteHighlight = new Color(255, 255, 255, 200);
+        public static Color GreyHighlight = new Color(100, 100, 100, 100);
 
         public static Colors GetTransparentBackgroundThemeColors()
         {

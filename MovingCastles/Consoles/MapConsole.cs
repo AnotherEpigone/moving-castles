@@ -56,6 +56,7 @@ namespace MovingCastles.Consoles
                 {
                     Player = player;
                     _game.RegisterPlayer(player);
+                    player.RemovedFromMap += Player_RemovedFromMap;
                     Player.Moved += Player_Moved;
                     continue;
                 }
@@ -76,8 +77,18 @@ namespace MovingCastles.Consoles
             Children.Add(_mouseHighlight);
         }
 
+        private void Player_RemovedFromMap(object sender, System.EventArgs e)
+        {
+            _menuProvider.Death.Show("You died.");
+        }
+
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
         {
+            if (!Player.HasMap)
+            {
+                return base.ProcessKeyboard(info);
+            }
+
             if (info.IsKeyPressed(Keys.I))
             {
                 _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
@@ -95,6 +106,11 @@ namespace MovingCastles.Consoles
 
         public override bool ProcessMouse(MouseConsoleState state)
         {
+            if (!Player.HasMap)
+            {
+                return base.ProcessMouse(state);
+            }
+
             var mapState = new MouseConsoleState(MapRenderer, state.Mouse);
 
             var mapCoord = new Coord(

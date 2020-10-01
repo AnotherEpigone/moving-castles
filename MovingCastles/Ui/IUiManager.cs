@@ -9,6 +9,7 @@ namespace MovingCastles.Ui
         int ViewPortHeight { get; }
         int ViewPortWidth { get; }
 
-        ContainerConsole CreateMapScreen(IMapPlan mapPlan);
+        void ShowMainMenu(IGameManager gameManager);
+        ContainerConsole CreateMapScreen(IMapPlan mapPlan, IGameManager gameManager);
     }
 }

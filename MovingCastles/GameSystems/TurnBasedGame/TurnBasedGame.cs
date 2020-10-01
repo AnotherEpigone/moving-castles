@@ -87,6 +87,11 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         {
             foreach (var entity in Map.Entities.Items.OfType<McEntity>().ToList())
             {
+                if (!_player.HasMap)
+                {
+                    break;
+                }
+
                 if (entity.CurrentMap != Map)
                 {
                     continue;

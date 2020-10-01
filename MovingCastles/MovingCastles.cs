@@ -1,10 +1,7 @@
 ﻿using MovingCastles.GameSystems;
-using MovingCastles.GameSystems.Items;
-using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
 using System;
-using System.Linq;
 
 namespace MovingCastles
 {
@@ -41,8 +38,8 @@ namespace MovingCastles
             Global.LoadFont(UiManager.TilesetFontPath);
 
             InitColors();
-            
-            Global.CurrentScreen = new MainMenu(_gameManager);
+
+            _uiManager.ShowMainMenu(_gameManager);
         }
 
         private void InitColors()
