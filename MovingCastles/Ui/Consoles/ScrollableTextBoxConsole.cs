@@ -4,7 +4,7 @@ using SadConsole.Controls;
 using SadConsole.Input;
 using System;
 
-namespace MovingCastles.Consoles
+namespace MovingCastles.Ui.Consoles
 {
     /// <summary>
     /// Scrollable text box based on Sadconsole Demo app
@@ -75,7 +75,7 @@ namespace MovingCastles.Consoles
                     // Based on how much content is inaccessible.
                     ScrollOffset += TimesShiftedUp != 0 ? TimesShiftedUp : 1;
                 }
-                _scrollBar.Maximum = (Height + ScrollOffset) - Height;
+                _scrollBar.Maximum = Height + ScrollOffset - Height;
 
                 // This will follow the cursor since we move the render area in the event.
                 _scrollBar.Value = ScrollOffset;

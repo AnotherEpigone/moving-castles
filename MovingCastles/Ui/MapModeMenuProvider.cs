@@ -1,8 +1,10 @@
-﻿namespace MovingCastles.Ui
+﻿using MovingCastles.Ui.Windows;
+
+namespace MovingCastles.Ui
 {
-    public class MenuProvider : IMenuProvider
+    public class MapModeMenuProvider : IMapModeMenuProvider
     {
-        public MenuProvider(
+        public MapModeMenuProvider(
             InventoryWindow inventory,
             DeathWindow death)
         {

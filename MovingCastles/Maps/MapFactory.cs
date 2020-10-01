@@ -3,13 +3,9 @@ using GoRogue.GameFramework;
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
-using MovingCastles.Consoles;
 using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using SadConsole;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MovingCastles.Maps
 {

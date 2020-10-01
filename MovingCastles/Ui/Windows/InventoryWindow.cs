@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace MovingCastles.Ui
+namespace MovingCastles.Ui.Windows
 {
     public class InventoryWindow : Window
     {
@@ -77,7 +77,7 @@ namespace MovingCastles.Ui
         private List<ControlBase> BuildItemControls(IEnumerable<IInventoryItem> items)
         {
             var yCount = 0;
-            return items.Select(i => 
+            return items.Select(i =>
                 {
                     var itemButton = new Button(_itemButtomWidth - 1)
                     {

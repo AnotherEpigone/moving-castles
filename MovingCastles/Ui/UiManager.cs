@@ -2,15 +2,15 @@
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using MovingCastles.Ui.Consoles;
+using MovingCastles.Ui.Windows;
 using SadConsole;
-using Console = SadConsole.Console;
 
 namespace MovingCastles.Ui
 {
     public sealed class UiManager : IUiManager
     {
         private readonly ILogManager _logManager;
-        private readonly IGameManager _gameManager;
 
         public const string TilesetFontPath = "Fonts\\sprites.font";
         public const string TilesetFontName = "sprites";
@@ -25,7 +25,7 @@ namespace MovingCastles.Ui
 
         public void ShowMainMenu(IGameManager gameManager)
         {
-            var menu = new MainMenu(gameManager);
+            var menu = new MainMenuConsole(gameManager);
             Global.CurrentScreen = menu;
             menu.IsFocused = true;
         }
@@ -45,12 +45,12 @@ namespace MovingCastles.Ui
                 _logManager);
         }
 
-        private IMenuProvider CreateMenuProvider(IGameManager gameManager)
+        private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager)
         {
             var inventory = new InventoryWindow(120, 30);
             var death = new DeathWindow(this, gameManager);
 
-            return new MenuProvider(inventory, death);
+            return new MapModeMenuProvider(inventory, death);
         }
     }
 }

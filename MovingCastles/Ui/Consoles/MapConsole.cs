@@ -14,11 +14,11 @@ using System.Collections.Generic;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
-namespace MovingCastles.Consoles
+namespace MovingCastles.Ui.Consoles
 {
     internal class MapConsole : ContainerConsole
     {
-        private readonly IMenuProvider _menuProvider;
+        private readonly IMapModeMenuProvider _menuProvider;
         private readonly Console _mouseHighlight;
         private readonly ITurnBasedGame _game;
 
@@ -36,7 +36,7 @@ namespace MovingCastles.Consoles
             int viewportWidth,
             int viewportHeight,
             Font tilesetFont,
-            IMenuProvider menuProvider,
+            IMapModeMenuProvider menuProvider,
             ITurnBasedGame game,
             MovingCastlesMap map)
         {

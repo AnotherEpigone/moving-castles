@@ -3,7 +3,7 @@ using MovingCastles.GameSystems;
 using SadConsole;
 using SadConsole.Controls;
 
-namespace MovingCastles.Ui
+namespace MovingCastles.Ui.Windows
 {
     public class DeathWindow : Window
     {

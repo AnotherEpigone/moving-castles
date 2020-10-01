@@ -1,7 +1,7 @@
 ﻿using SadConsole;
 using System.Collections.Generic;
 
-namespace MovingCastles.Consoles
+namespace MovingCastles.Ui.Consoles
 {
     public class ConsoleListEventArgs : System.EventArgs
     {

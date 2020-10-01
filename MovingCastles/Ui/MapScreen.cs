@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
-using MovingCastles.Consoles;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
+using MovingCastles.Ui.Consoles;
 using SadConsole;
 using SadConsole.Controls;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace MovingCastles.Ui
             int width,
             int height,
             Font tilesetFont,
-            IMenuProvider menuProvider,
+            IMapModeMenuProvider menuProvider,
             IMapFactory mapFactory,
             IMapPlan mapPlan,
             ILogManager logManager)

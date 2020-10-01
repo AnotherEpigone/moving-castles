@@ -2,11 +2,11 @@
 using MovingCastles.GameSystems;
 using SadConsole;
 
-namespace MovingCastles.Ui
+namespace MovingCastles.Ui.Consoles
 {
-    public sealed class MainMenu : ContainerConsole
+    public sealed class MainMenuConsole : ContainerConsole
     {
-        public MainMenu(IGameManager gameManager)
+        public MainMenuConsole(IGameManager gameManager)
         {
             DefaultBackground = Color.Black;
 
