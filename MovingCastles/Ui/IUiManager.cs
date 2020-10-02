@@ -1,5 +1,6 @@
 ﻿using MovingCastles.GameSystems;
 using MovingCastles.Maps;
+using MovingCastles.Ui.Consoles;
 using SadConsole;
 
 namespace MovingCastles.Ui
@@ -10,6 +11,7 @@ namespace MovingCastles.Ui
         int ViewPortWidth { get; }
 
         void ShowMainMenu(IGameManager gameManager);
-        ContainerConsole CreateMapScreen(IMapPlan mapPlan, IGameManager gameManager);
+        ContainerConsole CreateDungeonMapScreen(IMapPlan mapPlan, IGameManager gameManager);
+        CastleModeConsole CreateCastleMapScreen(IMapPlan mapPlan, IGameManager gameManager);
     }
 }

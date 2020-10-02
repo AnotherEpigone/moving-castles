@@ -5,7 +5,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 {
     public interface ITurnBasedGame
     {
-        MovingCastlesMap Map { get; set; }
+        DungeonMap Map { get; set; }
 
         bool HandleAsPlayerInput(SadConsole.Input.Keyboard info);
         void RegisterEntity(McEntity entity);

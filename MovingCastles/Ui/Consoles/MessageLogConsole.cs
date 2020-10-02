@@ -1,19 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using SadConsole;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MovingCastles.Ui
 {
-    public class MessageLog : ContainerConsole
+    public class MessageLogConsole : ContainerConsole
     {
         private const int _maxLines = 50;
 
         private readonly Queue<string> _lines;
         private readonly ScrollingConsole _messageConsole;
 
-        public MessageLog(int width, int height, Font font)
+        public MessageLogConsole(int width, int height, Font font)
         {
             _lines = new Queue<string>();
 
@@ -34,7 +32,7 @@ namespace MovingCastles.Ui
             // Move the cursor to the last line and print the message.
             _messageConsole.Cursor.Position = new Point(1, _lines.Count - 1);
 
-            var coloredMessage = new ColoredString(message + "\n", new Cell(Color.Gainsboro, ColorHelper.MidnightestBlue));
+            var coloredMessage = new ColoredString($"> {message}\n", new Cell(Color.Gainsboro, ColorHelper.MidnightestBlue));
             _messageConsole.Cursor.Print(coloredMessage);
         }
     }

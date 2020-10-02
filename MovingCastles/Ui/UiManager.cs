@@ -30,12 +30,27 @@ namespace MovingCastles.Ui
             menu.IsFocused = true;
         }
 
-        public ContainerConsole CreateMapScreen(IMapPlan mapPlan, IGameManager gameManager)
+        public ContainerConsole CreateDungeonMapScreen(IMapPlan mapPlan, IGameManager gameManager)
         {
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
-            return new MapScreen(
+            return new DungeonModeConsole(
+                ViewPortWidth,
+                ViewPortHeight,
+                tilesetFont,
+                CreateMenuProvider(gameManager),
+                mapFactory,
+                mapPlan,
+                _logManager);
+        }
+
+        public CastleModeConsole CreateCastleMapScreen(IMapPlan mapPlan, IGameManager gameManager)
+        {
+            var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
+            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            var mapFactory = new MapFactory(entityFactory);
+            return new CastleModeConsole(
                 ViewPortWidth,
                 ViewPortHeight,
                 tilesetFont,

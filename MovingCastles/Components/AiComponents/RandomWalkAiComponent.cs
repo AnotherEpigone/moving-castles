@@ -12,7 +12,7 @@ namespace MovingCastles.Components.AiComponents
     {
         public IGameObject Parent { get; set; }
 
-        public void Run(MovingCastlesMap map)
+        public void Run(DungeonMap map)
         {
             var directionType = SadConsole.Global.Random.Next(0, 8);
             var direction = Direction.ToDirection((Direction.Types)directionType);

@@ -16,29 +16,28 @@ using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Ui.Consoles
 {
-    internal class MapConsole : ContainerConsole
+    internal class DungeonMapConsole : ContainerConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
         private readonly Console _mouseHighlight;
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
-
         public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
 
-        public MovingCastlesMap Map { get; }
+        public DungeonMap Map { get; }
 
         public ScrollingConsole MapRenderer { get; }
 
         public Player Player { get; }
 
-        public MapConsole(
+        public DungeonMapConsole(
             int viewportWidth,
             int viewportHeight,
             Font tilesetFont,
             IMapModeMenuProvider menuProvider,
             ITurnBasedGame game,
-            MovingCastlesMap map)
+            DungeonMap map)
         {
             _menuProvider = menuProvider;
             _game = game;
@@ -64,12 +63,10 @@ namespace MovingCastles.Ui.Consoles
                 _game.RegisterEntity(entity);
             }
 
-            // Get a console that's set up to render the map, and add it as a child of this container so it renders
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
             MapRenderer.UseMouse = false;
             IsFocused = true;
 
-            // Calculate initial FOV and center camera
             Map.CalculateFOV(Player.Position, Player.FOVRadius, Radius.SQUARE);
             MapRenderer.CenterViewPortOnPoint(Player.Position);
 

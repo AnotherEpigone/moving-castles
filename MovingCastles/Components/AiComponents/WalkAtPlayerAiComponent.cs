@@ -17,7 +17,7 @@ namespace MovingCastles.Components.AiComponents
 
         public IGameObject Parent { get; set; }
 
-        public void Run(MovingCastlesMap map)
+        public void Run(DungeonMap map)
         {
             if (!(Parent is McEntity mcParent))
             {

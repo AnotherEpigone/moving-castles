@@ -46,7 +46,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             _logManager = logManager;
         }
 
-        public MovingCastlesMap Map { get; set; }
+        public DungeonMap Map { get; set; }
 
         public bool HandleAsPlayerInput(SadConsole.Input.Keyboard info)
         {

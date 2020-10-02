@@ -1,6 +1,7 @@
 ﻿using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
+using MovingCastles.Ui.Consoles;
 using SadConsole;
 using System.Linq;
 
@@ -30,7 +31,8 @@ namespace MovingCastles.GameSystems
             var mapPlanFactory = new MapPlanFactory();
             var maps = mapTemplates.ToDictionary(t => t.Key, t => mapPlanFactory.Create(t.Value, items));
 
-            Global.CurrentScreen = _uiManager.CreateMapScreen(maps["MAP_TESTAREA"], this);
+            Global.CurrentScreen = _uiManager.CreateCastleMapScreen(maps["MAP_TESTAREA"], this);
+            //Global.CurrentScreen = _uiManager.CreateMapScreen(maps["MAP_TESTAREA"], this);
         }
     }
 }

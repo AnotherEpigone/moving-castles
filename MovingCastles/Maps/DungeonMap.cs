@@ -7,7 +7,7 @@ using SadConsole;
 
 namespace MovingCastles.Maps
 {
-    internal enum MapLayer
+    internal enum DungeonMapLayer
     {
         TERRAIN,
         ITEMS,
@@ -15,18 +15,20 @@ namespace MovingCastles.Maps
         PLAYER
     }
 
-    public class MovingCastlesMap : BasicMap
+    public class DungeonMap : BasicMap
     {
         private readonly Lazy<Player> _player;
 
-        public MovingCastlesMap(int width, int height)
+        public DungeonMap(int width, int height)
             : base(
                   width,
                   height,
-                  Enum.GetNames(typeof(MapLayer)).Length - 1,
+                  Enum.GetNames(typeof(DungeonMapLayer)).Length - 1,
                   Distance.CHEBYSHEV,
-                  entityLayersSupportingMultipleItems: LayerMasker.DEFAULT.Mask((int)MapLayer.ITEMS))
+                  entityLayersSupportingMultipleItems: LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.ITEMS))
         {
+            // Note that passing *this* into the FOV handler sets up all kinds of FOV stuff in gorogue.
+            // don't remove even if the property isn't used.
             FovVisibilityHandler = new DefaultFOVVisibilityHandler(this, ColorAnsi.BlackBright);
             _player = new Lazy<Player>(() => Entities.Items.OfType<Player>().First());
         }

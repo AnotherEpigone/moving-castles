@@ -1,7 +1,10 @@
-﻿namespace MovingCastles.Maps
+﻿using SadConsole;
+
+namespace MovingCastles.Maps
 {
     public interface IMapFactory
     {
-        MovingCastlesMap Create(int width, int height, IMapPlan mapPlan);
+        DungeonMap CreateDungeonMap(int width, int height, IMapPlan mapPlan);
+        CastleMap CreateCastleMap(int width, int height, IMapPlan mapPlan);
     }
 }

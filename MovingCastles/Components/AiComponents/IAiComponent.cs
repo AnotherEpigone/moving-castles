@@ -5,6 +5,6 @@ namespace MovingCastles.Components.AiComponents
 {
     public interface IAiComponent : IGameObjectComponent
     {
-        void Run(MovingCastlesMap map);
+        void Run(DungeonMap map);
     }
 }
