@@ -6,14 +6,18 @@ namespace MovingCastles.Ui
     {
         public MapModeMenuProvider(
             InventoryWindow inventory,
-            DeathWindow death)
+            DeathWindow death,
+            PopupMenuWindow pop)
         {
             Inventory = inventory;
             Death = death;
+            Pop = pop;
         }
 
         public InventoryWindow Inventory { get; }
 
         public DeathWindow Death { get; }
+
+        public PopupMenuWindow Pop { get; }
     }
 }

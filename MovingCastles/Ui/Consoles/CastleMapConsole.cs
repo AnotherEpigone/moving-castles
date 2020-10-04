@@ -1,5 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using MovingCastles.Components;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
@@ -49,6 +51,26 @@ namespace MovingCastles.Ui.Consoles
 
             Children.Add(MapRenderer);
             Children.Add(_mouseHighlight);
+        }
+
+        public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                _menuProvider.Pop.Show();
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.I))
+            {
+                // todo - inventory from player/castle!
+                //_menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
+                // show empty inventory for now
+                _menuProvider.Inventory.Show(new InventoryComponent());
+                return true;
+            }
+
+            return base.ProcessKeyboard(info);
         }
     }
 }

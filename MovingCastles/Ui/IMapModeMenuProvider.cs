@@ -7,5 +7,7 @@ namespace MovingCastles.Ui
         InventoryWindow Inventory { get; }
 
         DeathWindow Death { get; }
+
+        PopupMenuWindow Pop { get; }
     }
 }

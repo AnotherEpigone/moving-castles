@@ -64,8 +64,9 @@ namespace MovingCastles.Ui
         {
             var inventory = new InventoryWindow(120, 30);
             var death = new DeathWindow(this, gameManager);
+            var pop = new PopupMenuWindow(this, gameManager);
 
-            return new MapModeMenuProvider(inventory, death);
+            return new MapModeMenuProvider(inventory, death, pop);
         }
     }
 }

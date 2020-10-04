@@ -86,6 +86,12 @@ namespace MovingCastles.Ui.Consoles
                 return base.ProcessKeyboard(info);
             }
 
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                _menuProvider.Pop.Show();
+                return true;
+            }
+
             if (info.IsKeyPressed(Keys.I))
             {
                 _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
