@@ -2,6 +2,8 @@
 {
     public interface IGameManager
     {
-        void Start();
+        void StartDungeonModeDemo();
+
+        void StartCastleModeDemo();
     }
 }

@@ -22,24 +22,24 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(0, 12),
             };
 
-            var continueButton = new SadConsole.Controls.Button(12, 1)
+            var continueButton = new SadConsole.Controls.Button(25, 1)
             {
-                Text = "Continue",
+                Text = "Dungeon mode testarea",
                 Position = new Point(76, 8),
-                IsEnabled = false,
             };
+            continueButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
             menuConsole.Add(continueButton);
 
-            var newGameButton = new SadConsole.Controls.Button(12, 1)
+            var newGameButton = new SadConsole.Controls.Button(25, 1)
             {
-                Text = "New Game",
+                Text = "Castle mode testarea",
                 Position = new Point(76, 10),
             };
 
-            newGameButton.Click += (_, __) => gameManager.Start();
+            newGameButton.Click += (_, __) => gameManager.StartCastleModeDemo();
             menuConsole.Add(newGameButton);
 
-            var exitButton = new SadConsole.Controls.Button(12, 1)
+            var exitButton = new SadConsole.Controls.Button(25, 1)
             {
                 Text = "Exit",
                 Position = new Point(76, 12),
