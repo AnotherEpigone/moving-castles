@@ -14,7 +14,7 @@ namespace MovingCastles.Ui.Consoles
             var titleConsole = new Console(160, 45, titleFont);
 
             titleConsole.Fill(null, ColorHelper.MidnightestBlue, null);
-            titleConsole.Print(21, 3, "MOVING CASTLES");
+            titleConsole.Print(20, 3, "MOVING CASTLES");
             titleConsole.DefaultBackground = ColorHelper.MidnightestBlue;
 
             var menuConsole = new ControlsConsole(160, 33)
@@ -22,27 +22,27 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(0, 12),
             };
 
-            var continueButton = new SadConsole.Controls.Button(25, 1)
+            var continueButton = new SadConsole.Controls.Button(26, 1)
             {
                 Text = "Dungeon mode testarea",
-                Position = new Point(76, 8),
+                Position = new Point(67, 8),
             };
             continueButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
             menuConsole.Add(continueButton);
 
-            var newGameButton = new SadConsole.Controls.Button(25, 1)
+            var newGameButton = new SadConsole.Controls.Button(26, 1)
             {
                 Text = "Castle mode testarea",
-                Position = new Point(76, 10),
+                Position = new Point(67, 10),
             };
 
             newGameButton.Click += (_, __) => gameManager.StartCastleModeDemo();
             menuConsole.Add(newGameButton);
 
-            var exitButton = new SadConsole.Controls.Button(25, 1)
+            var exitButton = new SadConsole.Controls.Button(26, 1)
             {
                 Text = "Exit",
-                Position = new Point(76, 12),
+                Position = new Point(67, 12),
             };
             exitButton.Click += (_, __) => SadConsole.Game.Instance.Exit();
             menuConsole.Add(exitButton);

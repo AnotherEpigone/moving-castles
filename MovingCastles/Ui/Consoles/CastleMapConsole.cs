@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Entities;
-using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using SadConsole;
+using SadConsole.Input;
+using System.Collections.Generic;
+using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Ui.Consoles
@@ -63,7 +65,7 @@ namespace MovingCastles.Ui.Consoles
 
             if (info.IsKeyPressed(Keys.I))
             {
-                // todo - inventory from player/castle!
+                // todo - inventory from player/castle! fix this with proper Player class (not entity)
                 //_menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 // show empty inventory for now
                 _menuProvider.Inventory.Show(new InventoryComponent());
@@ -71,6 +73,46 @@ namespace MovingCastles.Ui.Consoles
             }
 
             return base.ProcessKeyboard(info);
+        }
+
+        public override bool ProcessMouse(MouseConsoleState state)
+        {
+            var mapState = new MouseConsoleState(MapRenderer, state.Mouse);
+
+            var mapCoord = new Coord(
+                mapState.ConsoleCellPosition.X + MapRenderer.ViewPort.X,
+                mapState.ConsoleCellPosition.Y + MapRenderer.ViewPort.Y);
+
+            _mouseHighlight.IsVisible = mapState.IsOnConsole && Map.Explored[mapCoord];
+            _mouseHighlight.Position = mapState.ConsoleCellPosition;
+
+            if (mapState.IsOnConsole
+                && _lastSummaryConsolePosition != mapState.ConsoleCellPosition
+                && Map.FOV.CurrentFOV.Contains(mapCoord))
+            {
+                // update summaries
+                var summaryControls = new List<Console>();
+                foreach (var entity in Map.GetEntities<BasicEntity>(mapCoord))
+                {
+                    var control = entity.GetGoRogueComponent<ISummaryControlComponent>()?.GetSidebarSummary();
+                    if (control != null)
+                    {
+                        summaryControls.Add(control);
+                    }
+                }
+
+                _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
+                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(summaryControls));
+            }
+
+            if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
+            {
+                // remove the summaries if we just moved out of a valid location
+                _lastSummaryConsolePosition = default;
+                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
+            }
+
+            return base.ProcessMouse(state);
         }
     }
 }

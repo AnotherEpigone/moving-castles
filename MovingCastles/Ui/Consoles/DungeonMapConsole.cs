@@ -127,6 +127,7 @@ namespace MovingCastles.Ui.Consoles
                 && _lastSummaryConsolePosition != mapState.ConsoleCellPosition
                 && Map.FOV.CurrentFOV.Contains(mapCoord))
             {
+                // update summaries
                 var summaryControls = new List<Console>();
                 foreach (var entity in Map.GetEntities<BasicEntity>(mapCoord))
                 {
@@ -138,7 +139,14 @@ namespace MovingCastles.Ui.Consoles
                 }
 
                 _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
-                SummaryConsolesChanged.Invoke(this, new ConsoleListEventArgs(summaryControls));
+                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(summaryControls));
+            }
+            
+            if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
+            {
+                // remove the summaries if we just moved out of a valid location
+                _lastSummaryConsolePosition = default;
+                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
             }
 
             return base.ProcessMouse(state);

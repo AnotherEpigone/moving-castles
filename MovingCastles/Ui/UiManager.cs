@@ -47,7 +47,7 @@ namespace MovingCastles.Ui
 
         public CastleModeConsole CreateCastleMapScreen(IMapPlan mapPlan, IGameManager gameManager)
         {
-            var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
+            var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.Three);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
             return new CastleModeConsole(

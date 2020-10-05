@@ -66,7 +66,7 @@ namespace MovingCastles.Maps
             QuickGenerators.GenerateRectangleMap(tempMap);
             map.ApplyTerrainOverlay(tempMap, SpawnTerrain);
 
-            var spawnPosition = map.WalkabilityView.RandomPosition(true);
+            var spawnPosition = new Point(3, 3);
 
             var castle = _entityFactory.CreateCastle(spawnPosition);
             map.AddEntity(castle);
