@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
-using MovingCastles.GameSystems.PlayerInfo;
+using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using SadConsole;
 
@@ -12,7 +12,7 @@ namespace MovingCastles.Entities
     {
         public int FOVRadius;
 
-        public Castle(Coord position, PlayerInfo playerInfo, Font font)
+        public Castle(Coord position, Player playerInfo, Font font)
             : base(playerInfo.Name,
                   Color.White,
                   Color.Transparent,

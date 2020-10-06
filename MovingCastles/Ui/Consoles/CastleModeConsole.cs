@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.PlayerInfo;
+using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Controls;
@@ -25,7 +25,7 @@ namespace MovingCastles.Ui.Consoles
             IMapFactory mapFactory,
             IMapPlan mapPlan,
             ILogManager logManager,
-            PlayerInfo playerInfo)
+            Player playerInfo)
             : base(width, height)
         {
             _leftPane = CreateLeftPane();

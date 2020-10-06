@@ -38,7 +38,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private readonly ILogManager _logManager;
 
-        private Player _player;
+        private Wizard _player;
 
         public TurnBasedGame(
             ILogManager logManager)
@@ -64,7 +64,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             return false;
         }
 
-        public void RegisterPlayer(Player player)
+        public void RegisterPlayer(Wizard player)
         {
             _player = player;
             RegisterEntity(player);

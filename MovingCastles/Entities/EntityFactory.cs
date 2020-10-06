@@ -4,7 +4,7 @@ using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.PlayerInfo;
+using MovingCastles.GameSystems.Player;
 using SadConsole;
 
 namespace MovingCastles.Entities
@@ -59,12 +59,12 @@ namespace MovingCastles.Entities
             return item;
         }
 
-        public Player CreatePlayer(Coord position, PlayerInfo playerInfo)
+        public Wizard CreatePlayer(Coord position, Player playerInfo)
         {
-            return new Player(position, playerInfo, _font);
+            return new Wizard(position, playerInfo, _font);
         }
 
-        public Castle CreateCastle(Coord position, PlayerInfo playerInfo)
+        public Castle CreateCastle(Coord position, Player playerInfo)
         {
             return new Castle(position, playerInfo, _font);
         }

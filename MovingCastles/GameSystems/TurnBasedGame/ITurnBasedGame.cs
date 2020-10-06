@@ -10,6 +10,6 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         bool HandleAsPlayerInput(SadConsole.Input.Keyboard info);
         void RegisterEntity(McEntity entity);
         void UnregisterEntity(McEntity entity);
-        void RegisterPlayer(Player player);
+        void RegisterPlayer(Wizard player);
     }
 }

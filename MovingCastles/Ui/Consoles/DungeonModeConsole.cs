@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.PlayerInfo;
+using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
 using SadConsole;
@@ -27,7 +27,7 @@ namespace MovingCastles.Ui.Consoles
             IMapFactory mapFactory,
             IMapPlan mapPlan,
             ILogManager logManager,
-            PlayerInfo playerInfo)
+            Player playerInfo)
         {
             var rightSectionWidth = width - LeftPaneWidth;
 

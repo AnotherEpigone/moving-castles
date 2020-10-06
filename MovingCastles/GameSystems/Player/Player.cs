@@ -1,9 +1,9 @@
 ﻿using MovingCastles.GameSystems.Items;
 using System.Collections.Generic;
 
-namespace MovingCastles.GameSystems.PlayerInfo
+namespace MovingCastles.GameSystems.Player
 {
-    public class PlayerInfo
+    public class Player
     {
         public string Name { get; set; }
 
@@ -13,7 +13,7 @@ namespace MovingCastles.GameSystems.PlayerInfo
 
         public List<ItemTemplate> Items { get; set; }
 
-        public static PlayerInfo CreateDefault() => new PlayerInfo()
+        public static Player CreateDefault() => new Player()
         {
             Health = 100,
             MaxHealth = 100,

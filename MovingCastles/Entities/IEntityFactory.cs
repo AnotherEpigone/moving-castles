@@ -1,6 +1,6 @@
 ﻿using GoRogue;
 using MovingCastles.GameSystems.Items;
-using MovingCastles.GameSystems.PlayerInfo;
+using MovingCastles.GameSystems.Player;
 
 namespace MovingCastles.Entities
 {
@@ -8,7 +8,7 @@ namespace MovingCastles.Entities
     {
         McEntity CreateActor(int glyph, Coord position, string name);
         McEntity CreateItem(Coord position, ItemTemplate itemTemplate);
-        Player CreatePlayer(Coord position, PlayerInfo playerInfo);
-        Castle CreateCastle(Coord position, PlayerInfo playerInfo);
+        Wizard CreatePlayer(Coord position, Player playerInfo);
+        Castle CreateCastle(Coord position, Player playerInfo);
     }
 }

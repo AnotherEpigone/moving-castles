@@ -29,7 +29,7 @@ namespace MovingCastles.Ui.Consoles
 
         public ScrollingConsole MapRenderer { get; }
 
-        public Player Player { get; }
+        public Wizard Player { get; }
 
         public DungeonMapConsole(
             int viewportWidth,
@@ -51,7 +51,7 @@ namespace MovingCastles.Ui.Consoles
 
             foreach (var entity in map.Entities.Items.OfType<McEntity>())
             {
-                if (entity is Player player)
+                if (entity is Wizard player)
                 {
                     Player = player;
                     _game.RegisterPlayer(player);

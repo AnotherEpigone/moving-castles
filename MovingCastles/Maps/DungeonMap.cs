@@ -17,7 +17,7 @@ namespace MovingCastles.Maps
 
     public class DungeonMap : BasicMap
     {
-        private readonly Lazy<Player> _player;
+        private readonly Lazy<Wizard> _player;
 
         public DungeonMap(int width, int height)
             : base(
@@ -30,11 +30,11 @@ namespace MovingCastles.Maps
             // Note that passing *this* into the FOV handler sets up all kinds of FOV stuff in gorogue.
             // don't remove even if the property isn't used.
             FovVisibilityHandler = new DefaultFOVVisibilityHandler(this, ColorAnsi.BlackBright);
-            _player = new Lazy<Player>(() => Entities.Items.OfType<Player>().First());
+            _player = new Lazy<Wizard>(() => Entities.Items.OfType<Wizard>().First());
         }
 
         public FOVVisibilityHandler FovVisibilityHandler { get; }
 
-        public Player Player => _player.Value;
+        public Wizard Player => _player.Value;
     }
 }
