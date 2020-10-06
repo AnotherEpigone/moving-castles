@@ -13,6 +13,7 @@ namespace MovingCastles.Ui.Consoles
     {
         private const int LeftPaneWidth = 30;
         private const int TopPaneHeight = 3;
+        private const int InfoPanelHeight = 8;
 
         private readonly ControlsConsole _leftPane;
         private List<Console> _entitySummaryConsoles;
@@ -50,7 +51,7 @@ namespace MovingCastles.Ui.Consoles
             {
                 ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent),
             };
-            var infoPanel = new ControlsConsole(LeftPaneWidth, 10);
+            var infoPanel = new ControlsConsole(LeftPaneWidth, InfoPanelHeight);
             var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 4),
@@ -74,9 +75,9 @@ namespace MovingCastles.Ui.Consoles
             infoPanel.Add(healthBar);
             _leftPane.Children.Add(infoPanel);
 
-            var eventLog = new MessageLogConsole(LeftPaneWidth, height - 10, Global.FontDefault)
+            var eventLog = new MessageLogConsole(LeftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
             {
-                Position = new Point(0, 10),
+                Position = new Point(0, InfoPanelHeight),
             };
             logManager.RegisterEventListener(s => eventLog.Add(s));
             logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
@@ -86,10 +87,10 @@ namespace MovingCastles.Ui.Consoles
             infoPanel.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
             infoPanel.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
 
-            Children.Add(_leftPane);
             Children.Add(topPane);
             Children.Add(mapConsole);
             Children.Add(eventLog);
+            Children.Add(_leftPane);
         }
 
         private void HandleNewSummaryConsoles(List<Console> consoles)

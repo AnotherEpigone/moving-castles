@@ -14,10 +14,11 @@ namespace MovingCastles.Ui
         public MessageLogConsole(int width, int height, Font font)
         {
             _lines = new Queue<string>();
+            _messageConsole = new ScrollingConsole(width, height, font)
+            {
+                DefaultBackground = ColorHelper.MidnightestBlue
+            };
 
-            // add the message console, reposition, and add it to the window
-            _messageConsole = new ScrollingConsole(width, height, font);
-            _messageConsole.DefaultBackground = ColorHelper.MidnightestBlue;
             Children.Add(_messageConsole);
         }
 
@@ -29,10 +30,7 @@ namespace MovingCastles.Ui
                 _lines.Dequeue();
             }
 
-            // Move the cursor to the last line and print the message.
-            _messageConsole.Cursor.Position = new Point(1, _lines.Count - 1);
-
-            var coloredMessage = new ColoredString($"> {message}\n", new Cell(Color.Gainsboro, ColorHelper.MidnightestBlue));
+            var coloredMessage = new ColoredString($"> {message}\r\n", new Cell(Color.Gainsboro, ColorHelper.MidnightestBlue));
             _messageConsole.Cursor.Print(coloredMessage);
         }
     }
