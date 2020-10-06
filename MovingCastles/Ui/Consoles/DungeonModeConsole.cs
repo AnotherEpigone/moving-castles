@@ -13,7 +13,6 @@ namespace MovingCastles.Ui.Consoles
     {
         private const int LeftPaneWidth = 30;
         private const int TopPaneHeight = 3;
-        private const int EventLogHeight = 4;
 
         private readonly ControlsConsole _leftPane;
         private List<Console> _entitySummaryConsoles;
@@ -37,7 +36,7 @@ namespace MovingCastles.Ui.Consoles
             var map = mapFactory.CreateDungeonMap(80, 45, mapPlan);
             var mapConsole = new DungeonMapConsole(
                 rightSectionWidth / tileSizeXFactor,
-                height - EventLogHeight - TopPaneHeight,
+                height - TopPaneHeight,
                 tilesetFont,
                 menuProvider,
                 game,
@@ -47,7 +46,11 @@ namespace MovingCastles.Ui.Consoles
             };
             mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
 
-            _leftPane = new ControlsConsole(LeftPaneWidth, height);
+            _leftPane = new ControlsConsole(LeftPaneWidth, height)
+            {
+                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent),
+            };
+            var infoPanel = new ControlsConsole(LeftPaneWidth, 10);
             var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 4),
@@ -67,18 +70,21 @@ namespace MovingCastles.Ui.Consoles
             };
             healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
-            _leftPane.Add(manaBar);
-            _leftPane.Add(healthBar);
+            infoPanel.Add(manaBar);
+            infoPanel.Add(healthBar);
+            _leftPane.Children.Add(infoPanel);
 
-            var eventLog = new MessageLogConsole(width, EventLogHeight, Global.FontDefault);
-            eventLog.Position = new Point(LeftPaneWidth, mapConsole.MapRenderer.ViewPort.Height + TopPaneHeight);
+            var eventLog = new MessageLogConsole(LeftPaneWidth, height - 10, Global.FontDefault)
+            {
+                Position = new Point(0, 10),
+            };
             logManager.RegisterEventListener(s => eventLog.Add(s));
             logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
 
             // test data
-            _leftPane.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.Gainsboro });
-            _leftPane.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
-            _leftPane.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
+            infoPanel.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.Gainsboro });
+            infoPanel.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
+            infoPanel.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
 
             Children.Add(_leftPane);
             Children.Add(topPane);

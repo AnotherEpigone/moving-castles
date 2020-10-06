@@ -11,18 +11,18 @@ namespace MovingCastles.Ui
         public static Color DepletedManaBlue = new Color(10, 25, 45);
         public static Color HealthRed = new Color(135, 0, 0);
         public static Color DepletedHealthRed = new Color(30, 0, 0);
-        public static Color WhiteHighlight = new Color(255, 255, 255, 200);
+        public static Color WhiteHighlight = new Color(255, 255, 255, 150);
         public static Color GreyHighlight = new Color(100, 100, 100, 100);
 
-        public static Colors GetTransparentBackgroundThemeColors()
+        public static Colors GetThemeColorsForBackgroundColor(Color bgColor)
         {
             var colors = Library.Default.Colors.Clone();
 
-            colors.ControlBack = Color.Transparent;
-            colors.ControlBackLight = Color.Transparent;
-            colors.ControlBackSelected = Color.Transparent;
-            colors.ControlBackDark = Color.Transparent;
-            colors.ControlHostBack = Color.Transparent;
+            colors.ControlBack = bgColor;
+            colors.ControlBackLight = bgColor;
+            colors.ControlBackSelected = bgColor;
+            colors.ControlBackDark = bgColor;
+            colors.ControlHostBack = bgColor;
 
             colors.RebuildAppearances();
 

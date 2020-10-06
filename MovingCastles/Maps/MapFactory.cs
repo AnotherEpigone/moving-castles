@@ -25,7 +25,7 @@ namespace MovingCastles.Maps
             // Generate map via GoRogue, and update the real map with appropriate terrain.
             var tempMap = new ArrayMap<bool>(map.Width, map.Height);
             QuickGenerators.GenerateRandomRoomsMap(tempMap, maxRooms: 180, roomMinSize: 8, roomMaxSize: 12);
-            map.ApplyTerrainOverlay(tempMap, SpawnTerrain);
+            map.ApplyTerrainOverlay(tempMap, SpawnDungeonTerrain);
 
             Coord spawnPosition;
 
@@ -64,7 +64,7 @@ namespace MovingCastles.Maps
             // Generate map via GoRogue, and update the real map with appropriate terrain.
             var tempMap = new ArrayMap<bool>(map.Width, map.Height);
             QuickGenerators.GenerateRectangleMap(tempMap);
-            map.ApplyTerrainOverlay(tempMap, SpawnTerrain);
+            map.ApplyTerrainOverlay(tempMap, SpawnOutdoorTerrain);
 
             var spawnPosition = new Point(3, 3);
 
@@ -74,19 +74,35 @@ namespace MovingCastles.Maps
             return map;
         }
 
-        private static IGameObject SpawnTerrain(Coord position, bool mapGenValue)
+        private static IGameObject SpawnDungeonTerrain(Coord position, bool mapGenValue)
         {
             // Floor or wall.  This could use the Factory system, or instantiate Floor and Wall classes, or something else if you prefer;
             // this simplistic if-else is just used for example
             if (mapGenValue)
             {
                 // Floor
-                return new BasicTerrain(Color.White, new Color(61, 35, 50, 255), SpriteAtlas.Ground_Dirt, position, isWalkable: true, isTransparent: true);
+                return new BasicTerrain(Color.White, new Color(41, 25, 40, 255), SpriteAtlas.Ground_Dirt, position, isWalkable: true, isTransparent: true);
             }
             else
             {
                 // Wall
-                return new BasicTerrain(Color.White, new Color(61, 35, 50, 255), SpriteAtlas.Wall_Brick, position, isWalkable: false, isTransparent: false);
+                return new BasicTerrain(Color.White, new Color(41, 25, 40, 255), SpriteAtlas.Wall_Brick, position, isWalkable: false, isTransparent: false);
+            }
+        }
+
+        private static IGameObject SpawnOutdoorTerrain(Coord position, bool mapGenValue)
+        {
+            // Floor or wall.  This could use the Factory system, or instantiate Floor and Wall classes, or something else if you prefer;
+            // this simplistic if-else is just used for example
+            if (mapGenValue)
+            {
+                // Floor
+                return new BasicTerrain(Color.White, new Color(41, 25, 40, 255), SpriteAtlas.Ground_Dirt2, position, isWalkable: true, isTransparent: true);
+            }
+            else
+            {
+                // Wall
+                return new BasicTerrain(Color.White, new Color(41, 25, 40, 255), SpriteAtlas.Forest, position, isWalkable: true, isTransparent: false);
             }
         }
     }

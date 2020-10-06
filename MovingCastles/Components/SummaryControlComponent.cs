@@ -35,7 +35,10 @@ namespace MovingCastles.Components
                 controlsList.Add(healthBar);
             }
 
-            var sidebarConsole = new ControlsConsole(30, controlsList.Count);
+            var sidebarConsole = new ControlsConsole(30, controlsList.Count)
+            {
+                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.MidnightBlue),
+            };
             controlsList.ForEach(c => sidebarConsole.Add(c));
 
             return sidebarConsole;
