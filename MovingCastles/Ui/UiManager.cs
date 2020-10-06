@@ -1,6 +1,7 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.PlayerInfo;
 using MovingCastles.Maps;
 using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Windows;
@@ -42,7 +43,8 @@ namespace MovingCastles.Ui
                 CreateMenuProvider(gameManager),
                 mapFactory,
                 mapPlan,
-                _logManager);
+                _logManager,
+                PlayerInfo.CreateDefault());
         }
 
         public CastleModeConsole CreateCastleMapScreen(IMapPlan mapPlan, IGameManager gameManager)
@@ -57,7 +59,8 @@ namespace MovingCastles.Ui
                 CreateMenuProvider(gameManager),
                 mapFactory,
                 mapPlan,
-                _logManager);
+                _logManager,
+                PlayerInfo.CreateDefault());
         }
 
         private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager)

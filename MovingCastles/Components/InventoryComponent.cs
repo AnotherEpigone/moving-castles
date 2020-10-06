@@ -7,13 +7,13 @@ namespace MovingCastles.Components
 {
     public class InventoryComponent : IGameObjectComponent, IInventoryComponent
     {
-        public InventoryComponent()
+        public InventoryComponent(params ItemTemplate[] items)
         {
-            Items = new List<IInventoryItem>();
+            Items = new List<ItemTemplate>(items);
         }
 
         public IGameObject Parent { get; set; }
 
-        public List<IInventoryItem> Items { get; }
+        public List<ItemTemplate> Items { get; }
     }
 }

@@ -5,6 +5,6 @@ namespace MovingCastles.Components
 {
     public interface IInventoryComponent
     {
-        List<IInventoryItem> Items { get; }
+        List<ItemTemplate> Items { get; }
     }
 }

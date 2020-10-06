@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.PlayerInfo;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Controls;
@@ -23,7 +24,8 @@ namespace MovingCastles.Ui.Consoles
             IMapModeMenuProvider menuProvider,
             IMapFactory mapFactory,
             IMapPlan mapPlan,
-            ILogManager logManager)
+            ILogManager logManager,
+            PlayerInfo playerInfo)
             : base(width, height)
         {
             _leftPane = CreateLeftPane();
@@ -34,7 +36,7 @@ namespace MovingCastles.Ui.Consoles
             };
             _rightPane.Add("Started a new game, and here's the first message.");
 
-            var map = mapFactory.CreateCastleMap(7, 7, mapPlan);
+            var map = mapFactory.CreateCastleMap(7, 7, mapPlan, playerInfo);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             var centerPaneWidth = width - LeftPaneWidth - RightPaneWidth;
 

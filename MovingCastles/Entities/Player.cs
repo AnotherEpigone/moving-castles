@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.PlayerInfo;
 using MovingCastles.Maps;
 using SadConsole;
 
@@ -11,8 +12,8 @@ namespace MovingCastles.Entities
     {
         public int FOVRadius;
 
-        public Player(Coord position, Font font)
-            : base("Player",
+        public Player(Coord position, PlayerInfo playerInfo, Font font)
+            : base(playerInfo.Name,
                   Color.White,
                   Color.Transparent,
                   SpriteAtlas.PlayerDefault,
@@ -28,8 +29,8 @@ namespace MovingCastles.Entities
             OnCalculateRenderPosition();
 
             AddGoRogueComponent(new MeleeAttackerComponent(5));
-            AddGoRogueComponent(new HealthComponent(100));
-            AddGoRogueComponent(new InventoryComponent());
+            AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health));
+            AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
         }
     }
 }

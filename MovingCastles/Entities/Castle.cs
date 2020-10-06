@@ -1,6 +1,8 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.Components;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.PlayerInfo;
 using MovingCastles.Maps;
 using SadConsole;
 
@@ -10,8 +12,8 @@ namespace MovingCastles.Entities
     {
         public int FOVRadius;
 
-        public Castle(Coord position, Font font)
-            : base("Player",
+        public Castle(Coord position, PlayerInfo playerInfo, Font font)
+            : base(playerInfo.Name,
                   Color.White,
                   Color.Transparent,
                   SpriteAtlas.PlayerCastle,
@@ -25,6 +27,8 @@ namespace MovingCastles.Entities
             // workaround Entity construction bugs by setting font afterward
             Font = font;
             OnCalculateRenderPosition();
+
+            AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
         }
     }
 }

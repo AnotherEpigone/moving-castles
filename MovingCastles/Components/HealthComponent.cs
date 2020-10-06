@@ -7,10 +7,13 @@ namespace MovingCastles.Components
     {
         private float _health;
 
-        public HealthComponent(int maxHealth)
+        public HealthComponent(float maxHealth)
+            : this(maxHealth, maxHealth) { }
+
+        public HealthComponent(float maxHealth, float health)
         {
             MaxHealth = maxHealth;
-            Health = maxHealth;
+            Health = health;
         }
 
         /// <summary>

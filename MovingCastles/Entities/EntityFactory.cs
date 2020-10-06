@@ -4,6 +4,7 @@ using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.PlayerInfo;
 using SadConsole;
 
 namespace MovingCastles.Entities
@@ -49,7 +50,7 @@ namespace MovingCastles.Entities
             item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(
                 _logManager,
-                new InventoryItem(itemTemplate)));
+                itemTemplate));
 
             // workaround Entity construction bugs by setting font afterward
             item.Font = _font;
@@ -58,14 +59,14 @@ namespace MovingCastles.Entities
             return item;
         }
 
-        public Player CreatePlayer(Coord position)
+        public Player CreatePlayer(Coord position, PlayerInfo playerInfo)
         {
-            return new Player(position, _font);
+            return new Player(position, playerInfo, _font);
         }
 
-        public Castle CreateCastle(Coord position)
+        public Castle CreateCastle(Coord position, PlayerInfo playerInfo)
         {
-            return new Castle(position, _font);
+            return new Castle(position, playerInfo, _font);
         }
     }
 }

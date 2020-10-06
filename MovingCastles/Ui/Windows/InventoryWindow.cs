@@ -15,7 +15,7 @@ namespace MovingCastles.Ui.Windows
         private readonly Button _useButton;
         private readonly Button _closeButton;
         private readonly int _itemButtomWidth;
-        private IInventoryItem _selectedItem;
+        private ItemTemplate _selectedItem;
 
         public InventoryWindow(int width, int height)
             : base(width, height)
@@ -74,7 +74,7 @@ namespace MovingCastles.Ui.Windows
             base.Update(time);
         }
 
-        private List<ControlBase> BuildItemControls(IEnumerable<IInventoryItem> items)
+        private List<ControlBase> BuildItemControls(IEnumerable<ItemTemplate> items)
         {
             var yCount = 0;
             return items.Select(i =>

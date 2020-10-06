@@ -5,6 +5,7 @@ using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using MovingCastles.Entities;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.PlayerInfo;
 using SadConsole;
 
 namespace MovingCastles.Maps
@@ -18,7 +19,7 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
         }
 
-        public DungeonMap CreateDungeonMap(int width, int height, IMapPlan mapPlan)
+        public DungeonMap CreateDungeonMap(int width, int height, IMapPlan mapPlan, PlayerInfo playerInfo)
         {
             var map = new DungeonMap(width, height);
 
@@ -51,13 +52,13 @@ namespace MovingCastles.Maps
             // Spawn player
             spawnPosition = map.WalkabilityView.RandomPosition(true);
 
-            var player = _entityFactory.CreatePlayer(spawnPosition);
+            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 
             return map;
         }
 
-        public CastleMap CreateCastleMap(int width, int height, IMapPlan mapPlan)
+        public CastleMap CreateCastleMap(int width, int height, IMapPlan mapPlan, PlayerInfo playerInfo)
         {
             var map = new CastleMap(width, height);
 
@@ -68,7 +69,7 @@ namespace MovingCastles.Maps
 
             var spawnPosition = new Point(3, 3);
 
-            var castle = _entityFactory.CreateCastle(spawnPosition);
+            var castle = _entityFactory.CreateCastle(spawnPosition, playerInfo);
             map.AddEntity(castle);
 
             return map;

@@ -65,10 +65,7 @@ namespace MovingCastles.Ui.Consoles
 
             if (info.IsKeyPressed(Keys.I))
             {
-                // todo - inventory from player/castle! fix this with proper Player class (not entity)
-                //_menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
-                // show empty inventory for now
-                _menuProvider.Inventory.Show(new InventoryComponent());
+                _menuProvider.Inventory.Show(Castle.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
 

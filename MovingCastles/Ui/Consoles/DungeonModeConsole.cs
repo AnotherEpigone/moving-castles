@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.PlayerInfo;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
 using SadConsole;
@@ -25,7 +26,8 @@ namespace MovingCastles.Ui.Consoles
             IMapModeMenuProvider menuProvider,
             IMapFactory mapFactory,
             IMapPlan mapPlan,
-            ILogManager logManager)
+            ILogManager logManager,
+            PlayerInfo playerInfo)
         {
             var rightSectionWidth = width - LeftPaneWidth;
 
@@ -34,7 +36,7 @@ namespace MovingCastles.Ui.Consoles
 
             var game = new TurnBasedGame(logManager);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
-            var map = mapFactory.CreateDungeonMap(80, 45, mapPlan);
+            var map = mapFactory.CreateDungeonMap(80, 45, mapPlan, playerInfo);
             var mapConsole = new DungeonMapConsole(
                 rightSectionWidth / tileSizeXFactor,
                 height - TopPaneHeight,

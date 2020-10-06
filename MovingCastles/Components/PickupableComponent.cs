@@ -13,13 +13,13 @@ namespace MovingCastles.Components
     {
         private readonly ILogManager _logManager;
 
-        public PickupableComponent(ILogManager logManager, params IInventoryItem[] items)
+        public PickupableComponent(ILogManager logManager, params ItemTemplate[] items)
         {
-            Items = new List<IInventoryItem>(items);
+            Items = new List<ItemTemplate>(items);
             _logManager = logManager;
         }
 
-        public List<IInventoryItem> Items { get; }
+        public List<ItemTemplate> Items { get; }
 
         public IGameObject Parent { get; set; }
 
