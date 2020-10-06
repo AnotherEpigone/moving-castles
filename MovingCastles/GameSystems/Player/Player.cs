@@ -15,6 +15,7 @@ namespace MovingCastles.GameSystems.Player
 
         public static Player CreateDefault() => new Player()
         {
+            Name = "Vede",
             Health = 100,
             MaxHealth = 100,
             Items = new List<ItemTemplate>(),

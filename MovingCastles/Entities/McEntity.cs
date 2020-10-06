@@ -17,10 +17,12 @@ namespace MovingCastles.Entities
             Coord position,
             int layer,
             bool isWalkable,
-            bool isTransparent)
+            bool isTransparent,
+            Color nameColor)
             : base(foreground, background, glyph, position, layer, isWalkable, isTransparent)
         {
             Name = name;
+            NameColor = nameColor;
         }
 
         public event System.EventHandler<ItemMovedEventArgs<McEntity>> Bumped;
@@ -28,6 +30,10 @@ namespace MovingCastles.Entities
         public event System.EventHandler RemovedFromMap;
 
         public bool HasMap => CurrentMap != null;
+
+        public Color NameColor { get; }
+
+        public string ColoredName => $"[c:r f:{NameColor.ToParser()}]{Name}[c:u]";
 
         public void Move(Direction direction)
         {

@@ -124,8 +124,8 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                     var damage = meleeAttackComponent.GetDamage();
                     healthComponent.ApplyDamage(damage);
 
-                    var targetName = (healthComponent.Parent as BasicEntity)?.Name ?? "something";
-                    _logManager.EventLog($"{e.Item.Name} hit {targetName} for {damage:F0} damage.");
+                    var targetName = (healthComponent.Parent as McEntity)?.ColoredName ?? "something";
+                    _logManager.EventLog($"{e.Item.ColoredName} hit {targetName} for {damage:F0} damage.");
 
                     if (healthComponent.Dead)
                     {
@@ -146,7 +146,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private void Entity_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
         {
-            if (!(e.Item is BasicEntity movingEntity))
+            if (!(e.Item is McEntity movingEntity))
             {
                 return;
             }
@@ -156,7 +156,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 Map.CalculateFOV(_player.Position, _player.FOVRadius, Radius.SQUARE);
             }
 
-            var stepTriggers = Map.GetEntities<BasicEntity>(movingEntity.Position)
+            var stepTriggers = Map.GetEntities<McEntity>(movingEntity.Position)
                 .SelectMany(e =>
                 {
                     if (!(e is IHasComponents entity))

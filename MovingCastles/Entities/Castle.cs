@@ -4,6 +4,7 @@ using MovingCastles.Components;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
+using MovingCastles.Ui;
 using SadConsole;
 
 namespace MovingCastles.Entities
@@ -20,7 +21,8 @@ namespace MovingCastles.Entities
                   position,
                   (int)DungeonMapLayer.PLAYER,
                   isWalkable: false,
-                  isTransparent: true)
+                  isTransparent: true,
+                  ColorHelper.PlayerBlue)
         {
             FOVRadius = 3;
 

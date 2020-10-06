@@ -1,6 +1,7 @@
 ﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
 using Microsoft.Xna.Framework;
+using MovingCastles.Entities;
 using MovingCastles.Ui;
 using SadConsole;
 using SadConsole.Controls;
@@ -14,13 +15,13 @@ namespace MovingCastles.Components
 
         public Console GetSidebarSummary()
         {
-            if (!(Parent is BasicEntity parentEntity))
+            if (!(Parent is McEntity parentEntity))
             {
                 return null;
             }
 
             var controlsList = new List<ControlBase>();
-            var nameLabel = new Label(parentEntity.Name) { Position = new Point(1, 0), TextColor = Color.Gainsboro };
+            var nameLabel = new Label(parentEntity.Name) { Position = new Point(1, 0), TextColor = parentEntity.NameColor };
             controlsList.Add(nameLabel);
 
             var healthComponent = Parent.GetComponent<IHealthComponent>();
@@ -28,12 +29,15 @@ namespace MovingCastles.Components
             {
                 var healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
                 {
-                    Position = new Point(0, 1),
+                    Position = new Point(0, controlsList.Count),
                 };
                 healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
                 healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
                 controlsList.Add(healthBar);
             }
+
+            var bottomLabel = new Label(string.Empty) { Position = new Point(0, controlsList.Count) };
+            controlsList.Add(bottomLabel);
 
             var sidebarConsole = new ControlsConsole(30, controlsList.Count)
             {

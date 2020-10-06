@@ -1,9 +1,8 @@
-﻿using GoRogue;
-using GoRogue.GameFramework;
+﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
+using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
-using SadConsole;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,7 +22,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(BasicEntity steppingEntity)
+        public void OnStep(McEntity steppingEntity)
         {
             var inventory = steppingEntity.GetGoRogueComponent<IInventoryComponent>();
             if (inventory == null)
@@ -34,7 +33,7 @@ namespace MovingCastles.Components
             inventory.Items.AddRange(Items);
             Parent.CurrentMap.RemoveEntity(Parent);
 
-            _logManager.EventLog($"{steppingEntity.Name} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
+            _logManager.EventLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
         }
     }
 }

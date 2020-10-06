@@ -105,7 +105,7 @@ namespace MovingCastles.Ui.Consoles
             _entitySummaryConsoles.ForEach(c =>
             {
                 c.Position = new Point(0, yOffset);
-                yOffset += c.Height + 1;
+                yOffset += c.Height;
                 _leftPane.Children.Add(c);
             });
         }

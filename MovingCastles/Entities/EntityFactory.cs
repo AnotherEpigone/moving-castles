@@ -22,7 +22,16 @@ namespace MovingCastles.Entities
 
         public McEntity CreateActor(int glyph, Coord position, string name)
         {
-            var actor = new McEntity(name, Color.White, Color.Transparent, glyph, position, (int)Maps.DungeonMapLayer.MONSTERS, isWalkable: false, isTransparent: true);
+            var actor = new McEntity(
+                name,
+                Color.White,
+                Color.Transparent,
+                glyph,
+                position,
+                (int)Maps.DungeonMapLayer.MONSTERS,
+                isWalkable: false,
+                isTransparent: true,
+                Color.DarkGreen);
 
             actor.AddGoRogueComponent(new WalkAtPlayerAiComponent(6));
             actor.AddGoRogueComponent(new MeleeAttackerComponent(5));
@@ -46,7 +55,8 @@ namespace MovingCastles.Entities
                     position,
                     (int)Maps.DungeonMapLayer.ITEMS,
                     isWalkable: true,
-                    isTransparent: true);
+                    isTransparent: true,
+                    Color.DarkGray);
             item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(
                 _logManager,
