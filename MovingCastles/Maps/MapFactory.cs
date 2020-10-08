@@ -7,6 +7,7 @@ using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Player;
 using SadConsole;
+using System.Linq;
 
 namespace MovingCastles.Maps
 {
@@ -31,11 +32,12 @@ namespace MovingCastles.Maps
             Coord spawnPosition;
 
             // Spawn a few mock enemies
+            var allTheActors = ActorAtlas.ActorsById.Values.ToList();
             for (int i = 0; i < 30; i++)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
 
-                var goblin = _entityFactory.CreateActor(SpriteAtlas.Goblin, spawnPosition, "Goblin");
+                var goblin = _entityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
                 map.AddEntity(goblin);
             }
 

@@ -12,5 +12,6 @@
         public const int EtheriumShard = 10;
         public const int SteelLongsword = 11;
         public const int Goblin = 16;
+        public const int Warg = 17;
     }
 }

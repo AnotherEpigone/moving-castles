@@ -20,22 +20,22 @@ namespace MovingCastles.Entities
             _logManager = logManager;
         }
 
-        public McEntity CreateActor(int glyph, Coord position, string name)
+        public McEntity CreateActor(Coord position, ActorTemplate actorTemplate)
         {
             var actor = new McEntity(
-                name,
+                actorTemplate.Name,
                 Color.White,
                 Color.Transparent,
-                glyph,
+                actorTemplate.Glyph,
                 position,
                 (int)Maps.DungeonMapLayer.MONSTERS,
                 isWalkable: false,
                 isTransparent: true,
-                Color.DarkGreen);
+                actorTemplate.NameColor);
 
             actor.AddGoRogueComponent(new WalkAtPlayerAiComponent(6));
             actor.AddGoRogueComponent(new MeleeAttackerComponent(5));
-            actor.AddGoRogueComponent(new HealthComponent(10));
+            actor.AddGoRogueComponent(new HealthComponent(actorTemplate.MaxHealth, actorTemplate.Health));
             actor.AddGoRogueComponent(new SummaryControlComponent());
 
             // workaround Entity construction bugs by setting font afterward
