@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GoRogue.GameFramework.Components;
+using Microsoft.Xna.Framework;
+using MovingCastles.Components;
+using MovingCastles.Components.AiComponents;
 using MovingCastles.Fonts;
 using System.Collections.Generic;
 
@@ -11,7 +14,8 @@ namespace MovingCastles.Entities
             ActorsById = new Dictionary<string, ActorTemplate>
             {
                 { Goblin.Id, Goblin },
-                { Warg.Id, Warg }
+                { GoblinArcher.Id, GoblinArcher },
+                { Warg.Id, Warg },
             };
         }
 
@@ -21,9 +25,28 @@ namespace MovingCastles.Entities
             Name = "Goblin",
             Glyph = SpriteAtlas.Goblin,
             NameColor = Color.DarkGreen,
-            MaxHealth = 10,
-            Health = 10,
-            WalkSpeed = 1,
+            CreateComponents = () => new List<object>
+            {
+                new HealthComponent(10),
+                new ActorStatComponent(1),
+                new MeleeAttackerComponent(5),
+                new WalkAtPlayerAiComponent(6),
+            },
+        };
+
+        public static ActorTemplate GoblinArcher => new ActorTemplate()
+        {
+            Id = "ACTOR_GOBLIN_ARCHER",
+            Name = "Goblin archer",
+            Glyph = SpriteAtlas.GoblinArcher,
+            NameColor = Color.DarkGreen,
+            CreateComponents = () => new List<object>
+            {
+                new HealthComponent(10),
+                new ActorStatComponent(1),
+                new RangedAttackerComponent(5, 4),
+                new RangedAttackAiComponent(),
+            },
         };
 
         public static ActorTemplate Warg => new ActorTemplate()
@@ -32,9 +55,13 @@ namespace MovingCastles.Entities
             Name = "Warg",
             Glyph = SpriteAtlas.Warg,
             NameColor = Color.DarkSlateGray,
-            MaxHealth = 10,
-            Health = 10,
-            WalkSpeed = 2,
+            CreateComponents = () => new List<object>
+            {
+                new HealthComponent(10),
+                new ActorStatComponent(2),
+                new MeleeAttackerComponent(5),
+                new WalkAtPlayerAiComponent(6),
+            },
         };
 
         public static Dictionary<string, ActorTemplate>  ActorsById { get; }

@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using System.Linq;
 
@@ -17,11 +18,11 @@ namespace MovingCastles.Components.AiComponents
 
         public IGameObject Parent { get; set; }
 
-        public void Run(DungeonMap map)
+        public bool Run(DungeonMap map, ILogManager logManager)
         {
             if (!(Parent is McEntity mcParent))
             {
-                return;
+                return false;
             }
 
             var walkSpeed = mcParent.GetGoRogueComponent<IActorStatComponent>()?.WalkSpeed ?? 1;
@@ -38,7 +39,8 @@ namespace MovingCastles.Components.AiComponents
                     break;
                 }
             }
-            
+
+            return true;
         }
 
         public void GetDirectionAndMove(DungeonMap map, McEntity mcParent)

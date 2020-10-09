@@ -98,7 +98,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 }
 
                 var ai = entity.GetGoRogueComponent<IAiComponent>();
-                ai?.Run(Map);
+                ai?.Run(Map, _logManager);
             }
         }
 
@@ -122,24 +122,10 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 if (healthComponent != null)
                 {
                     var damage = meleeAttackComponent.GetDamage();
-                    healthComponent.ApplyDamage(damage);
+                    healthComponent.ApplyDamage(damage, _logManager);
 
                     var targetName = (healthComponent.Parent as McEntity)?.ColoredName ?? "something";
                     _logManager.EventLog($"{e.Item.ColoredName} hit {targetName} for {damage:F0} damage.");
-
-                    if (healthComponent.Dead)
-                    {
-                        _logManager.EventLog($"{targetName} was slain.");
-
-                        if (healthComponent.Parent is McEntity mcTarget)
-                        {
-                            mcTarget.Remove();
-                        }
-                        else
-                        {
-                            Map.RemoveEntity(healthComponent.Parent);
-                        }
-                    }
                 }
             }
         }

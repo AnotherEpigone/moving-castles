@@ -1,5 +1,7 @@
 ﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
+using MovingCastles.Entities;
+using MovingCastles.GameSystems.Logging;
 
 namespace MovingCastles.Components
 {
@@ -43,10 +45,14 @@ namespace MovingCastles.Components
 
         public bool Dead => Health < 0.001;
 
-        public void ApplyDamage(float damage)
+        public void ApplyDamage(float damage, ILogManager logManager)
         {
-            var prevHealth = Health;
             Health = System.Math.Max(0, Health - damage);
+            if (Dead && Parent is McEntity mcParent)
+            {
+                logManager.EventLog($"{mcParent.ColoredName} was slain.");
+                mcParent.Remove();
+            }
         }
 
         public void ApplyHealing(float healing)

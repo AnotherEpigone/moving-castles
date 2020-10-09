@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GoRogue.GameFramework.Components;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace MovingCastles.Entities
 {
@@ -12,10 +14,6 @@ namespace MovingCastles.Entities
 
         public Color NameColor { get; set; }
 
-        public float MaxHealth { get; set; }
-
-        public float Health { get; set; }
-
-        public int WalkSpeed { get; set; }
+        public System.Func<List<object>> CreateComponents { get; set; }
     }
 }

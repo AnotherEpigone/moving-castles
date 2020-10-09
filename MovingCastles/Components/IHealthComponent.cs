@@ -1,4 +1,5 @@
 ﻿using GoRogue.GameFramework.Components;
+using MovingCastles.GameSystems.Logging;
 
 namespace MovingCastles.Components
 {
@@ -10,7 +11,7 @@ namespace MovingCastles.Components
         float MaxHealth { get; }
         bool Dead { get; }
 
-        void ApplyDamage(float damage);
+        void ApplyDamage(float damage, ILogManager logManager);
         void ApplyHealing(float healing);
     }
 }

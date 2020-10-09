@@ -13,5 +13,6 @@
         public const int SteelLongsword = 11;
         public const int Goblin = 16;
         public const int Warg = 17;
+        public const int GoblinArcher = 18;
     }
 }
