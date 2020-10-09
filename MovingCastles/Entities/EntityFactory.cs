@@ -33,6 +33,7 @@ namespace MovingCastles.Entities
                 isTransparent: true,
                 actorTemplate.NameColor);
 
+            actor.AddGoRogueComponent(new ActorStatComponent(actorTemplate.WalkSpeed));
             actor.AddGoRogueComponent(new WalkAtPlayerAiComponent(6));
             actor.AddGoRogueComponent(new MeleeAttackerComponent(5));
             actor.AddGoRogueComponent(new HealthComponent(actorTemplate.MaxHealth, actorTemplate.Health));

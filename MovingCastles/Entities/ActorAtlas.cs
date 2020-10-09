@@ -23,6 +23,7 @@ namespace MovingCastles.Entities
             NameColor = Color.DarkGreen,
             MaxHealth = 10,
             Health = 10,
+            WalkSpeed = 1,
         };
 
         public static ActorTemplate Warg => new ActorTemplate()
@@ -33,6 +34,7 @@ namespace MovingCastles.Entities
             NameColor = Color.DarkSlateGray,
             MaxHealth = 10,
             Health = 10,
+            WalkSpeed = 2,
         };
 
         public static Dictionary<string, ActorTemplate>  ActorsById { get; }
