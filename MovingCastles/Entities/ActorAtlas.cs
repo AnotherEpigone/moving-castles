@@ -45,7 +45,9 @@ namespace MovingCastles.Entities
                 new HealthComponent(10),
                 new ActorStatComponent(1),
                 new RangedAttackerComponent(5, 4),
-                new RangedAttackAiComponent(),
+                new LinearCompositeAiComponent(
+                    new RangedAttackAiComponent(),
+                    new WalkAtPlayerAiComponent(6)),
             },
         };
 
