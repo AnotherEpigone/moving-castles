@@ -2,6 +2,7 @@
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
+using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
 using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Windows;
@@ -36,6 +37,7 @@ namespace MovingCastles.Ui
             var tilesetFont = Global.Fonts[TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
+            var game = new TurnBasedGame(_logManager);
             return new DungeonModeConsole(
                 ViewPortWidth,
                 ViewPortHeight,
@@ -44,6 +46,7 @@ namespace MovingCastles.Ui
                 mapFactory,
                 mapPlan,
                 _logManager,
+                game,
                 Player.CreateDefault());
         }
 

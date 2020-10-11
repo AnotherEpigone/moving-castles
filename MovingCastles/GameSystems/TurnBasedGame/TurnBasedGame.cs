@@ -14,8 +14,9 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 {
     public enum State
     {
-        AwaitingInput,
-        Processing
+        PlayerTurn,
+        Processing,
+        Targetting
     }
 
     public class TurnBasedGame : ITurnBasedGame
@@ -44,9 +45,12 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             ILogManager logManager)
         {
             _logManager = logManager;
+            State = State.PlayerTurn;
         }
 
         public DungeonMap Map { get; set; }
+
+        public State State { get; set; }
 
         public bool HandleAsPlayerInput(SadConsole.Input.Keyboard info)
         {
@@ -85,6 +89,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private void ProcessTurn()
         {
+            State = State.Processing;
             foreach (var entity in Map.Entities.Items.OfType<McEntity>().ToList())
             {
                 if (!_player.HasMap)
@@ -100,6 +105,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 var ai = entity.GetGoRogueComponent<IAiComponent>();
                 ai?.Run(Map, _logManager);
             }
+            State = State.PlayerTurn;
         }
 
         private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)

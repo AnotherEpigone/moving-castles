@@ -27,6 +27,7 @@ namespace MovingCastles.Ui.Consoles
             IMapFactory mapFactory,
             IMapPlan mapPlan,
             ILogManager logManager,
+            ITurnBasedGame game,
             Player playerInfo)
         {
             var rightSectionWidth = width - LeftPaneWidth;
@@ -34,7 +35,6 @@ namespace MovingCastles.Ui.Consoles
             var topPane = new Console(rightSectionWidth, TopPaneHeight);
             topPane.Position = new Point(LeftPaneWidth, 0);
 
-            var game = new TurnBasedGame(logManager);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             var map = mapFactory.CreateDungeonMap(80, 45, mapPlan, playerInfo);
             var mapConsole = new DungeonMapConsole(

@@ -86,25 +86,17 @@ namespace MovingCastles.Ui.Consoles
                 return base.ProcessKeyboard(info);
             }
 
-            if (info.IsKeyPressed(Keys.Escape))
+            switch (_game.State)
             {
-                _menuProvider.Pop.Show();
-                return true;
+                case State.PlayerTurn:
+                    return PlayerTurnProcessKeyboard(info);
+                case State.Processing:
+                    return base.ProcessKeyboard(info);
+                case State.Targetting:
+                    return TargettingProcessKeyboard(info);
+                default:
+                    return base.ProcessKeyboard(info);
             }
-
-            if (info.IsKeyPressed(Keys.I))
-            {
-                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
-                return true;
-            }
-
-            if (_game.HandleAsPlayerInput(info))
-            {
-                _lastSummaryConsolePosition = default;
-                return true;
-            }
-
-            return base.ProcessKeyboard(info);
         }
 
         public override bool ProcessMouse(MouseConsoleState state)
@@ -150,6 +142,58 @@ namespace MovingCastles.Ui.Consoles
             }
 
             return base.ProcessMouse(state);
+        }
+
+        protected override void OnMouseLeftClicked(MouseConsoleState state)
+        {
+            if (_game.State != State.Targetting)
+            {
+                return;
+            }
+        }
+
+        private bool PlayerTurnProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                _menuProvider.Pop.Show();
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.I))
+            {
+                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
+                return true;
+            }
+
+            if (_game.HandleAsPlayerInput(info))
+            {
+                _lastSummaryConsolePosition = default;
+                return true;
+            }
+
+            return base.ProcessKeyboard(info);
+        }
+
+        private bool TargettingProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                _game.State = State.PlayerTurn;
+                _menuProvider.Pop.Show();
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.I))
+            {
+                _game.State = State.PlayerTurn;
+                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
+                return true;
+            }
+
+            // handle enter as confirm target
+
+            return base.ProcessKeyboard(info);
         }
 
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
