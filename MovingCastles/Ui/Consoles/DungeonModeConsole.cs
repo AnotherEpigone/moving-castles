@@ -13,7 +13,7 @@ namespace MovingCastles.Ui.Consoles
     public class DungeonModeConsole : ContainerConsole
     {
         private const int LeftPaneWidth = 30;
-        private const int TopPaneHeight = 3;
+        private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
 
         private readonly ControlsConsole _leftPane;
@@ -93,8 +93,19 @@ namespace MovingCastles.Ui.Consoles
                 menuProvider.Inventory.Show(inventory);
             };
 
+            var flavorMessage = new Label(rightSectionWidth)
+            {
+                Position = new Point(1, 1),
+            };
+            mapConsole.FlavorMessageChanged += (_, message) =>
+            {
+                flavorMessage.DisplayText = message;
+                console.IsDirty = true;
+            };
+
             console.Add(popupMenuButton);
             console.Add(inventoryMenuButton);
+            console.Add(flavorMessage);
 
             return console;
         }

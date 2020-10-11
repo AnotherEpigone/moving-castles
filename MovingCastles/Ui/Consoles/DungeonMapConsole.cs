@@ -23,7 +23,9 @@ namespace MovingCastles.Ui.Consoles
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
+
         public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
+        public event System.EventHandler<string> FlavorMessageChanged;
 
         public DungeonMap Map { get; }
 
@@ -141,14 +143,20 @@ namespace MovingCastles.Ui.Consoles
                 SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
             }
 
+            if (_game.State == State.Targetting)
+            {
+                TargettingProcessMouse(state);
+            }
+
             return base.ProcessMouse(state);
         }
 
-        protected override void OnMouseLeftClicked(MouseConsoleState state)
+        private void TargettingProcessMouse(MouseConsoleState state)
         {
-            if (_game.State != State.Targetting)
+            if (state.Mouse.LeftClicked)
             {
-                return;
+                _game.State = State.PlayerTurn;
+                FlavorMessageChanged?.Invoke(this, string.Empty);
             }
         }
 
@@ -166,6 +174,12 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
+            if (info.IsKeyPressed(Keys.Q))
+            {
+                _game.State = State.Targetting;
+                FlavorMessageChanged?.Invoke(this, "Aiming magic missile...");
+            }
+
             if (_game.HandleAsPlayerInput(info))
             {
                 _lastSummaryConsolePosition = default;
@@ -180,6 +194,7 @@ namespace MovingCastles.Ui.Consoles
             if (info.IsKeyPressed(Keys.Escape))
             {
                 _game.State = State.PlayerTurn;
+                FlavorMessageChanged?.Invoke(this, string.Empty);
                 _menuProvider.Pop.Show();
                 return true;
             }
@@ -187,6 +202,7 @@ namespace MovingCastles.Ui.Consoles
             if (info.IsKeyPressed(Keys.I))
             {
                 _game.State = State.PlayerTurn;
+                FlavorMessageChanged?.Invoke(this, string.Empty);
                 _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
