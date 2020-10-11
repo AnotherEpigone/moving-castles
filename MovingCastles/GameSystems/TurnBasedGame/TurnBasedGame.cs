@@ -110,7 +110,6 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)
         {
-            //_logManager.DebugLog($"{e.Item.Name} bumped into something.");
             var meleeAttackComponent = e.Item.GetGoRogueComponent<IMeleeAttackerComponent>();
             if (meleeAttackComponent != null)
             {

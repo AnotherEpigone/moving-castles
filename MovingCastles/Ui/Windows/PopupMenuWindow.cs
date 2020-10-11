@@ -8,10 +8,10 @@ namespace MovingCastles.Ui.Windows
 {
     public class PopupMenuWindow : Window
     {
-        private bool _escReleased = false;
+        private bool _escReleased;
 
         public PopupMenuWindow(IUiManager uiManager, IGameManager gameManager)
-            : base(40, 4)
+            : base(30, 7)
         {
             CloseOnEscKey = false; // it would close as soon as it opens...
             IsModalDefault = true;
@@ -22,12 +22,12 @@ namespace MovingCastles.Ui.Windows
 
             Children.Add(background);
 
-            var mainMenuText = "Exit to Main Menu";
+            const string mainMenuText = "Exit to Main Menu";
             var mainMenuButtonWidth = mainMenuText.Length + 4;
             var mainMenuButton = new Button(mainMenuButtonWidth)
             {
                 Text = mainMenuText,
-                Position = new Point((Width / 2) - (mainMenuButtonWidth / 2), Height - 3),
+                Position = new Point((Width / 2) - (mainMenuButtonWidth / 2), Height - 6),
             };
             mainMenuButton.Click += (_, __) =>
             {
@@ -35,20 +35,27 @@ namespace MovingCastles.Ui.Windows
                 uiManager.ShowMainMenu(gameManager);
             };
 
-            var quitText = "Exit to Desktop";
+            const string quitText = "Exit to Desktop";
             var quitButtonWidth = mainMenuText.Length + 4;
             var quitButton = new Button(quitButtonWidth)
             {
                 Text = quitText,
-                Position = new Point((Width / 2) - (quitButtonWidth / 2), Height - 1),
+                Position = new Point((Width / 2) - (quitButtonWidth / 2), Height - 4),
             };
-            quitButton.Click += (_, __) =>
+            quitButton.Click += (_, __) => System.Environment.Exit(0);
+
+            const string closeText = "Close";
+            var closeButtonWidth = closeText.Length + 4;
+            var closeButton = new Button(closeButtonWidth)
             {
-                System.Environment.Exit(0);
+                Text = closeText,
+                Position = new Point((Width / 2) - (closeButtonWidth / 2), Height - 2),
             };
+            closeButton.Click += (_, __) => Hide();
 
             Add(mainMenuButton);
             Add(quitButton);
+            Add(closeButton);
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
