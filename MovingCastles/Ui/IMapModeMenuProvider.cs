@@ -9,5 +9,7 @@ namespace MovingCastles.Ui
         DeathWindow Death { get; }
 
         PopupMenuWindow Pop { get; }
+
+        SpellSelectionWindow SpellSelect { get; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using GoRogue.GameFramework.Components;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace MovingCastles.Entities

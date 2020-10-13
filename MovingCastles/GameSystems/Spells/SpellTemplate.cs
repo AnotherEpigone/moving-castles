@@ -1,13 +1,31 @@
-﻿namespace MovingCastles.GameSystems.Spells
+﻿using System.Collections.Generic;
+
+namespace MovingCastles.GameSystems.Spells
 {
     public class SpellTemplate
     {
-        public string Id { get; set; }
+        public SpellTemplate(
+            string id,
+            string name,
+            string description,
+            int iconGlyph,
+            List<ISpellEffect> effects)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            IconGlyph = iconGlyph;
+            Effects = effects;
+        }
 
-        public string Name { get; set; }
+        public string Id { get; }
 
-        public string Description { get; set; }
+        public string Name { get; }
 
-        public int IconGlyph { get; set; }
+        public string Description { get; }
+
+        public int IconGlyph { get; }
+
+        public List<ISpellEffect> Effects { get; }
     }
 }

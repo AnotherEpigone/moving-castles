@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Player;
+using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
@@ -31,6 +32,7 @@ namespace MovingCastles.Entities
             OnCalculateRenderPosition();
 
             AddGoRogueComponent(new MeleeAttackerComponent(5));
+            AddGoRogueComponent(new SpellCastingComponent(SpellAtlas.ConjureFlame));
             AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health));
             AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
         }
