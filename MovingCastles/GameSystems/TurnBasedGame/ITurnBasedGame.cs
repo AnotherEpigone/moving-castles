@@ -1,4 +1,5 @@
-﻿using MovingCastles.Entities;
+﻿using GoRogue;
+using MovingCastles.Entities;
 using MovingCastles.Maps;
 
 namespace MovingCastles.GameSystems.TurnBasedGame
@@ -12,5 +13,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         void RegisterEntity(McEntity entity);
         void UnregisterEntity(McEntity entity);
         void RegisterPlayer(Wizard player);
+        void TargetSelected(Coord mapCoord);
+
     }
 }

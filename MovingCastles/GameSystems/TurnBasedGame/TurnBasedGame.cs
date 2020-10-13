@@ -87,6 +87,11 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             entity.Bumped -= Entity_Bumped;
         }
 
+        public void TargetSelected(Coord mapCoord)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void ProcessTurn()
         {
             State = State.Processing;

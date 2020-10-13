@@ -117,9 +117,9 @@ namespace MovingCastles.Ui.Consoles
             _mouseHighlight.IsVisible = mapState.IsOnConsole && Map.Explored[mapCoord];
             _mouseHighlight.Position = mapState.ConsoleCellPosition;
 
-            if (mapState.IsOnConsole
-                && _lastSummaryConsolePosition != mapState.ConsoleCellPosition
-                && Map.FOV.CurrentFOV.Contains(mapCoord))
+            var coordIsTargetable = mapState.IsOnConsole && Map.FOV.CurrentFOV.Contains(mapCoord);
+
+            if (coordIsTargetable && _lastSummaryConsolePosition != mapState.ConsoleCellPosition)
             {
                 // update summaries
                 var summaryControls = new List<Console>();
@@ -143,20 +143,20 @@ namespace MovingCastles.Ui.Consoles
                 SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
             }
 
-            if (_game.State == State.Targetting)
+            if (coordIsTargetable && _game.State == State.Targetting)
             {
-                TargettingProcessMouse(state);
+                TargettingProcessMouse(state, mapCoord);
             }
 
             return base.ProcessMouse(state);
         }
 
-        private void TargettingProcessMouse(MouseConsoleState state)
+        private void TargettingProcessMouse(MouseConsoleState state, Coord mapCoord)
         {
             if (state.Mouse.LeftClicked)
             {
-                _game.State = State.PlayerTurn;
-                FlavorMessageChanged?.Invoke(this, string.Empty);
+                _game.TargetSelected(mapCoord);
+                EndTargettingMode();
             }
         }
 
@@ -193,16 +193,14 @@ namespace MovingCastles.Ui.Consoles
         {
             if (info.IsKeyPressed(Keys.Escape))
             {
-                _game.State = State.PlayerTurn;
-                FlavorMessageChanged?.Invoke(this, string.Empty);
+                EndTargettingMode();
                 _menuProvider.Pop.Show();
                 return true;
             }
 
             if (info.IsKeyPressed(Keys.I))
             {
-                _game.State = State.PlayerTurn;
-                FlavorMessageChanged?.Invoke(this, string.Empty);
+                EndTargettingMode();
                 _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
@@ -210,6 +208,12 @@ namespace MovingCastles.Ui.Consoles
             // handle enter as confirm target
 
             return base.ProcessKeyboard(info);
+        }
+
+        private void EndTargettingMode()
+        {
+            _game.State = State.PlayerTurn;
+            FlavorMessageChanged?.Invoke(this, string.Empty);
         }
 
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)

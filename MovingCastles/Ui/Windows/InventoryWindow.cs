@@ -14,7 +14,7 @@ namespace MovingCastles.Ui.Windows
         private readonly Console _descriptionArea;
         private readonly Button _useButton;
         private readonly Button _closeButton;
-        private readonly int _itemButtomWidth;
+        private readonly int _itemButtonWidth;
         private ItemTemplate _selectedItem;
 
         public InventoryWindow(int width, int height)
@@ -23,7 +23,7 @@ namespace MovingCastles.Ui.Windows
             Contract.Requires(width > 40, "Menu width must be > 40");
             Contract.Requires(width > 10, "Menu width must be > 10");
 
-            _itemButtomWidth = width / 3;
+            _itemButtonWidth = width / 3;
             CloseOnEscKey = true;
 
             Center();
@@ -31,7 +31,7 @@ namespace MovingCastles.Ui.Windows
             _useButton = new Button(7)
             {
                 Text = "Use",
-                Position = new Point(_itemButtomWidth + 2, height - 2),
+                Position = new Point(_itemButtonWidth + 2, height - 2),
             };
 
             _closeButton = new Button(9)
@@ -41,10 +41,9 @@ namespace MovingCastles.Ui.Windows
             };
             _closeButton.Click += (_, __) => Hide();
 
-            var colors = SadConsole.Themes.Library.Default.Colors.Clone();
-            _descriptionArea = new Console(width - _itemButtomWidth - 3, height - 4)
+            _descriptionArea = new Console(width - _itemButtonWidth - 3, height - 4)
             {
-                Position = new Point(_itemButtomWidth + 2, 1),
+                Position = new Point(_itemButtonWidth + 2, 1),
                 DefaultBackground = ColorHelper.MidnighterBlue,
             };
             _descriptionArea.Fill(null, ColorHelper.MidnighterBlue, null);
@@ -79,9 +78,9 @@ namespace MovingCastles.Ui.Windows
             var yCount = 0;
             return items.Select(i =>
                 {
-                    var itemButton = new Button(_itemButtomWidth - 1)
+                    var itemButton = new Button(_itemButtonWidth - 1)
                     {
-                        Text = TextHelper.TruncateString(i.Name, _itemButtomWidth - 5),
+                        Text = TextHelper.TruncateString(i.Name, _itemButtonWidth - 5),
                         Position = new Point(0, yCount++),
                     };
                     itemButton.Click += (_, __) => _selectedItem = i;
