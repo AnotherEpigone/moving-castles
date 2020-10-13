@@ -5,6 +5,7 @@ using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
 using SadConsole;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         private readonly ILogManager _logManager;
 
         private Wizard _player;
+        private SpellTemplate _targettingSpell;
 
         public TurnBasedGame(
             ILogManager logManager)
@@ -89,7 +91,24 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         public void TargetSelected(Coord mapCoord)
         {
-            throw new System.NotImplementedException();
+            // TODO: put in spell effect handler class
+            var target = Map.GetEntity<McEntity>(mapCoord);
+            if (target != null)
+            {
+                foreach (var effect in _targettingSpell.Effects)
+                {
+                    effect.Apply(_player, target, _logManager);
+                }
+            }
+
+            _targettingSpell = null;
+            ProcessTurn();
+        }
+
+        public void StartTargetting(SpellTemplate spell)
+        {
+            _targettingSpell = spell;
+            State = State.Targetting;
         }
 
         private void ProcessTurn()

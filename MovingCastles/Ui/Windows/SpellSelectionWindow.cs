@@ -14,6 +14,7 @@ namespace MovingCastles.Ui.Windows
         private readonly Button _cancelButton;
         private readonly Console _descriptionArea;
         private SpellTemplate _selectedSpell;
+        private System.Action<SpellTemplate> _onCast;
 
         public SpellSelectionWindow()
             : base(120, 30)
@@ -28,6 +29,11 @@ namespace MovingCastles.Ui.Windows
             {
                 Text = castText,
                 Position = new Point(Width - castButtonWidth, Height - 2),
+            };
+            _castButton.Click += (_, __) =>
+            {
+                _onCast?.Invoke(_selectedSpell);
+                Hide();
             };
 
             const string cancelText = "Cancel";
@@ -47,12 +53,15 @@ namespace MovingCastles.Ui.Windows
             _descriptionArea.Fill(null, ColorHelper.MidnighterBlue, null);
 
             Children.Add(_descriptionArea);
-
-            Closed += (_, __) => _selectedSpell = null;
         }
 
-        public void Show(IEnumerable<SpellTemplate> spells)
+        public void Show(IEnumerable<SpellTemplate> spells, System.Action<SpellTemplate> onCast)
         {
+            _onCast = onCast;
+            _selectedSpell = null;
+
+            _castButton.IsEnabled = false;
+
             var controls = BuildSpellControls(spells);
             RefreshControls(controls);
 
@@ -74,7 +83,11 @@ namespace MovingCastles.Ui.Windows
                         _selectedSpell = i;
                         _descriptionArea.Clear();
                         _descriptionArea.Cursor.Position = new Point(0, 0);
-                        _descriptionArea.Cursor.Print(_selectedSpell.Description);
+                        _descriptionArea.Cursor.Print(
+                            new ColoredString(
+                                _selectedSpell?.Description ?? string.Empty,
+                                new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
+                        _castButton.IsEnabled = true;
                     };
                     return spellButton;
                 })

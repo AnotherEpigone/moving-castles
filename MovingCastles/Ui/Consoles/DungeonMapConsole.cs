@@ -7,7 +7,6 @@ using MovingCastles.Components;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
-using MovingCastles.Ui;
 using SadConsole;
 using SadConsole.Input;
 using System.Collections.Generic;
@@ -176,8 +175,15 @@ namespace MovingCastles.Ui.Consoles
 
             if (info.IsKeyPressed(Keys.Q))
             {
-                _game.State = State.Targetting;
-                FlavorMessageChanged?.Invoke(this, "Aiming magic missile...");
+                _menuProvider.SpellSelect.Show(
+                    Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
+                    selectedSpell =>
+                        {
+                            _game.StartTargetting(selectedSpell);
+                            FlavorMessageChanged?.Invoke(this, $"Aiming {selectedSpell.Name}...");
+                        });
+
+                return true;
             }
 
             if (_game.HandleAsPlayerInput(info))
