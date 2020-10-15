@@ -5,14 +5,28 @@ namespace MovingCastles.Entities
 {
     public class ActorTemplate
     {
-        public string Id { get; set; }
+        public ActorTemplate(
+            string id,
+            string name,
+            int glyph,
+            Color nameColor,
+            System.Func<List<object>> createComponents)
+        {
+            Id = id;
+            Name = name;
+            Glyph = glyph;
+            NameColor = nameColor;
+            CreateComponents = createComponents;
+        }
 
-        public string Name { get; set; }
+        public string Id { get; }
 
-        public int Glyph { get; set; }
+        public string Name { get; }
 
-        public Color NameColor { get; set; }
+        public int Glyph { get; }
 
-        public System.Func<List<object>> CreateComponents { get; set; }
+        public Color NameColor { get; }
+
+        public System.Func<List<object>> CreateComponents { get; }
     }
 }
