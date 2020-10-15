@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MovingCastles.GameSystems.Spells;
 using SadConsole;
 using SadConsole.Controls;
@@ -13,12 +14,15 @@ namespace MovingCastles.Ui.Windows
         private readonly Button _castButton;
         private readonly Button _cancelButton;
         private readonly Console _descriptionArea;
+        private readonly Dictionary<char, SpellTemplate> _hotkeys;
         private SpellTemplate _selectedSpell;
         private System.Action<SpellTemplate> _onCast;
 
         public SpellSelectionWindow()
             : base(120, 30)
         {
+            _hotkeys = new Dictionary<char, SpellTemplate>();
+
             CloseOnEscKey = true;
 
             Center();
@@ -55,6 +59,21 @@ namespace MovingCastles.Ui.Windows
             Children.Add(_descriptionArea);
         }
 
+        public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            foreach (var key in info.KeysPressed)
+            {
+                if (_hotkeys.TryGetValue(key.Character, out var spell))
+                {
+                    _onCast(spell);
+                    Hide();
+                    return true;
+                }
+            }
+
+            return base.ProcessKeyboard(info);
+        }
+
         public void Show(IEnumerable<SpellTemplate> spells, System.Action<SpellTemplate> onCast)
         {
             _onCast = onCast;
@@ -70,12 +89,19 @@ namespace MovingCastles.Ui.Windows
 
         private List<ControlBase> BuildSpellControls(IEnumerable<SpellTemplate> spells)
         {
+            _hotkeys.Clear();
+
             var yCount = 0;
-            return spells.Select(i =>
+            return spells
+                .OrderBy(s => s.Name)
+                .Select(i =>
                 {
+                    var hotkeyLetter = (char)('a' + yCount);
+                    _hotkeys.Add(hotkeyLetter, i);
+
                     var spellButton = new Button(SpellButtonWidth - 1)
                     {
-                        Text = TextHelper.TruncateString(i.Name, SpellButtonWidth - 5),
+                        Text = TextHelper.TruncateString($"{hotkeyLetter}. {i.Name}", SpellButtonWidth - 5),
                         Position = new Point(0, yCount++),
                     };
                     spellButton.Click += (_, __) =>
