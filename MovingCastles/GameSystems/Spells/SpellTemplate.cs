@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MovingCastles.GameSystems.Spells.SpellEffects;
+using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Spells
 {

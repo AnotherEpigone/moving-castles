@@ -91,14 +91,9 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         public void TargetSelected(Coord mapCoord)
         {
-            // TODO: put in spell effect handler class
-            var target = Map.GetEntity<McEntity>(mapCoord);
-            if (target != null)
+            foreach (var effect in _targettingSpell.Effects)
             {
-                foreach (var effect in _targettingSpell.Effects)
-                {
-                    effect.Apply(_player, target, _logManager);
-                }
+                effect.Apply(_player, Map, mapCoord, _logManager);
             }
 
             _targettingSpell = null;

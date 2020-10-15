@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MovingCastles.GameSystems.Spells.SpellEffects;
+using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Spells
 {
@@ -12,6 +13,15 @@ namespace MovingCastles.GameSystems.Spells
             effects: new List<ISpellEffect>
                 {
                     new DamageTargetSpellEffect(10),
+                });
+        public static SpellTemplate EtherealStep => new SpellTemplate(
+            id: "SPELL_ETHEREAL_STEP",
+            name: "Ethereal step",
+            description: "A most practical application of basic realmatic attunement. The magus steps briefly into the ethereal realm, utilizes a split second of mental movement, and re-enters the material plane at a nearby place.",
+            iconGlyph: 0,
+            effects: new List<ISpellEffect>
+                {
+                    new TeleportToTargetSpellEffect(),
                 });
     }
 }

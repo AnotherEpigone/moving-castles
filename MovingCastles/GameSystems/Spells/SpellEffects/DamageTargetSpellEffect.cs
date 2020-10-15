@@ -1,8 +1,10 @@
-﻿using MovingCastles.Components;
+﻿using GoRogue;
+using MovingCastles.Components;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Maps;
 
-namespace MovingCastles.GameSystems.Spells
+namespace MovingCastles.GameSystems.Spells.SpellEffects
 {
     public class DamageTargetSpellEffect : ISpellEffect
     {
@@ -13,9 +15,10 @@ namespace MovingCastles.GameSystems.Spells
             _damage = damage;
         }
 
-        public void Apply(McEntity caster, McEntity target, ILogManager logManager)
+        public void Apply(McEntity caster, DungeonMap map, Coord targetCoord, ILogManager logManager)
         {
-            var targetHealth = target.GetGoRogueComponent<IHealthComponent>();
+            var target = map.GetEntity<McEntity>(targetCoord);
+            var targetHealth = target?.GetGoRogueComponent<IHealthComponent>();
             if (targetHealth == null)
             {
                 return;

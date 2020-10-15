@@ -32,7 +32,9 @@ namespace MovingCastles.Entities
             OnCalculateRenderPosition();
 
             AddGoRogueComponent(new MeleeAttackerComponent(5));
-            AddGoRogueComponent(new SpellCastingComponent(SpellAtlas.ConjureFlame));
+            AddGoRogueComponent(new SpellCastingComponent(
+                SpellAtlas.ConjureFlame,
+                SpellAtlas.EtherealStep));
             AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health));
             AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
         }
