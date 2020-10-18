@@ -34,6 +34,7 @@ namespace MovingCastles.Entities
             AddGoRogueComponent(new MeleeAttackerComponent(5));
             AddGoRogueComponent(new SpellCastingComponent(
                 SpellAtlas.ConjureFlame,
+                SpellAtlas.RayOfFrost,
                 SpellAtlas.EtherealStep));
             AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health));
             AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));

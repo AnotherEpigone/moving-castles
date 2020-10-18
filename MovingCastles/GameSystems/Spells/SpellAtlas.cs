@@ -15,6 +15,16 @@ namespace MovingCastles.GameSystems.Spells
                 {
                     new DamageTargetSpellEffect(10),
                 });
+        public static SpellTemplate RayOfFrost => new SpellTemplate(
+            id: "SPELL_RAY_OF_FROST",
+            name: "Ray of Frost",
+            description: "...",
+            iconGlyph: 0,
+            targettingStyle: new TargettingStyle(true, TargetMode.Projectile),
+            effects: new List<ISpellEffect>
+                {
+                    new DamageTargetSpellEffect(10),
+                });
         public static SpellTemplate EtherealStep => new SpellTemplate(
             id: "SPELL_ETHEREAL_STEP",
             name: "Ethereal step",

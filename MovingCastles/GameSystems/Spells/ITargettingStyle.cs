@@ -3,6 +3,7 @@
     public enum TargetMode
     {
         SingleTarget,
+        Projectile,
     }
 
     public interface ITargettingStyle
