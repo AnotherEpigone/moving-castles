@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
 using SadConsole;
@@ -179,8 +180,7 @@ namespace MovingCastles.Ui.Consoles
                     Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
                     selectedSpell =>
                         {
-                            _game.StartTargetting(selectedSpell);
-                            FlavorMessageChanged?.Invoke(this, $"Aiming {selectedSpell.Name}...");
+                            BeginTargetting(selectedSpell);
                         });
 
                 return true;
@@ -216,10 +216,21 @@ namespace MovingCastles.Ui.Consoles
             return base.ProcessKeyboard(info);
         }
 
+        private void BeginTargetting(SpellTemplate spell)
+        {
+            _game.StartTargetting(spell);
+            FlavorMessageChanged?.Invoke(this, $"Aiming {spell.Name}...");
+            var highlightColor = spell.TargettingStyle.Offensive
+                ? ColorHelper.RedHighlight
+                : ColorHelper.YellowHighlight;
+            _mouseHighlight.SetGlyph(0, 0, 1, highlightColor);
+        }
+
         private void EndTargettingMode()
         {
             _game.State = State.PlayerTurn;
             FlavorMessageChanged?.Invoke(this, string.Empty);
+            _mouseHighlight.SetGlyph(0, 0, 1, ColorHelper.WhiteHighlight);
         }
 
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)

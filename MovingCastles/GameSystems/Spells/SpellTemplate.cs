@@ -10,12 +10,14 @@ namespace MovingCastles.GameSystems.Spells
             string name,
             string description,
             int iconGlyph,
+            ITargettingStyle targettingStyle,
             List<ISpellEffect> effects)
         {
             Id = id;
             Name = name;
             Description = description;
             IconGlyph = iconGlyph;
+            TargettingStyle = targettingStyle;
             Effects = effects;
         }
 
@@ -26,6 +28,8 @@ namespace MovingCastles.GameSystems.Spells
         public string Description { get; }
 
         public int IconGlyph { get; }
+
+        public ITargettingStyle TargettingStyle { get; }
 
         public List<ISpellEffect> Effects { get; }
     }
