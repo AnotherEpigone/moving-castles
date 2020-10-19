@@ -9,6 +9,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
     {
         DungeonMap Map { get; set; }
         State State { get; set; }
+        SpellTemplate TargettingSpell { get; }
 
         bool HandleAsPlayerInput(SadConsole.Input.Keyboard info);
         void RegisterEntity(McEntity entity);

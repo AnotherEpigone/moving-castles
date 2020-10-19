@@ -41,7 +41,6 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         private readonly ILogManager _logManager;
 
         private Wizard _player;
-        private SpellTemplate _targettingSpell;
 
         public TurnBasedGame(
             ILogManager logManager)
@@ -53,6 +52,8 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         public DungeonMap Map { get; set; }
 
         public State State { get; set; }
+
+        public SpellTemplate TargettingSpell { get; private set; }
 
         public bool HandleAsPlayerInput(SadConsole.Input.Keyboard info)
         {
@@ -91,18 +92,18 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         public void TargetSelected(Coord mapCoord)
         {
-            foreach (var effect in _targettingSpell.Effects)
+            foreach (var effect in TargettingSpell.Effects)
             {
                 effect.Apply(_player, Map, mapCoord, _logManager);
             }
 
-            _targettingSpell = null;
+            TargettingSpell = null;
             ProcessTurn();
         }
 
         public void StartTargetting(SpellTemplate spell)
         {
-            _targettingSpell = spell;
+            TargettingSpell = spell;
             State = State.Targetting;
         }
 
