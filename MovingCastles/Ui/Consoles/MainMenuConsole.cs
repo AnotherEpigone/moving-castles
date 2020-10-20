@@ -32,7 +32,6 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(67, 8),
             };
             continueButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
-            _menuConsole.Add(continueButton);
 
             var newGameButton = new SelectionButton(26, 1)
             {
@@ -41,7 +40,6 @@ namespace MovingCastles.Ui.Consoles
             };
 
             newGameButton.Click += (_, __) => gameManager.StartCastleModeDemo();
-            _menuConsole.Add(newGameButton);
 
             var exitButton = new SelectionButton(26, 1)
             {
@@ -49,7 +47,6 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(67, 12),
             };
             exitButton.Click += (_, __) => SadConsole.Game.Instance.Exit();
-            _menuConsole.Add(exitButton);
 
             _menuConsole.SetupSelectionButtons(continueButton, newGameButton, exitButton);
             _menuConsole.IsFocused = true;

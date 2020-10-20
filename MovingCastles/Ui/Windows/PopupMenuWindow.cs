@@ -6,7 +6,7 @@ using SadConsole.Controls;
 
 namespace MovingCastles.Ui.Windows
 {
-    public class PopupMenuWindow : Window
+    public class PopupMenuWindow : McControlWindow
     {
         private bool _escReleased;
 
@@ -53,18 +53,7 @@ namespace MovingCastles.Ui.Windows
             };
             closeButton.Click += (_, __) => Hide();
 
-            mainMenuButton.NextSelection = quitButton;
-            mainMenuButton.PreviousSelection = closeButton;
-            quitButton.NextSelection = closeButton;
-            quitButton.PreviousSelection = mainMenuButton;
-            closeButton.NextSelection = mainMenuButton;
-            closeButton.PreviousSelection = quitButton;
-
-            Add(mainMenuButton);
-            Add(quitButton);
-            Add(closeButton);
-
-            FocusedControl = mainMenuButton;
+            SetupSelectionButtons(mainMenuButton, quitButton, closeButton);
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
