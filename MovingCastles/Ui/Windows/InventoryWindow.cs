@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace MovingCastles.Ui.Windows
 {
-    public class InventoryWindow : Window
+    public class InventoryWindow : McControlWindow
     {
         private readonly Console _descriptionArea;
         private readonly Button _useButton;
@@ -55,51 +55,45 @@ namespace MovingCastles.Ui.Windows
 
         public void Show(IInventoryComponent inventory)
         {
-            var controls = BuildItemControls(inventory.Items);
-            RefreshControls(controls);
+            RefreshControls(BuildItemControls(inventory.Items));
 
             base.Show(true);
         }
 
-        public override void Update(System.TimeSpan time)
+        private void OnItemSelected(ItemTemplate item)
         {
+            _selectedItem = item;
             _descriptionArea.Clear();
             _descriptionArea.Cursor.Position = new Point(0, 0);
             _descriptionArea.Cursor.Print(
                 new ColoredString(
                     _selectedItem?.Description ?? string.Empty,
                     new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
-
-            base.Update(time);
         }
 
-        private List<ControlBase> BuildItemControls(IEnumerable<ItemTemplate> items)
+        private Dictionary<SelectionButton, System.Action> BuildItemControls(IEnumerable<ItemTemplate> items)
         {
             var yCount = 0;
-            return items.Select(i =>
+            return items.ToDictionary(
+                i =>
                 {
-                    var itemButton = new Button(_itemButtonWidth - 1)
+                    return new SelectionButton(_itemButtonWidth - 1, 1)
                     {
                         Text = TextHelper.TruncateString(i.Name, _itemButtonWidth - 5),
                         Position = new Point(0, yCount++),
                     };
-                    itemButton.Click += (_, __) => _selectedItem = i;
-                    return itemButton;
-                })
-                .ToList<ControlBase>();
+                },
+                i => (System.Action)(() => OnItemSelected(i)));
         }
 
-        private void RefreshControls(List<ControlBase> controls)
+        private void RefreshControls(Dictionary<SelectionButton, System.Action> buttons)
         {
             RemoveAll();
 
             Add(_useButton);
             Add(_closeButton);
 
-            foreach (var control in controls)
-            {
-                Add(control);
-            }
+            SetupSelectionButtons(buttons);
         }
     }
 }
