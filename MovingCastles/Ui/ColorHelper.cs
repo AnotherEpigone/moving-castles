@@ -8,6 +8,7 @@ namespace MovingCastles.Ui
         public static Color PlayerBlue = new Color(140, 180, 190);
         public static Color MidnightestBlue = new Color(3, 3, 15);
         public static Color MidnighterBlue = new Color(5, 5, 25);
+        public static Color SelectedControlBackBlue = new Color(15, 15, 45);
         public static Color ManaBlue = new Color(45, 105, 175);
         public static Color DepletedManaBlue = new Color(10, 25, 45);
         public static Color HealthRed = new Color(135, 0, 0);
