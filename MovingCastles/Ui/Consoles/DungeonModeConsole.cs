@@ -68,7 +68,8 @@ namespace MovingCastles.Ui.Consoles
         {
             var console = new ControlsConsole(rightSectionWidth, TopPaneHeight)
             {
-                Position = new Point(LeftPaneWidth, 0)
+                Position = new Point(LeftPaneWidth, 0),
+                DisableControlFocusing = true,
             };
 
             const string popupMenuText = "Menu";

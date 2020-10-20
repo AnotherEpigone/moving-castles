@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MovingCastles.Ui.Windows
 {
-    public class SpellSelectionWindow : Window
+    public class SpellSelectionWindow : McControlWindow
     {
         private const int SpellButtonWidth = 40;
         private readonly Button _castButton;
@@ -15,8 +15,6 @@ namespace MovingCastles.Ui.Windows
         private readonly Console _descriptionArea;
         private readonly Dictionary<char, SpellTemplate> _hotkeys;
         private SpellTemplate _selectedSpell;
-        private SelectionButton _lastFocusedButton;
-        private Dictionary<ControlBase, SpellTemplate> _spellButtons;
         private System.Action<SpellTemplate> _onCast;
 
         public SpellSelectionWindow()
@@ -76,21 +74,6 @@ namespace MovingCastles.Ui.Windows
             return base.ProcessKeyboard(info);
         }
 
-        public override void Update(System.TimeSpan time)
-        {
-            if (!(FocusedControl is SelectionButton focusedButton)
-                || focusedButton == _lastFocusedButton)
-            {
-                base.Update(time);
-                return;
-            }
-
-            _lastFocusedButton = focusedButton;
-            OnSpellSelected(_spellButtons[focusedButton]);
-
-            base.Update(time);
-        }
-
         public void Show(IEnumerable<SpellTemplate> spells, System.Action<SpellTemplate> onCast)
         {
             _onCast = onCast;
@@ -98,13 +81,12 @@ namespace MovingCastles.Ui.Windows
 
             _castButton.IsEnabled = false;
 
-            _spellButtons = BuildSpellControls(spells);
-            RefreshControls(_spellButtons.Keys);
+            RefreshControls(spells);
 
             base.Show(true);
         }
 
-        private Dictionary<ControlBase, SpellTemplate> BuildSpellControls(IEnumerable<SpellTemplate> spells)
+        private Dictionary<SelectionButton, System.Action> BuildSpellControls(IEnumerable<SpellTemplate> spells)
         {
             _hotkeys.Clear();
 
@@ -122,13 +104,16 @@ namespace MovingCastles.Ui.Windows
                             Text = TextHelper.TruncateString($"{hotkeyLetter}. {i.Name}", SpellButtonWidth - 5),
                             Position = new Point(0, yCount++),
                         };
-                        spellButton.MouseEnter += (_, __) => OnSpellSelected(i);
-                        spellButton.Click += (_, __) => _onCast(i);
-                        return (ControlBase)spellButton;
+                        spellButton.Click += (_, __) =>
+                        {
+                            _onCast(i);
+                            Hide();
+                        };
+                        return spellButton;
                     },
-                    i => i);
+                    i => (System.Action)(() => OnSpellSelected(i)));
 
-            var buttons = controlDictionary.Keys.OfType<SelectionButton>().ToArray();
+            var buttons = controlDictionary.Keys.ToArray();
             for (int i = 1; i < buttons.Length; i++)
             {
                 buttons[i - 1].NextSelection = buttons[i];
@@ -150,19 +135,14 @@ namespace MovingCastles.Ui.Windows
             _castButton.IsEnabled = true;
         }
 
-        private void RefreshControls(IEnumerable<ControlBase> controls)
+        private void RefreshControls(IEnumerable<SpellTemplate> spells)
         {
             RemoveAll();
 
             Add(_castButton);
             Add(_cancelButton);
 
-            foreach (var control in controls)
-            {
-                Add(control);
-            }
-
-            FocusedControl = controls.FirstOrDefault();
+            SetupSelectionButtons(BuildSpellControls(spells));
         }
     }
 }
