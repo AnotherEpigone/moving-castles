@@ -1,8 +1,11 @@
 ﻿using GoRogue;
+using Microsoft.Xna.Framework;
+using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Input;
+using System.Linq;
 
 namespace MovingCastles.Ui.Consoles
 {
@@ -24,32 +27,63 @@ namespace MovingCastles.Ui.Consoles
             _map = map;
         }
 
-        public void Draw(MouseConsoleState state, Coord mapCoord)
+        public void Draw(MouseConsoleState state, Point mapPos)
         {
-            IsVisible = state.IsOnConsole && _map.Explored[mapCoord];
             if (!IsVisible)
             {
                 return;
             }
 
             Clear();
-            
+
             var mousePos = state.ConsoleCellPosition;
-            if (_game.State == State.PlayerTurn)
+            switch (_game.State)
             {
-                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.WhiteHighlight);
-                return;
+                case State.PlayerTurn:
+                    SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.WhiteHighlight);
+                    break;
+                case State.Targetting:
+                    DrawTargettingMode(mousePos, _map.Player.Position, mapPos, _game.TargettingSpell.TargettingStyle);
+                    break;
+                case State.Processing:
+                default:
+                    break;
             }
+        }
 
-            if (_game.State != State.Targetting)
-            {
-                return;
-            }
-
-            var highlightColor = _game.TargettingSpell.TargettingStyle.Offensive
+        private void DrawTargettingMode(Point mousePos, Point playerPos, Point mapPos, ITargettingStyle targettingStyle)
+        {
+            var highlightColor = targettingStyle.Offensive
                 ? ColorHelper.RedHighlight
                 : ColorHelper.YellowHighlight;
-            SetGlyph(mousePos.X, mousePos.Y, 1, highlightColor);
+
+            switch (targettingStyle.TargetMode)
+            {
+                case TargetMode.SingleTarget:
+                    SetGlyph(mousePos.X, mousePos.Y, 1, highlightColor);
+                    break;
+                case TargetMode.Projectile:
+                    DrawProjectile(mousePos, playerPos, mapPos, highlightColor);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void DrawProjectile(Point mousePos, Point playerPos, Point mapPos, Color highlightColor)
+        {
+            var mouseMapPos = mousePos + mapPos;
+            var line = Lines.Get(playerPos, mouseMapPos, Lines.Algorithm.DDA);
+            foreach (var point in line.Skip(1))
+            {
+                var pointConsolePos = point - mapPos;
+                SetGlyph(pointConsolePos.X, pointConsolePos.Y, 1, highlightColor);
+
+                if (!_map.WalkabilityView[point])
+                {
+                    break;
+                }
+            }
         }
     }
 }
