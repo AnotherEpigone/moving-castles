@@ -19,7 +19,7 @@ namespace MovingCastles.Ui.Consoles
     internal class DungeonMapConsole : ContainerConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
-        private readonly Console _mouseHighlight;
+        private readonly MouseHighlightConsole _mouseHighlight;
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
@@ -44,10 +44,7 @@ namespace MovingCastles.Ui.Consoles
             _menuProvider = menuProvider;
             _game = game;
 
-            _mouseHighlight = new Console(viewportWidth, viewportHeight, tilesetFont)
-            {
-                UseMouse = false,
-            };
+            _mouseHighlight = new MouseHighlightConsole(viewportWidth, viewportHeight, tilesetFont, game, map);
 
             Map = map;
             _game.Map = map;
@@ -115,7 +112,7 @@ namespace MovingCastles.Ui.Consoles
                 mapState.ConsoleCellPosition.X + MapRenderer.ViewPort.X,
                 mapState.ConsoleCellPosition.Y + MapRenderer.ViewPort.Y);
 
-            DrawMouseHighlight(mapState, mapCoord);
+            _mouseHighlight.Draw(mapState, mapCoord);
 
             var coordIsTargetable = mapState.IsOnConsole && Map.FOV.CurrentFOV.Contains(mapCoord);
 
@@ -149,33 +146,6 @@ namespace MovingCastles.Ui.Consoles
             }
 
             return base.ProcessMouse(state);
-        }
-
-        private void DrawMouseHighlight(MouseConsoleState state, Coord mapCoord)
-        {
-            _mouseHighlight.IsVisible = state.IsOnConsole && Map.Explored[mapCoord];
-            if (!_mouseHighlight.IsVisible)
-            {
-                return;
-            }
-
-            _mouseHighlight.Clear();
-            var mousePos = state.ConsoleCellPosition;
-            if (_game.State == State.PlayerTurn)
-            {
-                _mouseHighlight.SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.WhiteHighlight);
-                return;
-            }
-
-            if (_game.State != State.Targetting)
-            {
-                return;
-            }
-
-            var highlightColor = _game.TargettingSpell.TargettingStyle.Offensive
-                ? ColorHelper.RedHighlight
-                : ColorHelper.YellowHighlight;
-            _mouseHighlight.SetGlyph(mousePos.X, mousePos.Y, 1, highlightColor);
         }
 
         private void TargettingProcessMouse(MouseConsoleState state, Coord mapCoord)
@@ -253,7 +223,6 @@ namespace MovingCastles.Ui.Consoles
         {
             _game.State = State.PlayerTurn;
             FlavorMessageChanged?.Invoke(this, string.Empty);
-            _mouseHighlight.SetGlyph(0, 0, 1, ColorHelper.WhiteHighlight);
         }
 
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
