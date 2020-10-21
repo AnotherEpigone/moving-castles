@@ -153,8 +153,12 @@ namespace MovingCastles.Ui.Consoles
         {
             if (state.Mouse.LeftClicked)
             {
-                _game.TargetSelected(mapCoord);
-                EndTargettingMode();
+                var (success, target) = Map.GetTarget(Map.Player.Position, mapCoord, _game.TargettingSpell.TargettingStyle);
+                if (success)
+                {
+                    _game.TargetSelected(target);
+                    EndTargettingMode();
+                }
             }
         }
 

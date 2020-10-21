@@ -2,7 +2,9 @@
 using System.Linq;
 using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.Components;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Spells;
 using SadConsole;
 
 namespace MovingCastles.Maps
@@ -36,5 +38,43 @@ namespace MovingCastles.Maps
         public FOVVisibilityHandler FovVisibilityHandler { get; }
 
         public Wizard Player => _player.Value;
+
+        public (bool, Coord) GetTarget(Coord playerPos, Coord selectedTargetPos, ITargettingStyle targettingStyle)
+        {
+            Coord target = selectedTargetPos;
+            if (targettingStyle.TargetMode == TargetMode.Projectile)
+            {
+                target = GetProjectileTarget(playerPos, selectedTargetPos);
+            }
+
+            return (CheckTarget(target, targettingStyle), target);
+        }
+
+        private Coord GetProjectileTarget(Coord playerPos, Coord selectedTargetPos)
+        {
+            var line = Lines.Get(playerPos, selectedTargetPos, Lines.Algorithm.DDA);
+            Coord target = playerPos;
+            foreach (var point in line.Skip(1))
+            {
+                target = point;
+                if (!WalkabilityView[point])
+                {
+                    break;
+                }
+            }
+
+            return target;
+        }
+
+        private bool CheckTarget(Coord target, ITargettingStyle targettingStyle)
+        {
+            if (targettingStyle.Offensive)
+            {
+                var entity = GetEntity<McEntity>(target, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.MONSTERS));
+                return entity?.HasGoRogueComponent<IHealthComponent>() ?? false;
+            }
+
+            return WalkabilityView[target];
+        }
     }
 }
