@@ -20,9 +20,9 @@ namespace MovingCastles.Ui
         public int ViewPortWidth { get; } = 160; // 160 x 8 = 1280
         public int ViewPortHeight { get; } = 45; // 45 x 16 = 720
 
-        public UiManager()
+        public UiManager(ILogManager logManager)
         {
-            _logManager = new LogManager();
+            _logManager = logManager;
         }
 
         public void ShowMainMenu(IGameManager gameManager)

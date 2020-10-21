@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 
@@ -12,6 +13,8 @@ namespace MovingCastles
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<LogManager>()
+                .As<ILogManager>();
             builder.RegisterType<UiManager>()
                 .As<IUiManager>();
             builder.RegisterType<GameManager>()
