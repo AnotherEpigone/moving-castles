@@ -13,16 +13,19 @@ namespace MovingCastles
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<LogManager>()
-                .As<ILogManager>();
             builder.RegisterType<UiManager>()
                 .As<IUiManager>();
             builder.RegisterType<GameManager>()
                 .As<IGameManager>();
+
+            builder.RegisterType<LogManager>()
+                .As<ILogManager>();
             builder.RegisterType<ItemTemplateLoader>()
                 .As<IItemTemplateLoader>();
             builder.RegisterType<MapTemplateLoader>()
                 .As<IMapTemplateLoader>();
+            builder.RegisterType<MapPlanFactory>()
+                .As<IMapPlanFactory>();
 
             builder.RegisterType<MovingCastles>().AsSelf();
             return builder.Build();

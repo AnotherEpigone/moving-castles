@@ -5,5 +5,7 @@
         void StartDungeonModeDemo();
 
         void StartCastleModeDemo();
+
+        void StartMapGenDemo();
     }
 }

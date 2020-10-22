@@ -79,8 +79,6 @@ namespace MovingCastles.Maps
 
         private static IGameObject SpawnDungeonTerrain(Coord position, bool mapGenValue)
         {
-            // Floor or wall.  This could use the Factory system, or instantiate Floor and Wall classes, or something else if you prefer;
-            // this simplistic if-else is just used for example
             if (mapGenValue)
             {
                 // Floor
@@ -95,8 +93,6 @@ namespace MovingCastles.Maps
 
         private static IGameObject SpawnOutdoorTerrain(Coord position, bool mapGenValue)
         {
-            // Floor or wall.  This could use the Factory system, or instantiate Floor and Wall classes, or something else if you prefer;
-            // this simplistic if-else is just used for example
             if (mapGenValue)
             {
                 // Floor

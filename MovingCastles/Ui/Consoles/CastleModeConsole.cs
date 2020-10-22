@@ -22,10 +22,8 @@ namespace MovingCastles.Ui.Consoles
             int height,
             Font tilesetFont,
             IMapModeMenuProvider menuProvider,
-            IMapFactory mapFactory,
-            IMapPlan mapPlan,
-            ILogManager logManager,
-            Player playerInfo)
+            CastleMap map,
+            ILogManager logManager)
             : base(width, height)
         {
             _leftPane = CreateLeftPane();
@@ -36,7 +34,6 @@ namespace MovingCastles.Ui.Consoles
             };
             _rightPane.Add("Started a new game, and here's the first message.");
 
-            var map = mapFactory.CreateCastleMap(7, 7, mapPlan, playerInfo);
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             var centerPaneWidth = width - LeftPaneWidth - RightPaneWidth;
 

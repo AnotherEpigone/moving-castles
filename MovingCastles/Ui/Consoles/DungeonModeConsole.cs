@@ -24,16 +24,13 @@ namespace MovingCastles.Ui.Consoles
             int height,
             Font tilesetFont,
             IMapModeMenuProvider menuProvider,
-            IMapFactory mapFactory,
-            IMapPlan mapPlan,
+            DungeonMap map,
             ILogManager logManager,
-            ITurnBasedGame game,
-            Player playerInfo)
+            ITurnBasedGame game)
         {
             var rightSectionWidth = width - LeftPaneWidth;
 
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
-            var map = mapFactory.CreateDungeonMap(80, 45, mapPlan, playerInfo);
             var mapConsole = new DungeonMapConsole(
                 rightSectionWidth / tileSizeXFactor,
                 height - TopPaneHeight,

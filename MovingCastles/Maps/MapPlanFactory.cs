@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MovingCastles.Maps
 {
-    public class MapPlanFactory
+    public class MapPlanFactory : IMapPlanFactory
     {
         public MapPlan Create(
             MapTemplate template,
