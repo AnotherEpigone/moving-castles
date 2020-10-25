@@ -41,6 +41,12 @@ namespace MovingCastles.Maps
 
         public (bool, Coord) GetTarget(Coord playerPos, Coord selectedTargetPos, ITargettingStyle targettingStyle)
         {
+            var distance = Distance.CHEBYSHEV.Calculate(playerPos, selectedTargetPos);
+            if (distance > targettingStyle.Range)
+            {
+                return (false, selectedTargetPos);
+            }
+
             Coord target = selectedTargetPos;
             if (targettingStyle.TargetMode == TargetMode.Projectile)
             {

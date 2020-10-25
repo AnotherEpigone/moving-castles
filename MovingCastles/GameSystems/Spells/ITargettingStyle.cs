@@ -10,6 +10,8 @@
     {
         bool Offensive { get; }
 
+        int Range { get; }
+
         TargetMode TargetMode { get; }
     }
 }

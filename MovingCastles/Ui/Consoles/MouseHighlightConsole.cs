@@ -53,26 +53,46 @@ namespace MovingCastles.Ui.Consoles
 
         private void DrawTargettingMode(Point mousePos, Point playerPos, Point mapPos, ITargettingStyle targettingStyle)
         {
-            var highlightColor = targettingStyle.Offensive
-                ? ColorHelper.RedHighlight
-                : ColorHelper.YellowHighlight;
-
             switch (targettingStyle.TargetMode)
             {
                 case TargetMode.SingleTarget:
-                    SetGlyph(mousePos.X, mousePos.Y, 1, highlightColor);
+                    DrawSingleTarget(mousePos, playerPos, mapPos, targettingStyle);
                     break;
                 case TargetMode.Projectile:
-                    DrawProjectile(mousePos, playerPos, mapPos, highlightColor);
+                    DrawProjectile(mousePos, playerPos, mapPos, targettingStyle);
                     break;
                 default:
                     break;
             }
         }
 
-        private void DrawProjectile(Point mousePos, Point playerPos, Point mapPos, Color highlightColor)
+        private void DrawSingleTarget(Point mousePos, Point playerPos, Point mapPos, ITargettingStyle targettingStyle)
         {
             var mouseMapPos = mousePos + mapPos;
+            var distance = Distance.CHEBYSHEV.Calculate(playerPos, mouseMapPos);
+            if (distance> targettingStyle.Range)
+            {
+                return;
+            }
+
+            var highlightColor = targettingStyle.Offensive
+                ? ColorHelper.RedHighlight
+                : ColorHelper.YellowHighlight;
+            SetGlyph(mousePos.X, mousePos.Y, 1, highlightColor);
+        }
+
+        private void DrawProjectile(Point mousePos, Point playerPos, Point mapPos, ITargettingStyle targettingStyle)
+        {
+            var mouseMapPos = mousePos + mapPos;
+            var distance = Distance.CHEBYSHEV.Calculate(playerPos, mouseMapPos);
+            if (distance > targettingStyle.Range)
+            {
+                return;
+            }
+
+            var highlightColor = targettingStyle.Offensive
+                ? ColorHelper.RedHighlight
+                : ColorHelper.YellowHighlight;
             var line = Lines.Get(playerPos, mouseMapPos, Lines.Algorithm.DDA);
             foreach (var point in line.Skip(1))
             {
