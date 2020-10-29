@@ -49,7 +49,15 @@ namespace MovingCastles.GameSystems
 
         public void StartMapGenDemo()
         {
-            throw new System.NotImplementedException();
+            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            var mapFactory = new MapFactory(entityFactory);
+
+            var player = Player.Player.CreateDefault();
+
+            var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
+
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, mapGenTestAreaMap, tilesetFont);
         }
     }
 }

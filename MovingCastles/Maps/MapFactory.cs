@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using GoRogue.MapGeneration;
+using GoRogue.MapGeneration.Generators;
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using MovingCastles.Entities;
@@ -21,7 +22,7 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
         }
 
-        public DungeonMap CreateDungeonMap(int width, int height, MapTemplate mapPlan, Player playerInfo)
+        public DungeonMap CreateDungeonMap(int width, int height, MapTemplate mapTemplate, Player playerInfo)
         {
             var map = new DungeonMap(width, height);
 
@@ -47,7 +48,7 @@ namespace MovingCastles.Maps
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true);
 
-                var item = _entityFactory.CreateItem(spawnPosition, mapPlan.FloorItems.ConvertAll(i => ItemAtlas.ItemsById[i]).RandomItem());
+                var item = _entityFactory.CreateItem(spawnPosition, mapTemplate.FloorItems.ConvertAll(i => ItemAtlas.ItemsById[i]).RandomItem());
 
                 map.AddEntity(item);
             }
@@ -74,6 +75,24 @@ namespace MovingCastles.Maps
 
             var castle = _entityFactory.CreateCastle(spawnPosition, playerInfo);
             map.AddEntity(castle);
+
+            return map;
+        }
+
+        public DungeonMap CreateMapGenTestAreaMap(int width, int height, MapTemplate mapPlan, Player playerInfo)
+        {
+            var map = new DungeonMap(width, height);
+
+            var mazeTerrain = new ArrayMap<bool>(map.Width, map.Height);
+            MazeGenerator.Generate(mazeTerrain);
+            map.ApplyTerrainOverlay(mazeTerrain, SpawnDungeonTerrain);
+
+            var spawnPosition = map.WalkabilityView.RandomPosition(true);
+            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
+            map.AddEntity(player);
+
+            // God mode
+            map.FovVisibilityHandler.Disable();
 
             return map;
         }
