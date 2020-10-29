@@ -202,7 +202,6 @@ namespace MovingCastles.Ui.Consoles
             if (info.IsKeyPressed(Keys.Escape))
             {
                 EndTargettingMode();
-                _menuProvider.Pop.Show();
                 return true;
             }
 
