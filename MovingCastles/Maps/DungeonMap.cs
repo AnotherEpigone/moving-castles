@@ -17,7 +17,7 @@ namespace MovingCastles.Maps
         PLAYER
     }
 
-    public class DungeonMap : BasicMap
+    public class DungeonMap : McMap
     {
         private readonly Lazy<Wizard> _player;
 

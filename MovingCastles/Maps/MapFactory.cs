@@ -83,9 +83,13 @@ namespace MovingCastles.Maps
         {
             var map = new DungeonMap(width, height);
 
-            var mazeTerrain = new ArrayMap<bool>(map.Width, map.Height);
+            var emptyMapTerrain = new ArrayMap<bool>(map.Width, map.Height);
+            QuickGenerators.GenerateRectangleMap(emptyMapTerrain);
+            map.ApplyTerrainOverlay(emptyMapTerrain, SpawnOutdoorTerrain);
+
+            var mazeTerrain = new ArrayMap<bool>(20, 20);
             MazeGenerator.Generate(mazeTerrain);
-            map.ApplyTerrainOverlay(mazeTerrain, SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(mazeTerrain, new Coord(20, 20), SpawnDungeonTerrain);
 
             var spawnPosition = map.WalkabilityView.RandomPosition(true);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
