@@ -2,12 +2,24 @@
 {
     public class ItemTemplate
     {
-        public string Id { get; set; }
+        public ItemTemplate(
+            string id,
+            string name,
+            string description,
+            int glyph)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Glyph = glyph;
+        }
 
-        public string Name { get; set; }
+        public string Id { get; }
 
-        public string Description { get; set; }
+        public string Name { get; }
 
-        public int Glyph { get; set; }
+        public string Description { get; }
+
+        public int Glyph { get; }
     }
 }

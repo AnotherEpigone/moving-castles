@@ -3,6 +3,8 @@ using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.Fonts;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace MovingCastles.Entities
 {
@@ -10,13 +12,16 @@ namespace MovingCastles.Entities
     {
         static ActorAtlas()
         {
-            ActorsById = new Dictionary<string, ActorTemplate>
-            {
-                { Goblin.Id, Goblin },
-                { GoblinArcher.Id, GoblinArcher },
-                { Warg.Id, Warg },
-            };
+            ActorsById = typeof(ActorAtlas)
+                .GetProperties(BindingFlags.Public | BindingFlags.Static)
+                .Select(p => p.GetValue(null))
+                .OfType<ActorTemplate>()
+                .ToDictionary(
+                i => i.Id,
+                i => i);
         }
+
+        public static Dictionary<string, ActorTemplate> ActorsById { get; }
 
         public static ActorTemplate Goblin => new ActorTemplate(
             id: "ACTOR_GOBLIN",
@@ -58,7 +63,5 @@ namespace MovingCastles.Entities
                 new MeleeAttackerComponent(5),
                 new WalkAtPlayerAiComponent(6),
             });
-
-        public static Dictionary<string, ActorTemplate>  ActorsById { get; }
     }
 }

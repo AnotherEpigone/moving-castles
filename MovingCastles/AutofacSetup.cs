@@ -20,12 +20,6 @@ namespace MovingCastles
 
             builder.RegisterType<LogManager>()
                 .As<ILogManager>();
-            builder.RegisterType<ItemTemplateLoader>()
-                .As<IItemTemplateLoader>();
-            builder.RegisterType<MapTemplateLoader>()
-                .As<IMapTemplateLoader>();
-            builder.RegisterType<MapPlanFactory>()
-                .As<IMapPlanFactory>();
 
             builder.RegisterType<MovingCastles>().AsSelf();
             return builder.Build();

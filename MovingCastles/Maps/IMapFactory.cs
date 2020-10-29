@@ -4,7 +4,7 @@ namespace MovingCastles.Maps
 {
     public interface IMapFactory
     {
-        DungeonMap CreateDungeonMap(int width, int height, IMapPlan mapPlan, Player playerInfo);
-        CastleMap CreateCastleMap(int width, int height, IMapPlan mapPlan, Player playerInfo);
+        DungeonMap CreateDungeonMap(int width, int height, MapTemplate mapPlan, Player playerInfo);
+        CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Player playerInfo);
     }
 }

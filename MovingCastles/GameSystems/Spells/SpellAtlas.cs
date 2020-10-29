@@ -1,10 +1,25 @@
 ﻿using MovingCastles.GameSystems.Spells.SpellEffects;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace MovingCastles.GameSystems.Spells
 {
     public static class SpellAtlas
     {
+        static SpellAtlas()
+        {
+            ActorsById = typeof(SpellAtlas)
+                .GetProperties(BindingFlags.Public | BindingFlags.Static)
+                .Select(p => p.GetValue(null))
+                .OfType<SpellTemplate>()
+                .ToDictionary(
+                i => i.Id,
+                i => i);
+        }
+
+        public static Dictionary<string, SpellTemplate> ActorsById { get; }
+
         public static SpellTemplate ConjureFlame => new SpellTemplate(
             id: "SPELL_CONJURE_FLAME",
             name: "Conjure flame",
@@ -18,7 +33,7 @@ namespace MovingCastles.GameSystems.Spells
         public static SpellTemplate RayOfFrost => new SpellTemplate(
             id: "SPELL_RAY_OF_FROST",
             name: "Ray of Frost",
-            description: "...",
+            description: "TODO",
             iconGlyph: 0,
             targettingStyle: new TargettingStyle(true, TargetMode.Projectile, 8),
             effects: new List<ISpellEffect>
