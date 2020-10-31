@@ -96,7 +96,7 @@ namespace MovingCastles.Maps
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 
-            // God mode
+            // No FOV by default
             map.FovVisibilityHandler.Disable();
 
             return map;

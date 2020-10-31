@@ -170,6 +170,12 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
+            if (info.IsKeyPressed(Keys.F))
+            {
+                ToggleFov();
+                return true;
+            }
+
             if (info.IsKeyPressed(Keys.I))
             {
                 _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
@@ -227,6 +233,18 @@ namespace MovingCastles.Ui.Consoles
         {
             _game.State = State.PlayerTurn;
             FlavorMessageChanged?.Invoke(this, string.Empty);
+        }
+
+        private void ToggleFov()
+        {
+            if (Map.FovVisibilityHandler.Enabled)
+            {
+                Map.FovVisibilityHandler.Disable();
+            }
+            else
+            {
+                Map.FovVisibilityHandler.Enable();
+            }
         }
 
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
