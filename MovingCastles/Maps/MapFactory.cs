@@ -8,6 +8,7 @@ using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Player;
+using MovingCastles.Maps.Generation;
 using SadConsole;
 using System.Linq;
 
@@ -88,7 +89,7 @@ namespace MovingCastles.Maps
             map.ApplyTerrainOverlay(emptyMapTerrain, SpawnOutdoorTerrain);
 
             var mazeTerrain = new ArrayMap<bool>(20, 20);
-            MazeGenerator.Generate(mazeTerrain);
+            BorderlessMazeGenerator.Generate(mazeTerrain);
             map.ApplyTerrainOverlay(mazeTerrain, new Coord(20, 20), SpawnDungeonTerrain);
 
             var spawnPosition = map.WalkabilityView.RandomPosition(true);
