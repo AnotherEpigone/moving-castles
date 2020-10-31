@@ -28,33 +28,47 @@ namespace MovingCastles.Ui.Consoles
 
             var continueButton = new SelectionButton(30, 1)
             {
-                Text = "Dungeon mode testarea",
+                IsEnabled = false,
+                Text = "Continue",
                 Position = new Point(67, 8),
             };
-            continueButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
 
             var newGameButton = new SelectionButton(30, 1)
             {
-                Text = "Castle mode testarea",
+                Text = "New Game",
                 Position = new Point(67, 10),
             };
             newGameButton.Click += (_, __) => gameManager.StartCastleModeDemo();
 
+            var dungeonModeButton = new SelectionButton(30, 1)
+            {
+                Text = "Dungeon mode testarea",
+                Position = new Point(67, 12),
+            };
+            dungeonModeButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
+
+            var castleModeButton = new SelectionButton(30, 1)
+            {
+                Text = "Castle mode testarea",
+                Position = new Point(67, 14),
+            };
+            castleModeButton.Click += (_, __) => gameManager.StartCastleModeDemo();
+
             var mapTestButton = new SelectionButton(30, 1)
             {
                 Text = "Map generation testarea",
-                Position = new Point(67, 12),
+                Position = new Point(67, 16),
             };
             mapTestButton.Click += (_, __) => gameManager.StartMapGenDemo();
 
             var exitButton = new SelectionButton(30, 1)
             {
                 Text = "Exit",
-                Position = new Point(67, 14),
+                Position = new Point(67, 18),
             };
             exitButton.Click += (_, __) => SadConsole.Game.Instance.Exit();
 
-            _menuConsole.SetupSelectionButtons(continueButton, newGameButton, mapTestButton, exitButton);
+            _menuConsole.SetupSelectionButtons(continueButton, newGameButton, dungeonModeButton, castleModeButton, mapTestButton, exitButton);
             _menuConsole.IsFocused = true;
 
             Children.Add(titleConsole);

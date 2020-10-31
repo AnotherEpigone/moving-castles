@@ -84,14 +84,17 @@ namespace MovingCastles.Maps
         {
             var map = new DungeonMap(width, height);
 
+            // blank canvas
             var emptyMapTerrain = new ArrayMap<bool>(map.Width, map.Height);
             QuickGenerators.GenerateRectangleMap(emptyMapTerrain);
             map.ApplyTerrainOverlay(emptyMapTerrain, SpawnOutdoorTerrain);
 
+            // add a 20x20 maze with an entrance
             var mazeTerrain = new ArrayMap<bool>(20, 20);
             BorderlessMazeGenerator.Generate(mazeTerrain);
             map.ApplyTerrainOverlay(mazeTerrain, new Coord(20, 20), SpawnDungeonTerrain);
 
+            // spawn player
             var spawnPosition = map.WalkabilityView.RandomPosition(true);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
