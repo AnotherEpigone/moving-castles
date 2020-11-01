@@ -1,5 +1,5 @@
-﻿using SadConsole;
-using SadConsole.Controls;
+﻿using MovingCastles.Ui.Controls;
+using SadConsole;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,17 +10,17 @@ namespace MovingCastles.Ui.Windows
         public McControlWindow(int width, int height)
             : base(width, height) { }
 
-        private Dictionary<SelectionButton, System.Action> _selectionButtons;
-        private SelectionButton _lastFocusedButton;
+        private Dictionary<McSelectionButton, System.Action> _selectionButtons;
+        private McSelectionButton _lastFocusedButton;
 
-        public void SetupSelectionButtons(params SelectionButton[] buttons)
+        public void SetupSelectionButtons(params McSelectionButton[] buttons)
         {
-            SetupSelectionButtons(new Dictionary<SelectionButton, System.Action>(buttons.Select(b => new KeyValuePair<SelectionButton, System.Action>(b, () => { }))));
+            SetupSelectionButtons(new Dictionary<McSelectionButton, System.Action>(buttons.Select(b => new KeyValuePair<McSelectionButton, System.Action>(b, () => { }))));
         }
 
-        public void SetupSelectionButtons(Dictionary<SelectionButton, System.Action> buttonSelectionActions)
+        public void SetupSelectionButtons(Dictionary<McSelectionButton, System.Action> buttonSelectionActions)
         {
-            _selectionButtons = new Dictionary<SelectionButton, System.Action>(buttonSelectionActions);
+            _selectionButtons = new Dictionary<McSelectionButton, System.Action>(buttonSelectionActions);
             if (_selectionButtons.Count < 1)
             {
                 return;
@@ -45,12 +45,19 @@ namespace MovingCastles.Ui.Windows
                 };
             }
 
-            FocusedControl = buttons[0];
+            if (buttons[0].IsEnabled)
+            {
+                FocusedControl = buttons[0];
+            }
+            else
+            {
+                buttons[0].SelectNext();
+            }
         }
 
         public override void Update(System.TimeSpan time)
         {
-            if (!(FocusedControl is SelectionButton focusedButton)
+            if (!(FocusedControl is McSelectionButton focusedButton)
                 || focusedButton == _lastFocusedButton)
             {
                 base.Update(time);

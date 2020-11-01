@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.GameSystems.Spells;
+using MovingCastles.Ui.Controls;
 using SadConsole;
 using SadConsole.Controls;
 using System.Collections.Generic;
@@ -86,7 +87,7 @@ namespace MovingCastles.Ui.Windows
             base.Show(true);
         }
 
-        private Dictionary<SelectionButton, System.Action> BuildSpellControls(IEnumerable<SpellTemplate> spells)
+        private Dictionary<McSelectionButton, System.Action> BuildSpellControls(IEnumerable<SpellTemplate> spells)
         {
             _hotkeys.Clear();
 
@@ -99,7 +100,7 @@ namespace MovingCastles.Ui.Windows
                         var hotkeyLetter = (char)('a' + yCount);
                         _hotkeys.Add(hotkeyLetter, i);
 
-                        var spellButton = new SelectionButton(SpellButtonWidth - 1, 1)
+                        var spellButton = new McSelectionButton(SpellButtonWidth - 1, 1)
                         {
                             Text = TextHelper.TruncateString($"{hotkeyLetter}. {i.Name}", SpellButtonWidth - 5),
                             Position = new Point(0, yCount++),

@@ -1,6 +1,8 @@
 ﻿using MovingCastles.GameSystems;
 using MovingCastles.Ui;
+using MovingCastles.Ui.Controls;
 using SadConsole;
+using SadConsole.Themes;
 using System;
 
 namespace MovingCastles
@@ -38,13 +40,14 @@ namespace MovingCastles
             Global.LoadFont(UiManager.TilesetFontPath);
 
             InitColors();
+            InitControls();
 
             _uiManager.ShowMainMenu(_gameManager);
         }
 
         private void InitColors()
         {
-            var colors = SadConsole.Themes.Library.Default.Colors;
+            var colors = Library.Default.Colors;
 
             colors.TitleText = colors.Orange;
 
@@ -66,6 +69,11 @@ namespace MovingCastles
             colors.ControlHostFore = colors.Text;
 
             colors.RebuildAppearances();
+        }
+
+        private void InitControls()
+        {
+            Library.Default.SetControlTheme(typeof(McSelectionButton), new ButtonTheme());
         }
 
         private void Dispose(bool disposing)

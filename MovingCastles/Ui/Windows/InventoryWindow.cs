@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.Ui.Controls;
 using SadConsole;
 using SadConsole.Controls;
 using System.Collections.Generic;
@@ -71,13 +72,13 @@ namespace MovingCastles.Ui.Windows
                     new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
         }
 
-        private Dictionary<SelectionButton, System.Action> BuildItemControls(IEnumerable<ItemTemplate> items)
+        private Dictionary<McSelectionButton, System.Action> BuildItemControls(IEnumerable<ItemTemplate> items)
         {
             var yCount = 0;
             return items.ToDictionary(
                 i =>
                 {
-                    return new SelectionButton(_itemButtonWidth - 1, 1)
+                    return new McSelectionButton(_itemButtonWidth - 1, 1)
                     {
                         Text = TextHelper.TruncateString(i.Name, _itemButtonWidth - 5),
                         Position = new Point(0, yCount++),
@@ -86,7 +87,7 @@ namespace MovingCastles.Ui.Windows
                 i => (System.Action)(() => OnItemSelected(i)));
         }
 
-        private void RefreshControls(Dictionary<SelectionButton, System.Action> buttons)
+        private void RefreshControls(Dictionary<McSelectionButton, System.Action> buttons)
         {
             RemoveAll();
 

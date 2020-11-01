@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.GameSystems;
+using MovingCastles.Ui.Controls;
 using SadConsole;
-using SadConsole.Controls;
 
 namespace MovingCastles.Ui.Windows
 {
@@ -24,7 +24,7 @@ namespace MovingCastles.Ui.Windows
 
             const string mainMenuText = "Exit to Main Menu";
             var mainMenuButtonWidth = mainMenuText.Length + 4;
-            var mainMenuButton = new SelectionButton(mainMenuButtonWidth, 1)
+            var mainMenuButton = new McSelectionButton(mainMenuButtonWidth, 1)
             {
                 Text = mainMenuText,
                 Position = new Point((Width / 2) - (mainMenuButtonWidth / 2), Height - 6),
@@ -37,7 +37,7 @@ namespace MovingCastles.Ui.Windows
 
             const string quitText = "Exit to Desktop";
             var quitButtonWidth = mainMenuText.Length + 4;
-            var quitButton = new SelectionButton(quitButtonWidth, 1)
+            var quitButton = new McSelectionButton(quitButtonWidth, 1)
             {
                 Text = quitText,
                 Position = new Point((Width / 2) - (quitButtonWidth / 2), Height - 4),
@@ -46,7 +46,7 @@ namespace MovingCastles.Ui.Windows
 
             const string closeText = "Close";
             var closeButtonWidth = closeText.Length + 4;
-            var closeButton = new SelectionButton(closeButtonWidth, 1)
+            var closeButton = new McSelectionButton(closeButtonWidth, 1)
             {
                 Text = closeText,
                 Position = new Point((Width / 2) - (closeButtonWidth / 2), Height - 2),
