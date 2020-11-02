@@ -62,5 +62,10 @@ namespace MovingCastles.Components
         {
             Health = System.Math.Min(MaxHealth, Health + healing);
         }
+
+        public void ApplyBaseRegen()
+        {
+            ApplyHealing(BaseRegen);
+        }
     }
 }

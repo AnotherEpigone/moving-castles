@@ -33,7 +33,11 @@ namespace MovingCastles.Components.AiComponents
             mcParent.Bumped += (_, __) => bumped = true;
             for ( int i = 0; i < walkSpeed; i++)
             {
-                GetDirectionAndMove(map, mcParent);
+                if (!TryGetDirectionAndMove(map, mcParent))
+                {
+                    return false;
+                }
+
                 if (bumped)
                 {
                     break;
@@ -43,16 +47,14 @@ namespace MovingCastles.Components.AiComponents
             return true;
         }
 
-        public void GetDirectionAndMove(DungeonMap map, McEntity mcParent)
+        public bool TryGetDirectionAndMove(DungeonMap map, McEntity mcParent)
         {
             var path = map.AStar.ShortestPath(Parent.Position, map.Player.Position);
 
             Direction direction;
             if (path == null || path.Length > _range)
             {
-                // can't reach player or player is far away, move randomly
-                var directionType = SadConsole.Global.Random.Next(0, 8);
-                direction = Direction.ToDirection((Direction.Types)directionType);
+                return false;
             }
             else
             {
@@ -60,6 +62,7 @@ namespace MovingCastles.Components.AiComponents
             }
 
             mcParent.Move(direction);
+            return true;
         }
     }
 }

@@ -39,16 +39,13 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         };
 
         private readonly ILogManager _logManager;
-        private readonly ICombat _combat;
 
         private Wizard _player;
 
         public TurnBasedGame(
-            ICombat combat,
             ILogManager logManager)
         {
             _logManager = logManager;
-            _combat = combat;
 
             State = State.PlayerTurn;
         }
@@ -65,7 +62,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 || info.IsKeyPressed(Keys.Z)
                 || info.IsKeyPressed(Keys.OemPeriod))
             {
-                _combat.Rest(_player);
+                _player.GetGoRogueComponent<IHealthComponent>()?.ApplyBaseRegen();
 
                 ProcessTurn();
                 return true;

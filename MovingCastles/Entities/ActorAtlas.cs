@@ -33,7 +33,9 @@ namespace MovingCastles.Entities
                 new HealthComponent(10),
                 new ActorStatComponent(1),
                 new MeleeAttackerComponent(5),
-                new WalkAtPlayerAiComponent(6),
+                new LinearCompositeAiComponent(
+                    new WalkAtPlayerAiComponent(6),
+                    new RandomWalkAiComponent()),
             });
 
         public static ActorTemplate GoblinArcher => new ActorTemplate(
@@ -48,7 +50,8 @@ namespace MovingCastles.Entities
                 new RangedAttackerComponent(5, 4),
                 new LinearCompositeAiComponent(
                     new RangedAttackAiComponent(),
-                    new WalkAtPlayerAiComponent(6)),
+                    new WalkAtPlayerAiComponent(6),
+                    new RandomWalkAiComponent()),
             });
 
         public static ActorTemplate Warg => new ActorTemplate(
@@ -61,7 +64,9 @@ namespace MovingCastles.Entities
                 new HealthComponent(10),
                 new ActorStatComponent(2),
                 new MeleeAttackerComponent(5),
-                new WalkAtPlayerAiComponent(6),
+                new LinearCompositeAiComponent(
+                    new WalkAtPlayerAiComponent(6),
+                    new RandomWalkAiComponent()),
             });
     }
 }

@@ -1,7 +1,5 @@
-﻿using MovingCastles.Entities;
-using MovingCastles.GameSystems;
+﻿using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.TurnBasedGame;
 using MovingCastles.Maps;
 using MovingCastles.Ui.Consoles;
@@ -37,7 +35,7 @@ namespace MovingCastles.Ui
             DungeonMap map,
             Font tilesetFont)
         {
-            var game = new TurnBasedGame(new Combat(), _logManager);
+            var game = new TurnBasedGame(_logManager);
             return new DungeonModeConsole(
                 ViewPortWidth,
                 ViewPortHeight,

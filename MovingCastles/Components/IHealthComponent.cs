@@ -14,5 +14,6 @@ namespace MovingCastles.Components
 
         void ApplyDamage(float damage, ILogManager logManager);
         void ApplyHealing(float healing);
+        void ApplyBaseRegen();
     }
 }
