@@ -10,12 +10,13 @@ namespace MovingCastles.Components
         private float _health;
 
         public HealthComponent(float maxHealth)
-            : this(maxHealth, maxHealth) { }
+            : this(maxHealth, maxHealth, 1) { }
 
-        public HealthComponent(float maxHealth, float health)
+        public HealthComponent(float maxHealth, float health, float baseRegen)
         {
             MaxHealth = maxHealth;
             Health = health;
+            BaseRegen = baseRegen;
         }
 
         /// <summary>
@@ -44,6 +45,8 @@ namespace MovingCastles.Components
         public float MaxHealth { get; }
 
         public bool Dead => Health < 0.001;
+
+        public float BaseRegen { get; }
 
         public void ApplyDamage(float damage, ILogManager logManager)
         {

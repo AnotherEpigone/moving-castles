@@ -37,7 +37,7 @@ namespace MovingCastles.Ui
             DungeonMap map,
             Font tilesetFont)
         {
-            var game = new TurnBasedGame(_logManager);
+            var game = new TurnBasedGame(new Combat(), _logManager);
             return new DungeonModeConsole(
                 ViewPortWidth,
                 ViewPortHeight,

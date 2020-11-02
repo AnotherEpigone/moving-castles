@@ -39,13 +39,17 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         };
 
         private readonly ILogManager _logManager;
+        private readonly ICombat _combat;
 
         private Wizard _player;
 
         public TurnBasedGame(
+            ICombat combat,
             ILogManager logManager)
         {
             _logManager = logManager;
+            _combat = combat;
+
             State = State.PlayerTurn;
         }
 
@@ -57,6 +61,16 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         public bool HandleAsPlayerInput(SadConsole.Input.Keyboard info)
         {
+            if (info.IsKeyPressed(Keys.NumPad5)
+                || info.IsKeyPressed(Keys.Z)
+                || info.IsKeyPressed(Keys.OemPeriod))
+            {
+                _combat.Rest(_player);
+
+                ProcessTurn();
+                return true;
+            }
+
             foreach (Keys key in MovementDirectionMapping.Keys)
             {
                 if (info.IsKeyPressed(key))

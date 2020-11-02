@@ -36,7 +36,7 @@ namespace MovingCastles.Entities
                 SpellAtlas.ConjureFlame,
                 SpellAtlas.RayOfFrost,
                 SpellAtlas.EtherealStep));
-            AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health));
+            AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health, 1));
             AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
         }
     }
