@@ -96,8 +96,8 @@ namespace MovingCastles.Maps
 
             // add a 20x20 forest, hopefully with a path through it (a path! a path!)
             var forestPathTerrain = new ArrayMap<bool>(20, 20);
-            new ForestPathGenerator().Generate(forestPathTerrain);
-            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(24, 2), SpawnOutdoorTerrain);
+            new TwoEntranceMazeGenerator().Generate(forestPathTerrain);
+            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(25, 2), SpawnOutdoorTerrain);
 
             // spawn player
             var spawnPosition = new Coord(23, 1);

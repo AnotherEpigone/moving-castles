@@ -9,15 +9,15 @@ using Troschuetz.Random;
 
 namespace MovingCastles.Maps.Generation
 {
-    public class ForestPathGenerator
+    public class TwoEntranceMazeGenerator
     {
         private readonly int _crawlerChangeDirectionIncrease;
         private readonly IGenerator _rng;
 
-        public ForestPathGenerator()
+        public TwoEntranceMazeGenerator()
             : this(SingletonRandom.DefaultRNG, 10) { }
 
-        public ForestPathGenerator(
+        public TwoEntranceMazeGenerator(
             IGenerator rng,
             int crawlerChangeDirectionIncrease)
         {
@@ -42,15 +42,6 @@ namespace MovingCastles.Maps.Generation
             crawler.Crawl(nextStartPos, map);
 
             nextStartPos = EmptyTileFinder.Find(map, _rng);
-
-            while (nextStartPos != Coord.NONE)
-            {
-                crawler = new Crawler(_rng, _crawlerChangeDirectionIncrease);
-                crawlers.Add(crawler);
-                crawler.Crawl(nextStartPos, map);
-
-                nextStartPos = EmptyTileFinder.Find(map, _rng);
-            }
 
             return crawlers.Select(c => c.AllPositions).Where(a => a.Count != 0);
         }
