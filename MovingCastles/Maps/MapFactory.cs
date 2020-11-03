@@ -92,15 +92,15 @@ namespace MovingCastles.Maps
             // add a 20x20 maze with an entrance
             var mazeTerrain = new ArrayMap<bool>(20, 20);
             new BorderlessMazeGenerator().Generate(mazeTerrain);
-            map.ApplyTerrainOverlay(mazeTerrain, new Coord(20, 20), SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(mazeTerrain, new Coord(2, 2), SpawnDungeonTerrain);
 
             // add a 20x20 forest, hopefully with a path through it (a path! a path!)
             var forestPathTerrain = new ArrayMap<bool>(20, 20);
-            new BorderlessMazeGenerator().Generate(forestPathTerrain);
-            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(50, 20), SpawnOutdoorTerrain);
+            new ForestPathGenerator().Generate(forestPathTerrain);
+            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(24, 2), SpawnOutdoorTerrain);
 
             // spawn player
-            var spawnPosition = map.WalkabilityView.RandomPosition(true);
+            var spawnPosition = new Coord(23, 1);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 
