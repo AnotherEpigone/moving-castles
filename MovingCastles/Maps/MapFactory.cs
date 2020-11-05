@@ -99,8 +99,13 @@ namespace MovingCastles.Maps
             new TwoEntranceMazeGenerator().Generate(forestPathTerrain);
             map.ApplyTerrainOverlay(forestPathTerrain, new Coord(25, 2), SpawnOutdoorTerrain);
 
+            // add a 30x30 dungeon with rooms
+            var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
+            new RoomFiller().Generate(roomDungeonTerrain, 10, 3, 3);
+            map.ApplyTerrainOverlay(roomDungeonTerrain, new Coord(2, 25), SpawnDungeonTerrain);
+
             // spawn player
-            var spawnPosition = new Coord(23, 1);
+            var spawnPosition = new Coord(17, 55);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 
