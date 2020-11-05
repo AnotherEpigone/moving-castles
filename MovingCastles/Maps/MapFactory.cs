@@ -103,10 +103,16 @@ namespace MovingCastles.Maps
             var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
             var rooms = new RoomFiller().Generate(roomDungeonTerrain, 10, 3, 3);
             var doors = new DoorGenerator().Generate(roomDungeonTerrain, rooms);
-            map.ApplyTerrainOverlay(roomDungeonTerrain, new Coord(2, 25), SpawnDungeonTerrain);
+            var roomDungeonOffset = new Coord(2, 25);
+            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, SpawnDungeonTerrain);
+
+            foreach (var door in doors)
+            {
+                map.AddEntity(_entityFactory.CreateDoor(door + roomDungeonOffset));
+            }
 
             // spawn player
-            var spawnPosition = new Coord(17, 55);
+            var spawnPosition = roomDungeonOffset + new Coord(1, 1); //new Coord(17, 55);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 

@@ -6,6 +6,10 @@ using Troschuetz.Random;
 
 namespace MovingCastles.Maps.Generation
 {
+    /// <summary>
+    /// Basic door generator.
+    /// Carves a door into every shared wall between any two rooms.
+    /// </summary>
     public class DoorGenerator
     {
         private readonly IGenerator _rng;

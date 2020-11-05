@@ -10,5 +10,6 @@ namespace MovingCastles.Entities
         McEntity CreateItem(Coord position, ItemTemplate itemTemplate);
         Wizard CreatePlayer(Coord position, Player playerInfo);
         Castle CreateCastle(Coord position, Player playerInfo);
+        McEntity CreateDoor(Coord position);
     }
 }
