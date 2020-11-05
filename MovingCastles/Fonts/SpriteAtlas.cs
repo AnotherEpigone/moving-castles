@@ -14,5 +14,9 @@
         public const int Goblin = 16;
         public const int Warg = 17;
         public const int GoblinArcher = 18;
+        public const int Gound_LongGrass = 21;
+        public const int Gound_LongGrassFlowers = 22;
+        public const int Door_Wood_Closed = 23;
+        public const int Door_Wood_Open = 24;
     }
 }

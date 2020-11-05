@@ -101,7 +101,8 @@ namespace MovingCastles.Maps
 
             // add a 30x30 dungeon with rooms
             var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
-            new RoomFiller().Generate(roomDungeonTerrain, 10, 3, 3);
+            var rooms = new RoomFiller().Generate(roomDungeonTerrain, 10, 3, 3);
+            var doors = new DoorGenerator().Generate(roomDungeonTerrain, rooms);
             map.ApplyTerrainOverlay(roomDungeonTerrain, new Coord(2, 25), SpawnDungeonTerrain);
 
             // spawn player

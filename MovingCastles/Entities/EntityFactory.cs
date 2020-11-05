@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
@@ -65,6 +66,28 @@ namespace MovingCastles.Entities
             item.OnCalculateRenderPosition();
 
             return item;
+        }
+
+        public McEntity CreateDoor(Coord position)
+        {
+            var door = new McEntity(
+                    "Door",
+                    Color.White,
+                    Color.Transparent,
+                    SpriteAtlas.Door_Wood_Closed,
+                    position,
+                    (int)Maps.DungeonMapLayer.ITEMS,
+                    isWalkable: false,
+                    isTransparent: true,
+                    Color.SaddleBrown);
+
+            // TODO door component
+
+            // workaround Entity construction bugs by setting font afterward
+            door.Font = _font;
+            door.OnCalculateRenderPosition();
+
+            return door;
         }
 
         public Wizard CreatePlayer(Coord position, Player playerInfo)
