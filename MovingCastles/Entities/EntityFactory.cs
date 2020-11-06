@@ -1,8 +1,6 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
-using MovingCastles.Components.AiComponents;
-using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;

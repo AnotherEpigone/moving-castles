@@ -15,7 +15,7 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             _damage = damage;
         }
 
-        public void Apply(McEntity caster, DungeonMap map, Coord targetCoord, ILogManager logManager)
+        public void Apply(McEntity caster, SpellTemplate spell, DungeonMap map, Coord targetCoord, ILogManager logManager)
         {
             var target = map.GetEntity<McEntity>(targetCoord);
             var targetHealth = target?.GetGoRogueComponent<IHealthComponent>();
@@ -24,6 +24,7 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
                 return;
             }
 
+            logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {target.ColoredName} for {_damage:F0} damage.");
             targetHealth.ApplyDamage(_damage, logManager);
         }
     }

@@ -7,8 +7,9 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
 {
     public class TeleportToTargetSpellEffect : ISpellEffect
     {
-        public void Apply(McEntity caster, DungeonMap map, Coord targetCoord, ILogManager logManager)
+        public void Apply(McEntity caster, SpellTemplate spell, DungeonMap map, Coord targetCoord, ILogManager logManager)
         {
+            logManager.EventLog($"{caster.ColoredName} teleported using {spell.Name}.");
             caster.Position = targetCoord;
         }
     }

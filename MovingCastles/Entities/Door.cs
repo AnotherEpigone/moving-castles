@@ -20,7 +20,7 @@ namespace MovingCastles.Entities
                   Color.Transparent,
                   SpriteAtlas.Door_Wood_Closed,
                   position,
-                  (int)DungeonMapLayer.ITEMS,
+                  (int)DungeonMapLayer.DOODADS,
                   isWalkable: false,
                   isTransparent: false,
                   Color.SaddleBrown)

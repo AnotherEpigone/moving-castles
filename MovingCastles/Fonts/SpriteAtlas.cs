@@ -18,5 +18,6 @@
         public const int Gound_LongGrassFlowers = 22;
         public const int Door_Wood_Closed = 23;
         public const int Door_Wood_Open = 24;
+        public const int Trapdoor_Wood = 25;
     }
 }

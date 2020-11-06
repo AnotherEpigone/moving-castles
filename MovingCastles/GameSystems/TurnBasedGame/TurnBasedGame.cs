@@ -132,7 +132,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         {
             foreach (var effect in TargettingSpell.Effects)
             {
-                effect.Apply(_player, Map, mapCoord, _logManager);
+                effect.Apply(_player, TargettingSpell, Map, mapCoord, _logManager);
             }
 
             TargettingSpell = null;

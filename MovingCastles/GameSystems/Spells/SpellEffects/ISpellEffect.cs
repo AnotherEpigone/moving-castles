@@ -7,6 +7,6 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
 {
     public interface ISpellEffect
     {
-        void Apply(McEntity caster, DungeonMap map, Coord targetCoord, ILogManager logManager);
+        void Apply(McEntity caster, SpellTemplate spell, DungeonMap map, Coord targetCoord, ILogManager logManager);
     }
 }

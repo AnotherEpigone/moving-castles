@@ -30,7 +30,7 @@ namespace MovingCastles.Components
 
             var fov = new FOV(map.TransparencyView);
 
-            // replace 5 with vision radius
+            // TODO replace 5 with vision radius
             fov.Calculate(Parent.Position, 5);
             if (!fov.BooleanFOV[map.Player.Position])
             {

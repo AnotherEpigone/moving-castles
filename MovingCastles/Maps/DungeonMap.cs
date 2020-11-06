@@ -12,6 +12,7 @@ namespace MovingCastles.Maps
     internal enum DungeonMapLayer
     {
         TERRAIN,
+        DOODADS,
         ITEMS,
         MONSTERS,
         PLAYER
