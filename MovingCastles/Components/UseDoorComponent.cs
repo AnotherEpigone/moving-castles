@@ -4,18 +4,18 @@ using MovingCastles.Entities;
 
 namespace MovingCastles.Components
 {
-    public class OpenDoorComponent : IBumpTriggeredComponent
+    public class UseDoorComponent : IInteractTriggeredComponent
     {
         public IGameObject Parent { get; set; }
 
-        public void Bump(McEntity bumpingEntity)
+        public void Interact(McEntity interactingEntity)
         {
             if (!(Parent is Door door))
             {
                 return;
             }
 
-            door.Open();
+            door.Toggle();
         }
     }
 }

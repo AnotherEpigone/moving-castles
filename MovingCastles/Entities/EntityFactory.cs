@@ -70,34 +70,7 @@ namespace MovingCastles.Entities
 
         public McEntity CreateDoor(Coord position)
         {
-            var door = new McEntity(
-                    "Door",
-                    Color.White,
-                    Color.Transparent,
-                    SpriteAtlas.Door_Wood_Closed,
-                    position,
-                    (int)Maps.DungeonMapLayer.ITEMS,
-                    isWalkable: false,
-                    isTransparent: true,
-                    Color.SaddleBrown);
-
-            // door open/close animations
-            var closedAnimation = new AnimatedConsole(OpenDoorComponent.CloseAnimationKey, 1, 1, _font);
-            closedAnimation.CreateFrame().SetGlyph(0, 0, SpriteAtlas.Door_Wood_Closed, Color.White, Color.Transparent);
-            var openAnimation = new AnimatedConsole(OpenDoorComponent.OpenAnimationKey, 1, 1, _font);
-            openAnimation.CreateFrame().SetGlyph(0, 0, SpriteAtlas.Door_Wood_Open, Color.White, Color.Transparent);
-            door.Animations.Clear();
-            door.Animations.Add(OpenDoorComponent.CloseAnimationKey, closedAnimation);
-            door.Animations.Add(OpenDoorComponent.OpenAnimationKey, openAnimation);
-            door.Animation = door.Animations[OpenDoorComponent.CloseAnimationKey];
-
-            door.AddGoRogueComponent(new OpenDoorComponent(SpriteAtlas.Door_Wood_Open));
-
-            // workaround Entity construction bugs by setting font afterward
-            door.Font = _font;
-            door.OnCalculateRenderPosition();
-
-            return door;
+            return new Door(position, _font);
         }
 
         public Wizard CreatePlayer(Coord position, Player playerInfo)

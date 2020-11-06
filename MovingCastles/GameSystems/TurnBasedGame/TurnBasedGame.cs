@@ -8,7 +8,6 @@ using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
-using SadConsole;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -69,6 +68,14 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 return true;
             }
 
+            if (info.IsKeyPressed(Keys.E)
+                || info.IsKeyPressed(Keys.Enter))
+            {
+                Interact();
+                ProcessTurn();
+                return true;
+            }
+
             foreach (Keys key in MovementDirectionMapping.Keys)
             {
                 if (info.IsKeyPressed(key))
@@ -81,6 +88,25 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             }
 
             return false;
+        }
+
+        private void Interact()
+        {
+            var components = new List<IInteractTriggeredComponent>();
+            var points = AdjacencyRule.EIGHT_WAY.Neighbors(_player.Position);
+            foreach (var point in points)
+            {
+                components.AddRange(Map.GetEntities<McEntity>(point)
+                    .SelectMany(e => e.GetGoRogueComponents<IInteractTriggeredComponent>()));
+            }
+
+            // TODO select which thing to interact with...
+            if (components.Count == 0)
+            {
+                return;
+            }
+
+            components.First().Interact(_player);
         }
 
         public void RegisterPlayer(Wizard player)
@@ -121,6 +147,8 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private void ProcessTurn()
         {
+            Map.CalculateFOV(_player.Position, _player.FOVRadius, Radius.SQUARE);
+
             State = State.Processing;
             foreach (var entity in Map.Entities.Items.OfType<McEntity>().ToList())
             {
