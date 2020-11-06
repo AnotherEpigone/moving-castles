@@ -1,4 +1,5 @@
-﻿using MovingCastles.GameSystems.Items;
+﻿using MovingCastles.Components.Triggers;
+using MovingCastles.GameSystems.Items;
 using System.Collections.Generic;
 
 namespace MovingCastles.Components

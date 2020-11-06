@@ -81,7 +81,17 @@ namespace MovingCastles.Entities
                     isTransparent: true,
                     Color.SaddleBrown);
 
-            // TODO door component
+            // door open/close animations
+            var closedAnimation = new AnimatedConsole(OpenDoorComponent.CloseAnimationKey, 1, 1, _font);
+            closedAnimation.CreateFrame().SetGlyph(0, 0, SpriteAtlas.Door_Wood_Closed, Color.White, Color.Transparent);
+            var openAnimation = new AnimatedConsole(OpenDoorComponent.OpenAnimationKey, 1, 1, _font);
+            openAnimation.CreateFrame().SetGlyph(0, 0, SpriteAtlas.Door_Wood_Open, Color.White, Color.Transparent);
+            door.Animations.Clear();
+            door.Animations.Add(OpenDoorComponent.CloseAnimationKey, closedAnimation);
+            door.Animations.Add(OpenDoorComponent.OpenAnimationKey, openAnimation);
+            door.Animation = door.Animations[OpenDoorComponent.CloseAnimationKey];
+
+            door.AddGoRogueComponent(new OpenDoorComponent(SpriteAtlas.Door_Wood_Open));
 
             // workaround Entity construction bugs by setting font afterward
             door.Font = _font;

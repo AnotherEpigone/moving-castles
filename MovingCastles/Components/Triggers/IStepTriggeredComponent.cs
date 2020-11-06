@@ -1,10 +1,10 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.Entities;
 
-namespace MovingCastles.Components
+namespace MovingCastles.Components.Triggers
 {
     public interface IStepTriggeredComponent : IGameObjectComponent
     {
-        public void OnStep(McEntity steppingEntity);
+        void OnStep(McEntity steppingEntity);
     }
 }

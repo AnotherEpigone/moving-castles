@@ -3,6 +3,7 @@ using GoRogue.GameFramework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Spells;
@@ -141,10 +142,23 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)
         {
+            var bumpTriggeredComponent = Map.GetEntities<McEntity>(e.NewPosition)
+                    .SelectMany(e =>
+                    {
+                        if (!(e is IHasComponents entity))
+                        {
+                            return new IBumpTriggeredComponent[0];
+                        }
+
+                        return entity.GetComponents<IBumpTriggeredComponent>();
+                    })
+                    .FirstOrDefault();
+            bumpTriggeredComponent?.Bump(e.Item);
+
             var meleeAttackComponent = e.Item.GetGoRogueComponent<IMeleeAttackerComponent>();
             if (meleeAttackComponent != null)
             {
-                var healthComponent = Map.GetEntities<BasicEntity>(e.NewPosition)
+                var healthComponent = Map.GetEntities<McEntity>(e.NewPosition)
                     .SelectMany(e =>
                     {
                         if (!(e is IHasComponents entity))
