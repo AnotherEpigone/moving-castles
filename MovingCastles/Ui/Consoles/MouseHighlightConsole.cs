@@ -27,7 +27,7 @@ namespace MovingCastles.Ui.Consoles
             _map = map;
         }
 
-        public void Draw(MouseConsoleState state, Point mapPos)
+        public void Draw(MouseConsoleState state, Point mapPos, bool positionIsTargetable)
         {
             if (!IsVisible)
             {
@@ -43,7 +43,7 @@ namespace MovingCastles.Ui.Consoles
                     SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.WhiteHighlight);
                     break;
                 case State.Targetting:
-                    DrawTargettingMode(mousePos, _map.Player.Position, mapPos, _game.TargettingSpell.TargettingStyle);
+                    DrawTargettingMode(mousePos, _map.Player.Position, mapPos, _game.TargettingSpell.TargettingStyle, positionIsTargetable);
                     break;
                 case State.Processing:
                 default:
@@ -51,8 +51,13 @@ namespace MovingCastles.Ui.Consoles
             }
         }
 
-        private void DrawTargettingMode(Point mousePos, Point playerPos, Point mapPos, ITargettingStyle targettingStyle)
+        private void DrawTargettingMode(Point mousePos, Point playerPos, Point mapPos, ITargettingStyle targettingStyle, bool positionIsTargetable)
         {
+            if (!positionIsTargetable)
+            {
+                return;
+            }
+
             switch (targettingStyle.TargetMode)
             {
                 case TargetMode.SingleTarget:
