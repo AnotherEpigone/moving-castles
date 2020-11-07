@@ -2,6 +2,7 @@
 using GoRogue.MapViews;
 using GoRogue.Random;
 using System.Collections.Generic;
+using System.Linq;
 using Troschuetz.Random;
 
 namespace MovingCastles.Maps.Generation
@@ -13,29 +14,41 @@ namespace MovingCastles.Maps.Generation
     public class DoorGenerator
     {
         private readonly IGenerator _rng;
+        private readonly float _roomSkipChance;
+        private readonly float _doorSkipChance;
 
         public DoorGenerator()
-            : this(SingletonRandom.DefaultRNG) { }
+            : this(0.5f, 0.5f, SingletonRandom.DefaultRNG) { }
 
-        public DoorGenerator(IGenerator rng)
+        public DoorGenerator(float roomSkipChance, float doorSkipChance, IGenerator rng)
         {
             _rng = rng;
+            _roomSkipChance = roomSkipChance;
+            _doorSkipChance = doorSkipChance;
         }
 
         public IList<Coord> Generate(ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
         {
             var doors = new List<Coord>();
             var roomsToCheck = new List<Rectangle>(rooms);
+            var hasDoors = rooms.ToDictionary(
+                r => r.Position,
+                _ => false); // key: roomPos
             foreach (var room in rooms)
             {
                 roomsToCheck.Remove(room);
-                foreach (var neighbor in roomsToCheck)
+                if (hasDoors[room.Position] && _rng.NextDouble() < _roomSkipChance)
                 {
-                    var intersection = GetWallIntersection(room, neighbor);
-                    if (!intersection.IsEmpty)
-                    {
-                        doors.Add(GetDoorInWall(intersection));
-                    }
+                    continue;
+                }
+
+                AddDoors(room, roomsToCheck, hasDoors, doors);
+
+                // fallback in case the only neighbor was skipped
+                // scan all neighbors for a door
+                if (!hasDoors[room.Position])
+                {
+                    AddDoors(room, rooms, hasDoors, doors);
                 }
             }
 
@@ -46,6 +59,25 @@ namespace MovingCastles.Maps.Generation
             }
 
             return doors;
+        }
+
+        private void AddDoors(Rectangle room, IEnumerable<Rectangle> rooms, IDictionary<Coord, bool> hasDoors, List<Coord> doors)
+        {
+            foreach (var neighbor in rooms)
+            {
+                if (hasDoors[room.Position] && _rng.NextDouble() < _doorSkipChance)
+                {
+                    continue;
+                }
+
+                var intersection = GetWallIntersection(room, neighbor);
+                if (!intersection.IsEmpty)
+                {
+                    doors.Add(GetDoorInWall(intersection));
+                    hasDoors[room.Position] = true;
+                    hasDoors[neighbor.Position] = true;
+                }
+            }
         }
 
         private Coord GetDoorInWall(Rectangle wall)
