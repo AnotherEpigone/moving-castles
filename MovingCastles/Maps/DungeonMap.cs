@@ -9,10 +9,11 @@ using SadConsole;
 
 namespace MovingCastles.Maps
 {
-    internal enum DungeonMapLayer
+    public enum DungeonMapLayer
     {
         TERRAIN,
         DOODADS,
+        GHOSTS,
         ITEMS,
         MONSTERS,
         PLAYER
@@ -28,11 +29,15 @@ namespace MovingCastles.Maps
                   height,
                   Enum.GetNames(typeof(DungeonMapLayer)).Length - 1,
                   Distance.CHEBYSHEV,
-                  entityLayersSupportingMultipleItems: LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.ITEMS))
+                  entityLayersSupportingMultipleItems: LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.ITEMS, (int)DungeonMapLayer.GHOSTS))
         {
             // Note that passing *this* into the FOV handler sets up all kinds of FOV stuff in gorogue.
             // don't remove even if the property isn't used.
-            FovVisibilityHandler = new DefaultFOVVisibilityHandler(this, ColorAnsi.BlackBright);
+            FovVisibilityHandler = new McFovVisibilityHandler(
+                this,
+                ColorAnsi.BlackBright,
+                LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.ITEMS, (int)DungeonMapLayer.DOODADS),
+                (int)DungeonMapLayer.GHOSTS);
             _player = new Lazy<Wizard>(() => Entities.Items.OfType<Wizard>().First());
         }
 
