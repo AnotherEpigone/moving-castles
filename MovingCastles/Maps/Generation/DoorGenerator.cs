@@ -16,18 +16,45 @@ namespace MovingCastles.Maps.Generation
         private readonly IGenerator _rng;
         private readonly float _roomSkipChance;
         private readonly float _doorSkipChance;
+        private readonly int _maxWalkabilityDistance;
 
         public DoorGenerator()
-            : this(0.5f, 0.5f, SingletonRandom.DefaultRNG) { }
+            : this(0.6f, 0.8f, 50, SingletonRandom.DefaultRNG) { }
 
-        public DoorGenerator(float roomSkipChance, float doorSkipChance, IGenerator rng)
+        public DoorGenerator(float roomSkipChance, float doorSkipChance, int maxWalkabilityDistance, IGenerator rng)
         {
             _rng = rng;
             _roomSkipChance = roomSkipChance;
             _doorSkipChance = doorSkipChance;
+            _maxWalkabilityDistance = maxWalkabilityDistance;
         }
 
-        public IList<Coord> Generate(ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
+        public IList<Coord> GenerateForWalkability(
+            McMap map,
+            ISettableMapView<bool> mapView,
+            Coord mapViewOffset,
+            IEnumerable<Rectangle> rooms)
+        {
+            var doors = new List<Coord>();
+            var roomsToCheck = new List<Rectangle>(rooms);
+
+            foreach (var room in rooms)
+            {
+                roomsToCheck.Remove(room);
+
+                doors.AddRange(AddDoorsForWalkability(room, roomsToCheck, map, mapViewOffset));
+            }
+
+            // carve
+            foreach (var door in doors)
+            {
+                mapView[door] = true;
+            }
+
+            return doors;
+        }
+
+        public IList<Coord> GenerateRandom(ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
         {
             var doors = new List<Coord>();
             var roomsToCheck = new List<Rectangle>(rooms);
@@ -42,13 +69,13 @@ namespace MovingCastles.Maps.Generation
                     continue;
                 }
 
-                AddDoors(room, roomsToCheck, hasDoors, doors);
+                AddRandomDoors(room, roomsToCheck, hasDoors, doors);
 
                 // fallback in case the only neighbor was skipped
                 // scan all neighbors for a door
                 if (!hasDoors[room.Position])
                 {
-                    AddDoors(room, rooms, hasDoors, doors);
+                    AddRandomDoors(room, rooms, hasDoors, doors);
                 }
             }
 
@@ -61,7 +88,7 @@ namespace MovingCastles.Maps.Generation
             return doors;
         }
 
-        private void AddDoors(Rectangle room, IEnumerable<Rectangle> rooms, IDictionary<Coord, bool> hasDoors, List<Coord> doors)
+        private void AddRandomDoors(Rectangle room, IEnumerable<Rectangle> rooms, IDictionary<Coord, bool> hasDoors, List<Coord> doors)
         {
             foreach (var neighbor in rooms)
             {
@@ -70,50 +97,77 @@ namespace MovingCastles.Maps.Generation
                     continue;
                 }
 
-                var intersection = GetWallIntersection(room, neighbor);
+                var (intersection, _) = GetWallIntersection(room, neighbor);
                 if (!intersection.IsEmpty)
                 {
-                    doors.Add(GetDoorInWall(intersection));
+                    doors.Add(GetRandomPointInWall(intersection));
                     hasDoors[room.Position] = true;
                     hasDoors[neighbor.Position] = true;
                 }
             }
         }
 
-        private Coord GetDoorInWall(Rectangle wall)
+        private Coord GetRandomPointInWall(Rectangle wall)
         {
             return wall.Width == 1
                 ? new Coord(wall.X, wall.Y + _rng.Next(wall.Height))
                 : new Coord(wall.X + _rng.Next(wall.Width), wall.Y);
         }
 
-        private Rectangle GetWallIntersection(Rectangle room1, Rectangle room2)
+        private List<Coord> AddDoorsForWalkability(Rectangle room, IEnumerable<Rectangle> rooms, McMap map, Coord mapViewOffset)
+        {
+            List<Coord> doors = new List<Coord>();
+            foreach (var neighbor in rooms)
+            {
+                var (intersection, vertical) = GetWallIntersection(room, neighbor);
+                if (!intersection.IsEmpty && !intersection.Positions().Any(p => map.WalkabilityView[p + mapViewOffset]))
+                {
+                    var intersectionPoint = GetRandomPointInWall(intersection);
+                    var start = vertical
+                        ? new Coord(intersectionPoint.X + 1, intersectionPoint.Y) + mapViewOffset
+                        : new Coord(intersectionPoint.X, intersectionPoint.Y + 1) + mapViewOffset;
+                    var end = vertical
+                        ? new Coord(intersectionPoint.X - 1, intersectionPoint.Y) + mapViewOffset
+                        : new Coord(intersectionPoint.X, intersectionPoint.Y - 1) + mapViewOffset;
+
+                    var distance = map.AStar.ShortestPath(start, end)?.Length ?? double.MaxValue;
+                    if (distance > _maxWalkabilityDistance)
+                    {
+                        doors.Add(intersectionPoint);
+                    }
+                }
+            }
+
+            return doors;
+        }
+
+        private (Rectangle, bool) GetWallIntersection(Rectangle room1, Rectangle room2)
         {
             var intersection = Rectangle.GetIntersection(TopWall(room1), BottomWall(room2));
             if (!intersection.IsEmpty)
             {
-                return intersection;
+                return (intersection, false);
             }
 
             intersection = Rectangle.GetIntersection(BottomWall(room1), TopWall(room2));
             if (!intersection.IsEmpty)
             {
-                return intersection;
+                return (intersection, false);
             }
 
             intersection = Rectangle.GetIntersection(RightWall(room1), LeftWall(room2));
             if (!intersection.IsEmpty)
             {
-                return intersection;
+                return (intersection, true);
             }
 
             intersection = Rectangle.GetIntersection(LeftWall(room1), RightWall(room2));
             if (!intersection.IsEmpty)
             {
-                return intersection;
+                return (intersection, true);
             }
 
-            return Rectangle.EMPTY;
+            return (Rectangle.EMPTY, false);
         }
 
         private Rectangle TopWall(Rectangle room) => new Rectangle(room.X, room.Y - 1, room.Width, 1);

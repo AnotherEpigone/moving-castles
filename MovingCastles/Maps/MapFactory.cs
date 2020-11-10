@@ -102,11 +102,16 @@ namespace MovingCastles.Maps
             // add a 30x30 dungeon with rooms
             var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
             var rooms = new RoomFiller().Generate(roomDungeonTerrain, 10, 3, 3);
-            var doors = new DoorGenerator().Generate(roomDungeonTerrain, rooms);
             var roomDungeonOffset = new Coord(2, 25);
+            var doorGen = new DoorGenerator();
+            var doorsRound1 = doorGen.GenerateRandom(roomDungeonTerrain, rooms);
             map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, SpawnDungeonTerrain);
 
-            foreach (var door in doors)
+            // extra doors to ensure walkability
+            var doorsRound2 = doorGen.GenerateForWalkability(map, roomDungeonTerrain, roomDungeonOffset, rooms);
+            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, SpawnDungeonTerrain);
+
+            foreach (var door in doorsRound1.Concat(doorsRound2))
             {
                 map.AddEntity(_entityFactory.CreateDoor(door + roomDungeonOffset));
             }
