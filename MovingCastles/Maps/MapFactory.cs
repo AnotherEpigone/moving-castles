@@ -1,7 +1,6 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using GoRogue.MapGeneration;
-using GoRogue.MapGeneration.Generators;
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using MovingCastles.Entities;
@@ -116,8 +115,14 @@ namespace MovingCastles.Maps
                 map.AddEntity(_entityFactory.CreateDoor(door + roomDungeonOffset));
             }
 
+            // spawn a trapdoor
+            var roomDungeonRect = new GoRogue.Rectangle(roomDungeonOffset.X, roomDungeonOffset.Y, roomDungeonTerrain.Width, roomDungeonTerrain.Height);
+            var spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
+            var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
+            map.AddEntity(trapdoor);
+
             // spawn player
-            var spawnPosition = roomDungeonOffset + new Coord(1, 1); //new Coord(17, 55);
+            spawnPosition = spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 

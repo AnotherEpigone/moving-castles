@@ -66,6 +66,27 @@ namespace MovingCastles.Entities
             return item;
         }
 
+        public McEntity CreateDoodad(Coord position, DoodadTemplate template)
+        {
+            var doodad = new McEntity(
+                    template.Name,
+                    Color.White,
+                    Color.Transparent,
+                    template.Glyph,
+                    position,
+                    (int)Maps.DungeonMapLayer.DOODADS,
+                    isWalkable: template.Walkable,
+                    isTransparent: template.Transparent,
+                    template.NameColor);
+            doodad.AddGoRogueComponent(new SummaryControlComponent());
+
+            // workaround Entity construction bugs by setting font afterward
+            doodad.Font = _font;
+            doodad.OnCalculateRenderPosition();
+
+            return doodad;
+        }
+
         public McEntity CreateDoor(Coord position)
         {
             return new Door(position, _font);
