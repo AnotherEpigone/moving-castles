@@ -1,6 +1,7 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Levels.Generators;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
@@ -11,13 +12,16 @@ namespace MovingCastles.GameSystems
     {
         private readonly IUiManager _uiManager;
         private readonly ILogManager _logManager;
+        private readonly ISaveManager _saveManager;
 
         public GameManager(
             IUiManager uiManager,
-            ILogManager logManager)
+            ILogManager logManager,
+            ISaveManager saveManager)
         {
             _uiManager = uiManager;
             _logManager = logManager;
+            _saveManager = saveManager;
         }
 
         public void StartNewGame()
@@ -31,6 +35,11 @@ namespace MovingCastles.GameSystems
             var level = firstLevelGen.Generate(McRandom.GetSeed(), player);
 
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
+        }
+
+        public void Save()
+        {
+            _saveManager.Save(this);
         }
 
         public void StartDungeonModeDemo()

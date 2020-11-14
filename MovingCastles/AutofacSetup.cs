@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using MovingCastles.GameSystems;
-using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.Maps;
+using MovingCastles.GameSystems.Saving;
 using MovingCastles.Ui;
 
 namespace MovingCastles
@@ -17,6 +16,8 @@ namespace MovingCastles
                 .As<IUiManager>();
             builder.RegisterType<GameManager>()
                 .As<IGameManager>();
+            builder.RegisterType<SaveManager>()
+                .As<ISaveManager>();
 
             builder.RegisterType<LogManager>()
                 .As<ILogManager>();

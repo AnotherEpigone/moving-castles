@@ -9,5 +9,6 @@
         void StartMapGenDemo();
 
         void StartNewGame();
+        void Save();
     }
 }

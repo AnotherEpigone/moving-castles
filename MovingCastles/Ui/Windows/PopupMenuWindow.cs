@@ -11,7 +11,7 @@ namespace MovingCastles.Ui.Windows
         private bool _escReleased;
 
         public PopupMenuWindow(IUiManager uiManager, IGameManager gameManager)
-            : base(30, 7)
+            : base(36, 7)
         {
             CloseOnEscKey = false; // it would close as soon as it opens...
             IsModalDefault = true;
@@ -22,7 +22,7 @@ namespace MovingCastles.Ui.Windows
 
             Children.Add(background);
 
-            const string mainMenuText = "Exit to Main Menu";
+            const string mainMenuText = "Save and Exit to Main Menu";
             var mainMenuButtonWidth = mainMenuText.Length + 4;
             var mainMenuButton = new McSelectionButton(mainMenuButtonWidth, 1)
             {
@@ -31,18 +31,23 @@ namespace MovingCastles.Ui.Windows
             };
             mainMenuButton.Click += (_, __) =>
             {
+                gameManager.Save();
                 Hide();
                 uiManager.ShowMainMenu(gameManager);
             };
 
-            const string quitText = "Exit to Desktop";
+            const string quitText = "Save and Exit to Desktop";
             var quitButtonWidth = mainMenuText.Length + 4;
             var quitButton = new McSelectionButton(quitButtonWidth, 1)
             {
                 Text = quitText,
                 Position = new Point((Width / 2) - (quitButtonWidth / 2), Height - 4),
             };
-            quitButton.Click += (_, __) => System.Environment.Exit(0);
+            quitButton.Click += (_, __) =>
+            {
+                gameManager.Save();
+                System.Environment.Exit(0);
+            };
 
             const string closeText = "Close";
             var closeButtonWidth = closeText.Length + 4;
