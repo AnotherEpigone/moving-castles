@@ -39,7 +39,7 @@ namespace MovingCastles.Ui.Consoles
                 Text = "New Game",
                 Position = new Point(67, 10),
             };
-            newGameButton.Click += (_, __) => gameManager.StartCastleModeDemo();
+            newGameButton.Click += (_, __) => gameManager.StartNewGame();
 
             var dungeonModeButton = new McSelectionButton(30, 1)
             {

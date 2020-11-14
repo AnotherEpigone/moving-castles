@@ -7,5 +7,7 @@
         void StartCastleModeDemo();
 
         void StartMapGenDemo();
+
+        void StartNewGame();
     }
 }

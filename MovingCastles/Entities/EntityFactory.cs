@@ -92,12 +92,12 @@ namespace MovingCastles.Entities
             return new Door(position, _font);
         }
 
-        public Wizard CreatePlayer(Coord position, Player playerInfo)
+        public Wizard CreatePlayer(Coord position, PlayerInfo playerInfo)
         {
             return new Wizard(position, playerInfo, _font);
         }
 
-        public Castle CreateCastle(Coord position, Player playerInfo)
+        public Castle CreateCastle(Coord position, PlayerInfo playerInfo)
         {
             return new Castle(position, playerInfo, _font);
         }

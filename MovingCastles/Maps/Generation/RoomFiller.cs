@@ -9,15 +9,13 @@ namespace MovingCastles.Maps.Generation
 {
     public class RoomFiller
     {
-        private readonly float _combineChance;
         private readonly IGenerator _rng;
 
         public RoomFiller()
-            : this(0.01f, SingletonRandom.DefaultRNG) { }
+            : this(SingletonRandom.DefaultRNG) { }
 
-        public RoomFiller(float combineChance, IGenerator rng)
+        public RoomFiller(IGenerator rng)
         {
-            _combineChance = combineChance;
             _rng = rng;
         }
 

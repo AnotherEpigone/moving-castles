@@ -19,7 +19,10 @@ namespace MovingCastles.Maps.Generation
         private readonly int _maxWalkabilityDistance;
 
         public DoorGenerator()
-            : this(0.6f, 0.8f, 50, SingletonRandom.DefaultRNG) { }
+            : this(SingletonRandom.DefaultRNG) { }
+
+        public DoorGenerator(IGenerator rng)
+            : this(0.6f, 0.8f, 50, rng) { }
 
         public DoorGenerator(float roomSkipChance, float doorSkipChance, int maxWalkabilityDistance, IGenerator rng)
         {
@@ -28,6 +31,11 @@ namespace MovingCastles.Maps.Generation
             _doorSkipChance = doorSkipChance;
             _maxWalkabilityDistance = maxWalkabilityDistance;
         }
+
+        public IList<Coord> GenerateForWalkability(
+            McMap map,
+            ISettableMapView<bool> mapView,
+            IEnumerable<Rectangle> rooms) => GenerateForWalkability(map, mapView, new Coord(0, 0), rooms);
 
         public IList<Coord> GenerateForWalkability(
             McMap map,

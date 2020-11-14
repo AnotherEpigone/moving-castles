@@ -22,7 +22,7 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
         }
 
-        public DungeonMap CreateDungeonMap(int width, int height, MapTemplate mapTemplate, Player playerInfo)
+        public DungeonMap CreateDungeonMap(int width, int height, MapTemplate mapTemplate, PlayerInfo playerInfo)
         {
             var map = new DungeonMap(width, height);
 
@@ -62,7 +62,7 @@ namespace MovingCastles.Maps
             return map;
         }
 
-        public CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Player playerInfo)
+        public CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, PlayerInfo playerInfo)
         {
             var map = new CastleMap(width, height);
 
@@ -79,7 +79,7 @@ namespace MovingCastles.Maps
             return map;
         }
 
-        public DungeonMap CreateMapGenTestAreaMap(int width, int height, MapTemplate mapPlan, Player playerInfo)
+        public DungeonMap CreateMapGenTestAreaMap(int width, int height, MapTemplate mapPlan, PlayerInfo playerInfo)
         {
             var map = new DungeonMap(width, height);
 
@@ -132,7 +132,7 @@ namespace MovingCastles.Maps
             return map;
         }
 
-        private static IGameObject SpawnDungeonTerrain(Coord position, bool mapGenValue)
+        public static IGameObject SpawnDungeonTerrain(Coord position, bool mapGenValue)
         {
             if (mapGenValue)
             {
@@ -146,7 +146,7 @@ namespace MovingCastles.Maps
             }
         }
 
-        private static IGameObject SpawnOutdoorTerrain(Coord position, bool mapGenValue)
+        public static IGameObject SpawnOutdoorTerrain(Coord position, bool mapGenValue)
         {
             if (mapGenValue)
             {

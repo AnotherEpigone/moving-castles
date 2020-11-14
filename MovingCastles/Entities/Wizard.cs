@@ -14,7 +14,7 @@ namespace MovingCastles.Entities
     {
         public int FOVRadius;
 
-        public Wizard(Coord position, Player playerInfo, Font font)
+        public Wizard(Coord position, PlayerInfo playerInfo, Font font)
             : base(playerInfo.Name,
                   Color.White,
                   Color.Transparent,

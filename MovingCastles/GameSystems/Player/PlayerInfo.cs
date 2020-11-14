@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Player
 {
-    public class Player
+    public class PlayerInfo
     {
         public string Name { get; set; }
 
@@ -13,7 +13,7 @@ namespace MovingCastles.GameSystems.Player
 
         public List<ItemTemplate> Items { get; set; }
 
-        public static Player CreateDefault() => new Player()
+        public static PlayerInfo CreateDefault() => new PlayerInfo()
         {
             Name = "Vede",
             Health = 100,

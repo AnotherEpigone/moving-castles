@@ -1,10 +1,9 @@
 ﻿using MovingCastles.Entities;
-using MovingCastles.GameSystems.Items;
+using MovingCastles.GameSystems.Levels.Generators;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
-using System.Linq;
 
 namespace MovingCastles.GameSystems
 {
@@ -21,13 +20,26 @@ namespace MovingCastles.GameSystems
             _logManager = logManager;
         }
 
+        public void StartNewGame()
+        {
+            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+
+            var player = Player.PlayerInfo.CreateDefault();
+
+            var firstLevelGen = new AlwardsTowerLevelGenerator(entityFactory);
+            var level = firstLevelGen.Generate(McRandom.GetSeed(), player);
+
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
+        }
+
         public void StartDungeonModeDemo()
         {
             var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
 
-            var player = Player.Player.CreateDefault();
+            var player = Player.PlayerInfo.CreateDefault();
 
             var dungeonModeDemoMap = mapFactory.CreateDungeonMap(100, 60, MapAtlas.CombatTestArea, player);
 
@@ -40,7 +52,7 @@ namespace MovingCastles.GameSystems
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
 
-            var player = Player.Player.CreateDefault();
+            var player = Player.PlayerInfo.CreateDefault();
 
             var dungeonModeDemoMap = mapFactory.CreateCastleMap(100, 60, null, player);
 
@@ -53,7 +65,7 @@ namespace MovingCastles.GameSystems
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
 
-            var player = Player.Player.CreateDefault();
+            var player = Player.PlayerInfo.CreateDefault();
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
 

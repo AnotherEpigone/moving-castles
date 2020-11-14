@@ -22,12 +22,6 @@ namespace MovingCastles.Maps
         private readonly uint _explorableLayerMask;
         private readonly int _ghostLayer;
 
-        /// <summary>
-        /// Creates a DefaultFOVVisibilityHandler that will manage visibility of objects for the given map as noted in the class description.
-        /// </summary>
-        /// <param name="map">The map this handler will manage visibility for.</param>
-        /// <param name="explorableLayerMask">Foreground color to set to all terrain tiles that are outside of FOV but have been explored.</param>
-        /// <param name="startingState">The starting state to put the handler in.</param>
         public McFovVisibilityHandler(BasicMap map, Color unexploredColor, uint explorableLayerMask, int ghostLayer, State startingState = State.Enabled)
             : base(map, startingState)
         {
@@ -41,10 +35,6 @@ namespace MovingCastles.Maps
         /// </summary>
         public Color ExploredColor { get; }
 
-        /// <summary>
-        /// Makes entity visible.
-        /// </summary>
-        /// <param name="entity">Entity to modify.</param>
         protected override void UpdateEntitySeen(BasicEntity entity)
         {
             if (entity.Layer == _ghostLayer)
@@ -56,10 +46,6 @@ namespace MovingCastles.Maps
             entity.IsVisible = true;
         }
 
-        /// <summary>
-        /// Makes entity invisible.
-        /// </summary>
-        /// <param name="entity">Entity to modify.</param>
         protected override void UpdateEntityUnseen(BasicEntity entity)
         {
             if (entity.Layer == _ghostLayer)
