@@ -2,6 +2,10 @@
 {
     public interface ISaveManager
     {
-        void Save(IGameManager gameManager);
+        (bool, Save) Read();
+
+        void Write(Save save);
+
+        bool SaveExists();
     }
 }

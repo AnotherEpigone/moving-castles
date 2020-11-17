@@ -29,10 +29,11 @@ namespace MovingCastles.Ui.Consoles
 
             var continueButton = new McSelectionButton(30, 1)
             {
-                IsEnabled = false,
+                IsEnabled = gameManager.CanLoad(),
                 Text = "Continue",
                 Position = new Point(67, 8),
             };
+            continueButton.Click += (_, __) => gameManager.Load();
 
             var newGameButton = new McSelectionButton(30, 1)
             {

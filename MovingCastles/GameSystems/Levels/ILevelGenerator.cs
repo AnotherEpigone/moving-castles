@@ -1,6 +1,5 @@
-﻿using MovingCastles.Entities;
-using MovingCastles.GameSystems.Player;
-using System.Collections.Generic;
+﻿using MovingCastles.GameSystems.Player;
+using MovingCastles.GameSystems.Saving;
 
 namespace MovingCastles.GameSystems.Levels
 {
@@ -10,6 +9,6 @@ namespace MovingCastles.GameSystems.Levels
 
         Level Generate(int seed, PlayerInfo playerInfo);
 
-        Level Generate(int seed, IEnumerable<McEntity> entities);
+        Level Generate(Save save);
     }
 }

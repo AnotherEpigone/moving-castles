@@ -5,15 +5,18 @@ using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
+using MovingCastles.Serialization.Entities;
 using MovingCastles.Ui;
+using Newtonsoft.Json;
 using SadConsole;
+using System.Diagnostics;
 
 namespace MovingCastles.Entities
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [JsonConverter(typeof(WizardJsonConverter))]
     public sealed class Wizard : McEntity
     {
-        public int FOVRadius;
-
         public Wizard(Coord position, PlayerInfo playerInfo, Font font)
             : base(playerInfo.Name,
                   Color.White,
@@ -25,7 +28,7 @@ namespace MovingCastles.Entities
                   isTransparent: true,
                   ColorHelper.PlayerBlue)
         {
-            FOVRadius = 10;
+            FovRadius = 10;
 
             // workaround Entity construction bugs by setting font afterward
             Font = font;
@@ -38,6 +41,16 @@ namespace MovingCastles.Entities
                 SpellAtlas.EtherealStep));
             AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health, 1));
             AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
+        }
+
+        public int FovRadius { get; }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(Wizard)}: {Name}");
+            }
         }
     }
 }

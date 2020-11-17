@@ -147,7 +147,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
         private void ProcessTurn()
         {
-            Map.CalculateFOV(_player.Position, _player.FOVRadius, Radius.SQUARE);
+            Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
 
             State = State.Processing;
             foreach (var entity in Map.Entities.Items.OfType<McEntity>().ToList())
@@ -217,7 +217,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
             if (movingEntity == _player)
             {
-                Map.CalculateFOV(_player.Position, _player.FOVRadius, Radius.SQUARE);
+                Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
             }
 
             var stepTriggers = Map.GetEntities<McEntity>(movingEntity.Position)

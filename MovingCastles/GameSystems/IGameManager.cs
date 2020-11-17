@@ -10,5 +10,7 @@
 
         void StartNewGame();
         void Save();
+        void Load();
+        bool CanLoad();
     }
 }

@@ -67,7 +67,7 @@ namespace MovingCastles.Ui.Consoles
             MapRenderer.UseMouse = false;
             IsFocused = true;
 
-            Map.CalculateFOV(Player.Position, Player.FOVRadius, Radius.SQUARE);
+            Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
             MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Children.Add(MapRenderer);

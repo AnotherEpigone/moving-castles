@@ -5,6 +5,8 @@ using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 using SadConsole;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MovingCastles.GameSystems
 {
@@ -24,6 +26,8 @@ namespace MovingCastles.GameSystems
             _saveManager = saveManager;
         }
 
+        public IDungeonMaster Dm { get; private set; }
+
         public void StartNewGame()
         {
             var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
@@ -34,12 +38,67 @@ namespace MovingCastles.GameSystems
             var firstLevelGen = new AlwardsTowerLevelGenerator(entityFactory);
             var level = firstLevelGen.Generate(McRandom.GetSeed(), player);
 
+            Dm = new DungeonMaster(player)
+            {
+                Level = level,
+            };
+
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
         }
 
         public void Save()
         {
-            _saveManager.Save(this);
+            if (Dm == null)
+            {
+                return;
+            }
+
+            var entities = Dm.Level.Map.Entities.Items.OfType<McEntity>().ToList();
+            var wizard = entities.OfType<Wizard>().Single();
+            var doors = entities.OfType<Door>().ToList();
+            entities.Remove(wizard);
+            foreach(var door in doors)
+            {
+                entities.Remove(door);
+            }
+
+            var save = new Save()
+            {
+                Seed = Dm.Level.Seed,
+                Entities = entities,
+                Wizard = wizard,
+            };
+            _saveManager.Write(save);
+        }
+
+        public bool CanLoad()
+        {
+            return _saveManager.SaveExists();
+        }
+
+        public void Load()
+        {
+            var (success, save) = _saveManager.Read();
+            if (!success)
+            {
+                // TODO better error handling here
+                return;
+            }
+
+            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+
+            var player = Player.PlayerInfo.CreateDefault();
+
+            var firstLevelGen = new AlwardsTowerLevelGenerator(entityFactory);
+            var level = firstLevelGen.Generate(save);
+
+            Dm = new DungeonMaster(player)
+            {
+                Level = level,
+            };
+
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
         }
 
         public void StartDungeonModeDemo()

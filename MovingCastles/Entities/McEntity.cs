@@ -1,12 +1,17 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.Serialization.Entities;
+using Newtonsoft.Json;
 using SadConsole;
+using System.Diagnostics;
 
 namespace MovingCastles.Entities
 {
     /// <summary>
     /// It stands for Moving Castles entity... pun definitely intended.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [JsonConverter(typeof(McEntityJsonConverter))]
     public class McEntity : BasicEntity
     {
         public McEntity(
@@ -52,6 +57,14 @@ namespace MovingCastles.Entities
         {
             CurrentMap.RemoveEntity(this);
             RemovedFromMap?.Invoke(this, System.EventArgs.Empty);
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(McEntity)}: {Name}");
+            }
         }
     }
 }

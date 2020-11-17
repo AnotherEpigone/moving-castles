@@ -1,6 +1,7 @@
 ﻿using GoRogue.MapViews;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Player;
+using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
 using System.Collections.Generic;
@@ -46,13 +47,15 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        public Level Generate(int seed, IEnumerable<McEntity> entities)
+        public Level Generate(Save save)
         {
-            var level = GenerateTerrainWithDoorLocations(seed);
-            foreach (var entity in entities)
+            var level = GenerateTerrainWithDoorLocations(save.Seed);
+            foreach (var entity in save.Entities)
             {
                 level.Map.AddEntity(entity);
             }
+
+            level.Map.AddEntity(save.Wizard);
 
             return level;
         }
