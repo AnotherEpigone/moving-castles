@@ -3,18 +3,24 @@ using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
 using MovingCastles.Maps;
+using MovingCastles.Serialization.Entities;
+using Newtonsoft.Json;
 using SadConsole;
+using System.Diagnostics;
 
 namespace MovingCastles.Entities
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [JsonConverter(typeof(DoorJsonConverter))]
     public class Door : McEntity
     {
         private const string OpenAnimationKey = "DoorOpen";
         private const string ClosedAnimationKey = "DoorClose";
 
-        private bool _open;
-
         public Door(Coord position, Font font)
+            : this(position, font, false) { }
+
+        public Door(Coord position, Font font, bool open)
             : base("Door",
                   Color.White,
                   Color.Transparent,
@@ -42,25 +48,40 @@ namespace MovingCastles.Entities
             Font = font;
             OnCalculateRenderPosition();
 
-            _open = false;
+            IsOpen = false;
+
+            if (open)
+            {
+                Open();
+            }
         }
+
+        public bool IsOpen { get; private set; }
 
         public void Open()
         {
             Animation = Animations[OpenAnimationKey];
             IsWalkable = true;
             IsTransparent = true;
-            _open = true;
+            IsOpen = true;
         }
 
         public void Toggle()
         {
-            _open = !_open;
-            Animation = _open
+            IsOpen = !IsOpen;
+            Animation = IsOpen
                 ? Animations[OpenAnimationKey]
                 : Animations[ClosedAnimationKey];
-            IsWalkable = _open;
-            IsTransparent = _open;
+            IsWalkable = IsOpen;
+            IsTransparent = IsOpen;
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(Door)}: {Name}");
+            }
         }
     }
 }

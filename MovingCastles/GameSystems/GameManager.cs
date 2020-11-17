@@ -67,6 +67,7 @@ namespace MovingCastles.GameSystems
                 Seed = Dm.Level.Seed,
                 Entities = entities,
                 Wizard = wizard,
+                Doors = doors,
             };
             _saveManager.Write(save);
         }

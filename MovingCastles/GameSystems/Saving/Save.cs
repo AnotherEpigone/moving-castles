@@ -9,6 +9,7 @@ namespace MovingCastles.GameSystems.Saving
     {
         [DataMember] public int Seed;
         [DataMember] public List<McEntity> Entities;
+        [DataMember] public List<Door> Doors;
         [DataMember] public Wizard Wizard;
     }
 }

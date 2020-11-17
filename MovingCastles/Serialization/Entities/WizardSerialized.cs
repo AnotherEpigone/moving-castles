@@ -71,10 +71,11 @@ namespace MovingCastles.Serialization.Entities
             }
 
             entity.IsVisible = serializedObject.IsVisible;
-            entity.Position = (Point)serializedObject.Position;
             entity.PositionOffset = serializedObject.PositionOffset;
             entity.UsePixelPositioning = serializedObject.UsePixelPositioning;
             entity.Name = serializedObject.Name;
+            entity.DefaultBackground = serializedObject.DefaultBackground;
+            entity.DefaultForeground = serializedObject.DefaultForeground;
 
             return entity;
         }

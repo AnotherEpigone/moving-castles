@@ -55,6 +55,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 level.Map.AddEntity(entity);
             }
 
+            foreach (var door in save.Doors)
+            {
+                level.Map.AddEntity(door);
+            }
+
             level.Map.AddEntity(save.Wizard);
 
             return level;
