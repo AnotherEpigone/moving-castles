@@ -1,5 +1,7 @@
-﻿using GoRogue.MapViews;
+﻿using GoRogue;
+using GoRogue.MapViews;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
@@ -13,6 +15,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
     public class AlwardsTowerLevelGenerator : ILevelGenerator
     {
         private readonly IEntityFactory _entityFactory;
+        private static readonly List<ItemTemplate> _floorItems = new List<ItemTemplate>()
+        {
+            ItemAtlas.EtheriumShard,
+            ItemAtlas.SteelLongsword,
+        };
 
         public AlwardsTowerLevelGenerator(IEntityFactory entityFactory)
         {
@@ -26,18 +33,38 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var level = GenerateTerrainWithDoorLocations(seed, 30, 30);
             var map = level.Map;
 
+            var rng = new StandardGenerator(seed);
+
+            // spawn doodads
+            var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+            var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
+            map.AddEntity(trapdoor);
+
             // spawn doors
             foreach (var door in level.Doors)
             {
                 map.AddEntity(_entityFactory.CreateDoor(door));
             }
 
-            var rng = new StandardGenerator(seed);
+            // Spawn enemies
+            var allTheActors = ActorAtlas.ActorsById.Values.ToList();
+            for (int i = 0; i < 10; i++)
+            {
+                spawnPosition = map.WalkabilityView.RandomPosition(true);
 
-            // spawn a trapdoor
-            var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-            var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
-            map.AddEntity(trapdoor);
+                var enemy = _entityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
+                map.AddEntity(enemy);
+            }
+
+            // Spawn items
+            for (int i = 0; i < 10; i++)
+            {
+                spawnPosition = map.WalkabilityView.RandomPosition(true);
+
+                var item = _entityFactory.CreateItem(spawnPosition, _floorItems.RandomItem());
+
+                map.AddEntity(item);
+            }
 
             // spawn player
             spawnPosition = map.WalkabilityView.RandomPosition(true, rng);

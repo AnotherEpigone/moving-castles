@@ -1,5 +1,6 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.Entities;
 using SadConsole;
 
 namespace MovingCastles.Maps
@@ -73,18 +74,20 @@ namespace MovingCastles.Maps
                 && Map.Explored[entity.Position])
             {
                 // spawn ghost
-                var ghost = new BasicEntity(
+                var ghost = new McEntity(
+                    GhostName + " - " + entity.Name,
                     ExploredColor,
                     Color.Transparent,
                     entity.Animation[0].Glyph,
                     entity.Position,
                     _ghostLayer,
                     true,
-                    true);
+                    true,
+                    Color.White);
                 ghost.IsVisible = true;
+
                 ghost.Font = entity.Font;
                 ghost.OnCalculateRenderPosition();
-                ghost.Name = GhostName + " - " + entity.Name;
 
                 Map.AddEntity(ghost);
             }
