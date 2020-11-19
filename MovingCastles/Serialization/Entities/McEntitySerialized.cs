@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using Newtonsoft.Json;
 using SadConsole.SerializedTypes;
@@ -24,6 +25,7 @@ namespace MovingCastles.Serialization.Entities
         [DataMember] public bool IsWalkable;
         [DataMember] public bool IsTransparent;
         [DataMember] public bool IsStatic;
+        [DataMember] public List<ComponentSerializable> Components;
 
         public static implicit operator McEntitySerialized(McEntity entity)
         {
@@ -44,6 +46,9 @@ namespace MovingCastles.Serialization.Entities
                 DefaultBackground = entity.DefaultBackground,
                 DefaultForeground = entity.DefaultForeground,
                 Font = entity.Font,
+                Components = entity.GetGoRogueComponents<ISerializableComponent>()
+                                .Select(c => c.GetSerializable())
+                                .ToList(),
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -88,6 +93,11 @@ namespace MovingCastles.Serialization.Entities
             entity.PositionOffset = serializedObject.PositionOffset;
             entity.UsePixelPositioning = serializedObject.UsePixelPositioning;
             entity.Name = serializedObject.Name;
+
+            foreach (var componentSerialized in serializedObject.Components)
+            {
+                entity.AddGoRogueComponent(ComponentFactory.Create(componentSerialized));
+            }
 
             return entity;
         }

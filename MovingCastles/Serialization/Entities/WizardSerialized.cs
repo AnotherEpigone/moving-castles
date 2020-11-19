@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Player;
 using Newtonsoft.Json;
@@ -38,6 +39,9 @@ namespace MovingCastles.Serialization.Entities
                 DefaultBackground = entity.DefaultBackground,
                 DefaultForeground = entity.DefaultForeground,
                 Font = entity.Font,
+                Components = entity.GetGoRogueComponents<ISerializableComponent>()
+                                .Select(c => c.GetSerializable())
+                                .ToList(),
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -76,6 +80,11 @@ namespace MovingCastles.Serialization.Entities
             entity.Name = serializedObject.Name;
             entity.DefaultBackground = serializedObject.DefaultBackground;
             entity.DefaultForeground = serializedObject.DefaultForeground;
+
+            foreach (var componentSerialized in serializedObject.Components)
+            {
+                entity.AddGoRogueComponent(ComponentFactory.Create(componentSerialized));
+            }
 
             return entity;
         }
