@@ -39,6 +39,7 @@ namespace MovingCastles.Serialization.Entities
                 DefaultBackground = entity.DefaultBackground,
                 DefaultForeground = entity.DefaultForeground,
                 Font = entity.Font,
+                IsOpen = entity.IsOpen,
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
