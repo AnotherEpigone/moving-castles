@@ -35,6 +35,22 @@ namespace MovingCastles.Maps
         /// </summary>
         public Color ExploredColor { get; }
 
+        public void RefreshExploredTerrain()
+        {
+            for (int i = 0; i < Map.Width; i++)
+            {
+                for (int j = 0; j < Map.Height; j++)
+                {
+                    if (Map.Explored[i, j])
+                    {
+                        var terrain = (BasicTerrain)Map.Terrain[i, j];
+                        UpdateTerrainSeen(terrain);
+                        UpdateTerrainUnseen(terrain);
+                    }
+                }
+            }
+        }
+
         protected override void UpdateEntitySeen(BasicEntity entity)
         {
             if (entity.Layer == _ghostLayer)

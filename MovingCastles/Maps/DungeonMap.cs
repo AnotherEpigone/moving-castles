@@ -41,7 +41,7 @@ namespace MovingCastles.Maps
             _player = new Lazy<Wizard>(() => Entities.Items.OfType<Wizard>().First());
         }
 
-        public FOVVisibilityHandler FovVisibilityHandler { get; }
+        public McFovVisibilityHandler FovVisibilityHandler { get; }
 
         public Wizard Player => _player.Value;
 

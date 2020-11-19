@@ -23,7 +23,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public Level Generate(int seed, PlayerInfo playerInfo)
         {
-            var level = GenerateTerrainWithDoorLocations(seed);
+            var level = GenerateTerrainWithDoorLocations(seed, 30, 30);
             var map = level.Map;
 
             // spawn doors
@@ -49,7 +49,15 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public Level Generate(Save save)
         {
-            var level = GenerateTerrainWithDoorLocations(save.Seed);
+            var level = GenerateTerrainWithDoorLocations(
+                save.MapState.Seed,
+                save.MapState.Width,
+                save.MapState.Height);
+
+            // restore terrain before entities
+            level.Map.Explored = new ArrayMap<bool>(save.MapState.Explored, save.MapState.Width);
+            level.Map.FovVisibilityHandler.RefreshExploredTerrain();
+
             foreach (var entity in save.Entities)
             {
                 level.Map.AddEntity(entity);
@@ -65,11 +73,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        private Level GenerateTerrainWithDoorLocations(int seed)
+        private Level GenerateTerrainWithDoorLocations(int seed, int width, int height)
         {
             var rng = new StandardGenerator(seed);
-            var map = new DungeonMap(30, 30);
-            var terrain = new ArrayMap<bool>(30, 30);
+            var map = new DungeonMap(width, height);
+            var terrain = new ArrayMap<bool>(width, height);
 
             var rooms = new RoomFiller(rng).Generate(terrain, 12, 2, 2);
 

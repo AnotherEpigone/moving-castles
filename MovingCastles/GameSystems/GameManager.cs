@@ -3,6 +3,7 @@ using MovingCastles.GameSystems.Levels.Generators;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
+using MovingCastles.Serialization.Map;
 using MovingCastles.Ui;
 using SadConsole;
 using System.Collections.Generic;
@@ -62,9 +63,17 @@ namespace MovingCastles.GameSystems
                 entities.Remove(door);
             }
 
-            var save = new Save()
+            var mapState = new MapState()
             {
                 Seed = Dm.Level.Seed,
+                Width = Dm.Level.Map.Width,
+                Height = Dm.Level.Map.Height,
+                Explored = Dm.Level.Map.Explored,
+            };
+
+            var save = new Save()
+            {
+                MapState = mapState,
                 Entities = entities,
                 Wizard = wizard,
                 Doors = doors,
