@@ -55,9 +55,7 @@ namespace MovingCastles.Entities
                     isTransparent: true,
                     Color.DarkGray);
             item.AddGoRogueComponent(new SummaryControlComponent());
-            item.AddGoRogueComponent(new PickupableComponent(
-                _logManager,
-                itemTemplate));
+            item.AddGoRogueComponent(new PickupableComponent(itemTemplate));
 
             // workaround Entity construction bugs by setting font afterward
             item.Font = _font;

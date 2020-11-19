@@ -233,7 +233,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
             foreach (var trigger in stepTriggers)
             {
-                trigger.OnStep(movingEntity);
+                trigger.OnStep(movingEntity, _logManager);
             }
         }
     }

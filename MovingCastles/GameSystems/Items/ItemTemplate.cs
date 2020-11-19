@@ -1,5 +1,8 @@
-﻿namespace MovingCastles.GameSystems.Items
+﻿using System.Runtime.Serialization;
+
+namespace MovingCastles.GameSystems.Items
 {
+    [DataContract]
     public class ItemTemplate
     {
         public ItemTemplate(
@@ -14,12 +17,12 @@
             Glyph = glyph;
         }
 
-        public string Id { get; }
+        [DataMember] public string Id { get; }
 
-        public string Name { get; }
+        [DataMember] public string Name { get; }
 
-        public string Description { get; }
+        [DataMember] public string Description { get; }
 
-        public int Glyph { get; }
+        [DataMember] public int Glyph { get; }
     }
 }

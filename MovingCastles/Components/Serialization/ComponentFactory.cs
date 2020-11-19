@@ -13,6 +13,7 @@ namespace MovingCastles.Components.Serialization
             _constructors = new Dictionary<string, Func<string, IGameObjectComponent>>()
             {
                 { nameof(OpenDoorComponent), _ => new OpenDoorComponent() },
+                { nameof(PickupableComponent), s => new PickupableComponent(s) },
             };
         }
 
