@@ -42,6 +42,8 @@ namespace MovingCastles
             InitColors();
             InitControls();
 
+            Game.Instance.Window.Title = "Moving Castles";
+
             _uiManager.ShowMainMenu(_gameManager);
         }
 
