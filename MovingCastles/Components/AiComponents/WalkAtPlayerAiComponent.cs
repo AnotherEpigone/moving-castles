@@ -1,15 +1,24 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using Newtonsoft.Json;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.AiComponents
 {
-    public class WalkAtPlayerAiComponent : IAiComponent
+    public class WalkAtPlayerAiComponent : IAiComponent, ISerializableComponent
     {
         private readonly int _range;
+
+        public WalkAtPlayerAiComponent(string state)
+        {
+            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            _range = stateObj.Range;
+        }
 
         public WalkAtPlayerAiComponent(int range)
         {
@@ -63,6 +72,21 @@ namespace MovingCastles.Components.AiComponents
 
             mcParent.Move(direction);
             return true;
+        }
+
+        public ComponentSerializable GetSerializable() => new ComponentSerializable()
+        {
+            Id = nameof(WalkAtPlayerAiComponent),
+            State = JsonConvert.SerializeObject(new State()
+            {
+                Range = _range,
+            }),
+        };
+
+        [DataContract]
+        private class State
+        {
+            [DataMember] public int Range;
         }
     }
 }

@@ -41,9 +41,6 @@ namespace MovingCastles.Entities
             Animations.Add(OpenAnimationKey, openAnimation);
             Animation = Animations[ClosedAnimationKey];
 
-            AddGoRogueComponent(new OpenDoorComponent());
-            AddGoRogueComponent(new UseDoorComponent());
-
             // workaround Entity construction bugs by setting font afterward
             Font = font;
             OnCalculateRenderPosition();

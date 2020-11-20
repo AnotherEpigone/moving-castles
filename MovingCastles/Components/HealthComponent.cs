@@ -1,13 +1,24 @@
 ﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace MovingCastles.Components
 {
-    public class HealthComponent : IGameObjectComponent, IHealthComponent
+    public class HealthComponent : IGameObjectComponent, IHealthComponent, ISerializableComponent
     {
         private float _health;
+
+        public HealthComponent(string state)
+        {
+            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            MaxHealth = stateObj.MaxHealth;
+            Health = stateObj.Health;
+            BaseRegen = stateObj.BaseRegen;
+        }
 
         public HealthComponent(float maxHealth)
             : this(maxHealth, maxHealth, 1) { }
@@ -66,6 +77,25 @@ namespace MovingCastles.Components
         public void ApplyBaseRegen()
         {
             ApplyHealing(BaseRegen);
+        }
+
+        public ComponentSerializable GetSerializable() => new ComponentSerializable()
+        {
+            Id = nameof(HealthComponent),
+            State = JsonConvert.SerializeObject(new State()
+            {
+                MaxHealth = MaxHealth,
+                Health = Health,
+                BaseRegen = BaseRegen,
+            }),
+        };
+
+        [DataContract]
+        private class State
+        {
+            [DataMember] public float MaxHealth;
+            [DataMember] public float Health;
+            [DataMember] public float BaseRegen;
         }
     }
 }

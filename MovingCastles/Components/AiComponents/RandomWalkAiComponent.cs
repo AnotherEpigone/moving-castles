@@ -1,11 +1,12 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 namespace MovingCastles.Components.AiComponents
 {
-    public class RandomWalkAiComponent : IAiComponent
+    public class RandomWalkAiComponent : IAiComponent, ISerializableComponent
     {
         public IGameObject Parent { get; set; }
 
@@ -37,6 +38,14 @@ namespace MovingCastles.Components.AiComponents
             mcParent.Move(direction);
 
             return true;
+        }
+
+        public ComponentSerializable GetSerializable()
+        {
+            return new ComponentSerializable()
+            {
+                Id = nameof(RandomWalkAiComponent),
+            };
         }
     }
 }

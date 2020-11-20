@@ -88,7 +88,12 @@ namespace MovingCastles.Entities
 
         public McEntity CreateDoor(Coord position)
         {
-            return new Door(position, _font);
+            var door = new Door(position, _font);
+
+            door.AddGoRogueComponent(new OpenDoorComponent());
+            door.AddGoRogueComponent(new UseDoorComponent());
+
+            return door;
         }
 
         public Wizard CreatePlayer(Coord position, PlayerInfo playerInfo)
@@ -108,7 +113,11 @@ namespace MovingCastles.Entities
 
         public Castle CreateCastle(Coord position, PlayerInfo playerInfo)
         {
-            return new Castle(position, playerInfo, _font);
+            var castle = new Castle(position, playerInfo, _font);
+
+            castle.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
+
+            return castle;
         }
     }
 }

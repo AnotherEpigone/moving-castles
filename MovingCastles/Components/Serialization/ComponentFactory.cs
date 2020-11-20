@@ -1,4 +1,5 @@
 ﻿using GoRogue.GameFramework.Components;
+using MovingCastles.Components.AiComponents;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,13 @@ namespace MovingCastles.Components.Serialization
                 { nameof(SummaryControlComponent), _ => new SummaryControlComponent() },
                 { nameof(SpellCastingComponent), s => new SpellCastingComponent(s) },
                 { nameof(RangedAttackerComponent), s => new RangedAttackerComponent(s) },
+                { nameof(MeleeAttackerComponent), s => new MeleeAttackerComponent(s) },
+                { nameof(HealthComponent), s => new HealthComponent(s) },
+                { nameof(ActorStatComponent), s => new ActorStatComponent(s) },
+                { nameof(WalkAtPlayerAiComponent), s => new WalkAtPlayerAiComponent(s) },
+                { nameof(RangedAttackAiComponent), _ => new RangedAttackAiComponent() },
+                { nameof(RandomWalkAiComponent), _ => new RandomWalkAiComponent() },
+                { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(s) },
             };
         }
 

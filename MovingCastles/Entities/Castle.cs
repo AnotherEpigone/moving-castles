@@ -29,8 +29,6 @@ namespace MovingCastles.Entities
             // workaround Entity construction bugs by setting font afterward
             Font = font;
             OnCalculateRenderPosition();
-
-            AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
         }
     }
 }

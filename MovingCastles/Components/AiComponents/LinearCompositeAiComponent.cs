@@ -1,7 +1,11 @@
 ﻿using GoRogue.GameFramework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.AiComponents
 {
@@ -12,6 +16,15 @@ namespace MovingCastles.Components.AiComponents
     {
         private readonly List<IAiComponent> _components;
         private IGameObject _parent;
+
+        public LinearCompositeAiComponent(string state)
+        {
+            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            _components = stateObj.Components
+                .Select(sc => ComponentFactory.Create(sc))
+                .Cast<IAiComponent>()
+                .ToList();
+        }
 
         public LinearCompositeAiComponent(params IAiComponent[] components)
         {
@@ -42,6 +55,21 @@ namespace MovingCastles.Components.AiComponents
             }
 
             return false;
+        }
+
+        public ComponentSerializable GetSerializable() => new ComponentSerializable()
+        {
+            Id = nameof(LinearCompositeAiComponent),
+            State = JsonConvert.SerializeObject(new State()
+            {
+                Components = _components.ConvertAll(c => ((ISerializableComponent)c).GetSerializable()),
+            }),
+        };
+
+        [DataContract]
+        private class State
+        {
+            [DataMember] public List<ComponentSerializable> Components;
         }
     }
 }
