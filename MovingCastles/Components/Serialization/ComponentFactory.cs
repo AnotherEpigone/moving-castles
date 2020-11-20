@@ -17,6 +17,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(UseDoorComponent), _ => new UseDoorComponent() },
                 { nameof(SummaryControlComponent), _ => new SummaryControlComponent() },
                 { nameof(SpellCastingComponent), s => new SpellCastingComponent(s) },
+                { nameof(RangedAttackerComponent), s => new RangedAttackerComponent(s) },
             };
         }
 
