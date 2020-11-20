@@ -1,6 +1,7 @@
 ﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
 using Microsoft.Xna.Framework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.Ui;
 using SadConsole;
@@ -9,13 +10,13 @@ using System.Collections.Generic;
 
 namespace MovingCastles.Components
 {
-    public class SummaryControlComponent : ISummaryControlComponent, IGameObjectComponent
+    public class SummaryControlComponent : ISummaryControlComponent, IGameObjectComponent, ISerializableComponent
     {
         public IGameObject Parent { get; set; }
 
         public Console GetSidebarSummary()
         {
-            if (!(Parent is McEntity parentEntity))
+            if (Parent is not McEntity parentEntity)
             {
                 return null;
             }
@@ -47,5 +48,10 @@ namespace MovingCastles.Components
 
             return sidebarConsole;
         }
+
+        public ComponentSerializable GetSerializable() => new ComponentSerializable()
+        {
+            Id = nameof(SummaryControlComponent),
+        };
     }
 }

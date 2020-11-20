@@ -9,7 +9,7 @@ namespace MovingCastles.GameSystems.Spells
     {
         static SpellAtlas()
         {
-            ActorsById = typeof(SpellAtlas)
+            SpellsById = typeof(SpellAtlas)
                 .GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .Select(p => p.GetValue(null))
                 .OfType<SpellTemplate>()
@@ -18,7 +18,7 @@ namespace MovingCastles.GameSystems.Spells
                 i => i);
         }
 
-        public static Dictionary<string, SpellTemplate> ActorsById { get; }
+        public static Dictionary<string, SpellTemplate> SpellsById { get; }
 
         public static SpellTemplate ConjureFlame => new SpellTemplate(
             id: "SPELL_CONJURE_FLAME",

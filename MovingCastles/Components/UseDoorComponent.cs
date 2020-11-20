@@ -1,10 +1,11 @@
 ﻿using GoRogue.GameFramework;
+using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 
 namespace MovingCastles.Components
 {
-    public class UseDoorComponent : IInteractTriggeredComponent
+    public class UseDoorComponent : IInteractTriggeredComponent, ISerializableComponent
     {
         public IGameObject Parent { get; set; }
 
@@ -17,5 +18,10 @@ namespace MovingCastles.Components
 
             door.Toggle();
         }
+
+        public ComponentSerializable GetSerializable() => new ComponentSerializable()
+        {
+            Id = nameof(UseDoorComponent),
+        };
     }
 }

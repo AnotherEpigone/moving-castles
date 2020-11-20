@@ -4,6 +4,7 @@ using MovingCastles.Components;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
+using MovingCastles.GameSystems.Spells;
 using SadConsole;
 
 namespace MovingCastles.Entities
@@ -92,7 +93,17 @@ namespace MovingCastles.Entities
 
         public Wizard CreatePlayer(Coord position, PlayerInfo playerInfo)
         {
-            return new Wizard(position, playerInfo, _font);
+            var wizard = new Wizard(position, playerInfo, _font);
+
+            wizard.AddGoRogueComponent(new MeleeAttackerComponent(5));
+            wizard.AddGoRogueComponent(new SpellCastingComponent(
+                SpellAtlas.ConjureFlame,
+                SpellAtlas.RayOfFrost,
+                SpellAtlas.EtherealStep));
+            wizard.AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health, 1));
+            wizard.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
+
+            return wizard;
         }
 
         public Castle CreateCastle(Coord position, PlayerInfo playerInfo)
