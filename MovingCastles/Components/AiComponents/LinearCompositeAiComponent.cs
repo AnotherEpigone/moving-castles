@@ -12,7 +12,7 @@ namespace MovingCastles.Components.AiComponents
     /// <summary>
     /// AI component that runs through a set of child AI components until one succeeds.
     /// </summary>
-    public class LinearCompositeAiComponent : IAiComponent
+    public class LinearCompositeAiComponent : IAiComponent, ISerializableComponent
     {
         private readonly List<IAiComponent> _components;
         private IGameObject _parent;

@@ -26,6 +26,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(RangedAttackAiComponent), _ => new RangedAttackAiComponent() },
                 { nameof(RandomWalkAiComponent), _ => new RandomWalkAiComponent() },
                 { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(s) },
+                { nameof(InventoryComponent), s => new InventoryComponent(s) },
             };
         }
 
