@@ -2,6 +2,7 @@
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Logging;
 
 namespace MovingCastles.Components
 {
@@ -9,14 +10,14 @@ namespace MovingCastles.Components
     {
         public IGameObject Parent { get; set; }
 
-        public void Interact(McEntity interactingEntity)
+        public void Interact(McEntity interactingEntity, ILogManager logManager)
         {
-            if (!(Parent is Door door))
+            if (Parent is not Door door)
             {
                 return;
             }
 
-            door.Toggle();
+            door.Toggle(interactingEntity.Name, logManager);
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()

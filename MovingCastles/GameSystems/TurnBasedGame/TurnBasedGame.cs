@@ -106,7 +106,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
                 return;
             }
 
-            components.First().Interact(_player);
+            components.First().Interact(_player, _logManager);
         }
 
         public void RegisterPlayer(Wizard player)

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Entities;
 using Newtonsoft.Json;
@@ -63,8 +64,14 @@ namespace MovingCastles.Entities
             IsOpen = true;
         }
 
-        public void Toggle()
+        public void Toggle(string togglerName, ILogManager logManager)
         {
+            if (IsOpen && !CurrentMap.WalkabilityView[Position])
+            {
+                logManager.EventLog($"{togglerName} can't close the door. Something is blocking it.");
+                return;
+            }
+
             IsOpen = !IsOpen;
             Animation = IsOpen
                 ? Animations[OpenAnimationKey]
