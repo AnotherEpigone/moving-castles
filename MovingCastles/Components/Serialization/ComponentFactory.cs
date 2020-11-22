@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Components.StoryComponents;
 using System;
 using System.Collections.Generic;
 
@@ -27,6 +28,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(RandomWalkAiComponent), _ => new RandomWalkAiComponent() },
                 { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(s) },
                 { nameof(InventoryComponent), s => new InventoryComponent(s) },
+                { nameof(StoryTextStepComponent), s => new StoryTextStepComponent(s) },
             };
         }
 

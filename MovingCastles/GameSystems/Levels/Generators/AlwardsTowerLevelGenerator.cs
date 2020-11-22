@@ -1,11 +1,13 @@
 ﻿using GoRogue;
 using GoRogue.MapViews;
+using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
+using MovingCastles.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Troschuetz.Random.Generators;
@@ -38,6 +40,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // spawn doodads
             var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
             var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
+            trapdoor.AddGoRogueComponent(new StoryTextStepComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
             map.AddEntity(trapdoor);
 
             // spawn doors
@@ -67,7 +70,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
 
             // spawn player
-            spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+            spawnPosition = trapdoor.Position;
+            ////spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 

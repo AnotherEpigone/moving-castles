@@ -16,6 +16,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Text\Story.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Story.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Text\Story.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Story.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Fonts\sprites.font">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
