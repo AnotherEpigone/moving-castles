@@ -29,7 +29,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(RandomWalkAiComponent), _ => new RandomWalkAiComponent() },
                 { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(new SerializedObject() { Value = s }) },
                 { nameof(InventoryComponent), s => new InventoryComponent(new SerializedObject() { Value = s }) },
-                { nameof(StoryTextStepComponent), s => new StoryTextStepComponent(new SerializedObject() { Value = s }) },
+                { nameof(StoryMessageBoxComponent), s => new StoryMessageBoxComponent(new SerializedObject() { Value = s }) },
             };
         }
 

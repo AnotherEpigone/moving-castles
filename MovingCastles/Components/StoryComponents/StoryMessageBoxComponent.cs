@@ -11,19 +11,19 @@ using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.StoryComponents
 {
-    public class StoryTextStepComponent : IStepTriggeredComponent, ISerializableComponent
+    public class StoryMessageBoxComponent : IStepTriggeredComponent, ISerializableComponent, IInteractTriggeredComponent
     {
         private readonly string _resourceKey;
         private bool _stepTriggerActive;
 
-        public StoryTextStepComponent(SerializedObject state)
+        public StoryMessageBoxComponent(SerializedObject state)
         {
             var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _resourceKey = stateObj.ResourceKey;
             _stepTriggerActive = stateObj.StepTriggerActive;
         }
 
-        public StoryTextStepComponent(string resourceKey, bool stepTriggerActive)
+        public StoryMessageBoxComponent(string resourceKey, bool stepTriggerActive)
         {
             _resourceKey = resourceKey;
             _stepTriggerActive = stepTriggerActive;
@@ -38,21 +38,28 @@ namespace MovingCastles.Components.StoryComponents
                 return;
             }
 
-            _stepTriggerActive = false;
-            var story = Story.ResourceManager.GetString(_resourceKey);
-            var msgbox = new StoryMessageBox(story);
-            msgbox.Show(true);
+            Trigger();
         }
+
+        public void Interact(McEntity interactingEntity, ILogManager logManager) => Trigger();
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            Id = nameof(StoryTextStepComponent),
+            Id = nameof(StoryMessageBoxComponent),
             State = JsonConvert.SerializeObject(new State()
             {
                 ResourceKey = _resourceKey,
                 StepTriggerActive = _stepTriggerActive,
             }),
         };
+
+        private void Trigger()
+        {
+            _stepTriggerActive = false;
+            var story = Story.ResourceManager.GetString(_resourceKey);
+            var msgbox = new StoryMessageBox(story);
+            msgbox.Show(true);
+        }
 
         [DataContract]
         private class State

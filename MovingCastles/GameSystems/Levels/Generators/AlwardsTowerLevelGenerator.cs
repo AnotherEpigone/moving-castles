@@ -40,7 +40,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // spawn doodads
             var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
             var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
-            trapdoor.AddGoRogueComponent(new StoryTextStepComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
+            trapdoor.AddGoRogueComponent(new StoryMessageBoxComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
             map.AddEntity(trapdoor);
 
             // spawn doors
