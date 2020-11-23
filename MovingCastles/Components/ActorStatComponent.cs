@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
@@ -7,9 +8,9 @@ namespace MovingCastles.Components
 {
     public class ActorStatComponent : IActorStatComponent, ISerializableComponent
     {
-        public ActorStatComponent(string state)
+        public ActorStatComponent(SerializedObject state)
         {
-            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             WalkSpeed = stateObj.WalkSpeed;
         }
 

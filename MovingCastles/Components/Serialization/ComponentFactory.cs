@@ -1,6 +1,7 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.Components.StoryComponents;
+using MovingCastles.Serialization;
 using System;
 using System.Collections.Generic;
 
@@ -14,21 +15,21 @@ namespace MovingCastles.Components.Serialization
         {
             _constructors = new Dictionary<string, Func<string, IGameObjectComponent>>()
             {
-                { nameof(PickupableComponent), s => new PickupableComponent(s) },
+                { nameof(PickupableComponent), s => new PickupableComponent(new SerializedObject() { Value = s }) },
                 { nameof(OpenDoorComponent), _ => new OpenDoorComponent() },
                 { nameof(UseDoorComponent), _ => new UseDoorComponent() },
                 { nameof(SummaryControlComponent), _ => new SummaryControlComponent() },
-                { nameof(SpellCastingComponent), s => new SpellCastingComponent(s) },
-                { nameof(RangedAttackerComponent), s => new RangedAttackerComponent(s) },
-                { nameof(MeleeAttackerComponent), s => new MeleeAttackerComponent(s) },
-                { nameof(HealthComponent), s => new HealthComponent(s) },
-                { nameof(ActorStatComponent), s => new ActorStatComponent(s) },
-                { nameof(WalkAtPlayerAiComponent), s => new WalkAtPlayerAiComponent(s) },
+                { nameof(SpellCastingComponent), s => new SpellCastingComponent(new SerializedObject() { Value = s }) },
+                { nameof(RangedAttackerComponent), s => new RangedAttackerComponent(new SerializedObject() { Value = s }) },
+                { nameof(MeleeAttackerComponent), s => new MeleeAttackerComponent(new SerializedObject() { Value = s }) },
+                { nameof(HealthComponent), s => new HealthComponent(new SerializedObject() { Value = s }) },
+                { nameof(ActorStatComponent), s => new ActorStatComponent(new SerializedObject() { Value = s }) },
+                { nameof(WalkAtPlayerAiComponent), s => new WalkAtPlayerAiComponent(new SerializedObject() { Value = s }) },
                 { nameof(RangedAttackAiComponent), _ => new RangedAttackAiComponent() },
                 { nameof(RandomWalkAiComponent), _ => new RandomWalkAiComponent() },
-                { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(s) },
-                { nameof(InventoryComponent), s => new InventoryComponent(s) },
-                { nameof(StoryTextStepComponent), s => new StoryTextStepComponent(s) },
+                { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(new SerializedObject() { Value = s }) },
+                { nameof(InventoryComponent), s => new InventoryComponent(new SerializedObject() { Value = s }) },
+                { nameof(StoryTextStepComponent), s => new StoryTextStepComponent(new SerializedObject() { Value = s }) },
             };
         }
 

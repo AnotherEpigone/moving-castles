@@ -5,6 +5,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
@@ -15,9 +16,9 @@ namespace MovingCastles.Components
         private readonly int _damage;
         private readonly int _range;
 
-        public RangedAttackerComponent(string state)
+        public RangedAttackerComponent(SerializedObject state)
         {
-            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _damage = stateObj.Damage;
             _range = stateObj.Range;
         }

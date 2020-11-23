@@ -4,6 +4,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -14,9 +15,9 @@ namespace MovingCastles.Components.AiComponents
     {
         private readonly int _range;
 
-        public WalkAtPlayerAiComponent(string state)
+        public WalkAtPlayerAiComponent(SerializedObject state)
         {
-            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _range = stateObj.Range;
         }
 

@@ -1,6 +1,7 @@
 ﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 
 namespace MovingCastles.Components
@@ -9,9 +10,9 @@ namespace MovingCastles.Components
     {
         private readonly int _damage;
 
-        public MeleeAttackerComponent(string state)
+        public MeleeAttackerComponent(SerializedObject state)
         {
-            _damage = JsonConvert.DeserializeObject<int>(state);
+            _damage = JsonConvert.DeserializeObject<int>(state.Value);
         }
 
         public MeleeAttackerComponent(int damage)

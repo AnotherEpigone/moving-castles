@@ -3,6 +3,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Serialization;
 using MovingCastles.Text;
 using MovingCastles.Ui.Windows;
 using Newtonsoft.Json;
@@ -15,9 +16,9 @@ namespace MovingCastles.Components.StoryComponents
         private readonly string _resourceKey;
         private bool _stepTriggerActive;
 
-        public StoryTextStepComponent(string state)
+        public StoryTextStepComponent(SerializedObject state)
         {
-            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _resourceKey = stateObj.ResourceKey;
             _stepTriggerActive = stateObj.StepTriggerActive;
         }

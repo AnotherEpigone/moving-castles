@@ -2,6 +2,7 @@
 using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -14,8 +15,8 @@ namespace MovingCastles.Components
             Items = new List<ItemTemplate>(items);
         }
 
-        public InventoryComponent(string state)
-            : this(JsonConvert.DeserializeObject<List<ItemTemplate>>(state).ToArray()) { }
+        public InventoryComponent(SerializedObject state)
+            : this(JsonConvert.DeserializeObject<List<ItemTemplate>>(state.Value).ToArray()) { }
 
         public IGameObject Parent { get; set; }
 

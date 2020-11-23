@@ -3,6 +3,7 @@ using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
@@ -12,9 +13,9 @@ namespace MovingCastles.Components
     {
         private float _health;
 
-        public HealthComponent(string state)
+        public HealthComponent(SerializedObject state)
         {
-            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             MaxHealth = stateObj.MaxHealth;
             Health = stateObj.Health;
             BaseRegen = stateObj.BaseRegen;

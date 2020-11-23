@@ -4,6 +4,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,8 @@ namespace MovingCastles.Components
             Items = new List<ItemTemplate>(items);
         }
 
-        public PickupableComponent(string state)
-            : this(JsonConvert.DeserializeObject<List<ItemTemplate>>(state).ToArray()) { }
+        public PickupableComponent(SerializedObject state)
+            : this(JsonConvert.DeserializeObject<List<ItemTemplate>>(state.Value).ToArray()) { }
 
         public List<ItemTemplate> Items { get; }
 

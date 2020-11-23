@@ -2,6 +2,7 @@
 using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
 using MovingCastles.GameSystems.Spells;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace MovingCastles.Components
 {
     public class SpellCastingComponent : IGameObjectComponent, ISpellCastingComponent, ISerializableComponent
     {
-        public SpellCastingComponent(string state)
+        public SpellCastingComponent(SerializedObject state)
         {
-            var spellTemplateIds = JsonConvert.DeserializeObject<List<string>>(state);
+            var spellTemplateIds = JsonConvert.DeserializeObject<List<string>>(state.Value);
             Spells = spellTemplateIds.ConvertAll(id => SpellAtlas.SpellsById[id]);
         }
 

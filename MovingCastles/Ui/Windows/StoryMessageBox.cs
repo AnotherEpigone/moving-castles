@@ -23,7 +23,7 @@ namespace MovingCastles.Ui.Windows
             _descriptionArea.Cursor.Position = new Point(0, 0);
             _descriptionArea.Cursor.Print(new ColoredString(
                     message,
-                    new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground))););
+                    new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
 
             Children.Add(_descriptionArea);
 

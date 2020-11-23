@@ -2,6 +2,7 @@
 using MovingCastles.Components.Serialization;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,9 @@ namespace MovingCastles.Components.AiComponents
         private readonly List<IAiComponent> _components;
         private IGameObject _parent;
 
-        public LinearCompositeAiComponent(string state)
+        public LinearCompositeAiComponent(SerializedObject state)
         {
-            var stateObj = JsonConvert.DeserializeObject<State>(state);
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _components = stateObj.Components
                 .Select(sc => ComponentFactory.Create(sc))
                 .Cast<IAiComponent>()
