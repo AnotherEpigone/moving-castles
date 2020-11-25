@@ -28,5 +28,13 @@ namespace MovingCastles.Entities
             nameColor: Color.LightGray,
             walkable: true,
             transparent: true);
+
+        public static DoodadTemplate StaircaseUp => new DoodadTemplate(
+            id: "DOODAD_STAIRCASE_UP",
+            name: "Staircase up",
+            glyph: SpriteAtlas.Staircase_Up,
+            nameColor: Color.LightGray,
+            walkable: true,
+            transparent: true);
     }
 }

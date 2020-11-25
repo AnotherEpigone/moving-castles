@@ -43,6 +43,10 @@ namespace MovingCastles.GameSystems.Levels.Generators
             trapdoor.AddGoRogueComponent(new StoryMessageBoxComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
             map.AddEntity(trapdoor);
 
+            spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+            var stairsUp = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
+            map.AddEntity(stairsUp);
+
             // spawn doors
             foreach (var door in level.Doors)
             {
