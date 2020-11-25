@@ -38,10 +38,10 @@ namespace MovingCastles.Components.StoryComponents
                 return;
             }
 
-            Trigger();
+            Trigger(steppingEntity);
         }
 
-        public void Interact(McEntity interactingEntity, ILogManager logManager) => Trigger();
+        public void Interact(McEntity interactingEntity, ILogManager logManager) => Trigger(interactingEntity);
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
@@ -53,8 +53,13 @@ namespace MovingCastles.Components.StoryComponents
             }),
         };
 
-        private void Trigger()
+        private void Trigger(McEntity triggeringEntity)
         {
+            if (triggeringEntity is not Wizard)
+            {
+                return;
+            }
+
             _stepTriggerActive = false;
             var story = Story.ResourceManager.GetString(_resourceKey);
             var msgbox = new StoryMessageBox(story);
