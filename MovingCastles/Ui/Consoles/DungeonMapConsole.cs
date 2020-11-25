@@ -20,6 +20,7 @@ namespace MovingCastles.Ui.Consoles
     {
         private readonly IMapModeMenuProvider _menuProvider;
         private readonly MouseHighlightConsole _mouseHighlight;
+        private readonly InteractTargettingConsole _interactTargettingConsole;
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
@@ -45,6 +46,7 @@ namespace MovingCastles.Ui.Consoles
             _game = game;
 
             _mouseHighlight = new MouseHighlightConsole(viewportWidth, viewportHeight, tilesetFont, game, map);
+            _interactTargettingConsole = new InteractTargettingConsole(tilesetFont, map);
 
             Map = map;
             _game.Map = map;
@@ -72,6 +74,7 @@ namespace MovingCastles.Ui.Consoles
 
             Children.Add(MapRenderer);
             Children.Add(_mouseHighlight);
+            Children.Add(_interactTargettingConsole);
         }
 
         private void Player_RemovedFromMap(object sender, System.EventArgs e)
@@ -86,17 +89,14 @@ namespace MovingCastles.Ui.Consoles
                 return base.ProcessKeyboard(info);
             }
 
-            switch (_game.State)
+            return _game.State switch
             {
-                case State.PlayerTurn:
-                    return PlayerTurnProcessKeyboard(info);
-                case State.Processing:
-                    return base.ProcessKeyboard(info);
-                case State.Targetting:
-                    return TargettingProcessKeyboard(info);
-                default:
-                    return base.ProcessKeyboard(info);
-            }
+                State.PlayerTurn => PlayerTurnProcessKeyboard(info),
+                State.Processing => base.ProcessKeyboard(info),
+                State.Targetting => TargettingProcessKeyboard(info),
+                State.InteractTargetting => InteractTargettingProcessKeyboard(info),
+                _ => base.ProcessKeyboard(info),
+            };
         }
 
         public override bool ProcessMouse(MouseConsoleState state)
@@ -148,6 +148,36 @@ namespace MovingCastles.Ui.Consoles
             return base.ProcessMouse(state);
         }
 
+        public override void Update(System.TimeSpan timeElapsed)
+        {
+            _interactTargettingConsole.IsVisible = _game.State == State.InteractTargetting;
+            _interactTargettingConsole.Draw(Player.Position, _game.TargetInteractables);
+
+            base.Update(timeElapsed);
+        }
+
+        private bool HandleGuiKeys(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.I))
+            {
+                EndTargettingMode();
+                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.Q))
+            {
+                EndTargettingMode();
+                _menuProvider.SpellSelect.Show(
+                    Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
+                    selectedSpell => BeginTargetting(selectedSpell));
+
+                return true;
+            }
+
+            return false;
+        }
+
         private void TargettingProcessMouse(MouseConsoleState state, Coord mapCoord)
         {
             if (state.Mouse.LeftClicked)
@@ -155,7 +185,7 @@ namespace MovingCastles.Ui.Consoles
                 var (success, target) = Map.GetTarget(Map.Player.Position, mapCoord, _game.TargettingSpell.TargettingStyle);
                 if (success)
                 {
-                    _game.TargetSelected(target);
+                    _game.SpellTargetSelected(target);
                     EndTargettingMode();
                 }
             }
@@ -175,21 +205,8 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-            if (info.IsKeyPressed(Keys.I))
+            if (HandleGuiKeys(info))
             {
-                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
-                return true;
-            }
-
-            if (info.IsKeyPressed(Keys.Q))
-            {
-                _menuProvider.SpellSelect.Show(
-                    Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell =>
-                        {
-                            BeginTargetting(selectedSpell);
-                        });
-
                 return true;
             }
 
@@ -210,27 +227,46 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-            if (info.IsKeyPressed(Keys.I))
+            if (HandleGuiKeys(info))
             {
-                EndTargettingMode();
-                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
 
-            // handle enter as confirm target
+            return base.ProcessKeyboard(info);
+        }
+
+        private bool InteractTargettingProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                EndTargettingMode();
+                return true;
+            }
+
+
+            if (_game.HandleAsInteractTargettingInput(info))
+            {
+                return true;
+            }
+
+            if (HandleGuiKeys(info))
+            {
+                return true;
+            }
 
             return base.ProcessKeyboard(info);
         }
 
         private void BeginTargetting(SpellTemplate spell)
         {
-            _game.StartTargetting(spell);
+            _game.StartSpellTargetting(spell);
             FlavorMessageChanged?.Invoke(this, $"Aiming {spell.Name}...");
         }
 
         private void EndTargettingMode()
         {
             _game.State = State.PlayerTurn;
+            _game.TargetInteractables.Clear();
             FlavorMessageChanged?.Invoke(this, string.Empty);
         }
 

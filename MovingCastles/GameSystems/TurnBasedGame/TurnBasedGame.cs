@@ -17,7 +17,8 @@ namespace MovingCastles.GameSystems.TurnBasedGame
     {
         PlayerTurn,
         Processing,
-        Targetting
+        Targetting,
+        InteractTargetting,
     }
 
     public class TurnBasedGame : ITurnBasedGame
@@ -46,6 +47,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             ILogManager logManager)
         {
             _logManager = logManager;
+            TargetInteractables = new List<Coord>();
 
             State = State.PlayerTurn;
         }
@@ -55,6 +57,8 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         public State State { get; set; }
 
         public SpellTemplate TargettingSpell { get; private set; }
+
+        public List<Coord> TargetInteractables { get; }
 
         public bool HandleAsPlayerInput(SadConsole.Input.Keyboard info)
         {
@@ -71,8 +75,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             if (info.IsKeyPressed(Keys.E)
                 || info.IsKeyPressed(Keys.Enter))
             {
-                Interact();
-                ProcessTurn();
+                StartInteractTargetting();
                 return true;
             }
 
@@ -90,23 +93,52 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             return false;
         }
 
-        private void Interact()
+        public bool HandleAsInteractTargettingInput(SadConsole.Input.Keyboard info)
         {
-            var components = new List<IInteractTriggeredComponent>();
-            var points = AdjacencyRule.EIGHT_WAY.Neighbors(_player.Position);
-            foreach (var point in points)
+            if (info.IsKeyPressed(Keys.NumPad5)
+                || info.IsKeyPressed(Keys.Z)
+                || info.IsKeyPressed(Keys.OemPeriod))
             {
-                components.AddRange(Map.GetEntities<McEntity>(point)
-                    .SelectMany(e => e.GetGoRogueComponents<IInteractTriggeredComponent>()));
+                if (TargetInteractables.Contains(_player.Position))
+                {
+                    InteractTargetSelected(_player.Position);
+                    return true;
+                }
+
+                _logManager.EventLog("Nothing to interact with there.");
+                return false;
             }
 
-            // TODO select which thing to interact with...
-            if (components.Count == 0)
+            if (info.IsKeyPressed(Keys.E)
+                || info.IsKeyPressed(Keys.Enter))
             {
-                return;
+                if (TargetInteractables.Count == 1)
+                {
+                    InteractTargetSelected(TargetInteractables[0]);
+                    return true;
+                }
+
+                _logManager.EventLog("What do you want to interact with?");
+                return false;
             }
 
-            components.First().Interact(_player, _logManager);
+            foreach (Keys key in MovementDirectionMapping.Keys)
+            {
+                if (info.IsKeyPressed(key))
+                {
+                    var targetPos = _player.Position + MovementDirectionMapping[key];
+                    if (TargetInteractables.Contains(targetPos))
+                    {
+                        InteractTargetSelected(targetPos);
+                        return true;
+                    }
+
+                    _logManager.EventLog("Nothing to interact with there.");
+                    return false;
+                }
+            }
+
+            return false;
         }
 
         public void RegisterPlayer(Wizard player)
@@ -128,7 +160,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             entity.Bumped -= Entity_Bumped;
         }
 
-        public void TargetSelected(Coord mapCoord)
+        public void SpellTargetSelected(Coord mapCoord)
         {
             foreach (var effect in TargettingSpell.Effects)
             {
@@ -139,10 +171,43 @@ namespace MovingCastles.GameSystems.TurnBasedGame
             ProcessTurn();
         }
 
-        public void StartTargetting(SpellTemplate spell)
+        public void StartSpellTargetting(SpellTemplate spell)
         {
             TargettingSpell = spell;
             State = State.Targetting;
+        }
+
+        public void InteractTargetSelected(Coord mapCoord)
+        {
+            var components = Map.GetEntities<McEntity>(mapCoord)
+                    .SelectMany(e => e.GetGoRogueComponents<IInteractTriggeredComponent>());
+            components.First().Interact(_player, _logManager);
+
+            TargetInteractables.Clear();
+            ProcessTurn();
+        }
+
+        private void StartInteractTargetting()
+        {
+            TargetInteractables.Clear();
+            foreach (var point in AdjacencyRule.EIGHT_WAY
+                .Neighbors(_player.Position)
+                .Concat(_player.Position.Yield()))
+            {
+                if (Map.GetEntities<McEntity>(point)
+                    .Any(e => e.HasGoRogueComponents(typeof(IInteractTriggeredComponent))))
+                {
+                    TargetInteractables.Add(point);
+                }
+            }
+
+            if (TargetInteractables.Count == 0)
+            {
+                _logManager.EventLog("Nothing to interact with.");
+                return;
+            }
+
+            State = State.InteractTargetting;
         }
 
         private void ProcessTurn()

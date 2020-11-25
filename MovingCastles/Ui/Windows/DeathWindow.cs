@@ -16,7 +16,7 @@ namespace MovingCastles.Ui.Windows
             Center();
 
             var background = new Console(Width, Height);
-            background.Fill(null, ColorHelper.GreyHighlight, null);
+            background.Fill(null, ColorHelper.DarkGreyHighlight, null);
 
             Children.Add(background);
 

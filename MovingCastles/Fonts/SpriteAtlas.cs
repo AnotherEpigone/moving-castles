@@ -19,5 +19,15 @@
         public const int Door_Wood_Closed = 23;
         public const int Door_Wood_Open = 24;
         public const int Trapdoor_Wood = 25;
+
+        // GUI
+        public const int BlueArrow_Right = 12;
+        public const int BlueArrow_Left = 13;
+        public const int BlueArrow_Down = 14;
+        public const int BlueArrow_Up = 15;
+        public const int BlueArrow_UpRight = 28;
+        public const int BlueArrow_DownRight = 29;
+        public const int BlueArrow_DownLeft = 30;
+        public const int BlueArrow_UpLeft = 31;
     }
 }
