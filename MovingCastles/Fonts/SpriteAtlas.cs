@@ -28,6 +28,8 @@
         public const int Door_Wood_Closed = 23;
         public const int Door_Wood_Open = 24;
         public const int Trapdoor_Wood = 25;
+        public const int EtheriumCore_Small = 26;
+        public const int EtheriumCore_Stand = 27;
         public const int Staircase_Up = 37;
         public const int Staircase_Down = 38;
 

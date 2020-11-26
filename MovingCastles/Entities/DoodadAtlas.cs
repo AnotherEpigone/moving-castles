@@ -36,5 +36,13 @@ namespace MovingCastles.Entities
             nameColor: Color.LightGray,
             walkable: true,
             transparent: true);
+
+        public static DoodadTemplate EtheriumCoreWithStand => new DoodadTemplate(
+            id: "DOODAD_ETHERIUMCORE_STAND",
+            name: "Etherium core",
+            glyph: SpriteAtlas.EtheriumCore_Stand,
+            nameColor: Color.LightGray,
+            walkable: true,
+            transparent: true);
     }
 }

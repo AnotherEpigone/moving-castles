@@ -47,6 +47,10 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var stairsUp = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
             map.AddEntity(stairsUp);
 
+            spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+            var etheriumCore = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.EtheriumCoreWithStand);
+            map.AddEntity(etheriumCore);
+
             // spawn doors
             foreach (var door in level.Doors)
             {
