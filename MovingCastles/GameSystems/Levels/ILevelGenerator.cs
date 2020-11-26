@@ -7,7 +7,7 @@ namespace MovingCastles.GameSystems.Levels
     {
         string Id { get; }
 
-        Level Generate(int seed, PlayerInfo playerInfo);
+        Level Generate(int seed, string id, PlayerInfo playerInfo);
 
         Level Generate(Save save);
     }

@@ -8,6 +8,7 @@ namespace MovingCastles.Serialization.Map
     [DataContract]
     public class MapState
     {
+        [DataMember] public string Id;
         [DataMember] public int Seed;
         [DataMember] public int Height;
         [DataMember] public int Width;

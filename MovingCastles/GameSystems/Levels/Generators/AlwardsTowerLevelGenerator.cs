@@ -30,9 +30,9 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public string Id { get; } = "GENERATOR_ALWARDS_TOWER";
 
-        public Level Generate(int seed, PlayerInfo playerInfo)
+        public Level Generate(int seed, string id, PlayerInfo playerInfo)
         {
-            var level = GenerateTerrainWithDoorLocations(seed, 30, 30);
+            var level = GenerateTerrainWithDoorLocations(seed, id, 30, 30);
             var map = level.Map;
 
             var rng = new StandardGenerator(seed);
@@ -90,6 +90,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
         {
             var level = GenerateTerrainWithDoorLocations(
                 save.MapState.Seed,
+                save.MapState.Id,
                 save.MapState.Width,
                 save.MapState.Height);
 
@@ -112,7 +113,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        private Level GenerateTerrainWithDoorLocations(int seed, int width, int height)
+        private Level GenerateTerrainWithDoorLocations(int seed, string id, int width, int height)
         {
             var rng = new StandardGenerator(seed);
             var map = new DungeonMap(width, height);
@@ -127,7 +128,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var doorsRound2 = doorGen.GenerateForWalkability(map, terrain, rooms);
             map.ApplyTerrainOverlay(terrain, MapFactory.SpawnDungeonTerrain);
 
-            return new Level(seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
+            return new Level(id, seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
         }
     }
 }

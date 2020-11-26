@@ -37,7 +37,7 @@ namespace MovingCastles.GameSystems
             var player = Player.PlayerInfo.CreateDefault();
 
             var firstLevelGen = new AlwardsTowerLevelGenerator(entityFactory);
-            var level = firstLevelGen.Generate(McRandom.GetSeed(), player);
+            var level = firstLevelGen.Generate(McRandom.GetSeed(), "temp", player);
 
             Dm = new DungeonMaster(player)
             {
@@ -65,6 +65,7 @@ namespace MovingCastles.GameSystems
 
             var mapState = new MapState()
             {
+                Id = Dm.Level.Id,
                 Seed = Dm.Level.Seed,
                 Width = Dm.Level.Map.Width,
                 Height = Dm.Level.Map.Height,
