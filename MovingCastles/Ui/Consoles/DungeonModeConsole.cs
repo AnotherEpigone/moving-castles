@@ -74,7 +74,7 @@ namespace MovingCastles.Ui.Consoles
             var popupMenuButton = new Button(popupMenuButtonWidth)
             {
                 Text = popupMenuText,
-                Position = new Point((rightSectionWidth / 3) - (popupMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth / 4) - (popupMenuButtonWidth / 2), 0),
             };
             popupMenuButton.Click += (_, __) => menuProvider.Pop.Show();
 
@@ -83,12 +83,20 @@ namespace MovingCastles.Ui.Consoles
             var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
             {
                 Text = inventoryMenuText,
-                Position = new Point((rightSectionWidth * 2 / 3) - (inventoryMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 2 / 4) - (inventoryMenuButtonWidth / 2), 0),
             };
             inventoryMenuButton.Click += (_, __) =>
             {
                 var inventory = mapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
                 menuProvider.Inventory.Show(inventory);
+            };
+
+            const string commandMenuText = "Commands";
+            var commandMenuButtonWidth = commandMenuText.Length + 4;
+            var commandMenuButton = new Button(commandMenuButtonWidth)
+            {
+                Text = commandMenuText,
+                Position = new Point((rightSectionWidth * 3 / 4) - (commandMenuButtonWidth / 2), 0),
             };
 
             var flavorMessage = new Label(rightSectionWidth)
@@ -103,6 +111,7 @@ namespace MovingCastles.Ui.Consoles
 
             console.Add(popupMenuButton);
             console.Add(inventoryMenuButton);
+            console.Add(commandMenuButton);
             console.Add(flavorMessage);
 
             return console;
