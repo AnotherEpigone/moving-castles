@@ -26,7 +26,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IGameManager gameManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager)
         {
             var inventory = steppingEntity.GetGoRogueComponent<IInventoryComponent>();
             if (inventory == null)

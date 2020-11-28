@@ -32,7 +32,7 @@ namespace MovingCastles.Components.StoryComponents
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IGameManager gameManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager)
         {
             if (!_stepTriggerActive)
             {

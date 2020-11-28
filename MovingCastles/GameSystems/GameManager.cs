@@ -42,13 +42,13 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
             var level = structure.GetLevel(LevelId.AlwardsTower1, player);
 
-            Dm = new DungeonMaster(player)
+            Dm = new DungeonMaster(player, _structureFactory, entityFactory)
             {
                 Level = level,
                 Structure = structure,
             };
 
-            var game = new TurnBasedGame(_logManager, this);
+            var game = new TurnBasedGame(_logManager, Dm);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
         }
 
@@ -110,13 +110,13 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
             var level = structure.GetLevel(save);
 
-            Dm = new DungeonMaster(player)
+            Dm = new DungeonMaster(player, _structureFactory, entityFactory)
             {
                 Level = level,
                 Structure = structure,
             };
 
-            var game = new TurnBasedGame(_logManager, this);
+            var game = new TurnBasedGame(_logManager, Dm);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
         }
 
@@ -130,7 +130,9 @@ namespace MovingCastles.GameSystems
 
             var dungeonModeDemoMap = mapFactory.CreateDungeonMap(100, 60, MapAtlas.CombatTestArea, player);
 
-            var game = new TurnBasedGame(_logManager, this);
+            Dm = new DungeonMaster(player, _structureFactory, entityFactory);
+
+            var game = new TurnBasedGame(_logManager, Dm);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, dungeonModeDemoMap, tilesetFont);
         }
 
@@ -157,7 +159,9 @@ namespace MovingCastles.GameSystems
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
 
-            var game = new TurnBasedGame(_logManager, this);
+            Dm = new DungeonMaster(player, _structureFactory, entityFactory);
+
+            var game = new TurnBasedGame(_logManager, Dm);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, mapGenTestAreaMap, tilesetFont);
         }
     }

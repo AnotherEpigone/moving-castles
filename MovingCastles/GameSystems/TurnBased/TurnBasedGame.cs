@@ -40,17 +40,17 @@ namespace MovingCastles.GameSystems.TurnBased
         };
 
         private readonly ILogManager _logManager;
-        private readonly IGameManager _gameManager;
+        private readonly IDungeonMaster _dungeonMaster;
 
         private Wizard _player;
 
-        public TurnBasedGame(ILogManager logManager, IGameManager gameManager)
+        public TurnBasedGame(ILogManager logManager, IDungeonMaster dungeonMaster)
         {
             _logManager = logManager;
             TargetInteractables = new List<Coord>();
 
             State = State.PlayerTurn;
-            _gameManager = gameManager;
+            _dungeonMaster = dungeonMaster;
         }
 
         public DungeonMap Map { get; set; }
@@ -299,7 +299,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
             foreach (var trigger in stepTriggers)
             {
-                trigger.OnStep(movingEntity, _logManager, _gameManager);
+                trigger.OnStep(movingEntity, _logManager, _dungeonMaster);
             }
         }
     }

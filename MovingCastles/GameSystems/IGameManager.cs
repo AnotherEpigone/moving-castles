@@ -9,8 +9,11 @@
         void StartMapGenDemo();
 
         void StartNewGame();
+
         void Save();
+
         void Load();
+
         bool CanLoad();
     }
 }
