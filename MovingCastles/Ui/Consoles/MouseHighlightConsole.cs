@@ -1,7 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.GameSystems.Spells;
-using MovingCastles.GameSystems.TurnBasedGame;
+using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Input;

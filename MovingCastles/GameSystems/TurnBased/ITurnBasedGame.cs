@@ -5,7 +5,7 @@ using MovingCastles.Maps;
 using SadConsole.Input;
 using System.Collections.Generic;
 
-namespace MovingCastles.GameSystems.TurnBasedGame
+namespace MovingCastles.GameSystems.TurnBased
 {
     public interface ITurnBasedGame
     {
@@ -14,7 +14,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         SpellTemplate TargettingSpell { get; }
         List<Coord> TargetInteractables { get; }
 
-        bool HandleAsPlayerInput(SadConsole.Input.Keyboard info);
+        bool HandleAsPlayerInput(Keyboard info);
         void RegisterEntity(McEntity entity);
         void UnregisterEntity(McEntity entity);
         void RegisterPlayer(Wizard player);

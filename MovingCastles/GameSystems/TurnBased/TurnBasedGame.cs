@@ -11,7 +11,7 @@ using MovingCastles.Maps;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MovingCastles.GameSystems.TurnBasedGame
+namespace MovingCastles.GameSystems.TurnBased
 {
     public enum State
     {
@@ -40,16 +40,17 @@ namespace MovingCastles.GameSystems.TurnBasedGame
         };
 
         private readonly ILogManager _logManager;
+        private readonly IGameManager _gameManager;
 
         private Wizard _player;
 
-        public TurnBasedGame(
-            ILogManager logManager)
+        public TurnBasedGame(ILogManager logManager, IGameManager gameManager)
         {
             _logManager = logManager;
             TargetInteractables = new List<Coord>();
 
             State = State.PlayerTurn;
+            _gameManager = gameManager;
         }
 
         public DungeonMap Map { get; set; }
@@ -298,7 +299,7 @@ namespace MovingCastles.GameSystems.TurnBasedGame
 
             foreach (var trigger in stepTriggers)
             {
-                trigger.OnStep(movingEntity, _logManager);
+                trigger.OnStep(movingEntity, _logManager, _gameManager);
             }
         }
     }

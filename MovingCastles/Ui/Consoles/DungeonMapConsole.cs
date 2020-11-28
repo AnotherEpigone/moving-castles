@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
-using MovingCastles.GameSystems.TurnBasedGame;
+using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Input;

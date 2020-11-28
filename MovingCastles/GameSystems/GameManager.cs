@@ -1,13 +1,12 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Levels;
-using MovingCastles.GameSystems.Levels.Generators;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Saving;
+using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Map;
 using MovingCastles.Ui;
 using SadConsole;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MovingCastles.GameSystems
@@ -49,7 +48,8 @@ namespace MovingCastles.GameSystems
                 Structure = structure,
             };
 
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
+            var game = new TurnBasedGame(_logManager, this);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
         }
 
         public void Save()
@@ -116,7 +116,8 @@ namespace MovingCastles.GameSystems
                 Structure = structure,
             };
 
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
+            var game = new TurnBasedGame(_logManager, this);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
         }
 
         public void StartDungeonModeDemo()
@@ -129,7 +130,8 @@ namespace MovingCastles.GameSystems
 
             var dungeonModeDemoMap = mapFactory.CreateDungeonMap(100, 60, MapAtlas.CombatTestArea, player);
 
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, dungeonModeDemoMap, tilesetFont);
+            var game = new TurnBasedGame(_logManager, this);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, dungeonModeDemoMap, tilesetFont);
         }
 
         public void StartCastleModeDemo()
@@ -155,7 +157,8 @@ namespace MovingCastles.GameSystems
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
 
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, mapGenTestAreaMap, tilesetFont);
+            var game = new TurnBasedGame(_logManager, this);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, mapGenTestAreaMap, tilesetFont);
         }
     }
 }

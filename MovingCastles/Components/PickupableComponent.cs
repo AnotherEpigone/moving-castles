@@ -2,6 +2,7 @@
 using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
@@ -25,7 +26,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IGameManager gameManager)
         {
             var inventory = steppingEntity.GetGoRogueComponent<IInventoryComponent>();
             if (inventory == null)

@@ -2,7 +2,7 @@
 using MovingCastles.Components;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
-using MovingCastles.GameSystems.TurnBasedGame;
+using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Controls;

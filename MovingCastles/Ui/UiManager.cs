@@ -1,6 +1,6 @@
 ﻿using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.TurnBasedGame;
+using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Windows;
@@ -32,10 +32,10 @@ namespace MovingCastles.Ui
 
         public ContainerConsole CreateDungeonMapScreen(
             IGameManager gameManager,
+            ITurnBasedGame turnBasedGame,
             DungeonMap map,
             Font tilesetFont)
         {
-            var game = new TurnBasedGame(_logManager);
             return new DungeonModeConsole(
                 ViewPortWidth,
                 ViewPortHeight,
@@ -43,7 +43,7 @@ namespace MovingCastles.Ui
                 CreateMenuProvider(gameManager),
                 map,
                 _logManager,
-                game);
+                turnBasedGame);
         }
 
         public CastleModeConsole CreateCastleMapScreen(

@@ -2,6 +2,7 @@
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using MovingCastles.Text;
@@ -31,7 +32,7 @@ namespace MovingCastles.Components.StoryComponents
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IGameManager gameManager)
         {
             if (!_stepTriggerActive)
             {
