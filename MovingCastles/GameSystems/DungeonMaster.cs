@@ -13,5 +13,7 @@ namespace MovingCastles.GameSystems
         public PlayerInfo Player { get; }
 
         public Level Level { get; set; }
+
+        public Structure Structure { get; set; }
     }
 }

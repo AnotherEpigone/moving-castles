@@ -10,7 +10,7 @@ namespace MovingCastles.Entities
     {
         static DoodadAtlas()
         {
-            ActorsById = typeof(DoodadAtlas)
+            ById = typeof(DoodadAtlas)
                 .GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .Select(p => p.GetValue(null))
                 .OfType<DoodadTemplate>()
@@ -19,7 +19,7 @@ namespace MovingCastles.Entities
                 i => i);
         }
 
-        public static Dictionary<string, DoodadTemplate> ActorsById { get; }
+        public static Dictionary<string, DoodadTemplate> ById { get; }
 
         public static DoodadTemplate Trapdoor => new DoodadTemplate(
             id: "DOODAD_TRAPDOOR_WOOD",

@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Levels.Generators;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Saving;
@@ -16,15 +17,18 @@ namespace MovingCastles.GameSystems
         private readonly IUiManager _uiManager;
         private readonly ILogManager _logManager;
         private readonly ISaveManager _saveManager;
+        private readonly IStructureFactory _structureFactory;
 
         public GameManager(
             IUiManager uiManager,
             ILogManager logManager,
-            ISaveManager saveManager)
+            ISaveManager saveManager,
+            IStructureFactory structureFactory)
         {
             _uiManager = uiManager;
             _logManager = logManager;
             _saveManager = saveManager;
+            _structureFactory = structureFactory;
         }
 
         public IDungeonMaster Dm { get; private set; }
@@ -36,12 +40,13 @@ namespace MovingCastles.GameSystems
 
             var player = Player.PlayerInfo.CreateDefault();
 
-            var firstLevelGen = new AlwardsTowerLevelGenerator(entityFactory);
-            var level = firstLevelGen.Generate(McRandom.GetSeed(), "temp", player);
+            var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
+            var level = structure.GetLevel(LevelId.AlwardsTower1, player);
 
             Dm = new DungeonMaster(player)
             {
                 Level = level,
+                Structure = structure,
             };
 
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);
@@ -70,14 +75,15 @@ namespace MovingCastles.GameSystems
                 Width = Dm.Level.Map.Width,
                 Height = Dm.Level.Map.Height,
                 Explored = Dm.Level.Map.Explored,
+                Entities = entities,
+                Doors = doors,
+                StructureId = Dm.Structure.Id,
             };
 
             var save = new Save()
             {
                 MapState = mapState,
-                Entities = entities,
                 Wizard = wizard,
-                Doors = doors,
             };
             _saveManager.Write(save);
         }
@@ -101,12 +107,13 @@ namespace MovingCastles.GameSystems
 
             var player = Player.PlayerInfo.CreateDefault();
 
-            var firstLevelGen = new AlwardsTowerLevelGenerator(entityFactory);
-            var level = firstLevelGen.Generate(save);
+            var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
+            var level = structure.GetLevel(save);
 
             Dm = new DungeonMaster(player)
             {
                 Level = level,
+                Structure = structure,
             };
 
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, level.Map, tilesetFont);

@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using MovingCastles.Entities;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MovingCastles.Serialization.Map
 {
@@ -13,5 +15,8 @@ namespace MovingCastles.Serialization.Map
         [DataMember] public int Height;
         [DataMember] public int Width;
         [DataMember] public bool[] Explored;
+        [DataMember] public List<McEntity> Entities;
+        [DataMember] public List<Door> Doors;
+        [DataMember] public string StructureId;
     }
 }

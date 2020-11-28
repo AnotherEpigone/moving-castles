@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using MovingCastles.GameSystems;
+using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Ui;
@@ -21,6 +22,9 @@ namespace MovingCastles
 
             builder.RegisterType<LogManager>()
                 .As<ILogManager>();
+
+            builder.RegisterType<StructureFactory>()
+                .As<IStructureFactory>();
 
             builder.RegisterType<MovingCastles>().AsSelf();
             return builder.Build();

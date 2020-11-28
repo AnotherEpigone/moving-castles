@@ -1,5 +1,7 @@
-﻿using MovingCastles.GameSystems.Player;
+﻿using GoRogue;
+using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
+using MovingCastles.Serialization.Map;
 
 namespace MovingCastles.GameSystems.Levels
 {
@@ -10,5 +12,9 @@ namespace MovingCastles.GameSystems.Levels
         Level Generate(int seed, string id, PlayerInfo playerInfo);
 
         Level Generate(Save save);
+
+        Level Generate(MapState mapState, PlayerInfo playerInfo);
+
+        Level Generate(int seed, string id, PlayerInfo playerInfo, Coord playerSpawnPosition);
     }
 }

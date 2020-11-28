@@ -7,9 +7,11 @@ using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
+using MovingCastles.Serialization.Map;
 using MovingCastles.Text;
 using System.Collections.Generic;
 using System.Linq;
+using Troschuetz.Random;
 using Troschuetz.Random.Generators;
 
 namespace MovingCastles.GameSystems.Levels.Generators
@@ -32,10 +34,33 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public Level Generate(int seed, string id, PlayerInfo playerInfo)
         {
-            var level = GenerateTerrainWithDoorLocations(seed, id, 30, 30);
-            var map = level.Map;
-
             var rng = new StandardGenerator(seed);
+            var level = Generate(seed, id, rng);
+
+            // spawn player
+            var spawnPosition = level.Map.WalkabilityView.RandomPosition(true, rng);
+            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
+            level.Map.AddEntity(player);
+
+            return level;
+        }
+
+        public Level Generate(int seed, string id, PlayerInfo playerInfo, Coord playerSpawnPosition)
+        {
+            var rng = new StandardGenerator(seed);
+            var level = Generate(seed, id, rng);
+
+            // spawn player
+            var player = _entityFactory.CreatePlayer(playerSpawnPosition, playerInfo);
+            level.Map.AddEntity(player);
+
+            return level;
+        }
+
+        private Level Generate(int seed, string id, IGenerator rng)
+        {
+            var level = GenerateTerrainWithDoorLocations(rng, seed, id, 30, 30);
+            var map = level.Map;
 
             // spawn doodads
             var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
@@ -77,45 +102,60 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 map.AddEntity(item);
             }
 
-            // spawn player
-            spawnPosition = trapdoor.Position;
-            ////spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
-            map.AddEntity(player);
-
             return level;
         }
 
         public Level Generate(Save save)
         {
-            var level = GenerateTerrainWithDoorLocations(
-                save.MapState.Seed,
-                save.MapState.Id,
-                save.MapState.Width,
-                save.MapState.Height);
-
-            // restore terrain before entities
-            level.Map.Explored = new ArrayMap<bool>(save.MapState.Explored, save.MapState.Width);
-            level.Map.FovVisibilityHandler.RefreshExploredTerrain();
-
-            foreach (var entity in save.Entities)
-            {
-                level.Map.AddEntity(entity);
-            }
-
-            foreach (var door in save.Doors)
-            {
-                level.Map.AddEntity(door);
-            }
+            var rng = new StandardGenerator(save.MapState.Seed);
+            var level = Generate(save.MapState, rng);
 
             level.Map.AddEntity(save.Wizard);
 
             return level;
         }
 
-        private Level GenerateTerrainWithDoorLocations(int seed, string id, int width, int height)
+        public Level Generate(MapState mapState, PlayerInfo playerInfo)
         {
-            var rng = new StandardGenerator(seed);
+            var rng = new StandardGenerator(mapState.Seed);
+            var level = Generate(mapState, rng);
+
+            // spawn player
+            var spawnPosition = level.Map.WalkabilityView.RandomPosition(true, rng);
+            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
+            level.Map.AddEntity(player);
+
+            return level;
+        }
+
+        private Level Generate(MapState mapState, IGenerator rng)
+        {
+            var level = GenerateTerrainWithDoorLocations(
+                rng,
+                mapState.Seed,
+                mapState.Id,
+                mapState.Width,
+                mapState.Height);
+
+            // restore terrain before entities
+            level.Map.Explored = new ArrayMap<bool>(mapState.Explored, mapState.Width);
+            level.Map.FovVisibilityHandler.RefreshExploredTerrain();
+
+            foreach (var entity in mapState.Entities)
+            {
+                level.Map.AddEntity(entity);
+            }
+
+            foreach (var door in mapState.Doors)
+            {
+                level.Map.AddEntity(door);
+            }
+
+            return level;
+        }
+
+        private Level GenerateTerrainWithDoorLocations(IGenerator rng, int seed, string id, int width, int height)
+        {
             var map = new DungeonMap(width, height);
             var terrain = new ArrayMap<bool>(width, height);
 
