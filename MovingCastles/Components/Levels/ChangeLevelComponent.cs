@@ -33,6 +33,11 @@ namespace MovingCastles.Components.Levels
 
         public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
+            if (steppingEntity is not Wizard)
+            {
+                return;
+            }
+
             dungeonMaster.ChangeLevel(_targetMapId, _spawnConditions);
         }
 
