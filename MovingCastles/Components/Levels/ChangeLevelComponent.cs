@@ -5,6 +5,9 @@ using MovingCastles.Entities;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Serialization;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.Levels
 {
@@ -12,6 +15,13 @@ namespace MovingCastles.Components.Levels
     {
         private readonly string _targetMapId;
         private readonly SpawnConditions _spawnConditions;
+
+        public ChangeLevelComponent(SerializedObject state)
+        {
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
+            _targetMapId = stateObj.TargetMapId;
+            _spawnConditions = stateObj.SpawnConditions;
+        }
 
         public ChangeLevelComponent(string targetMapId, SpawnConditions spawnConditions)
         {
@@ -21,14 +31,27 @@ namespace MovingCastles.Components.Levels
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
-            throw new System.NotImplementedException();
+            dungeonMaster.ChangeLevel(_targetMapId, _spawnConditions);
         }
 
-        public ComponentSerializable GetSerializable()
+        public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            throw new System.NotImplementedException();
+            Id = nameof(ChangeLevelComponent),
+            State = JsonConvert.SerializeObject(new State()
+            {
+               TargetMapId = _targetMapId,
+               SpawnConditions = _spawnConditions,
+            }),
+        };
+
+        [DataContract]
+        private class State
+        {
+            [DataMember] public string TargetMapId;
+            [DataMember] public SpawnConditions SpawnConditions;
         }
+
     }
 }

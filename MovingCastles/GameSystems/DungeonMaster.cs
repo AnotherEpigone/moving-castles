@@ -1,6 +1,7 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Player;
+using System;
 
 namespace MovingCastles.GameSystems
 {
@@ -19,6 +20,8 @@ namespace MovingCastles.GameSystems
             _entityFactory = entityFactory;
         }
 
+        public event EventHandler LevelChanged;
+
         public PlayerInfo Player { get; }
 
         public Level Level { get; set; }
@@ -26,6 +29,9 @@ namespace MovingCastles.GameSystems
         public Structure Structure { get; set; }
 
         public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions)
-        { }
+        {
+            Level = Structure.GetLevel(targetMapId, Player); // TODO spawnconditions
+            LevelChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

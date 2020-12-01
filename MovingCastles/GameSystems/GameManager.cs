@@ -7,6 +7,7 @@ using MovingCastles.Maps;
 using MovingCastles.Serialization.Map;
 using MovingCastles.Ui;
 using SadConsole;
+using System;
 using System.Linq;
 
 namespace MovingCastles.GameSystems
@@ -17,6 +18,7 @@ namespace MovingCastles.GameSystems
         private readonly ILogManager _logManager;
         private readonly ISaveManager _saveManager;
         private readonly IStructureFactory _structureFactory;
+        private IDungeonMaster _dungeonMaster;
 
         public GameManager(
             IUiManager uiManager,
@@ -30,7 +32,20 @@ namespace MovingCastles.GameSystems
             _structureFactory = structureFactory;
         }
 
-        public IDungeonMaster Dm { get; private set; }
+        public IDungeonMaster DungeonMaster
+        {
+            get { return _dungeonMaster; }
+            private set
+            {
+                if (_dungeonMaster != null)
+                {
+                    _dungeonMaster.LevelChanged -= DungeonMaster_LevelChanged;
+                }
+
+                _dungeonMaster = value;
+                _dungeonMaster.LevelChanged += DungeonMaster_LevelChanged;
+            }
+        }
 
         public void StartNewGame()
         {
@@ -42,24 +57,24 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
             var level = structure.GetLevel(LevelId.AlwardsTower1, player);
 
-            Dm = new DungeonMaster(player, _structureFactory, entityFactory)
+            DungeonMaster = new DungeonMaster(player, _structureFactory, entityFactory)
             {
                 Level = level,
                 Structure = structure,
             };
 
-            var game = new TurnBasedGame(_logManager, Dm);
+            var game = new TurnBasedGame(_logManager, DungeonMaster);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
         }
 
         public void Save()
         {
-            if (Dm == null)
+            if (DungeonMaster == null)
             {
                 return;
             }
 
-            var entities = Dm.Level.Map.Entities.Items.OfType<McEntity>().ToList();
+            var entities = DungeonMaster.Level.Map.Entities.Items.OfType<McEntity>().ToList();
             var wizard = entities.OfType<Wizard>().Single();
             var doors = entities.OfType<Door>().ToList();
             entities.Remove(wizard);
@@ -70,14 +85,14 @@ namespace MovingCastles.GameSystems
 
             var mapState = new MapState()
             {
-                Id = Dm.Level.Id,
-                Seed = Dm.Level.Seed,
-                Width = Dm.Level.Map.Width,
-                Height = Dm.Level.Map.Height,
-                Explored = Dm.Level.Map.Explored,
+                Id = DungeonMaster.Level.Id,
+                Seed = DungeonMaster.Level.Seed,
+                Width = DungeonMaster.Level.Map.Width,
+                Height = DungeonMaster.Level.Map.Height,
+                Explored = DungeonMaster.Level.Map.Explored,
                 Entities = entities,
                 Doors = doors,
-                StructureId = Dm.Structure.Id,
+                StructureId = DungeonMaster.Structure.Id,
             };
 
             var save = new Save()
@@ -110,13 +125,13 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
             var level = structure.GetLevel(save);
 
-            Dm = new DungeonMaster(player, _structureFactory, entityFactory)
+            DungeonMaster = new DungeonMaster(player, _structureFactory, entityFactory)
             {
                 Level = level,
                 Structure = structure,
             };
 
-            var game = new TurnBasedGame(_logManager, Dm);
+            var game = new TurnBasedGame(_logManager, DungeonMaster);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
         }
 
@@ -130,9 +145,9 @@ namespace MovingCastles.GameSystems
 
             var dungeonModeDemoMap = mapFactory.CreateDungeonMap(100, 60, MapAtlas.CombatTestArea, player);
 
-            Dm = new DungeonMaster(player, _structureFactory, entityFactory);
+            DungeonMaster = new DungeonMaster(player, _structureFactory, entityFactory);
 
-            var game = new TurnBasedGame(_logManager, Dm);
+            var game = new TurnBasedGame(_logManager, DungeonMaster);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, dungeonModeDemoMap, tilesetFont);
         }
 
@@ -159,10 +174,17 @@ namespace MovingCastles.GameSystems
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
 
-            Dm = new DungeonMaster(player, _structureFactory, entityFactory);
+            DungeonMaster = new DungeonMaster(player, _structureFactory, entityFactory);
 
-            var game = new TurnBasedGame(_logManager, Dm);
+            var game = new TurnBasedGame(_logManager, DungeonMaster);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, mapGenTestAreaMap, tilesetFont);
+        }
+
+        private void DungeonMaster_LevelChanged(object sender, EventArgs args)
+        {
+            var game = new TurnBasedGame(_logManager, DungeonMaster);
+            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster.Level.Map, tilesetFont);
         }
     }
 }

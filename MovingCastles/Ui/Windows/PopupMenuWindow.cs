@@ -46,7 +46,7 @@ namespace MovingCastles.Ui.Windows
             quitButton.Click += (_, __) =>
             {
                 gameManager.Save();
-                System.Environment.Exit(0);
+                SadConsole.Game.Instance.Exit();
             };
 
             const string closeText = "Close";

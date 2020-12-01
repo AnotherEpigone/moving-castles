@@ -1,5 +1,6 @@
 ﻿using GoRogue;
 using GoRogue.MapViews;
+using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Items;
@@ -70,6 +71,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
             var stairsUp = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
+            stairsUp.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower2, new SpawnConditions(Spawn.Stairdown, 0)));
             map.AddEntity(stairsUp);
 
             spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
