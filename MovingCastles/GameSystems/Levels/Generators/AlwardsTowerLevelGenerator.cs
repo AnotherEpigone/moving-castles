@@ -64,19 +64,32 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var map = level.Map;
 
             // spawn doodads
-            var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-            var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
-            trapdoor.AddGoRogueComponent(new StoryMessageBoxComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
-            map.AddEntity(trapdoor);
+            Coord spawnPosition;
 
-            spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-            var stairsUp = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
-            stairsUp.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower2, new SpawnConditions(Spawn.Stairdown, 0)));
-            map.AddEntity(stairsUp);
+            if (id == LevelId.AlwardsTower1)
+            {
+                spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+                var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
+                trapdoor.AddGoRogueComponent(new StoryMessageBoxComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
+                map.AddEntity(trapdoor);
 
-            spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-            var etheriumCore = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.EtheriumCoreWithStand);
-            map.AddEntity(etheriumCore);
+                spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+                var stairsUp = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
+                stairsUp.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower2, new SpawnConditions(Spawn.Stairdown, 0)));
+                map.AddEntity(stairsUp);
+            }
+
+            if (id == LevelId.AlwardsTower2)
+            {
+                spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+                var etheriumCore = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.EtheriumCoreWithStand);
+                map.AddEntity(etheriumCore);
+
+                spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+                var stairDown = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseDown);
+                stairDown.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower1, new SpawnConditions(Spawn.StairUp, 0)));
+                map.AddEntity(stairDown);
+            }
 
             // spawn doors
             foreach (var door in level.Doors)

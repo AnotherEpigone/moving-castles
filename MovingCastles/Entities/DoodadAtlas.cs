@@ -37,6 +37,14 @@ namespace MovingCastles.Entities
             walkable: true,
             transparent: true);
 
+        public static DoodadTemplate StaircaseDown => new DoodadTemplate(
+            id: "DOODAD_STAIRCASE_Down",
+            name: "Staircase down",
+            glyph: SpriteAtlas.Staircase_Down,
+            nameColor: Color.LightGray,
+            walkable: true,
+            transparent: true);
+
         public static DoodadTemplate EtheriumCoreWithStand => new DoodadTemplate(
             id: "DOODAD_ETHERIUMCORE_STAND",
             name: "Etherium core",
