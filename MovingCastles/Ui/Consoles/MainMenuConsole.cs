@@ -2,7 +2,6 @@
 using MovingCastles.GameSystems;
 using MovingCastles.Ui.Controls;
 using SadConsole;
-using SadConsole.Controls;
 using SadConsole.Input;
 
 namespace MovingCastles.Ui.Consoles

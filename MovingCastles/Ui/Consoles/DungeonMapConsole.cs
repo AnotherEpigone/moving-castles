@@ -19,20 +19,20 @@ namespace MovingCastles.Ui.Consoles
     internal class DungeonMapConsole : ContainerConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
-        private readonly MouseHighlightConsole _mouseHighlight;
-        private readonly InteractTargettingConsole _interactTargettingConsole;
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
+        private MouseHighlightConsole _mouseHighlight;
+        private InteractTargettingConsole _interactTargettingConsole;
 
         public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
         public event System.EventHandler<string> FlavorMessageChanged;
 
-        public DungeonMap Map { get; }
+        public DungeonMap Map { get; private set; }
 
-        public ScrollingConsole MapRenderer { get; }
+        public ScrollingConsole MapRenderer { get; private set; }
 
-        public Wizard Player { get; }
+        public Wizard Player { get; private set; }
 
         public DungeonMapConsole(
             int viewportWidth,
@@ -42,6 +42,8 @@ namespace MovingCastles.Ui.Consoles
             ITurnBasedGame game,
             DungeonMap map)
         {
+            IsFocused = true;
+
             _menuProvider = menuProvider;
             _game = game;
 
@@ -67,19 +69,59 @@ namespace MovingCastles.Ui.Consoles
 
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
             MapRenderer.UseMouse = false;
-            IsFocused = true;
+            MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
-            MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Children.Add(MapRenderer);
             Children.Add(_mouseHighlight);
             Children.Add(_interactTargettingConsole);
         }
 
-        private void Player_RemovedFromMap(object sender, System.EventArgs e)
+        public void SetMap(DungeonMap map)
         {
-            _menuProvider.Death.Show("You died.");
+            _mouseHighlight = new MouseHighlightConsole(_mouseHighlight.Width, _mouseHighlight.Height, _mouseHighlight.Font, _game, map);
+            _interactTargettingConsole = new InteractTargettingConsole(_interactTargettingConsole.Font, map);
+
+            foreach (var entity in Map.Entities.Items.OfType<McEntity>())
+            {
+                if (entity is Wizard player)
+                {
+                    player.RemovedFromMap -= Player_RemovedFromMap;
+                    Player.Moved -= Player_Moved;
+                    continue;
+                }
+
+                _game.UnregisterEntity(entity);
+            }
+
+            Map = map;
+            _game.Map = map;
+
+            foreach (var entity in map.Entities.Items.OfType<McEntity>())
+            {
+                if (entity is Wizard player)
+                {
+                    Player = player;
+                    _game.RegisterPlayer(player);
+                    player.RemovedFromMap += Player_RemovedFromMap;
+                    Player.Moved += Player_Moved;
+                    continue;
+                }
+
+                _game.RegisterEntity(entity);
+            }
+
+            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, MapRenderer.Width, MapRenderer.Height), MapRenderer.Font);
+            MapRenderer.UseMouse = false;
+            MapRenderer.CenterViewPortOnPoint(Player.Position);
+
+            Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
+
+            Children.Clear();
+            Children.Add(MapRenderer);
+            Children.Add(_mouseHighlight);
+            Children.Add(_interactTargettingConsole);
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
@@ -285,6 +327,11 @@ namespace MovingCastles.Ui.Consoles
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
         {
             MapRenderer.CenterViewPortOnPoint(Player.Position);
+        }
+
+        private void Player_RemovedFromMap(object sender, System.EventArgs e)
+        {
+            _menuProvider.Death.Show("You died.");
         }
     }
 }

@@ -6,6 +6,7 @@ using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Map;
 using MovingCastles.Ui;
+using MovingCastles.Ui.Consoles;
 using SadConsole;
 using System;
 using System.Linq;
@@ -182,9 +183,7 @@ namespace MovingCastles.GameSystems
 
         private void DungeonMaster_LevelChanged(object sender, EventArgs args)
         {
-            var game = new TurnBasedGame(_logManager, DungeonMaster);
-            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster.Level.Map, tilesetFont);
+            ((DungeonModeConsole)Global.CurrentScreen).SetMap(DungeonMaster.Level.Map);
         }
     }
 }

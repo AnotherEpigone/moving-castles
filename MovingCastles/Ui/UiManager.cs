@@ -30,7 +30,7 @@ namespace MovingCastles.Ui
             menu.IsFocused = true;
         }
 
-        public ContainerConsole CreateDungeonMapScreen(
+        public DungeonModeConsole CreateDungeonMapScreen(
             IGameManager gameManager,
             ITurnBasedGame turnBasedGame,
             DungeonMap map,

@@ -18,6 +18,7 @@ namespace MovingCastles.Ui.Consoles
 
         private readonly ControlsConsole _leftPane;
         private List<Console> _entitySummaryConsoles;
+        private DungeonMapConsole _mapConsole;
 
         public DungeonModeConsole(
             int width,
@@ -31,7 +32,7 @@ namespace MovingCastles.Ui.Consoles
             var rightSectionWidth = width - LeftPaneWidth;
 
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
-            var mapConsole = new DungeonMapConsole(
+            _mapConsole = new DungeonMapConsole(
                 rightSectionWidth / tileSizeXFactor,
                 height - TopPaneHeight,
                 tilesetFont,
@@ -41,9 +42,9 @@ namespace MovingCastles.Ui.Consoles
             {
                 Position = new Point(LeftPaneWidth, TopPaneHeight)
             };
-            mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
+            _mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
 
-            _leftPane = CreateLeftPane(height, mapConsole);
+            _leftPane = CreateLeftPane(height, _mapConsole);
 
             var eventLog = new MessageLogConsole(LeftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
             {
@@ -52,10 +53,15 @@ namespace MovingCastles.Ui.Consoles
             logManager.RegisterEventListener(s => eventLog.Add(s));
             logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
 
-            Children.Add(CreateTopPane(rightSectionWidth, mapConsole, menuProvider));
-            Children.Add(mapConsole);
+            Children.Add(CreateTopPane(rightSectionWidth, _mapConsole, menuProvider));
+            Children.Add(_mapConsole);
             Children.Add(eventLog);
             Children.Add(_leftPane);
+        }
+
+        public void SetMap(DungeonMap map)
+        {
+            _mapConsole.SetMap(map);
         }
 
         private ControlsConsole CreateTopPane(

@@ -13,7 +13,7 @@ namespace MovingCastles.Ui
 
         void ShowMainMenu(IGameManager gameManager);
 
-        ContainerConsole CreateDungeonMapScreen(
+        DungeonModeConsole CreateDungeonMapScreen(
             IGameManager gameManager,
             ITurnBasedGame turnBasedGame,
             DungeonMap map,

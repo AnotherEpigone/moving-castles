@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Serialization;
 using System;
@@ -30,6 +31,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(new SerializedObject() { Value = s }) },
                 { nameof(InventoryComponent), s => new InventoryComponent(new SerializedObject() { Value = s }) },
                 { nameof(StoryMessageBoxComponent), s => new StoryMessageBoxComponent(new SerializedObject() { Value = s }) },
+                { nameof(ChangeLevelComponent), s => new ChangeLevelComponent(new SerializedObject() { Value = s }) },
             };
         }
 
