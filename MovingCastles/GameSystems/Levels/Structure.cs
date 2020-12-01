@@ -28,7 +28,7 @@ namespace MovingCastles.GameSystems.Levels
 
         public Dictionary<string, ILevelGenerator> Generators { get; }
 
-        public Level GetLevel(string id, PlayerInfo playerInfo)
+        public Level GetLevel(string id, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions)
         {
             Level level;
             if (_generatedLevels.TryGetValue(id, out level))
@@ -39,11 +39,11 @@ namespace MovingCastles.GameSystems.Levels
             var generator = Generators[id];
             if (_serializedLevels.TryGetValue(id, out var mapState))
             {
-                level = generator.Generate(mapState, playerInfo);
+                level = generator.Generate(mapState, playerInfo, playerSpawnConditions);
             }
             else
             {
-                level = generator.Generate(McRandom.GetSeed(), id, playerInfo);
+                level = generator.Generate(McRandom.GetSeed(), id, playerInfo, playerSpawnConditions);
             }
 
             _generatedLevels.Add(id, level);

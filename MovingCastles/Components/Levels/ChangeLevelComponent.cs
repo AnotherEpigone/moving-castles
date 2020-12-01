@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.Levels
 {
-    public class ChangeLevelComponent : IStepTriggeredComponent, ISerializableComponent
+    public class ChangeLevelComponent : IStepTriggeredComponent, IInteractTriggeredComponent, ISerializableComponent
     {
         private readonly string _targetMapId;
         private readonly SpawnConditions _spawnConditions;
@@ -34,6 +34,16 @@ namespace MovingCastles.Components.Levels
         public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
             if (steppingEntity is not Wizard)
+            {
+                return;
+            }
+
+            dungeonMaster.ChangeLevel(_targetMapId, _spawnConditions);
+        }
+
+        public void Interact(McEntity interactingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
+        {
+            if (interactingEntity is not Wizard)
             {
                 return;
             }

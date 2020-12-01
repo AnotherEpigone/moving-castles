@@ -9,11 +9,11 @@ namespace MovingCastles.GameSystems.Levels
     {
         string Id { get; }
 
-        Level Generate(int seed, string id, PlayerInfo playerInfo);
+        Level Generate(int seed, string id, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions);
 
         Level Generate(Save save);
 
-        Level Generate(MapState mapState, PlayerInfo playerInfo);
+        Level Generate(MapState mapState, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions);
 
         Level Generate(int seed, string id, PlayerInfo playerInfo, Coord playerSpawnPosition);
     }

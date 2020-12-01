@@ -182,7 +182,7 @@ namespace MovingCastles.GameSystems.TurnBased
         {
             var components = Map.GetEntities<McEntity>(mapCoord)
                     .SelectMany(e => e.GetGoRogueComponents<IInteractTriggeredComponent>());
-            components.First().Interact(_player, _logManager);
+            components.First().Interact(_player, _logManager, _dungeonMaster);
 
             TargetInteractables.Clear();
             ProcessTurn();

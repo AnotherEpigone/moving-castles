@@ -42,7 +42,8 @@ namespace MovingCastles.Components.StoryComponents
             Trigger(steppingEntity);
         }
 
-        public void Interact(McEntity interactingEntity, ILogManager logManager) => Trigger(interactingEntity);
+        public void Interact(McEntity interactingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
+            => Trigger(interactingEntity);
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {

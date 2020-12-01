@@ -56,7 +56,7 @@ namespace MovingCastles.GameSystems
             var player = Player.PlayerInfo.CreateDefault();
 
             var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
-            var level = structure.GetLevel(LevelId.AlwardsTower1, player);
+            var level = structure.GetLevel(LevelId.AlwardsTower1, player, new SpawnConditions(Spawn.Default, 0));
 
             DungeonMaster = new DungeonMaster(player, _structureFactory, entityFactory)
             {

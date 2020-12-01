@@ -30,7 +30,7 @@ namespace MovingCastles.GameSystems
 
         public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions)
         {
-            Level = Structure.GetLevel(targetMapId, Player); // TODO spawnconditions
+            Level = Structure.GetLevel(targetMapId, Player, spawnConditions);
             LevelChanged?.Invoke(this, EventArgs.Empty);
         }
     }

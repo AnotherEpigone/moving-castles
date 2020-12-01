@@ -33,7 +33,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public string Id { get; } = "GENERATOR_ALWARDS_TOWER";
 
-        public Level Generate(int seed, string id, PlayerInfo playerInfo)
+        public Level Generate(int seed, string id, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions)
         {
             var rng = new StandardGenerator(seed);
             var level = Generate(seed, id, rng);
@@ -53,6 +53,29 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             // spawn player
             var player = _entityFactory.CreatePlayer(playerSpawnPosition, playerInfo);
+            level.Map.AddEntity(player);
+
+            return level;
+        }
+
+        public Level Generate(Save save)
+        {
+            var rng = new StandardGenerator(save.MapState.Seed);
+            var level = Generate(save.MapState, rng);
+
+            level.Map.AddEntity(save.Wizard);
+
+            return level;
+        }
+
+        public Level Generate(MapState mapState, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions)
+        {
+            var rng = new StandardGenerator(mapState.Seed);
+            var level = Generate(mapState, rng);
+
+            // spawn player
+            var spawnPosition = level.Map.WalkabilityView.RandomPosition(true, rng);
+            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             level.Map.AddEntity(player);
 
             return level;
@@ -116,29 +139,6 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
                 map.AddEntity(item);
             }
-
-            return level;
-        }
-
-        public Level Generate(Save save)
-        {
-            var rng = new StandardGenerator(save.MapState.Seed);
-            var level = Generate(save.MapState, rng);
-
-            level.Map.AddEntity(save.Wizard);
-
-            return level;
-        }
-
-        public Level Generate(MapState mapState, PlayerInfo playerInfo)
-        {
-            var rng = new StandardGenerator(mapState.Seed);
-            var level = Generate(mapState, rng);
-
-            // spawn player
-            var spawnPosition = level.Map.WalkabilityView.RandomPosition(true, rng);
-            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
-            level.Map.AddEntity(player);
 
             return level;
         }
