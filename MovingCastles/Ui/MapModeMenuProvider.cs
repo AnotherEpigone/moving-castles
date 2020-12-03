@@ -8,12 +8,14 @@ namespace MovingCastles.Ui
             InventoryWindow inventory,
             DeathWindow death,
             PopupMenuWindow pop,
-            SpellSelectionWindow spellSelect)
+            SpellSelectionWindow spellSelect,
+            CommandWindow command)
         {
             Inventory = inventory;
             Death = death;
             Pop = pop;
             SpellSelect = spellSelect;
+            Command = command;
         }
 
         public InventoryWindow Inventory { get; }
@@ -23,5 +25,7 @@ namespace MovingCastles.Ui
         public PopupMenuWindow Pop { get; }
 
         public SpellSelectionWindow SpellSelect { get; }
+
+        public CommandWindow Command { get; }
     }
 }

@@ -104,6 +104,10 @@ namespace MovingCastles.Ui.Consoles
                 Text = commandMenuText,
                 Position = new Point((rightSectionWidth * 3 / 4) - (commandMenuButtonWidth / 2), 0),
             };
+            commandMenuButton.Click += (_, __) =>
+            {
+                menuProvider.Command.Show();
+            };
 
             var flavorMessage = new Label(rightSectionWidth)
             {

@@ -12,11 +12,10 @@ namespace MovingCastles.Ui.Windows
         private readonly Console _descriptionArea;
 
         public CommandWindow()
-           : base(120, 30)
+           : base(90, 30)
         {
-            CloseOnEscKey = true;
-
             Center();
+            CloseOnEscKey = true;
             IsFocused = true;
 
             // child console
@@ -40,6 +39,11 @@ namespace MovingCastles.Ui.Windows
             _closeButton.Click += (_, __) => Hide();
 
             Add(_closeButton);
+        }
+
+        public new void Show()
+        {
+            base.Show(true);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace MovingCastles.Ui
         PopupMenuWindow Pop { get; }
 
         SpellSelectionWindow SpellSelect { get; }
+        CommandWindow Command { get; }
     }
 }

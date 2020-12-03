@@ -11,21 +11,16 @@ namespace MovingCastles.GameSystems.Levels
     {
         public static Coord GetSpawnPosition(Level level, SpawnConditions conditions, IGenerator rng)
         {
-            switch (conditions.Spawn)
+            return conditions.Spawn switch
             {
-                case Spawn.Default:
-                    return level.Map.WalkabilityView.RandomPosition(true, rng);
-                case Spawn.Stairdown:
-                    return GetEntityWithTemplateId(level, DoodadAtlas.StaircaseDown.Id, conditions.LandmarkId)
-                        .Position;
-                case Spawn.StairUp:
-                    return GetEntityWithTemplateId(level, DoodadAtlas.StaircaseUp.Id, conditions.LandmarkId)
-                        .Position;
-                case Spawn.Door:
-                    throw new NotSupportedException(conditions.Spawn.ToString());
-                default:
-                    throw new ArgumentException(conditions.Spawn.ToString());
-            }
+                Spawn.Default => level.Map.WalkabilityView.RandomPosition(true, rng),
+                Spawn.Stairdown => GetEntityWithTemplateId(level, DoodadAtlas.StaircaseDown.Id, conditions.LandmarkId)
+                                        .Position,
+                Spawn.StairUp => GetEntityWithTemplateId(level, DoodadAtlas.StaircaseUp.Id, conditions.LandmarkId)
+                                        .Position,
+                Spawn.Door => throw new NotSupportedException(conditions.Spawn.ToString()),
+                _ => throw new ArgumentException(conditions.Spawn.ToString()),
+            };
         }
 
         private static McEntity GetEntityWithTemplateId(Level level, string id, int index)
