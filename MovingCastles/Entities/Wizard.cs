@@ -18,7 +18,8 @@ namespace MovingCastles.Entities
     public sealed class Wizard : McEntity
     {
         public Wizard(Coord position, PlayerInfo playerInfo, Font font)
-            : base(playerInfo.Name,
+            : base("Player-Wizard",
+                  playerInfo.Name,
                   Color.White,
                   Color.Transparent,
                   SpriteAtlas.PlayerDefault,

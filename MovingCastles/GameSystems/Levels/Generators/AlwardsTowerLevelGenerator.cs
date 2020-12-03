@@ -39,7 +39,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var level = Generate(seed, id, rng);
 
             // spawn player
-            var spawnPosition = level.Map.WalkabilityView.RandomPosition(true, rng);
+            var spawnPosition = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             level.Map.AddEntity(player);
 
@@ -74,7 +74,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var level = Generate(mapState, rng);
 
             // spawn player
-            var spawnPosition = level.Map.WalkabilityView.RandomPosition(true, rng);
+            var spawnPosition = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             level.Map.AddEntity(player);
 
@@ -86,9 +86,14 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var level = GenerateTerrainWithDoorLocations(rng, seed, id, 30, 30);
             var map = level.Map;
 
+            // spawn doors
+            foreach (var door in level.Doors)
+            {
+                map.AddEntity(_entityFactory.CreateDoor(door));
+            }
+
             // spawn doodads
             Coord spawnPosition;
-
             if (id == LevelId.AlwardsTower1)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
@@ -112,12 +117,6 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 var stairDown = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseDown);
                 stairDown.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower1, new SpawnConditions(Spawn.StairUp, 0)));
                 map.AddEntity(stairDown);
-            }
-
-            // spawn doors
-            foreach (var door in level.Doors)
-            {
-                map.AddEntity(_entityFactory.CreateDoor(door));
             }
 
             // Spawn enemies

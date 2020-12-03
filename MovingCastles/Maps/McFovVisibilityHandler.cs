@@ -75,7 +75,8 @@ namespace MovingCastles.Maps
             {
                 // spawn ghost
                 var ghost = new McEntity(
-                    GhostName + " - " + entity.Name,
+                    GhostName,
+                    entity.Name,
                     ExploredColor,
                     Color.Transparent,
                     entity.Animation[0].Glyph,

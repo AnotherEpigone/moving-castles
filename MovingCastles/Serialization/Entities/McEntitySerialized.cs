@@ -22,6 +22,7 @@ namespace MovingCastles.Serialization.Entities
     {
         [DataMember] public Color NameColor;
         [DataMember] public int Layer;
+        [DataMember] public string TemplateId;
         [DataMember] public bool IsWalkable;
         [DataMember] public bool IsTransparent;
         [DataMember] public bool IsStatic;
@@ -49,6 +50,7 @@ namespace MovingCastles.Serialization.Entities
                 Components = entity.GetGoRogueComponents<ISerializableComponent>()
                                 .Select(c => c.GetSerializable())
                                 .ToList(),
+                TemplateId = entity.TemplateId,
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -62,6 +64,7 @@ namespace MovingCastles.Serialization.Entities
         public static implicit operator McEntity(McEntitySerialized serializedObject)
         {
             var entity = new McEntity(
+                serializedObject.TemplateId,
                 serializedObject.Name,
                 serializedObject.DefaultForeground,
                 serializedObject.DefaultBackground,

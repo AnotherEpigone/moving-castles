@@ -23,6 +23,7 @@ namespace MovingCastles.Entities
         public McEntity CreateActor(Coord position, ActorTemplate actorTemplate)
         {
             var actor = new McEntity(
+                actorTemplate.Id,
                 actorTemplate.Name,
                 Color.White,
                 Color.Transparent,
@@ -46,6 +47,7 @@ namespace MovingCastles.Entities
         public McEntity CreateItem(Coord position, ItemTemplate itemTemplate)
         {
             var item = new McEntity(
+                    itemTemplate.Id,
                     itemTemplate.Name,
                     Color.White,
                     Color.Transparent,
@@ -68,6 +70,7 @@ namespace MovingCastles.Entities
         public McEntity CreateDoodad(Coord position, DoodadTemplate template)
         {
             var doodad = new McEntity(
+                    template.Id,
                     template.Name,
                     Color.White,
                     Color.Transparent,

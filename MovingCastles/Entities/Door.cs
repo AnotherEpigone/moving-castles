@@ -22,7 +22,9 @@ namespace MovingCastles.Entities
             : this(position, font, false) { }
 
         public Door(Coord position, Font font, bool open)
-            : base("Door",
+            : base(
+                  "Door",
+                  "Door",
                   Color.White,
                   Color.Transparent,
                   SpriteAtlas.Door_Wood_Closed,

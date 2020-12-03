@@ -15,6 +15,7 @@ namespace MovingCastles.Entities
     public class McEntity : BasicEntity
     {
         public McEntity(
+            string templateId,
             string name,
             Color foreground,
             Color background,
@@ -26,6 +27,7 @@ namespace MovingCastles.Entities
             Color nameColor)
             : base(foreground, background, glyph, position, layer, isWalkable, isTransparent)
         {
+            TemplateId = templateId;
             Name = name;
             NameColor = nameColor;
         }
@@ -37,6 +39,8 @@ namespace MovingCastles.Entities
         public bool HasMap => CurrentMap != null;
 
         public Color NameColor { get; }
+
+        public string TemplateId { get; }
 
         public string ColoredName => $"[c:r f:{NameColor.ToParser()}]{Name}[c:u]";
 
