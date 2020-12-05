@@ -207,13 +207,27 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-            if (info.IsKeyPressed(Keys.Q))
+            if (info.IsKeyPressed(Keys.S))
             {
                 EndTargettingMode();
                 _menuProvider.SpellSelect.Show(
                     Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
                     selectedSpell => BeginTargetting(selectedSpell));
 
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.C))
+            {
+                EndTargettingMode();
+                _menuProvider.Command.Show();
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.Escape)
+                || info.IsKeyPressed(Keys.M))
+            {
+                _menuProvider.Pop.Show();
                 return true;
             }
 
@@ -235,12 +249,6 @@ namespace MovingCastles.Ui.Consoles
 
         private bool PlayerTurnProcessKeyboard(SadConsole.Input.Keyboard info)
         {
-            if (info.IsKeyPressed(Keys.Escape))
-            {
-                _menuProvider.Pop.Show();
-                return true;
-            }
-
             if (info.IsKeyPressed(Keys.F))
             {
                 ToggleFov();
@@ -285,7 +293,6 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-
             if (_game.HandleAsInteractTargettingInput(info))
             {
                 return true;
@@ -299,7 +306,7 @@ namespace MovingCastles.Ui.Consoles
             return base.ProcessKeyboard(info);
         }
 
-        private void BeginTargetting(SpellTemplate spell)
+        public void BeginTargetting(SpellTemplate spell)
         {
             _game.StartSpellTargetting(spell);
             FlavorMessageChanged?.Invoke(this, $"Aiming {spell.Name}...");

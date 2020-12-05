@@ -16,6 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Text\Gui.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Gui.resx</DependentUpon>
+    </Compile>
     <Compile Update="Text\Story.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -24,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Text\Gui.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Gui.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Text\Story.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Story.Designer.cs</LastGenOutput>

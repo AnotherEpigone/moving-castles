@@ -75,21 +75,21 @@ namespace MovingCastles.Ui.Consoles
                 DisableControlFocusing = true,
             };
 
-            const string popupMenuText = "Menu";
+            const string popupMenuText = "Menu (M)";
             var popupMenuButtonWidth = popupMenuText.Length + 4;
             var popupMenuButton = new Button(popupMenuButtonWidth)
             {
                 Text = popupMenuText,
-                Position = new Point((rightSectionWidth / 4) - (popupMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth / 5) - (popupMenuButtonWidth / 2), 0),
             };
             popupMenuButton.Click += (_, __) => menuProvider.Pop.Show();
 
-            const string inventoryMenuText = "Inventory";
+            const string inventoryMenuText = "Inventory (I)";
             var inventoryMenuButtonWidth = inventoryMenuText.Length + 4;
             var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
             {
                 Text = inventoryMenuText,
-                Position = new Point((rightSectionWidth * 2 / 4) - (inventoryMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 2 / 5) - (inventoryMenuButtonWidth / 2), 0),
             };
             inventoryMenuButton.Click += (_, __) =>
             {
@@ -97,12 +97,26 @@ namespace MovingCastles.Ui.Consoles
                 menuProvider.Inventory.Show(inventory);
             };
 
-            const string commandMenuText = "Commands";
+            const string spellMenuText = "Spells (S)";
+            var spellMenuButtonWidth = spellMenuText.Length + 4;
+            var spellMenuButton = new Button(spellMenuButtonWidth)
+            {
+                Text = spellMenuText,
+                Position = new Point((rightSectionWidth * 3 / 5) - (spellMenuButtonWidth / 2), 0),
+            };
+            spellMenuButton.Click += (_, __) =>
+            {
+                menuProvider.SpellSelect.Show(
+                    mapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
+                    selectedSpell => mapConsole.BeginTargetting(selectedSpell));
+            };
+
+            const string commandMenuText = "Commands (C)";
             var commandMenuButtonWidth = commandMenuText.Length + 4;
             var commandMenuButton = new Button(commandMenuButtonWidth)
             {
                 Text = commandMenuText,
-                Position = new Point((rightSectionWidth * 3 / 4) - (commandMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 4 / 5) - (commandMenuButtonWidth / 2), 0),
             };
             commandMenuButton.Click += (_, __) =>
             {
@@ -121,6 +135,7 @@ namespace MovingCastles.Ui.Consoles
 
             console.Add(popupMenuButton);
             console.Add(inventoryMenuButton);
+            console.Add(spellMenuButton);
             console.Add(commandMenuButton);
             console.Add(flavorMessage);
 
