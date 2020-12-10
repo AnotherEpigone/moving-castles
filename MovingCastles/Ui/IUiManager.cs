@@ -23,5 +23,7 @@ namespace MovingCastles.Ui
             IGameManager gameManager,
             CastleMap map,
             Font tilesetFont);
+
+        void ActivateFullScreen();
     }
 }

@@ -15,17 +15,26 @@ namespace MovingCastles.Ui
         public const string TilesetFontPath = "Fonts\\sprites.font";
         public const string TilesetFontName = "sprites";
 
-        public int ViewPortWidth { get; } = 160; // 160 x 8 = 1280
-        public int ViewPortHeight { get; } = 45; // 45 x 16 = 720
+        public int ViewPortWidth { get; private set; } = 160; // 160 x 8 = 1280
+        public int ViewPortHeight { get; private set; } = 45; // 45 x 16 = 720
 
         public UiManager(ILogManager logManager)
         {
             _logManager = logManager;
         }
 
+        public void ActivateFullScreen()
+        {
+            Settings.ToggleFullScreen();
+
+            ViewPortWidth = Global.WindowWidth / Global.CurrentScreen.Font.Size.X;
+            ViewPortHeight = Global.WindowHeight / Global.CurrentScreen.Font.Size.Y;
+            Global.CurrentScreen.Resize(ViewPortWidth, ViewPortHeight, false);
+        }
+
         public void ShowMainMenu(IGameManager gameManager)
         {
-            var menu = new MainMenuConsole(gameManager);
+            var menu = new MainMenuConsole(this, gameManager, ViewPortWidth, ViewPortHeight);
             Global.CurrentScreen = menu;
             menu.IsFocused = true;
         }

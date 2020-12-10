@@ -1,4 +1,5 @@
-﻿using MovingCastles.GameSystems;
+﻿using Microsoft.Xna.Framework.Graphics;
+using MovingCastles.GameSystems;
 using MovingCastles.Ui;
 using MovingCastles.Ui.Controls;
 using SadConsole;
@@ -43,6 +44,8 @@ namespace MovingCastles
             InitControls();
 
             Game.Instance.Window.Title = "Moving Castles";
+            Settings.ResizeMode = Settings.WindowResizeOptions.None;
+            Settings.FullScreenPreventScaleChangeForNone = true;
 
             _uiManager.ShowMainMenu(_gameManager);
         }
