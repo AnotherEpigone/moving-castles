@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.GameSystems;
+using MovingCastles.Serialization.Settings;
 using MovingCastles.Ui.Controls;
 using SadConsole;
 using SadConsole.Controls;
@@ -14,7 +15,7 @@ namespace MovingCastles.Ui.Consoles
 
         private McControlsConsole _activeLowerConsole;
 
-        public MainMenuConsole(IUiManager uiManager, IGameManager gameManager, int width, int height)
+        public MainMenuConsole(IUiManager uiManager, IGameManager gameManager, IAppSettings appSettings, int width, int height)
         {
             DefaultBackground = Color.Black;
 
@@ -28,7 +29,7 @@ namespace MovingCastles.Ui.Consoles
             _menuConsole = CreateMenuConsole(gameManager, width, height - titleConsole.Height);
             _menuConsole.Position = new Point(0, titleConsole.Height);
 
-            _settingsConsole = CreateSettingsConsole(uiManager, gameManager, width, height - titleConsole.Height);
+            _settingsConsole = CreateSettingsConsole(uiManager, gameManager, appSettings, width, height - titleConsole.Height);
             _settingsConsole.Position = new Point(0, titleConsole.Height);
             _settingsConsole.IsVisible = false;
 
@@ -57,7 +58,7 @@ namespace MovingCastles.Ui.Consoles
             _activeLowerConsole = toFocus;
         }
 
-        private McControlsConsole CreateSettingsConsole(IUiManager uiManager, IGameManager gameManager,  int width, int height)
+        private McControlsConsole CreateSettingsConsole(IUiManager uiManager, IGameManager gameManager, IAppSettings appSettings, int width, int height)
         {
             var settingsConsole = new McControlsConsole(width, height);
 
@@ -71,7 +72,8 @@ namespace MovingCastles.Ui.Consoles
             };
             fullscreenToggleButton.Click += (_, __) =>
             {
-                uiManager.ActivateFullScreen();
+                appSettings.FullScreen = !appSettings.FullScreen;
+                uiManager.ToggleFullScreen();
                 uiManager.ShowMainMenu(gameManager);
             };
 

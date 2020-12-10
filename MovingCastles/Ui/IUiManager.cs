@@ -24,6 +24,6 @@ namespace MovingCastles.Ui
             CastleMap map,
             Font tilesetFont);
 
-        void ActivateFullScreen();
+        void ToggleFullScreen();
     }
 }

@@ -2,6 +2,7 @@
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
+using MovingCastles.Serialization.Settings;
 using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Windows;
 using SadConsole;
@@ -11,6 +12,7 @@ namespace MovingCastles.Ui
     public sealed class UiManager : IUiManager
     {
         private readonly ILogManager _logManager;
+        private readonly IAppSettings _appSettings;
 
         public const string TilesetFontPath = "Fonts\\sprites.font";
         public const string TilesetFontName = "sprites";
@@ -18,12 +20,13 @@ namespace MovingCastles.Ui
         public int ViewPortWidth { get; private set; } = 160; // 160 x 8 = 1280
         public int ViewPortHeight { get; private set; } = 45; // 45 x 16 = 720
 
-        public UiManager(ILogManager logManager)
+        public UiManager(ILogManager logManager, IAppSettings appSettings)
         {
             _logManager = logManager;
+            _appSettings = appSettings;
         }
 
-        public void ActivateFullScreen()
+        public void ToggleFullScreen()
         {
             Settings.ToggleFullScreen();
 
@@ -34,7 +37,7 @@ namespace MovingCastles.Ui
 
         public void ShowMainMenu(IGameManager gameManager)
         {
-            var menu = new MainMenuConsole(this, gameManager, ViewPortWidth, ViewPortHeight);
+            var menu = new MainMenuConsole(this, gameManager, _appSettings, ViewPortWidth, ViewPortHeight);
             Global.CurrentScreen = menu;
             menu.IsFocused = true;
         }

@@ -3,6 +3,7 @@ using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Saving;
+using MovingCastles.Serialization.Settings;
 using MovingCastles.Ui;
 
 namespace MovingCastles
@@ -29,6 +30,10 @@ namespace MovingCastles
 
             builder.RegisterType<StructureFactory>()
                 .As<IStructureFactory>()
+                .SingleInstance();
+
+            builder.RegisterType<AppSettings>()
+                .As<IAppSettings>()
                 .SingleInstance();
 
             builder.RegisterType<MovingCastles>().AsSelf();

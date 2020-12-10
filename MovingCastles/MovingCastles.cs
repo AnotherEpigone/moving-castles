@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using MovingCastles.GameSystems;
+﻿using MovingCastles.GameSystems;
+using MovingCastles.Serialization.Settings;
 using MovingCastles.Ui;
 using MovingCastles.Ui.Controls;
 using SadConsole;
@@ -12,13 +12,15 @@ namespace MovingCastles
     {
         private readonly IUiManager _uiManager;
         private readonly IGameManager _gameManager;
+        private readonly IAppSettings _appSettings;
 
         private bool disposedValue;
 
-        public MovingCastles(IUiManager uiManager, IGameManager gameManager)
+        public MovingCastles(IUiManager uiManager, IGameManager gameManager, IAppSettings appSettings)
         {
             _uiManager = uiManager;
             _gameManager = gameManager;
+            _appSettings = appSettings;
         }
 
         public void Run()
@@ -46,6 +48,11 @@ namespace MovingCastles
             Game.Instance.Window.Title = "Moving Castles";
             Settings.ResizeMode = Settings.WindowResizeOptions.None;
             Settings.FullScreenPreventScaleChangeForNone = true;
+
+            if (_appSettings.FullScreen)
+            {
+                _uiManager.ToggleFullScreen();
+            }
 
             _uiManager.ShowMainMenu(_gameManager);
         }
