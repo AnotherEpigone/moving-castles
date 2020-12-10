@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
+using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Controls;
 using System.Collections.Generic;
@@ -27,6 +27,7 @@ namespace MovingCastles.Ui.Consoles
             IMapModeMenuProvider menuProvider,
             DungeonMap map,
             ILogManager logManager,
+            IAppSettings appSettings,
             ITurnBasedGame game)
         {
             var rightSectionWidth = width - LeftPaneWidth;
@@ -38,6 +39,7 @@ namespace MovingCastles.Ui.Consoles
                 tilesetFont,
                 menuProvider,
                 game,
+                appSettings,
                 map)
             {
                 Position = new Point(LeftPaneWidth, TopPaneHeight)

@@ -23,10 +23,10 @@ namespace MovingCastles.Ui.Consoles
             var titleConsole = new Console(width, 12, titleFont);
 
             titleConsole.Fill(null, ColorHelper.MidnightestBlue, null);
-            titleConsole.Print((width / 6) - 7, 3, "MOVING CASTLES");
+            titleConsole.Print((width / 6) - 6, 3, "MOVING CASTLES");
             titleConsole.DefaultBackground = ColorHelper.MidnightestBlue;
 
-            _menuConsole = CreateMenuConsole(gameManager, width, height - titleConsole.Height);
+            _menuConsole = CreateMenuConsole(gameManager, appSettings, width, height - titleConsole.Height);
             _menuConsole.Position = new Point(0, titleConsole.Height);
 
             _settingsConsole = CreateSettingsConsole(uiManager, gameManager, appSettings, width, height - titleConsole.Height);
@@ -89,7 +89,7 @@ namespace MovingCastles.Ui.Consoles
             return settingsConsole;
         }
 
-        private McControlsConsole CreateMenuConsole(IGameManager gameManager, int width, int height)
+        private McControlsConsole CreateMenuConsole(IGameManager gameManager, IAppSettings appSettings, int width, int height)
         {
             var menuConsole = new McControlsConsole(width, height);
 
@@ -129,12 +129,14 @@ namespace MovingCastles.Ui.Consoles
             {
                 TextColor = Color.White,
                 Position = new Point(debugButtonX, topButtonY + 12),
+                IsVisible = appSettings.Debug,
             };
 
             var dungeonModeButton = new McSelectionButton(30, 1)
             {
                 Text = "Dungeon mode testarea",
                 Position = new Point(debugButtonX, topButtonY + 14),
+                IsVisible = appSettings.Debug,
             };
             dungeonModeButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
 
@@ -142,6 +144,7 @@ namespace MovingCastles.Ui.Consoles
             {
                 Text = "Castle mode testarea",
                 Position = new Point(debugButtonX, topButtonY + 16),
+                IsVisible = appSettings.Debug,
             };
             castleModeButton.Click += (_, __) => gameManager.StartCastleModeDemo();
 
@@ -149,6 +152,7 @@ namespace MovingCastles.Ui.Consoles
             {
                 Text = "Map generation testarea",
                 Position = new Point(debugButtonX, topButtonY + 18),
+                IsVisible = appSettings.Debug,
             };
             mapTestButton.Click += (_, __) => gameManager.StartMapGenDemo();
 

@@ -55,6 +55,7 @@ namespace MovingCastles.Ui
                 CreateMenuProvider(gameManager),
                 map,
                 _logManager,
+                _appSettings,
                 turnBasedGame);
         }
 

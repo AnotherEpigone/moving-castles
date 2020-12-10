@@ -8,7 +8,7 @@ namespace MovingCastles.Serialization.Settings
         private const string SettingsIniKey = "settings";
         private const string FullScreenSettingKey = "fullscreen";
         private const string DebugPasswordSettingKey = "debug-pw";
-        private const string DebugPassword = "In principio erat verbum";
+        private const string DebugPassword = "In principio erat Verbum";
 
         private const string ConfigPath = "config.ini";
 

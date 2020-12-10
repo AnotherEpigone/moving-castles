@@ -8,6 +8,7 @@ using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
+using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Input;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace MovingCastles.Ui.Consoles
     internal class DungeonMapConsole : ContainerConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
+        private readonly IAppSettings _appSettings;
         private readonly ITurnBasedGame _game;
 
         private Point _lastSummaryConsolePosition;
@@ -40,11 +42,13 @@ namespace MovingCastles.Ui.Consoles
             Font tilesetFont,
             IMapModeMenuProvider menuProvider,
             ITurnBasedGame game,
+            IAppSettings appSettings,
             DungeonMap map)
         {
             IsFocused = true;
 
             _menuProvider = menuProvider;
+            _appSettings = appSettings;
             _game = game;
 
             _mouseHighlight = new MouseHighlightConsole(viewportWidth, viewportHeight, tilesetFont, game, map);
@@ -249,7 +253,8 @@ namespace MovingCastles.Ui.Consoles
 
         private bool PlayerTurnProcessKeyboard(SadConsole.Input.Keyboard info)
         {
-            if (info.IsKeyPressed(Keys.F))
+            if (info.IsKeyPressed(Keys.F)
+                && _appSettings.Debug)
             {
                 ToggleFov();
                 return true;
