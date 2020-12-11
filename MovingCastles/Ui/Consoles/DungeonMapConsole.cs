@@ -30,6 +30,9 @@ namespace MovingCastles.Ui.Consoles
         public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
         public event System.EventHandler<string> FlavorMessageChanged;
 
+        public Point _lastMousePos;
+        public Point _targettedConsolePos;
+
         public DungeonMap Map { get; private set; }
 
         public ScrollingConsole MapRenderer { get; private set; }
@@ -154,19 +157,16 @@ namespace MovingCastles.Ui.Consoles
 
             var mapState = new MouseConsoleState(MapRenderer, state.Mouse);
 
-            var mapCoord = new Coord(
+            var mouseMapCoord = new Coord(
                 mapState.ConsoleCellPosition.X + MapRenderer.ViewPort.X,
                 mapState.ConsoleCellPosition.Y + MapRenderer.ViewPort.Y);
 
-            var coordIsTargetable = mapState.IsOnConsole && Map.FOV.CurrentFOV.Contains(mapCoord);
-            _mouseHighlight.IsVisible = mapState.IsOnConsole && Map.Explored[mapCoord];
-            _mouseHighlight.Draw(mapState, MapRenderer.ViewPort.Location, coordIsTargetable);
-
+            var coordIsTargetable = mapState.IsOnConsole && Map.FOV.CurrentFOV.Contains(mouseMapCoord);
             if (coordIsTargetable && _lastSummaryConsolePosition != mapState.ConsoleCellPosition)
             {
                 // update summaries
                 var summaryControls = new List<Console>();
-                foreach (var entity in Map.GetEntities<BasicEntity>(mapCoord))
+                foreach (var entity in Map.GetEntities<BasicEntity>(mouseMapCoord))
                 {
                     var control = entity.GetGoRogueComponent<ISummaryControlComponent>()?.GetSidebarSummary();
                     if (control != null)
@@ -178,7 +178,24 @@ namespace MovingCastles.Ui.Consoles
                 _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
                 SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(summaryControls));
             }
-            
+
+            if (coordIsTargetable && _lastMousePos != mapState.ConsolePixelPosition)
+            {
+                _lastMousePos = mapState.ConsolePixelPosition;
+                _targettedConsolePos = mapState.ConsoleCellPosition;
+            }
+
+            if (_targettedConsolePos == default
+                || _game.State != State.Targetting)
+            {
+                _targettedConsolePos = mapState.ConsoleCellPosition;
+            }
+
+            var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
+
+            _mouseHighlight.IsVisible = mapState.IsOnConsole && Map.Explored[targetMapCoord];
+            _mouseHighlight.Draw(_targettedConsolePos, MapRenderer.ViewPort.Location, Map.FOV.CurrentFOV.Contains(targetMapCoord));
+
             if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
             {
                 // remove the summaries if we just moved out of a valid location
@@ -188,7 +205,7 @@ namespace MovingCastles.Ui.Consoles
 
             if (coordIsTargetable && _game.State == State.Targetting)
             {
-                TargettingProcessMouse(state, mapCoord);
+                TargettingProcessMouse(state, mouseMapCoord);
             }
 
             return base.ProcessMouse(state);
@@ -251,6 +268,57 @@ namespace MovingCastles.Ui.Consoles
             }
         }
 
+        private bool TargettingProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                EndTargettingMode();
+                return true;
+            }
+
+            if (HandleGuiKeys(info))
+            {
+                return true;
+            }
+
+            if (info.IsKeyPressed(Keys.E)
+                || info.IsKeyPressed(Keys.Enter))
+            {
+                var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
+                var (success, target) = Map.GetTarget(Map.Player.Position, targetMapCoord, _game.TargettingSpell.TargettingStyle);
+                if (success)
+                {
+                    _game.SpellTargetSelected(target);
+                    EndTargettingMode();
+                }
+
+                return true;
+            }
+
+            foreach (var key in TurnBasedGame.MovementDirectionMapping.Keys)
+            {
+                if (info.IsKeyPressed(key))
+                {
+                    var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
+                    if (!Map.FOV.CurrentFOV.Contains(targetMapCoord))
+                    {
+                        _targettedConsolePos = Player.Position;
+                    }
+
+                    var potentialTarget = _targettedConsolePos + TurnBasedGame.MovementDirectionMapping[key];
+                    targetMapCoord = potentialTarget + MapRenderer.ViewPort.Location;
+                    if (Map.FOV.CurrentFOV.Contains(targetMapCoord))
+                    {
+                        _targettedConsolePos = potentialTarget;
+                    }
+                    
+                    return true;
+                }
+            }
+
+            return base.ProcessKeyboard(info);
+        }
+
         private bool PlayerTurnProcessKeyboard(SadConsole.Input.Keyboard info)
         {
             if (info.IsKeyPressed(Keys.F)
@@ -268,22 +336,6 @@ namespace MovingCastles.Ui.Consoles
             if (_game.HandleAsPlayerInput(info))
             {
                 _lastSummaryConsolePosition = default;
-                return true;
-            }
-
-            return base.ProcessKeyboard(info);
-        }
-
-        private bool TargettingProcessKeyboard(SadConsole.Input.Keyboard info)
-        {
-            if (info.IsKeyPressed(Keys.Escape))
-            {
-                EndTargettingMode();
-                return true;
-            }
-
-            if (HandleGuiKeys(info))
-            {
                 return true;
             }
 

@@ -4,7 +4,6 @@ using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using SadConsole;
-using SadConsole.Input;
 using System.Linq;
 
 namespace MovingCastles.Ui.Consoles
@@ -27,7 +26,7 @@ namespace MovingCastles.Ui.Consoles
             _map = map;
         }
 
-        public void Draw(MouseConsoleState state, Point mapPos, bool positionIsTargetable)
+        public void Draw(Point consolePos, Point mapPos, bool positionIsTargetable)
         {
             if (!IsVisible)
             {
@@ -36,7 +35,7 @@ namespace MovingCastles.Ui.Consoles
 
             Clear();
 
-            var mousePos = state.ConsoleCellPosition;
+            var mousePos = consolePos;
             switch (_game.State)
             {
                 case State.PlayerTurn:
@@ -75,8 +74,9 @@ namespace MovingCastles.Ui.Consoles
         {
             var mouseMapPos = mousePos + mapPos;
             var distance = Distance.CHEBYSHEV.Calculate(playerPos, mouseMapPos);
-            if (distance> targettingStyle.Range)
+            if (distance > targettingStyle.Range)
             {
+                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.DarkGreyHighlight);
                 return;
             }
 
@@ -92,6 +92,7 @@ namespace MovingCastles.Ui.Consoles
             var distance = Distance.CHEBYSHEV.Calculate(playerPos, mouseMapPos);
             if (distance > targettingStyle.Range)
             {
+                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.DarkGreyHighlight);
                 return;
             }
 

@@ -23,7 +23,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
     public class TurnBasedGame : ITurnBasedGame
     {
-        private static readonly Dictionary<Keys, Direction> MovementDirectionMapping = new Dictionary<Keys, Direction>
+        public static readonly Dictionary<Keys, Direction> MovementDirectionMapping = new Dictionary<Keys, Direction>
         {
             { Keys.NumPad7, Direction.UP_LEFT },
             { Keys.NumPad8, Direction.UP },
