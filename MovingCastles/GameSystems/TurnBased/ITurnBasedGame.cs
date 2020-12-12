@@ -13,6 +13,7 @@ namespace MovingCastles.GameSystems.TurnBased
         State State { get; set; }
         SpellTemplate TargettingSpell { get; }
         List<Coord> TargetInteractables { get; }
+        List<Coord> TargetableTiles { get; }
 
         bool HandleAsPlayerInput(Keyboard info);
         void RegisterEntity(McEntity entity);

@@ -110,7 +110,7 @@ namespace MovingCastles.Ui.Consoles
             {
                 menuProvider.SpellSelect.Show(
                     mapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => mapConsole.BeginTargetting(selectedSpell));
+                    selectedSpell => mapConsole.StartTargetting(selectedSpell));
             };
 
             const string commandMenuText = "Commands (C)";

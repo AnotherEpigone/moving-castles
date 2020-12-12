@@ -233,7 +233,7 @@ namespace MovingCastles.Ui.Consoles
                 EndTargettingMode();
                 _menuProvider.SpellSelect.Show(
                     Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => BeginTargetting(selectedSpell));
+                    selectedSpell => StartTargetting(selectedSpell));
 
                 return true;
             }
@@ -290,6 +290,46 @@ namespace MovingCastles.Ui.Consoles
                 {
                     _game.SpellTargetSelected(target);
                     EndTargettingMode();
+                }
+
+                return true;
+            }
+
+            if ((info.IsKeyPressed(Keys.Up)
+                || info.IsKeyPressed(Keys.Right))
+                && _game.TargetableTiles.Count > 0)
+            {
+                var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
+                var targetedTileIndex = _game.TargetableTiles.IndexOf(targetMapCoord);
+                if (targetedTileIndex == -1 || targetedTileIndex == _game.TargetableTiles.Count - 1)
+                {
+                    _targettedConsolePos = _game.TargetableTiles[0] - MapRenderer.ViewPort.Location;
+                }
+                else
+                {
+                    _targettedConsolePos = _game.TargetableTiles[targetedTileIndex + 1] - MapRenderer.ViewPort.Location;
+                }
+
+                return true;
+            }
+
+            if ((info.IsKeyPressed(Keys.Down)
+                || info.IsKeyPressed(Keys.Left))
+                && _game.TargetableTiles.Count > 0)
+            {
+                var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
+                var targetedTileIndex = _game.TargetableTiles.IndexOf(targetMapCoord);
+                if (targetedTileIndex == -1)
+                {
+                    _targettedConsolePos = _game.TargetableTiles[0] - MapRenderer.ViewPort.Location;
+                }
+                else if (targetedTileIndex == 0)
+                {
+                    _targettedConsolePos = _game.TargetableTiles.Last() - MapRenderer.ViewPort.Location;
+                }
+                else
+                {
+                    _targettedConsolePos = _game.TargetableTiles[targetedTileIndex - 1] - MapRenderer.ViewPort.Location;
                 }
 
                 return true;
@@ -363,10 +403,14 @@ namespace MovingCastles.Ui.Consoles
             return base.ProcessKeyboard(info);
         }
 
-        public void BeginTargetting(SpellTemplate spell)
+        public void StartTargetting(SpellTemplate spell)
         {
             _game.StartSpellTargetting(spell);
             FlavorMessageChanged?.Invoke(this, $"Aiming {spell.Name}...");
+            if (_game.TargetableTiles.Count > 0)
+            {
+                _targettedConsolePos = _game.TargetableTiles[0] - MapRenderer.ViewPort.Location;
+            }
         }
 
         private void EndTargettingMode()

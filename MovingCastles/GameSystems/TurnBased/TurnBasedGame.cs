@@ -51,6 +51,8 @@ namespace MovingCastles.GameSystems.TurnBased
 
             State = State.PlayerTurn;
             _dungeonMaster = dungeonMaster;
+
+            TargetableTiles = new List<Coord>();
         }
 
         public DungeonMap Map { get; set; }
@@ -58,6 +60,8 @@ namespace MovingCastles.GameSystems.TurnBased
         public State State { get; set; }
 
         public SpellTemplate TargettingSpell { get; private set; }
+
+        public List<Coord> TargetableTiles { get; }
 
         public List<Coord> TargetInteractables { get; }
 
@@ -174,8 +178,18 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void StartSpellTargetting(SpellTemplate spell)
         {
-            TargettingSpell = spell;
+            TargettingSpell = spell;            
             State = State.Targetting;
+
+            TargetableTiles.Clear();
+            foreach (var tile in Map.FOV.CurrentFOV)
+            {
+                var (targetable, actualCoord) = Map.GetTarget(_player.Position, tile, spell.TargettingStyle);
+                if (targetable && !TargetableTiles.Contains(actualCoord))
+                {
+                    TargetableTiles.Add(actualCoord);
+                }
+            }
         }
 
         public void InteractTargetSelected(Coord mapCoord)
