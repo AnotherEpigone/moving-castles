@@ -1,15 +1,20 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
+using MovingCastles.Ui;
 using System.Collections.Generic;
 using System.Linq;
+using Troschuetz.Random;
+using Troschuetz.Random.Generators;
 
 namespace MovingCastles.GameSystems.TurnBased
 {
@@ -41,6 +46,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private readonly ILogManager _logManager;
         private readonly IDungeonMaster _dungeonMaster;
+        private readonly IGenerator _rng;
 
         private Wizard _player;
 
@@ -53,6 +59,8 @@ namespace MovingCastles.GameSystems.TurnBased
             _dungeonMaster = dungeonMaster;
 
             TargetableTiles = new List<Coord>();
+
+            _rng = new StandardGenerator();
         }
 
         public DungeonMap Map { get; set; }
@@ -248,6 +256,31 @@ namespace MovingCastles.GameSystems.TurnBased
             State = State.PlayerTurn;
         }
 
+        private void MeleeAttack(
+            McEntity attacker,
+            IMeleeAttackerComponent meleeAttackComponent,
+            IHealthComponent healthComponent)
+        {
+            var hitResult = HitMan.Get(_rng);
+            var damage = meleeAttackComponent.GetDamage();
+            var targetName = (healthComponent.Parent as McEntity)?.ColoredName ?? "something";
+            switch (hitResult)
+            {
+                case HitResult.Hit:
+                    healthComponent.ApplyDamage(damage, _logManager);
+                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    break;
+                case HitResult.Glance:
+                    damage /= 4;
+                    healthComponent.ApplyDamage(damage, _logManager);
+                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    break;
+                case HitResult.Miss:
+                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
+                    break;
+            }
+        }
+
         private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)
         {
             var bumpTriggeredComponent = Map.GetEntities<McEntity>(e.NewPosition)
@@ -279,11 +312,7 @@ namespace MovingCastles.GameSystems.TurnBased
                     .FirstOrDefault();
                 if (healthComponent != null)
                 {
-                    var damage = meleeAttackComponent.GetDamage();
-                    healthComponent.ApplyDamage(damage, _logManager);
-
-                    var targetName = (healthComponent.Parent as McEntity)?.ColoredName ?? "something";
-                    _logManager.EventLog($"{e.Item.ColoredName} hit {targetName} for {damage:F0} damage.");
+                    MeleeAttack(e.Item, meleeAttackComponent, healthComponent);
                 }
             }
         }

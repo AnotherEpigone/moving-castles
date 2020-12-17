@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Serialization.Entities;
+using MovingCastles.Ui;
 using Newtonsoft.Json;
 using SadConsole;
 using System.Diagnostics;
@@ -42,7 +43,7 @@ namespace MovingCastles.Entities
 
         public string TemplateId { get; }
 
-        public string ColoredName => $"[c:r f:{NameColor.ToParser()}]{Name}[c:u]";
+        public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 
         public void Move(Direction direction)
         {

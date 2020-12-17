@@ -50,5 +50,10 @@ namespace MovingCastles.Ui
 
             return colors;
         }
+
+        public static string GetParserString(string text, Color color)
+        {
+            return $"[c:r f:{color.ToParser()}]{text}[c:u]";
+        }
     }
 }
