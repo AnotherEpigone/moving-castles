@@ -278,6 +278,11 @@ namespace MovingCastles.GameSystems.TurnBased
                 case HitResult.Miss:
                     _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
                     break;
+                case HitResult.Crit:
+                    damage *= 2;
+                    healthComponent.ApplyDamage(damage, _logManager);
+                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    break;
             }
         }
 
