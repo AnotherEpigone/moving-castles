@@ -251,7 +251,7 @@ namespace MovingCastles.GameSystems.TurnBased
                 }
 
                 var ai = entity.GetGoRogueComponent<IAiComponent>();
-                ai?.Run(Map, _logManager);
+                ai?.Run(Map, _rng, _logManager);
             }
             State = State.PlayerTurn;
         }

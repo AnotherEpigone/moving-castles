@@ -4,6 +4,8 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using Troschuetz.Random;
+
 namespace MovingCastles.Components.AiComponents
 {
     public class RandomWalkAiComponent : IAiComponent, ISerializableComponent
@@ -20,20 +22,20 @@ namespace MovingCastles.Components.AiComponents
             _restChance = restChance;
         }
 
-        public bool Run(DungeonMap map, ILogManager logManager)
+        public bool Run(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
-            if (!(Parent is McEntity mcParent))
+            if (Parent is not McEntity mcParent)
             {
                 return false;
             }
 
-            if (SadConsole.Global.Random.NextDouble() < _restChance)
+            if (rng.NextDouble() < _restChance)
             {
                 mcParent.GetGoRogueComponent<IHealthComponent>()?.ApplyBaseRegen();
                 return true;
             }
 
-            var directionType = SadConsole.Global.Random.Next(0, 8);
+            var directionType = rng.Next(0, 8);
             var direction = Direction.ToDirection((Direction.Types)directionType);
             mcParent.Move(direction);
 

@@ -8,6 +8,7 @@ using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components.AiComponents
 {
@@ -28,9 +29,9 @@ namespace MovingCastles.Components.AiComponents
 
         public IGameObject Parent { get; set; }
 
-        public bool Run(DungeonMap map, ILogManager logManager)
+        public bool Run(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
-            if (!(Parent is McEntity mcParent))
+            if (Parent is not McEntity mcParent)
             {
                 return false;
             }
@@ -40,18 +41,26 @@ namespace MovingCastles.Components.AiComponents
             // if we bump into something, stop moving.
             // walk speed doesn't allow you to attack or interact more than once.
             var bumped = false;
-            mcParent.Bumped += (_, __) => bumped = true;
-            for ( int i = 0; i < walkSpeed; i++)
+            System.EventHandler<ItemMovedEventArgs<McEntity>> bumpHandler = (_, __) => bumped = true;
+            mcParent.Bumped += bumpHandler;
+            try
             {
-                if (!TryGetDirectionAndMove(map, mcParent))
+                for (int i = 0; i < walkSpeed; i++)
                 {
-                    return false;
-                }
+                    if (!TryGetDirectionAndMove(map, mcParent))
+                    {
+                        return false;
+                    }
 
-                if (bumped)
-                {
-                    break;
+                    if (bumped)
+                    {
+                        break;
+                    }
                 }
+            }
+            finally
+            {
+                mcParent.Bumped -= bumpHandler;
             }
 
             return true;

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components.AiComponents
 {
@@ -45,11 +46,11 @@ namespace MovingCastles.Components.AiComponents
             }
         }
 
-        public bool Run(DungeonMap map, ILogManager logManager)
+        public bool Run(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
             foreach (var component in _components)
             {
-                if (component.Run(map, logManager))
+                if (component.Run(map, rng, logManager))
                 {
                     return true;
                 }

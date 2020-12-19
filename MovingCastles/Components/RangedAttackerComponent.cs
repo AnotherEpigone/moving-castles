@@ -1,13 +1,17 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
+using Microsoft.Xna.Framework;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using MovingCastles.Serialization;
+using MovingCastles.Ui;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components
 {
@@ -31,7 +35,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public bool TryAttack(DungeonMap map, ILogManager logManager)
+        public bool TryAttack(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent
                 || map.DistanceMeasurement.Calculate(Parent.Position, map.Player.Position) > _range)
@@ -49,9 +53,29 @@ namespace MovingCastles.Components
             }
 
             var targetHealth = map.Player.GetGoRogueComponent<IHealthComponent>();
-            targetHealth.ApplyDamage(_damage, logManager);
-
-            logManager.EventLog($"{mcParent.ColoredName} hit {map.Player.ColoredName} for {_damage:F0} damage.");
+            var hitResult = HitMan.Get(rng);
+            var targetName = (targetHealth.Parent as McEntity)?.ColoredName ?? "something";
+            var damage = _damage;
+            switch (hitResult)
+            {
+                case HitResult.Hit:
+                    targetHealth.ApplyDamage(damage, logManager);
+                    logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    break;
+                case HitResult.Glance:
+                    damage /= 4;
+                    targetHealth.ApplyDamage(damage, logManager);
+                    logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    break;
+                case HitResult.Miss:
+                    logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
+                    break;
+                case HitResult.Crit:
+                    damage *= 2;
+                    targetHealth.ApplyDamage(damage, logManager);
+                    logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    break;
+            }
             return true;
         }
 
