@@ -19,6 +19,7 @@ namespace MovingCastles.Ui.Consoles
         private readonly ControlsConsole _leftPane;
         private List<Console> _entitySummaryConsoles;
         private DungeonMapConsole _mapConsole;
+        private ProgressBar _healthBar;
 
         public DungeonModeConsole(
             int width,
@@ -55,6 +56,9 @@ namespace MovingCastles.Ui.Consoles
             logManager.RegisterEventListener(s => eventLog.Add(s));
             logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
 
+            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            healthComponent.HealthChanged += Player_HealthChanged;
+
             Children.Add(CreateTopPane(rightSectionWidth, _mapConsole, menuProvider));
             Children.Add(_mapConsole);
             Children.Add(eventLog);
@@ -63,7 +67,13 @@ namespace MovingCastles.Ui.Consoles
 
         public void SetMap(DungeonMap map)
         {
+            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            healthComponent.HealthChanged -= Player_HealthChanged;
+
             _mapConsole.SetMap(map);
+
+            healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            healthComponent.HealthChanged += Player_HealthChanged;
         }
 
         private ControlsConsole CreateTopPane(
@@ -158,20 +168,14 @@ namespace MovingCastles.Ui.Consoles
             manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedManaBlue, ColorHelper.ManaBlue);
             manaBar.Progress = 1;
 
-            var healthComponent = dungeonMapConsole.Player.GetGoRogueComponent<IHealthComponent>();
-            var healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            _healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 3),
             };
-            healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
-            dungeonMapConsole.Player.GetGoRogueComponent<IHealthComponent>().HealthChanged += (_, __) =>
-            {
-                healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
-            };
-            healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
+            _healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
 
             infoPanel.Add(manaBar);
-            infoPanel.Add(healthBar);
+            infoPanel.Add(_healthBar);
 
             // test data
             infoPanel.Add(new Label("Vede of Tattersail") { Position = new Point(1, 0), TextColor = Color.Gainsboro });
@@ -180,6 +184,12 @@ namespace MovingCastles.Ui.Consoles
 
             leftPane.Children.Add(infoPanel);
             return leftPane;
+        }
+
+        private void Player_HealthChanged(object sender, float e)
+        {
+            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
         }
 
         private void HandleNewSummaryConsoles(List<Console> consoles)
