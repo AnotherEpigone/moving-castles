@@ -193,7 +193,7 @@ namespace MovingCastles.Ui.Consoles
 
             var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
 
-            _mouseHighlight.IsVisible = mapState.IsOnConsole && Map.Explored[targetMapCoord];
+            _mouseHighlight.IsVisible = Map.FOV.CurrentFOV.Contains(_targettedConsolePos) && Map.Explored[targetMapCoord];
             _mouseHighlight.Draw(_targettedConsolePos, MapRenderer.ViewPort.Location, Map.FOV.CurrentFOV.Contains(targetMapCoord));
 
             if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
@@ -295,8 +295,7 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-            if ((info.IsKeyPressed(Keys.Up)
-                || info.IsKeyPressed(Keys.Right))
+            if (info.IsKeyPressed(Keys.OemPeriod)
                 && _game.TargetableTiles.Count > 0)
             {
                 var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
@@ -313,8 +312,7 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-            if ((info.IsKeyPressed(Keys.Down)
-                || info.IsKeyPressed(Keys.Left))
+            if (info.IsKeyPressed(Keys.OemComma)
                 && _game.TargetableTiles.Count > 0)
             {
                 var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
