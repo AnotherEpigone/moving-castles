@@ -1,8 +1,11 @@
 ﻿using GoRogue;
+using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
+using MovingCastles.Ui;
 
 namespace MovingCastles.GameSystems.Spells.SpellEffects
 {
@@ -15,17 +18,37 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             _damage = damage;
         }
 
-        public void Apply(McEntity caster, SpellTemplate spell, DungeonMap map, Coord targetCoord, ILogManager logManager)
+        public void Apply(McEntity caster, SpellTemplate spell, DungeonMap map, HitResult hitResult, Coord targetCoord, ILogManager logManager)
         {
             var target = map.GetEntity<McEntity>(targetCoord);
+            var targetName = target.ColoredName;
             var targetHealth = target?.GetGoRogueComponent<IHealthComponent>();
             if (targetHealth == null)
             {
                 return;
             }
 
-            logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {target.ColoredName} for {_damage:F0} damage.");
-            targetHealth.ApplyDamage(_damage, logManager);
+            var damage = _damage;
+            switch (hitResult)
+            {
+                case HitResult.Hit:
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    targetHealth.ApplyDamage(damage, logManager);
+                    break;
+                case HitResult.Glance:
+                    damage /= 4;
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    targetHealth.ApplyDamage(damage, logManager);
+                    break;
+                case HitResult.Miss:
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
+                    break;
+                case HitResult.Crit:
+                    damage *= 2;
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    targetHealth.ApplyDamage(damage, logManager);
+                    break;
+            }
         }
     }
 }

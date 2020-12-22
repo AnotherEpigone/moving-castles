@@ -175,9 +175,11 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void SpellTargetSelected(Coord mapCoord)
         {
+            var hitResult = HitMan.Get(_rng);
+            _logManager.EventLog($"{_player.ColoredName} cast {TargettingSpell.Name}.");
             foreach (var effect in TargettingSpell.Effects)
             {
-                effect.Apply(_player, TargettingSpell, Map, mapCoord, _logManager);
+                effect.Apply(_player, TargettingSpell, Map, hitResult, mapCoord, _logManager);
             }
 
             TargettingSpell = null;
@@ -267,21 +269,21 @@ namespace MovingCastles.GameSystems.TurnBased
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    healthComponent.ApplyDamage(damage, _logManager);
                     _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    healthComponent.ApplyDamage(damage, _logManager);
                     _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Miss:
                     _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    healthComponent.ApplyDamage(damage, _logManager);
                     _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    healthComponent.ApplyDamage(damage, _logManager);
                     break;
             }
         }

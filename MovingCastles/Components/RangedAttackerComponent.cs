@@ -59,21 +59,21 @@ namespace MovingCastles.Components
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    targetHealth.ApplyDamage(damage, logManager);
                     logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    targetHealth.ApplyDamage(damage, logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    targetHealth.ApplyDamage(damage, logManager);
                     logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    targetHealth.ApplyDamage(damage, logManager);
                     break;
                 case HitResult.Miss:
                     logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    targetHealth.ApplyDamage(damage, logManager);
                     logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    targetHealth.ApplyDamage(damage, logManager);
                     break;
             }
             return true;
