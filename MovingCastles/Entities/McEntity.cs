@@ -45,7 +45,7 @@ namespace MovingCastles.Entities
 
         public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 
-        public string GetFlavorDescription()
+        public virtual string GetFlavorDescription()
         {
             if (!HasMap)
             {
