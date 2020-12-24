@@ -56,9 +56,6 @@ namespace MovingCastles.Ui.Consoles
             logManager.RegisterEventListener((s, h) => eventLog.Add(s, h));
             logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}", false)); // todo put debug logs somewhere else
 
-            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
-            healthComponent.HealthChanged += Player_HealthChanged;
-
             Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
             Children.Add(_mapConsole);
             Children.Add(eventLog);
@@ -176,6 +173,10 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(0, 3),
             };
             _healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
+
+            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            healthComponent.HealthChanged += Player_HealthChanged;
+            _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
             infoPanel.Add(manaBar);
             infoPanel.Add(_healthBar);
