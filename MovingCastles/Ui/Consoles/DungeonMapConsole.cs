@@ -165,18 +165,13 @@ namespace MovingCastles.Ui.Consoles
             if (coordIsTargetable && _lastSummaryConsolePosition != mapState.ConsoleCellPosition)
             {
                 // update summaries
-                var summaryControls = new List<Console>();
-                foreach (var entity in Map.GetEntities<BasicEntity>(mouseMapCoord))
-                {
-                    var control = entity.GetGoRogueComponent<ISummaryControlComponent>()?.GetSidebarSummary();
-                    if (control != null)
-                    {
-                        summaryControls.Add(control);
-                    }
-                }
-
+                var flavorDescriptions = Map
+                    .GetEntities<McEntity>(mouseMapCoord)
+                    .Select(entity => entity.GetFlavorDescription())
+                    .Where(desc => !string.IsNullOrEmpty(desc))
+                    .ToList();
                 _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
-                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(summaryControls));
+                FlavorMessageChanged.Invoke(this, string.Join(' ', flavorDescriptions));
             }
 
             if (coordIsTargetable && _lastMousePos != mapState.ConsolePixelPosition)
@@ -198,9 +193,10 @@ namespace MovingCastles.Ui.Consoles
 
             if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
             {
-                // remove the summaries if we just moved out of a valid location
+                // just moved out of a valid location
                 _lastSummaryConsolePosition = default;
-                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
+                // TODO this logic isn't valid - triggered every tick outside of visible highlight
+                ////FlavorMessageChanged.Invoke(this, string.Empty);
             }
 
             if (coordIsTargetable && _game.State == State.Targetting)

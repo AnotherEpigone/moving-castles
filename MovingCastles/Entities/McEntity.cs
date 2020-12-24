@@ -45,6 +45,21 @@ namespace MovingCastles.Entities
 
         public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 
+        public string GetFlavorDescription()
+        {
+            if (!HasMap)
+            {
+                return string.Empty;
+            }
+
+            if (Layer == (int)Maps.DungeonMapLayer.GHOSTS)
+            {
+                return $"You remember seeing a {ColoredName} here.";
+            }
+
+            return $"You see a {ColoredName}.";
+        }
+
         public void Move(Direction direction)
         {
             if (CurrentMap.WalkabilityView[Position + direction])

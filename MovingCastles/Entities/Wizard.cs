@@ -1,9 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
-using MovingCastles.Components;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Player;
-using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Entities;
 using MovingCastles.Ui;
@@ -37,6 +35,16 @@ namespace MovingCastles.Entities
         }
 
         public int FovRadius { get; }
+
+        public override string GetFlavorDescription()
+        {
+            if (!HasMap)
+            {
+                return string.Empty;
+            }
+
+            return "You are here.";
+        }
 
         private string DebuggerDisplay
         {

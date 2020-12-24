@@ -99,14 +99,16 @@ namespace MovingCastles.Ui.Consoles
                 }
 
                 _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
-                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(summaryControls));
+                // TODO
+                // SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(summaryControls));
             }
 
             if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
             {
                 // remove the summaries if we just moved out of a valid location
                 _lastSummaryConsolePosition = default;
-                SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
+                // TODO
+                // SummaryConsolesChanged?.Invoke(this, new ConsoleListEventArgs(new List<Console>()));
             }
 
             return base.ProcessMouse(state);

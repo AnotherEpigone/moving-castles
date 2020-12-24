@@ -12,7 +12,7 @@ namespace MovingCastles.Ui.Consoles
 {
     public class DungeonModeConsole : ContainerConsole
     {
-        private const int LeftPaneWidth = 30;
+        private const int LeftPaneWidth = 40;
         private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
 
@@ -47,7 +47,7 @@ namespace MovingCastles.Ui.Consoles
             };
             _mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
 
-            _leftPane = CreateLeftPane(height, _mapConsole);
+            _leftPane = CreateLeftPane(height);
 
             var eventLog = new MessageLogConsole(LeftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
             {
@@ -59,7 +59,7 @@ namespace MovingCastles.Ui.Consoles
             var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged += Player_HealthChanged;
 
-            Children.Add(CreateTopPane(rightSectionWidth, _mapConsole, menuProvider));
+            Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
             Children.Add(_mapConsole);
             Children.Add(eventLog);
             Children.Add(_leftPane);
@@ -78,7 +78,6 @@ namespace MovingCastles.Ui.Consoles
 
         private ControlsConsole CreateTopPane(
             int rightSectionWidth,
-            DungeonMapConsole mapConsole,
             IMapModeMenuProvider menuProvider)
         {
             var console = new ControlsConsole(rightSectionWidth, TopPaneHeight)
@@ -105,7 +104,7 @@ namespace MovingCastles.Ui.Consoles
             };
             inventoryMenuButton.Click += (_, __) =>
             {
-                var inventory = mapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
+                var inventory = _mapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
                 menuProvider.Inventory.Show(inventory);
             };
 
@@ -119,8 +118,8 @@ namespace MovingCastles.Ui.Consoles
             spellMenuButton.Click += (_, __) =>
             {
                 menuProvider.SpellSelect.Show(
-                    mapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => mapConsole.StartTargetting(selectedSpell));
+                    _mapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
+                    selectedSpell => _mapConsole.StartTargetting(selectedSpell));
             };
 
             const string commandMenuText = "Commands (C)";
@@ -135,40 +134,44 @@ namespace MovingCastles.Ui.Consoles
                 menuProvider.Command.Show();
             };
 
-            var flavorMessage = new Label(rightSectionWidth)
+            var flavorMessage = new Console(rightSectionWidth, 1)
             {
                 Position = new Point(1, 1),
             };
-            mapConsole.FlavorMessageChanged += (_, message) =>
+            _mapConsole.FlavorMessageChanged += (_, message) =>
             {
-                flavorMessage.DisplayText = message;
-                console.IsDirty = true;
+                flavorMessage.Clear();
+                flavorMessage.Cursor.Position = new Point(0, 0);
+
+                var coloredMessage = new ColoredString(message, new Cell(Color.Gainsboro, _mapConsole.DefaultBackground));
+                flavorMessage.Cursor.Print(coloredMessage);
             };
 
             console.Add(popupMenuButton);
             console.Add(inventoryMenuButton);
             console.Add(spellMenuButton);
             console.Add(commandMenuButton);
-            console.Add(flavorMessage);
+
+            console.Children.Add(flavorMessage);
 
             return console;
         }
 
-        private ControlsConsole CreateLeftPane(int height, DungeonMapConsole dungeonMapConsole)
+        private ControlsConsole CreateLeftPane(int height)
         {
             var leftPane = new ControlsConsole(LeftPaneWidth, height)
             {
                 ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent),
             };
             var infoPanel = new ControlsConsole(LeftPaneWidth, InfoPanelHeight);
-            var manaBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            var manaBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 4),
             };
             manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedManaBlue, ColorHelper.ManaBlue);
             manaBar.Progress = 1;
 
-            _healthBar = new ProgressBar(30, 1, HorizontalAlignment.Left)
+            _healthBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 3),
             };
@@ -201,7 +204,7 @@ namespace MovingCastles.Ui.Consoles
             var yOffset = 8;
             _entitySummaryConsoles.ForEach(c =>
             {
-                c.Position = new Point(0, yOffset);
+                c.Position = new Point(20, yOffset);
                 yOffset += c.Height;
                 _leftPane.Children.Add(c);
             });
