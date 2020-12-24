@@ -32,7 +32,7 @@ namespace MovingCastles.Ui.Consoles
             {
                 Position = new Point(width - RightPaneWidth, 0),
             };
-            _rightPane.Add("Started a new game, and here's the first message.");
+            _rightPane.Add("Started a new game, and here's the first message.", false);
 
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             var centerPaneWidth = width - LeftPaneWidth - RightPaneWidth;
@@ -47,8 +47,8 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(LeftPaneWidth, 0),
             };
 
-            logManager.RegisterEventListener(s => _rightPane.Add(s));
-            logManager.RegisterDebugListener(s => _rightPane.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
+            logManager.RegisterEventListener((s, h) => _rightPane.Add(s, h));
+            logManager.RegisterDebugListener(s => _rightPane.Add($"DEBUG: {s}", false)); // todo put debug logs somewhere else
 
             Children.Add(_leftPane);
             Children.Add(_rightPane);

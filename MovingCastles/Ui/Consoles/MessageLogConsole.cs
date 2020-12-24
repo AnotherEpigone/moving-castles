@@ -22,7 +22,7 @@ namespace MovingCastles.Ui
             Children.Add(_messageConsole);
         }
 
-        public void Add(string message)
+        public void Add(string message, bool highlight)
         {
             _lines.Enqueue(message);
             if (_lines.Count > _maxLines)
@@ -30,7 +30,11 @@ namespace MovingCastles.Ui
                 _lines.Dequeue();
             }
 
-            var coloredMessage = new ColoredString($"> {message}\r\n", new Cell(Color.Gainsboro, ColorHelper.MidnightestBlue));
+            var backgroundColor = highlight
+                ? ColorHelper.MidnightBlue
+                : ColorHelper.MidnightestBlue;
+
+            var coloredMessage = new ColoredString($"> {message}\r\n", new Cell(Color.Gainsboro, backgroundColor));
             _messageConsole.Cursor.Print(coloredMessage);
         }
     }

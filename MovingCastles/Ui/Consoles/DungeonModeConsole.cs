@@ -53,8 +53,8 @@ namespace MovingCastles.Ui.Consoles
             {
                 Position = new Point(0, InfoPanelHeight),
             };
-            logManager.RegisterEventListener(s => eventLog.Add(s));
-            logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}")); // todo put debug logs somewhere else
+            logManager.RegisterEventListener((s, h) => eventLog.Add(s, h));
+            logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}", false)); // todo put debug logs somewhere else
 
             var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged += Player_HealthChanged;

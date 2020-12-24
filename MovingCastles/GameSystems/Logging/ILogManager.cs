@@ -6,8 +6,9 @@ namespace MovingCastles.GameSystems.Logging
     {
         void DebugLog(string message);
         void EventLog(string message);
-        void RegisterEventListener(Action<string> listener);
-        void UnregisterEventListener(Action<string> listener);
+        void EventLog(string message, bool highlight);
+        void RegisterEventListener(Action<string, bool> listener);
+        void UnregisterEventListener(Action<string, bool> listener);
         void RegisterDebugListener(Action<string> listener);
         void UnregisterDebugListener(Action<string> listener);
     }

@@ -5,21 +5,21 @@ namespace MovingCastles.GameSystems.Logging
 {
     public class LogManager : ILogManager
     {
-        private readonly List<Action<string>> _eventListeners;
+        private readonly List<Action<string, bool>> _eventListeners;
         private readonly List<Action<string>> _debugListeners;
 
         public LogManager()
         {
-            _eventListeners = new List<Action<string>>();
+            _eventListeners = new List<Action<string, bool>>();
             _debugListeners = new List<Action<string>>();
         }
 
-        public void RegisterEventListener(Action<string> listener)
+        public void RegisterEventListener(Action<string, bool> listener)
         {
             _eventListeners.Add(listener);
         }
 
-        public void UnregisterEventListener(Action<string> listener)
+        public void UnregisterEventListener(Action<string, bool> listener)
         {
             _eventListeners.Remove(listener);
         }
@@ -36,7 +36,12 @@ namespace MovingCastles.GameSystems.Logging
 
         public void EventLog(string message)
         {
-            _eventListeners.ForEach(action => action(message));
+            EventLog(message, false);
+        }
+
+        public void EventLog(string message, bool highlight)
+        {
+            _eventListeners.ForEach(action => action(message, highlight));
         }
 
         public void DebugLog(string message)

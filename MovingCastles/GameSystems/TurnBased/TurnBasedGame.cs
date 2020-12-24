@@ -176,7 +176,7 @@ namespace MovingCastles.GameSystems.TurnBased
         public void SpellTargetSelected(Coord mapCoord)
         {
             var hitResult = HitMan.Get(_rng);
-            _logManager.EventLog($"{_player.ColoredName} cast {TargettingSpell.Name}.");
+            _logManager.EventLog($"{_player.ColoredName} cast {TargettingSpell.Name}.", true);
             foreach (var effect in TargettingSpell.Effects)
             {
                 effect.Apply(_player, TargettingSpell, Map, hitResult, mapCoord, _logManager);
@@ -269,20 +269,20 @@ namespace MovingCastles.GameSystems.TurnBased
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Miss:
-                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
+                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.", attacker is Wizard);
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
             }
