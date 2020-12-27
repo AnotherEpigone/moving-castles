@@ -57,7 +57,7 @@ namespace MovingCastles
             _uiManager.ShowMainMenu(_gameManager);
         }
 
-        private void InitColors()
+        private static void InitColors()
         {
             var colors = Library.Default.Colors;
 
@@ -83,7 +83,7 @@ namespace MovingCastles
             colors.RebuildAppearances();
         }
 
-        private void InitControls()
+        private static void InitControls()
         {
             Library.Default.SetControlTheme(typeof(McSelectionButton), new ButtonTheme());
         }

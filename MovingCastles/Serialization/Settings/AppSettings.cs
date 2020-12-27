@@ -1,5 +1,6 @@
 ﻿using IniParser;
 using IniParser.Model;
+using System.IO;
 
 namespace MovingCastles.Serialization.Settings
 {
@@ -17,19 +18,18 @@ namespace MovingCastles.Serialization.Settings
 
         public AppSettings()
         {
-            var iniParser = new FileIniDataParser();
-            var data = iniParser.ReadFile(ConfigPath);
-            var settings = data[SettingsIniKey];
-
-            if (settings.ContainsKey(FullScreenSettingKey))
+            if (File.Exists(ConfigPath))
             {
-                _fullScreen = bool.Parse(settings[FullScreenSettingKey]);
+                Read();
             }
-
-            if (settings.ContainsKey(DebugPasswordSettingKey))
+            else
             {
-                _debug = settings[DebugPasswordSettingKey] == DebugPassword;
+                _fullScreen = false;
+                _debug = false;
+
+                Write();
             }
+            
         }
 
         public bool FullScreen
@@ -49,6 +49,23 @@ namespace MovingCastles.Serialization.Settings
             {
                 _debug = value;
                 Write();
+            }
+        }
+
+        private void Read()
+        {
+            var iniParser = new FileIniDataParser();
+            var data = iniParser.ReadFile(ConfigPath);
+            var settings = data[SettingsIniKey];
+
+            if (settings.ContainsKey(FullScreenSettingKey))
+            {
+                _fullScreen = bool.Parse(settings[FullScreenSettingKey]);
+            }
+
+            if (settings.ContainsKey(DebugPasswordSettingKey))
+            {
+                _debug = settings[DebugPasswordSettingKey] == DebugPassword;
             }
         }
 
