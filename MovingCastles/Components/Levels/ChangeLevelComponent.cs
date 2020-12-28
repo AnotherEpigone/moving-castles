@@ -38,7 +38,7 @@ namespace MovingCastles.Components.Levels
                 return;
             }
 
-            dungeonMaster.ChangeLevel(_targetMapId, _spawnConditions);
+            dungeonMaster.LevelMaster.ChangeLevel(_targetMapId, _spawnConditions, dungeonMaster.Player);
         }
 
         public void Interact(McEntity interactingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
@@ -48,7 +48,7 @@ namespace MovingCastles.Components.Levels
                 return;
             }
 
-            dungeonMaster.ChangeLevel(_targetMapId, _spawnConditions);
+            dungeonMaster.LevelMaster.ChangeLevel(_targetMapId, _spawnConditions, dungeonMaster.Player);
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()

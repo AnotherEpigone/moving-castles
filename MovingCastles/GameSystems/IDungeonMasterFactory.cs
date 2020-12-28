@@ -1,13 +1,10 @@
 ﻿using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Player;
-using System;
 
 namespace MovingCastles.GameSystems
 {
-    public interface IDungeonMaster
+    public interface IDungeonMasterFactory
     {
-        PlayerInfo Player { get; }
-
-        ILevelMaster LevelMaster { get; }
+        IDungeonMaster Create(PlayerInfo player, Level level, Structure structure);
     }
 }

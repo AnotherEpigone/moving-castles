@@ -32,6 +32,10 @@ namespace MovingCastles
                 .As<IStructureFactory>()
                 .SingleInstance();
 
+            builder.RegisterType<DungeonMasterFactory>()
+                .As<IDungeonMasterFactory>()
+                .SingleInstance();
+
             builder.RegisterType<AppSettings>()
                 .As<IAppSettings>()
                 .SingleInstance();

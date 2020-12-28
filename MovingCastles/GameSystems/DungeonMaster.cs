@@ -7,31 +7,16 @@ namespace MovingCastles.GameSystems
 {
     public class DungeonMaster : IDungeonMaster
     {
-        private readonly IStructureFactory _structureFactory;
-        private readonly IEntityFactory _entityFactory;
-
         public DungeonMaster(
             PlayerInfo player,
-            IStructureFactory structureFactory,
-            IEntityFactory entityFactory)
+            ILevelMaster levelMaster)
         {
             Player = player;
-            _structureFactory = structureFactory;
-            _entityFactory = entityFactory;
+            LevelMaster = levelMaster;
         }
-
-        public event EventHandler LevelChanged;
 
         public PlayerInfo Player { get; }
 
-        public Level Level { get; set; }
-
-        public Structure Structure { get; set; }
-
-        public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions)
-        {
-            Level = Structure.GetLevel(targetMapId, Player, spawnConditions);
-            LevelChanged?.Invoke(this, EventArgs.Empty);
-        }
+        public ILevelMaster LevelMaster { get; }
     }
 }
