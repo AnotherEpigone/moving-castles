@@ -27,6 +27,7 @@ namespace MovingCastles.Serialization.Entities
         [DataMember] public bool IsTransparent;
         [DataMember] public bool IsStatic;
         [DataMember] public List<ComponentSerializable> Components;
+        [DataMember] public string FactionName;
 
         public static implicit operator McEntitySerialized(McEntity entity)
         {
@@ -51,6 +52,7 @@ namespace MovingCastles.Serialization.Entities
                                 .Select(c => c.GetSerializable())
                                 .ToList(),
                 TemplateId = entity.TemplateId,
+                FactionName = entity.FactionName,
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -73,7 +75,8 @@ namespace MovingCastles.Serialization.Entities
                 serializedObject.Layer,
                 serializedObject.IsWalkable,
                 serializedObject.IsTransparent,
-                serializedObject.NameColor);
+                serializedObject.NameColor,
+                serializedObject.FactionName);
 
             entity.Font = serializedObject.Font;
 

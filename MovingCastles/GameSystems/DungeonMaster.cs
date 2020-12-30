@@ -1,7 +1,6 @@
-﻿using MovingCastles.Entities;
+﻿using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Player;
-using System;
 
 namespace MovingCastles.GameSystems
 {
@@ -9,14 +8,18 @@ namespace MovingCastles.GameSystems
     {
         public DungeonMaster(
             PlayerInfo player,
-            ILevelMaster levelMaster)
+            ILevelMaster levelMaster,
+            IFactionMaster factionMaster)
         {
             Player = player;
             LevelMaster = levelMaster;
+            FactionMaster = factionMaster;
         }
 
         public PlayerInfo Player { get; }
 
         public ILevelMaster LevelMaster { get; }
+
+        public IFactionMaster FactionMaster { get; }
     }
 }

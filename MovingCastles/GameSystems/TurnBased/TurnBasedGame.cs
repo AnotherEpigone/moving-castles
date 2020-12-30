@@ -304,7 +304,8 @@ namespace MovingCastles.GameSystems.TurnBased
             bumpTriggeredComponent?.Bump(e.Item);
 
             var meleeAttackComponent = e.Item.GetGoRogueComponent<IMeleeAttackerComponent>();
-            if (meleeAttackComponent != null)
+            var attacker = meleeAttackComponent?.Parent as McEntity;
+            if (attacker != null)
             {
                 var healthComponent = Map.GetEntities<McEntity>(e.NewPosition)
                     .SelectMany(e =>
@@ -317,7 +318,9 @@ namespace MovingCastles.GameSystems.TurnBased
                         return entity.GetComponents<IHealthComponent>();
                     })
                     .FirstOrDefault();
-                if (healthComponent != null)
+                var attackee = healthComponent?.Parent as McEntity;
+                if (attackee != null
+                    && _dungeonMaster.FactionMaster.AreEnemies(attacker.FactionName, attackee.FactionName))
                 {
                     MeleeAttack(e.Item, meleeAttackComponent, healthComponent);
                 }
@@ -326,7 +329,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private void Entity_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
         {
-            if (!(e.Item is McEntity movingEntity))
+            if (e.Item is not McEntity movingEntity)
             {
                 return;
             }
@@ -339,9 +342,9 @@ namespace MovingCastles.GameSystems.TurnBased
             var stepTriggers = Map.GetEntities<McEntity>(movingEntity.Position)
                 .SelectMany(e =>
                 {
-                    if (!(e is IHasComponents entity))
+                    if (e is not IHasComponents entity)
                     {
-                        return new IStepTriggeredComponent[0];
+                        return System.Array.Empty<IStepTriggeredComponent>();
                     }
 
                     return entity.GetComponents<IStepTriggeredComponent>();

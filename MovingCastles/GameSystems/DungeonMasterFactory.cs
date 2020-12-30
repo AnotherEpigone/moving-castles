@@ -1,4 +1,5 @@
-﻿using MovingCastles.GameSystems.Levels;
+﻿using MovingCastles.GameSystems.Factions;
+using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Player;
 
 namespace MovingCastles.GameSystems
@@ -16,7 +17,12 @@ namespace MovingCastles.GameSystems
                 Structure = structure,
             };
 
-            return new DungeonMaster(player, levelMaster);
+            var factionMaster = new FactionMaster();
+
+            return new DungeonMaster(
+                player,
+                levelMaster,
+                factionMaster);
         }
     }
 }

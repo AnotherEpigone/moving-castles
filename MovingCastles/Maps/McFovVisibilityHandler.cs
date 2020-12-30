@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Factions;
 using SadConsole;
 
 namespace MovingCastles.Maps
@@ -84,7 +85,8 @@ namespace MovingCastles.Maps
                     _ghostLayer,
                     true,
                     true,
-                    Color.White);
+                    Color.White,
+                    Faction.None);
                 ghost.IsVisible = true;
 
                 ghost.Font = entity.Font;

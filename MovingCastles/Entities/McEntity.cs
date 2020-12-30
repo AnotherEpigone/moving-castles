@@ -25,12 +25,14 @@ namespace MovingCastles.Entities
             int layer,
             bool isWalkable,
             bool isTransparent,
-            Color nameColor)
+            Color nameColor,
+            string faction)
             : base(foreground, background, glyph, position, layer, isWalkable, isTransparent)
         {
             TemplateId = templateId;
             Name = name;
             NameColor = nameColor;
+            FactionName = faction;
         }
 
         public event System.EventHandler<ItemMovedEventArgs<McEntity>> Bumped;
@@ -42,6 +44,8 @@ namespace MovingCastles.Entities
         public Color NameColor { get; }
 
         public string TemplateId { get; }
+
+        public string FactionName { get; }
 
         public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 

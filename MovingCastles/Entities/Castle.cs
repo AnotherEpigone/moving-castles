@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
@@ -23,7 +24,8 @@ namespace MovingCastles.Entities
                   (int)DungeonMapLayer.PLAYER,
                   isWalkable: false,
                   isTransparent: true,
-                  ColorHelper.PlayerBlue)
+                  ColorHelper.PlayerBlue,
+                  Faction.Player)
         {
             FOVRadius = 3;
 

@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
@@ -32,7 +33,8 @@ namespace MovingCastles.Entities
                 (int)Maps.DungeonMapLayer.MONSTERS,
                 isWalkable: false,
                 isTransparent: true,
-                actorTemplate.NameColor);
+                actorTemplate.NameColor,
+                actorTemplate.FactionName);
 
             actorTemplate.CreateComponents().ForEach(c => actor.AddGoRogueComponent(c));
             actor.AddGoRogueComponent(new SummaryControlComponent());
@@ -56,7 +58,8 @@ namespace MovingCastles.Entities
                     (int)Maps.DungeonMapLayer.ITEMS,
                     isWalkable: true,
                     isTransparent: true,
-                    Color.DarkGray);
+                    Color.DarkGray,
+                    Faction.None);
             item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(itemTemplate));
 
@@ -79,7 +82,8 @@ namespace MovingCastles.Entities
                     (int)Maps.DungeonMapLayer.DOODADS,
                     isWalkable: template.Walkable,
                     isTransparent: template.Transparent,
-                    template.NameColor);
+                    template.NameColor,
+                    Faction.None);
             doodad.AddGoRogueComponent(new SummaryControlComponent());
 
             // workaround Entity construction bugs by setting font afterward

@@ -2,6 +2,7 @@
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.Factions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,7 +37,8 @@ namespace MovingCastles.Entities
                 new LinearCompositeAiComponent(
                     new WalkAtPlayerAiComponent(6),
                     new RandomWalkAiComponent()),
-            });
+            },
+            Faction.Goblins);
 
         public static ActorTemplate GoblinArcher => new ActorTemplate(
             id: "ACTOR_GOBLIN_ARCHER",
@@ -52,7 +54,8 @@ namespace MovingCastles.Entities
                     new RangedAttackAiComponent(),
                     new WalkAtPlayerAiComponent(6),
                     new RandomWalkAiComponent()),
-            });
+            },
+            Faction.Goblins);
 
         public static ActorTemplate Warg => new ActorTemplate(
             id: "ACTOR_WARG",
@@ -67,6 +70,7 @@ namespace MovingCastles.Entities
                 new LinearCompositeAiComponent(
                     new WalkAtPlayerAiComponent(6),
                     new RandomWalkAiComponent()),
-            });
+            },
+            Faction.Goblins);
     }
 }

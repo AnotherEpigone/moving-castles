@@ -2,31 +2,16 @@
 
 namespace MovingCastles.GameSystems.Factions
 {
-    public class Faction
+    public static class Faction
     {
-        private const int EnemyThreshold = -100;
+        public const string None = "";
+        public const string Player = "Player";
+        public const string Goblins = "Goblins";
 
-        public Faction(string name)
-            : this(name, new Dictionary<string, int>()) { }
-
-        public Faction(string name, Dictionary<string, int> relationships)
-        {
-            Name = name;
-            Relationships = relationships;
-        }
-
-        public string Name { get; }
-
-        private Dictionary<string, int> Relationships { get; }
-
-        public bool IsEnemy(Faction other)
-        {
-            if (!Relationships.TryGetValue(other.Name, out var otherRelationship))
+        public static Dictionary<FactionPair, int> DefaultRelationships { get; } =
+            new Dictionary<FactionPair, int>
             {
-                return false;
-            }
-
-            return otherRelationship < EnemyThreshold;
-        }
+                { new FactionPair(Player, Goblins), -1000 },
+            };
     }
 }

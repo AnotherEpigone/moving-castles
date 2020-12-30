@@ -10,13 +10,15 @@ namespace MovingCastles.Entities
             string name,
             int glyph,
             Color nameColor,
-            System.Func<List<object>> createComponents)
+            System.Func<List<object>> createComponents,
+            string factionName)
         {
             Id = id;
             Name = name;
             Glyph = glyph;
             NameColor = nameColor;
             CreateComponents = createComponents;
+            FactionName = factionName;
         }
 
         public string Id { get; }
@@ -26,6 +28,8 @@ namespace MovingCastles.Entities
         public int Glyph { get; }
 
         public Color NameColor { get; }
+
+        public string FactionName { get; }
 
         public System.Func<List<object>> CreateComponents { get; }
     }

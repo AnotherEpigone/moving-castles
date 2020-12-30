@@ -1,6 +1,8 @@
-﻿namespace MovingCastles.Components
+﻿using GoRogue.GameFramework.Components;
+
+namespace MovingCastles.Components
 {
-    public interface IMeleeAttackerComponent
+    public interface IMeleeAttackerComponent : IGameObjectComponent
     {
         float GetDamage();
     }

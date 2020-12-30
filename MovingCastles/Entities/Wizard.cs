@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Entities;
@@ -25,7 +26,8 @@ namespace MovingCastles.Entities
                   (int)DungeonMapLayer.PLAYER,
                   isWalkable: false,
                   isTransparent: true,
-                  ColorHelper.PlayerBlue)
+                  ColorHelper.PlayerBlue,
+                  Faction.Player)
         {
             FovRadius = 10;
 

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Fonts;
+using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Entities;
@@ -32,7 +33,8 @@ namespace MovingCastles.Entities
                   (int)DungeonMapLayer.DOODADS,
                   isWalkable: false,
                   isTransparent: false,
-                  Color.SaddleBrown)
+                  Color.SaddleBrown,
+                  Faction.None)
         {
             // door open/close animations
             var closedAnimation = new AnimatedConsole(ClosedAnimationKey, 1, 1, font);
