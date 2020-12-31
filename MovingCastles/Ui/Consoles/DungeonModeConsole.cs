@@ -88,7 +88,7 @@ namespace MovingCastles.Ui.Consoles
             var popupMenuButton = new Button(popupMenuButtonWidth)
             {
                 Text = popupMenuText,
-                Position = new Point((rightSectionWidth / 5) - (popupMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth / 6) - (popupMenuButtonWidth / 2), 0),
             };
             popupMenuButton.Click += (_, __) => menuProvider.Pop.Show();
 
@@ -97,7 +97,7 @@ namespace MovingCastles.Ui.Consoles
             var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
             {
                 Text = inventoryMenuText,
-                Position = new Point((rightSectionWidth * 2 / 5) - (inventoryMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 2 / 6) - (inventoryMenuButtonWidth / 2), 0),
             };
             inventoryMenuButton.Click += (_, __) =>
             {
@@ -110,7 +110,7 @@ namespace MovingCastles.Ui.Consoles
             var spellMenuButton = new Button(spellMenuButtonWidth)
             {
                 Text = spellMenuText,
-                Position = new Point((rightSectionWidth * 3 / 5) - (spellMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 3 / 6) - (spellMenuButtonWidth / 2), 0),
             };
             spellMenuButton.Click += (_, __) =>
             {
@@ -119,12 +119,24 @@ namespace MovingCastles.Ui.Consoles
                     selectedSpell => _mapConsole.StartTargetting(selectedSpell));
             };
 
+            const string journalMenuText = "Journal (J)";
+            var journalMenuButtonWidth = journalMenuText.Length + 4;
+            var journalMenuButton = new Button(journalMenuButtonWidth)
+            {
+                Text = journalMenuText,
+                Position = new Point((rightSectionWidth * 4 / 6) - (journalMenuButtonWidth / 2), 0),
+            };
+            journalMenuButton.Click += (_, __) =>
+            {
+                menuProvider.Journal.Show(_mapConsole.Player.JournalEntries);
+            };
+
             const string commandMenuText = "Commands (C)";
             var commandMenuButtonWidth = commandMenuText.Length + 4;
             var commandMenuButton = new Button(commandMenuButtonWidth)
             {
                 Text = commandMenuText,
-                Position = new Point((rightSectionWidth * 4 / 5) - (commandMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 5 / 6) - (commandMenuButtonWidth / 2), 0),
             };
             commandMenuButton.Click += (_, __) =>
             {
@@ -148,7 +160,7 @@ namespace MovingCastles.Ui.Consoles
             console.Add(inventoryMenuButton);
             console.Add(spellMenuButton);
             console.Add(commandMenuButton);
-
+            console.Add(journalMenuButton);
             console.Children.Add(flavorMessage);
 
             return console;

@@ -33,7 +33,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public string Id { get; } = "GENERATOR_ALWARDS_TOWER";
 
-        public Level Generate(int seed, string id, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions)
+        public Level Generate(int seed, string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
         {
             var rng = new StandardGenerator(seed);
             var level = Generate(seed, id, rng);
@@ -46,7 +46,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        public Level Generate(int seed, string id, PlayerInfo playerInfo, Coord playerSpawnPosition)
+        public Level Generate(int seed, string id, PlayerTemplate playerInfo, Coord playerSpawnPosition)
         {
             var rng = new StandardGenerator(seed);
             var level = Generate(seed, id, rng);
@@ -68,7 +68,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        public Level Generate(MapState mapState, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions)
+        public Level Generate(MapState mapState, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
         {
             var rng = new StandardGenerator(mapState.Seed);
             var level = Generate(mapState, rng);

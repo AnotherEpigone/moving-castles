@@ -11,7 +11,7 @@ namespace MovingCastles.GameSystems.Levels
 
         public Structure Structure { get; set; }
 
-        public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, PlayerInfo player)
+        public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, PlayerTemplate player)
         {
             Level = Structure.GetLevel(targetMapId, player, spawnConditions);
             LevelChanged?.Invoke(this, EventArgs.Empty);

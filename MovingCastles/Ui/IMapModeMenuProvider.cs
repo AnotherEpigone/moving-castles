@@ -12,5 +12,6 @@ namespace MovingCastles.Ui
 
         SpellSelectionWindow SpellSelect { get; }
         CommandWindow Command { get; }
+        JournalWindow Journal { get; }
     }
 }

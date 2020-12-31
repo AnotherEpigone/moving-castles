@@ -80,8 +80,9 @@ namespace MovingCastles.Ui
             var pop = new PopupMenuWindow(this, gameManager);
             var spellSelect = new SpellSelectionWindow();
             var commands = new CommandWindow();
+            var journal = new JournalWindow(120, 30);
 
-            return new MapModeMenuProvider(inventory, death, pop, spellSelect, commands);
+            return new MapModeMenuProvider(inventory, death, pop, spellSelect, commands, journal);
         }
     }
 }

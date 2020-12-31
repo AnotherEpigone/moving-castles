@@ -8,8 +8,8 @@ namespace MovingCastles.Entities
     {
         McEntity CreateActor(Coord position, ActorTemplate actorTemplate);
         McEntity CreateItem(Coord position, ItemTemplate itemTemplate);
-        Wizard CreatePlayer(Coord position, PlayerInfo playerInfo);
-        Castle CreateCastle(Coord position, PlayerInfo playerInfo);
+        Wizard CreatePlayer(Coord position, PlayerTemplate playerInfo);
+        Castle CreateCastle(Coord position, PlayerTemplate playerInfo);
         McEntity CreateDoor(Coord position);
         McEntity CreateDoodad(Coord position, DoodadTemplate template);
     }

@@ -120,4 +120,7 @@
   <data name="AlwardsTower_TrapdoorStep" xml:space="preserve">
     <value>The heavy boards of this rough trapdoor hum with power to your mage senses. Placing a hand on the wood, you can sense spells of preservation, strength and locking. You'll need a key or passphrase of some kind to get through here.</value>
   </data>
+  <data name="Entry_AlwardsTower_Entrance" xml:space="preserve">
+    <value>The musty air and dust-caked interior confirm what could be seen from outside. Although this is certainly Old Alward's Tower, there is no human living here, and hasn't been for some time.</value>
+  </data>
 </root>

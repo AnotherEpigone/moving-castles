@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Journal.Entries;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Saving;
@@ -56,7 +57,8 @@ namespace MovingCastles.GameSystems
             var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
 
-            var player = Player.PlayerInfo.CreateDefault();
+            var player = Player.PlayerTemplate.CreateDefault();
+            player.JournalEntries.Add(AlwardsTowerJournalEntries.FirstEntrance);
 
             var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
             var level = structure.GetLevel(LevelId.AlwardsTower1, player, new SpawnConditions(Spawn.Default, 0));
@@ -120,7 +122,7 @@ namespace MovingCastles.GameSystems
             var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
 
-            var player = Player.PlayerInfo.CreateDefault();
+            var player = Player.PlayerTemplate.CreateDefault();
 
             var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
             var level = structure.GetLevel(save);
@@ -137,7 +139,7 @@ namespace MovingCastles.GameSystems
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
 
-            var player = Player.PlayerInfo.CreateDefault();
+            var player = Player.PlayerTemplate.CreateDefault();
 
             var dungeonModeDemoMap = mapFactory.CreateDungeonMap(100, 60, MapAtlas.CombatTestArea, player);
 
@@ -153,7 +155,7 @@ namespace MovingCastles.GameSystems
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
 
-            var player = Player.PlayerInfo.CreateDefault();
+            var player = Player.PlayerTemplate.CreateDefault();
 
             var dungeonModeDemoMap = mapFactory.CreateCastleMap(100, 60, null, player);
 
@@ -166,7 +168,7 @@ namespace MovingCastles.GameSystems
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
             var mapFactory = new MapFactory(entityFactory);
 
-            var player = Player.PlayerInfo.CreateDefault();
+            var player = Player.PlayerTemplate.CreateDefault();
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
 

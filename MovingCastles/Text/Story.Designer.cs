@@ -68,5 +68,14 @@ namespace MovingCastles.Text {
                 return ResourceManager.GetString("AlwardsTower_TrapdoorStep", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The musty air and dust-caked interior confirm what could be seen from outside. Although this is certainly Old Alward&apos;s Tower, there is no human living here, and hasn&apos;t been for some time..
+        /// </summary>
+        internal static string Entry_AlwardsTower_Entrance {
+            get {
+                return ResourceManager.GetString("Entry_AlwardsTower_Entrance", resourceCulture);
+            }
+        }
     }
 }

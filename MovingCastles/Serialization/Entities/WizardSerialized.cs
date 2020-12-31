@@ -56,7 +56,7 @@ namespace MovingCastles.Serialization.Entities
         {
             var entity = new Wizard(
                 (Point)serializedObject.Position,
-                PlayerInfo.CreateDefault(), // TODO
+                PlayerTemplate.CreateDefault(), // TODO
                 serializedObject.Font);
 
             entity.Animations.Clear();

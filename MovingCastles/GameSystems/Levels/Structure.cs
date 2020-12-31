@@ -28,7 +28,7 @@ namespace MovingCastles.GameSystems.Levels
 
         public Dictionary<string, ILevelGenerator> Generators { get; }
 
-        public Level GetLevel(string id, PlayerInfo playerInfo, SpawnConditions playerSpawnConditions)
+        public Level GetLevel(string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
         {
             Level level;
             if (_generatedLevels.TryGetValue(id, out level))

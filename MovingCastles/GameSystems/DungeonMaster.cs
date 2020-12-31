@@ -7,7 +7,7 @@ namespace MovingCastles.GameSystems
     public class DungeonMaster : IDungeonMaster
     {
         public DungeonMaster(
-            PlayerInfo player,
+            PlayerTemplate player,
             ILevelMaster levelMaster,
             IFactionMaster factionMaster)
         {
@@ -16,7 +16,7 @@ namespace MovingCastles.GameSystems
             FactionMaster = factionMaster;
         }
 
-        public PlayerInfo Player { get; }
+        public PlayerTemplate Player { get; }
 
         public ILevelMaster LevelMaster { get; }
 

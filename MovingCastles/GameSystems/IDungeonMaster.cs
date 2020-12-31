@@ -7,7 +7,7 @@ namespace MovingCastles.GameSystems
 {
     public interface IDungeonMaster
     {
-        PlayerInfo Player { get; }
+        PlayerTemplate Player { get; }
 
         ILevelMaster LevelMaster { get; }
 

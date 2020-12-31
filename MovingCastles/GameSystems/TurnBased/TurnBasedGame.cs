@@ -293,9 +293,9 @@ namespace MovingCastles.GameSystems.TurnBased
             var bumpTriggeredComponent = Map.GetEntities<McEntity>(e.NewPosition)
                     .SelectMany(e =>
                     {
-                        if (!(e is IHasComponents entity))
+                        if (e is not IHasComponents entity)
                         {
-                            return new IBumpTriggeredComponent[0];
+                            return System.Array.Empty<IBumpTriggeredComponent>();
                         }
 
                         return entity.GetComponents<IBumpTriggeredComponent>();
@@ -310,9 +310,9 @@ namespace MovingCastles.GameSystems.TurnBased
                 var healthComponent = Map.GetEntities<McEntity>(e.NewPosition)
                     .SelectMany(e =>
                     {
-                        if (!(e is IHasComponents entity))
+                        if (e is not IHasComponents entity)
                         {
-                            return new IHealthComponent[0];
+                            return System.Array.Empty<IHealthComponent>();
                         }
 
                         return entity.GetComponents<IHealthComponent>();

@@ -7,7 +7,7 @@ namespace MovingCastles.GameSystems
     public class DungeonMasterFactory : IDungeonMasterFactory
     {
         public IDungeonMaster Create(
-            PlayerInfo player,
+            PlayerTemplate player,
             Level level,
             Structure structure)
         {

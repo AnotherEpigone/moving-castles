@@ -2,13 +2,16 @@
 using Microsoft.Xna.Framework;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Factions;
+using MovingCastles.GameSystems.Journal;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Entities;
 using MovingCastles.Ui;
 using Newtonsoft.Json;
 using SadConsole;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MovingCastles.Entities
 {
@@ -16,7 +19,7 @@ namespace MovingCastles.Entities
     [JsonConverter(typeof(WizardJsonConverter))]
     public sealed class Wizard : McEntity
     {
-        public Wizard(Coord position, PlayerInfo playerInfo, Font font)
+        public Wizard(Coord position, PlayerTemplate playerInfo, Font font)
             : base("Player-Wizard",
                   playerInfo.Name,
                   Color.White,
@@ -34,9 +37,16 @@ namespace MovingCastles.Entities
             // workaround Entity construction bugs by setting font afterward
             Font = font;
             OnCalculateRenderPosition();
+
+            JournalEntries = playerInfo.JournalEntries
+                .ToLookup(
+                    je => je.TopicId,
+                    je => je);
         }
 
         public int FovRadius { get; }
+
+        public ILookup<string, JournalEntry> JournalEntries { get; }
 
         public override string GetFlavorDescription()
         {

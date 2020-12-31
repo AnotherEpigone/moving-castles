@@ -11,6 +11,6 @@ namespace MovingCastles.GameSystems.Levels
 
         event EventHandler LevelChanged;
 
-        void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, PlayerInfo player);
+        void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, PlayerTemplate player);
     }
 }

@@ -103,7 +103,7 @@ namespace MovingCastles.Entities
             return door;
         }
 
-        public Wizard CreatePlayer(Coord position, PlayerInfo playerInfo)
+        public Wizard CreatePlayer(Coord position, PlayerTemplate playerInfo)
         {
             var wizard = new Wizard(position, playerInfo, _font);
 
@@ -118,7 +118,7 @@ namespace MovingCastles.Entities
             return wizard;
         }
 
-        public Castle CreateCastle(Coord position, PlayerInfo playerInfo)
+        public Castle CreateCastle(Coord position, PlayerTemplate playerInfo)
         {
             var castle = new Castle(position, playerInfo, _font);
 
