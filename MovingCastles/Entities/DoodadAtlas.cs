@@ -25,7 +25,7 @@ namespace MovingCastles.Entities
             id: "DOODAD_TRAPDOOR_WOOD",
             name: "Wooden trapdoor",
             glyph: SpriteAtlas.Trapdoor_Wood,
-            nameColor: Color.LightGray,
+            nameColor: Color.SaddleBrown,
             walkable: true,
             transparent: true);
 
@@ -33,7 +33,7 @@ namespace MovingCastles.Entities
             id: "DOODAD_STAIRCASE_UP",
             name: "Staircase up",
             glyph: SpriteAtlas.Staircase_Up,
-            nameColor: Color.LightGray,
+            nameColor: Color.SaddleBrown,
             walkable: true,
             transparent: true);
 
@@ -41,7 +41,7 @@ namespace MovingCastles.Entities
             id: "DOODAD_STAIRCASE_Down",
             name: "Staircase down",
             glyph: SpriteAtlas.Staircase_Down,
-            nameColor: Color.LightGray,
+            nameColor: Color.SaddleBrown,
             walkable: true,
             transparent: true);
 
@@ -49,7 +49,7 @@ namespace MovingCastles.Entities
             id: "DOODAD_ETHERIUMCORE_STAND",
             name: "Etherium core",
             glyph: SpriteAtlas.EtheriumCore_Stand,
-            nameColor: Color.LightGray,
+            nameColor: Color.Violet,
             walkable: true,
             transparent: true);
     }

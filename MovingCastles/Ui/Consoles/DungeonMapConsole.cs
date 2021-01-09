@@ -11,7 +11,6 @@ using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Input;
-using System.Collections.Generic;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
@@ -234,6 +233,13 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
+            if (info.IsKeyPressed(Keys.J))
+            {
+                EndTargettingMode();
+                _menuProvider.Journal.Show(Player.JournalEntries);
+                return true;
+            }
+
             if (info.IsKeyPressed(Keys.C))
             {
                 EndTargettingMode();
@@ -244,6 +250,7 @@ namespace MovingCastles.Ui.Consoles
             if (info.IsKeyPressed(Keys.Escape)
                 || info.IsKeyPressed(Keys.M))
             {
+                EndTargettingMode();
                 _menuProvider.Pop.Show();
                 return true;
             }
