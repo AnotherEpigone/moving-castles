@@ -24,23 +24,6 @@ namespace MovingCastles.Ui.Windows
 
             _topicButtonWidth = width / 3;
 
-            ////const string locationText = "Location (L)";
-            ////var locationButtonWidth = locationText.Length + 4;
-            ////var locationButton = new Button(locationButtonWidth)
-            ////{
-            ////    Text = locationText,
-            ////    IsEnabled = false,
-            ////    Position = new Point((width / 3) - (locationButtonWidth / 2), 0),
-            ////};
-
-            ////const string notesText = "Notes (N)";
-            ////var notesButtonWidth = notesText.Length + 4;
-            ////var notesButton = new Button(notesButtonWidth)
-            ////{
-            ////    Text = notesText,
-            ////    Position = new Point((width * 2 / 3) - (notesButtonWidth / 2), 0),
-            ////};
-
             _closeButton = new Button(9)
             {
                 Text = "Close",
@@ -56,8 +39,6 @@ namespace MovingCastles.Ui.Windows
             _entriesArea.Fill(null, ColorHelper.MidnighterBlue, null);
 
             Children.Add(_entriesArea);
-            ////Add(locationButton);
-            ////Add(notesButton);
             Add(_closeButton);
         }
 
@@ -94,7 +75,10 @@ namespace MovingCastles.Ui.Windows
 
         private ColoredString GetStringForEntries(IEnumerable<JournalEntry> entries)
         {
-            return new ColoredString("entries here");
+            var separator = $"\r\n\r\n{ColorHelper.GetParserString(new string('-', _entriesArea.Width), Color.AliceBlue)}\r\n\r\n";
+            var entryTexts = entries.Select(e => e.Message);
+            return new ColoredString(string.Join(separator, entryTexts),
+                    new Cell(_entriesArea.DefaultForeground, _entriesArea.DefaultBackground));
         }
 
         private void RefreshControls(Dictionary<McSelectionButton, System.Action> buttons)

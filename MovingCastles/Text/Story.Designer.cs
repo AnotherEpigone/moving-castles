@@ -77,5 +77,14 @@ namespace MovingCastles.Text {
                 return ResourceManager.GetString("Entry_AlwardsTower_Entrance", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old Alward&apos;s Tower, known as the Watcher over the Desert, is the traditional destination of pilgrims from the east. Like the fathers of centuries ago, you must cross the desert and find it before your journey to become a mage can truly begin..
+        /// </summary>
+        internal static string Entry_AlwardsTower_Quest {
+            get {
+                return ResourceManager.GetString("Entry_AlwardsTower_Quest", resourceCulture);
+            }
+        }
     }
 }

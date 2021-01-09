@@ -123,4 +123,7 @@
   <data name="Entry_AlwardsTower_Entrance" xml:space="preserve">
     <value>The musty air and dust-caked interior confirm what could be seen from outside. Although this is certainly Old Alward's Tower, there is no human living here, and hasn't been for some time.</value>
   </data>
+  <data name="Entry_AlwardsTower_Quest" xml:space="preserve">
+    <value>Old Alward's Tower, known as the Watcher over the Desert, is the traditional destination of pilgrims from the east. Like the fathers of centuries ago, you must cross the desert and find it before your journey to become a mage can truly begin.</value>
+  </data>
 </root>
