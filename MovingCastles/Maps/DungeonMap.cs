@@ -2,7 +2,7 @@
 using System.Linq;
 using GoRogue;
 using Microsoft.Xna.Framework;
-using MovingCastles.Components;
+using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
 using SadConsole;

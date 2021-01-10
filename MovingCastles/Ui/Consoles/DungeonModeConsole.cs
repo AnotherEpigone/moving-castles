@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.Components.Stats;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;

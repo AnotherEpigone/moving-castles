@@ -2,6 +2,7 @@
 using GoRogue.GameFramework.Components;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.Ui;
 using SadConsole;

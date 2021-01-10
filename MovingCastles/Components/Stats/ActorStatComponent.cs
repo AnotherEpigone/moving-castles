@@ -4,7 +4,7 @@ using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
-namespace MovingCastles.Components
+namespace MovingCastles.Components.Stats
 {
     public class ActorStatComponent : IActorStatComponent, ISerializableComponent
     {

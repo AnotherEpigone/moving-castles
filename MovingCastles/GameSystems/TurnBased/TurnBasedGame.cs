@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Components.Stats;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Combat;

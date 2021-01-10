@@ -1,7 +1,7 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.GameSystems.Logging;
 
-namespace MovingCastles.Components
+namespace MovingCastles.Components.Stats
 {
     public interface IHealthComponent : IGameObjectComponent
     {

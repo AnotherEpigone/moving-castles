@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Components.Stats;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Factions;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;

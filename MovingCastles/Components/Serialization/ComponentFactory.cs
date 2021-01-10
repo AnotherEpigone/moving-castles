@@ -1,6 +1,7 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.Components.AiComponents;
 using MovingCastles.Components.Levels;
+using MovingCastles.Components.Stats;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Serialization;
 using System;
