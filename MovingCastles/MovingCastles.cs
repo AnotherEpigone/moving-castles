@@ -63,21 +63,21 @@ namespace MovingCastles
 
             colors.TitleText = colors.Orange;
 
-            colors.TextBright = colors.White;
-            colors.Text = colors.Blue;
-            colors.TextSelected = colors.White;
-            colors.TextSelectedDark = colors.White;
-            colors.TextLight = colors.GrayDark;
+            colors.TextBright = ColorHelper.TextBright;
+            colors.Text = ColorHelper.Text;
+            colors.TextSelected = ColorHelper.TextBright;
+            colors.TextSelectedDark = ColorHelper.TextBright;
+            colors.TextLight = ColorHelper.SelectedBackground;
             colors.TextDark = colors.Green;
-            colors.TextFocused = colors.Cyan;
+            colors.TextFocused = ColorHelper.TextBright;
 
             colors.Lines = colors.Gray;
 
-            colors.ControlBack = ColorHelper.MidnightestBlue;
-            colors.ControlBackLight = ColorHelper.SelectedControlBackBlue;
-            colors.ControlBackSelected = colors.GrayDark;
-            colors.ControlBackDark = ColorHelper.MidnightestBlue;
-            colors.ControlHostBack = ColorHelper.MidnightestBlue;
+            colors.ControlBack = ColorHelper.ControlBack;
+            colors.ControlBackLight = ColorHelper.SelectedBackground;
+            colors.ControlBackSelected = ColorHelper.SelectedBackground;
+            colors.ControlBackDark = ColorHelper.ControlBackDark;
+            colors.ControlHostBack = ColorHelper.ControlBack;
             colors.ControlHostFore = colors.Text;
 
             colors.RebuildAppearances();

@@ -17,14 +17,11 @@ namespace MovingCastles.Ui.Consoles
 
         public MainMenuConsole(IUiManager uiManager, IGameManager gameManager, IAppSettings appSettings, int width, int height)
         {
-            DefaultBackground = Color.Black;
-
             var titleFont = Global.FontDefault.Master.GetFont(Font.FontSizes.Three);
             var titleConsole = new Console(width, 12, titleFont);
 
-            titleConsole.Fill(null, ColorHelper.MidnightestBlue, null);
-            titleConsole.Print((width / 6) - 6, 3, "MOVING CASTLES");
-            titleConsole.DefaultBackground = ColorHelper.MidnightestBlue;
+            titleConsole.Fill(null, ColorHelper.ControlBack, null);
+            titleConsole.Print((width / 6) - 6, 3, "MOVING CASTLES", ColorHelper.Text);
 
             _menuConsole = CreateMenuConsole(gameManager, appSettings, width, height - titleConsole.Height);
             _menuConsole.Position = new Point(0, titleConsole.Height);

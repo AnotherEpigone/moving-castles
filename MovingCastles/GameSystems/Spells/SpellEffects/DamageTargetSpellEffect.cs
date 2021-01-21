@@ -32,20 +32,20 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} {ColorHelper.GetParserString("hit", ColorHelper.ImportantAction)} {targetName} for {damage:F0} damage.");
                     targetHealth.ApplyDamage(damage, logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", ColorHelper.ImportantAction)} for {damage:F0} damage.");
                     targetHealth.ApplyDamage(damage, logManager);
                     break;
                 case HitResult.Miss:
-                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} {ColorHelper.GetParserString("missed", ColorHelper.ImportantAction)} {targetName}.");
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    logManager.EventLog($"{caster.ColoredName}'s {spell.Name} hit {targetName} with a {ColorHelper.GetParserString("critical blow", ColorHelper.ImportantAction)} for {damage:F0} damage.");
                     targetHealth.ApplyDamage(damage, logManager);
                     break;
             }

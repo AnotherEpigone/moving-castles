@@ -1,7 +1,6 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
-using Microsoft.Xna.Framework;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
@@ -60,20 +59,20 @@ namespace MovingCastles.Components
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.");
+                    logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("hit", ColorHelper.ImportantAction)} {targetName} for {damage:F0} damage.");
                     targetHealth.ApplyDamage(damage, logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.");
+                    logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", ColorHelper.ImportantAction)} for {damage:F0} damage.");
                     targetHealth.ApplyDamage(damage, logManager);
                     break;
                 case HitResult.Miss:
-                    logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.");
+                    logManager.EventLog($"{mcParent.ColoredName} {ColorHelper.GetParserString("missed", ColorHelper.ImportantAction)} {targetName}.");
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.");
+                    logManager.EventLog($"{mcParent.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", ColorHelper.ImportantAction)} for {damage:F0} damage.");
                     targetHealth.ApplyDamage(damage, logManager);
                     break;
             }

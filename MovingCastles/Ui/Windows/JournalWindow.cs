@@ -34,9 +34,9 @@ namespace MovingCastles.Ui.Windows
             _entriesArea = new Console(width - _topicButtonWidth - 3, height - 4)
             {
                 Position = new Point(_topicButtonWidth + 2, 1),
-                DefaultBackground = ColorHelper.MidnighterBlue,
+                DefaultBackground = ColorHelper.ControlBackDark,
             };
-            _entriesArea.Fill(null, ColorHelper.MidnighterBlue, null);
+            _entriesArea.Fill(null, ColorHelper.ControlBackDark, null);
 
             Children.Add(_entriesArea);
             Add(_closeButton);

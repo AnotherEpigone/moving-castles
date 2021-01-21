@@ -45,9 +45,9 @@ namespace MovingCastles.Ui.Windows
             _descriptionArea = new Console(width - _itemButtonWidth - 3, height - 4)
             {
                 Position = new Point(_itemButtonWidth + 2, 1),
-                DefaultBackground = ColorHelper.MidnighterBlue,
+                DefaultBackground = ColorHelper.ControlBackDark,
             };
-            _descriptionArea.Fill(null, ColorHelper.MidnighterBlue, null);
+            _descriptionArea.Fill(null, ColorHelper.ControlBackDark, null);
 
             Children.Add(_descriptionArea);
 

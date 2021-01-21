@@ -24,7 +24,7 @@ namespace MovingCastles.Entities
                   (int)DungeonMapLayer.PLAYER,
                   isWalkable: false,
                   isTransparent: true,
-                  ColorHelper.PlayerBlue,
+                  ColorHelper.PlayerNameBlue,
                   Faction.Player)
         {
             FOVRadius = 3;

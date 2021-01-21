@@ -270,20 +270,20 @@ namespace MovingCastles.GameSystems.TurnBased
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", Color.Yellow)} {targetName} for {damage:F0} damage.", attacker is Wizard);
+                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", ColorHelper.ImportantAction)} {targetName} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", Color.Yellow)} for {damage:F0} damage.", attacker is Wizard);
+                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", ColorHelper.ImportantAction)} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Miss:
-                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", Color.Yellow)} {targetName}.", attacker is Wizard);
+                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", ColorHelper.ImportantAction)} {targetName}.", attacker is Wizard);
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", Color.Yellow)} for {damage:F0} damage.", attacker is Wizard);
+                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", ColorHelper.ImportantAction)} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
             }

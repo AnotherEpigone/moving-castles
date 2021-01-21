@@ -16,7 +16,7 @@ namespace MovingCastles.Ui
             _lines = new Queue<string>();
             _messageConsole = new ScrollingConsole(width, height, font)
             {
-                DefaultBackground = ColorHelper.MidnightestBlue
+                DefaultBackground = ColorHelper.ControlBack
             };
 
             Children.Add(_messageConsole);
@@ -31,8 +31,8 @@ namespace MovingCastles.Ui
             }
 
             var backgroundColor = highlight
-                ? ColorHelper.MidnightBlue
-                : ColorHelper.MidnightestBlue;
+                ? ColorHelper.SelectedBackground
+                : ColorHelper.ControlBack;
 
             var coloredMessage = new ColoredString($"> {message}\r\n", new Cell(Color.Gainsboro, backgroundColor));
             _messageConsole.Cursor.Print(coloredMessage);

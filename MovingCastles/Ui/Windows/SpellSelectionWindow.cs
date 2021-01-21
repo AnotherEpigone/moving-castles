@@ -53,9 +53,9 @@ namespace MovingCastles.Ui.Windows
             _descriptionArea = new Console(Width - SpellButtonWidth - 3, Height - 4)
             {
                 Position = new Point(SpellButtonWidth + 2, 1),
-                DefaultBackground = ColorHelper.MidnighterBlue,
+                DefaultBackground = ColorHelper.ControlBackDark,
             };
-            _descriptionArea.Fill(null, ColorHelper.MidnighterBlue, null);
+            _descriptionArea.Fill(null, ColorHelper.ControlBackDark, null);
 
             Children.Add(_descriptionArea);
         }

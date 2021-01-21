@@ -4,6 +4,7 @@ using MovingCastles.Components.AiComponents;
 using MovingCastles.Components.Stats;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Factions;
+using MovingCastles.Ui;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +30,7 @@ namespace MovingCastles.Entities
             id: "ACTOR_GOBLIN",
             name: "Goblin",
             glyph: SpriteAtlas.Goblin,
-            nameColor: Color.DarkGreen,
+            nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
                 new HealthComponent(10),
@@ -45,7 +46,7 @@ namespace MovingCastles.Entities
             id: "ACTOR_GOBLIN_ARCHER",
             name: "Goblin archer",
             glyph: SpriteAtlas.GoblinArcher,
-            nameColor: Color.DarkGreen,
+            nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
                 new HealthComponent(10),
@@ -62,7 +63,7 @@ namespace MovingCastles.Entities
             id: "ACTOR_WARG",
             name: "Warg",
             glyph: SpriteAtlas.Warg,
-            nameColor: Color.DarkSlateGray,
+            nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
                 new HealthComponent(10),
