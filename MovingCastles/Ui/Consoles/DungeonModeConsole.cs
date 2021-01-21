@@ -48,18 +48,29 @@ namespace MovingCastles.Ui.Consoles
             };
             _mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
 
-            _leftPane = CreateLeftPane(height);
+            _leftPane = CreateInfoPanel();
 
-            var eventLog = new MessageLogConsole(LeftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
+            var combatEventLog = new MessageLogConsole(
+                LeftPaneWidth,
+                (height - InfoPanelHeight) / 2,
+                Global.FontDefault,
+                Color.Transparent,
+                Color.Black,
+                System.TimeSpan.FromSeconds(2.5))
+            {
+                Position = new Point(LeftPaneWidth, TopPaneHeight),
+            };
+            logManager.RegisterEventListener(LogType.Combat, (s, h) => combatEventLog.Add(s, h));
+            var storyEventLog = new MessageLogConsole(LeftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
             {
                 Position = new Point(0, InfoPanelHeight),
             };
-            logManager.RegisterEventListener((s, h) => eventLog.Add(s, h));
-            logManager.RegisterDebugListener(s => eventLog.Add($"DEBUG: {s}", false)); // todo put debug logs somewhere else
+            logManager.RegisterEventListener(LogType.Story, (s, h) => storyEventLog.Add(s, h));
 
             Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
             Children.Add(_mapConsole);
-            Children.Add(eventLog);
+            Children.Add(combatEventLog);
+            Children.Add(storyEventLog);
             Children.Add(_leftPane);
         }
 
@@ -167,12 +178,8 @@ namespace MovingCastles.Ui.Consoles
             return console;
         }
 
-        private ControlsConsole CreateLeftPane(int height)
+        private ControlsConsole CreateInfoPanel()
         {
-            var leftPane = new ControlsConsole(LeftPaneWidth, height)
-            {
-                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent),
-            };
             var infoPanel = new ControlsConsole(LeftPaneWidth, InfoPanelHeight);
             var manaBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
             {
@@ -199,8 +206,7 @@ namespace MovingCastles.Ui.Consoles
             infoPanel.Add(new Label("Material Plane, Ayen") { Position = new Point(1, 1), TextColor = Color.DarkGray });
             infoPanel.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
 
-            leftPane.Children.Add(infoPanel);
-            return leftPane;
+            return infoPanel;
         }
 
         private void Player_HealthChanged(object sender, float e)

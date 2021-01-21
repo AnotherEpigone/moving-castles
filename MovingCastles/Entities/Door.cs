@@ -72,7 +72,7 @@ namespace MovingCastles.Entities
         {
             if (IsOpen && !CurrentMap.WalkabilityView[Position])
             {
-                logManager.EventLog($"{togglerName} can't close the door. Something is blocking it.");
+                logManager.StoryLog($"{togglerName} can't close the door. Something is blocking it.");
                 return;
             }
 

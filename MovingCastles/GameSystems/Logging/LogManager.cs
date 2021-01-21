@@ -5,48 +5,56 @@ namespace MovingCastles.GameSystems.Logging
 {
     public class LogManager : ILogManager
     {
-        private readonly List<Action<string, bool>> _eventListeners;
-        private readonly List<Action<string>> _debugListeners;
+        private readonly Dictionary<LogType, List<Action<string, bool>>> _eventListeners;
 
         public LogManager()
         {
-            _eventListeners = new List<Action<string, bool>>();
-            _debugListeners = new List<Action<string>>();
+            _eventListeners = new Dictionary<LogType, List<Action<string, bool>>>();
         }
 
-        public void RegisterEventListener(Action<string, bool> listener)
+        public void RegisterEventListener(LogType type, Action<string, bool> listener)
         {
-            _eventListeners.Add(listener);
+            if (!_eventListeners.ContainsKey(type))
+            {
+                _eventListeners[type] = new List<Action<string, bool>>();
+            }
+
+            _eventListeners[type].Add(listener);
         }
 
-        public void UnregisterEventListener(Action<string, bool> listener)
+        public void UnregisterEventListener(LogType type, Action<string, bool> listener)
         {
-            _eventListeners.Remove(listener);
+            _eventListeners[type].Remove(listener);
         }
 
-        public void RegisterDebugListener(Action<string> listener)
+        public void CombatLog(string message)
         {
-            _debugListeners.Add(listener);
+            EventLog(LogType.Combat, message);
         }
 
-        public void UnregisterDebugListener(Action<string> listener)
+        public void CombatLog(string message, bool highlight)
         {
-            _debugListeners.Remove(listener);
+            EventLog(LogType.Combat, message, highlight);
         }
 
-        public void EventLog(string message)
+        public void StoryLog(string message)
         {
-            EventLog(message, false);
+            EventLog(LogType.Story, message);
         }
 
-        public void EventLog(string message, bool highlight)
+        public void StoryLog(string message, bool highlight)
         {
-            _eventListeners.ForEach(action => action(message, highlight));
+            EventLog(LogType.Story, message, highlight);
         }
 
-        public void DebugLog(string message)
+        public void EventLog(LogType type, string message)
         {
-            _debugListeners.ForEach(action => action(message));
+            EventLog(type, message, false);
+        }
+
+        public void EventLog(LogType type, string message, bool highlight)
+        {
+            _eventListeners[type].ForEach(action => action(message, highlight));
         }
     }
 }

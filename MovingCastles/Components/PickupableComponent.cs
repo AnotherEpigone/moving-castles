@@ -37,7 +37,7 @@ namespace MovingCastles.Components
             inventory.Items.AddRange(Items);
             Parent.CurrentMap.RemoveEntity(Parent);
 
-            logManager.EventLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
+            logManager.StoryLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
         }
 
         public ComponentSerializable GetSerializable()

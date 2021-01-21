@@ -47,8 +47,7 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(LeftPaneWidth, 0),
             };
 
-            logManager.RegisterEventListener((s, h) => _rightPane.Add(s, h));
-            logManager.RegisterDebugListener(s => _rightPane.Add($"DEBUG: {s}", false)); // todo put debug logs somewhere else
+            ////logManager.RegisterEventListener((s, h) => _rightPane.Add(s, h));
 
             Children.Add(_leftPane);
             Children.Add(_rightPane);

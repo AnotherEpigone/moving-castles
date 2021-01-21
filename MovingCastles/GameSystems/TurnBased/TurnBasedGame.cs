@@ -119,7 +119,7 @@ namespace MovingCastles.GameSystems.TurnBased
                     return true;
                 }
 
-                _logManager.EventLog("Nothing to interact with there.");
+                _logManager.StoryLog("Nothing to interact with there.");
                 return false;
             }
 
@@ -132,7 +132,7 @@ namespace MovingCastles.GameSystems.TurnBased
                     return true;
                 }
 
-                _logManager.EventLog("What do you want to interact with?");
+                _logManager.StoryLog("What do you want to interact with?");
                 return false;
             }
 
@@ -147,7 +147,7 @@ namespace MovingCastles.GameSystems.TurnBased
                         return true;
                     }
 
-                    _logManager.EventLog("Nothing to interact with there.");
+                    _logManager.StoryLog("Nothing to interact with there.");
                     return false;
                 }
             }
@@ -177,7 +177,7 @@ namespace MovingCastles.GameSystems.TurnBased
         public void SpellTargetSelected(Coord mapCoord)
         {
             var hitResult = HitMan.Get(_rng);
-            _logManager.EventLog($"{_player.ColoredName} cast {TargettingSpell.Name}.", true);
+            _logManager.CombatLog($"{_player.ColoredName} cast {TargettingSpell.Name}.", true);
             foreach (var effect in TargettingSpell.Effects)
             {
                 effect.Apply(_player, TargettingSpell, Map, hitResult, mapCoord, _logManager);
@@ -229,7 +229,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
             if (TargetInteractables.Count == 0)
             {
-                _logManager.EventLog("Nothing to interact with.");
+                _logManager.StoryLog("Nothing to interact with.");
                 return;
             }
 
@@ -270,20 +270,20 @@ namespace MovingCastles.GameSystems.TurnBased
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", ColorHelper.ImportantAction)} {targetName} for {damage:F0} damage.", attacker is Wizard);
+                    _logManager.CombatLog($"{attacker.ColoredName} {ColorHelper.GetParserString("hit", ColorHelper.ImportantAction)} {targetName} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Glance:
                     damage /= 4;
-                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", ColorHelper.ImportantAction)} for {damage:F0} damage.", attacker is Wizard);
+                    _logManager.CombatLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("glancing blow", ColorHelper.ImportantAction)} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
                 case HitResult.Miss:
-                    _logManager.EventLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", ColorHelper.ImportantAction)} {targetName}.", attacker is Wizard);
+                    _logManager.CombatLog($"{attacker.ColoredName} {ColorHelper.GetParserString("missed", ColorHelper.ImportantAction)} {targetName}.", attacker is Wizard);
                     break;
                 case HitResult.Crit:
                     damage *= 2;
-                    _logManager.EventLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", ColorHelper.ImportantAction)} for {damage:F0} damage.", attacker is Wizard);
+                    _logManager.CombatLog($"{attacker.ColoredName} hit {targetName} with a {ColorHelper.GetParserString("critical blow", ColorHelper.ImportantAction)} for {damage:F0} damage.", attacker is Wizard);
                     healthComponent.ApplyDamage(damage, _logManager);
                     break;
             }
