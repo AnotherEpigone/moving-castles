@@ -10,14 +10,18 @@ namespace MovingCastles.GameSystems.Player
             string name,
             float health,
             float maxHealth,
+            float endowment,
+            float maxEndowment,
             List<ItemTemplate> items,
             List<JournalEntry> journalEntries)
-            => (Name, Health, MaxHealth, Items, JournalEntries)
-                = (name, health, maxHealth, items, journalEntries);
+            => (Name, Health, MaxHealth, Endowment, MaxEndowment, Items, JournalEntries)
+                = (name, health, maxHealth, endowment, maxEndowment, items, journalEntries);
 
         public string Name { get; }
         public float Health { get; }
         public float MaxHealth { get; }
+        public float Endowment { get; }
+        public float MaxEndowment { get; }
         public List<ItemTemplate> Items { get; }
         public List<JournalEntry> JournalEntries { get; }
 
@@ -25,6 +29,8 @@ namespace MovingCastles.GameSystems.Player
             "Vede",
             100,
             100,
+            20,
+            20,
             new List<ItemTemplate>(),
             new List<JournalEntry>());
     }

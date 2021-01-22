@@ -25,6 +25,7 @@ namespace MovingCastles.GameSystems.Spells
             name: "Conjure flame",
             description: "To manifest the power of the wellspring in flame is as natural as breath for the magi.",
             iconGlyph: 0,
+            endowmentCost: 4,
             targettingStyle: new TargettingStyle(true, TargetMode.SingleTarget, 3),
             effects: new List<ISpellEffect>
                 {
@@ -35,6 +36,7 @@ namespace MovingCastles.GameSystems.Spells
             name: "Ray of Frost",
             description: "TODO",
             iconGlyph: 0,
+            endowmentCost: 18,
             targettingStyle: new TargettingStyle(true, TargetMode.Projectile, 8),
             effects: new List<ISpellEffect>
                 {
@@ -45,6 +47,7 @@ namespace MovingCastles.GameSystems.Spells
             name: "Ethereal step",
             description: "A most practical application of basic realmatic attunement. The magus steps briefly into the ethereal realm, utilizes a split second of mental movement, and re-enters the material plane at a nearby place.",
             iconGlyph: 0,
+            endowmentCost: 8,
             targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
             effects: new List<ISpellEffect>
                 {

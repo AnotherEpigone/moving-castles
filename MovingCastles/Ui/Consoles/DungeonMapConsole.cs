@@ -4,6 +4,7 @@ using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
+using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.TurnBased;
@@ -239,7 +240,8 @@ namespace MovingCastles.Ui.Consoles
                 EndTargettingMode();
                 _menuProvider.SpellSelect.Show(
                     Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => StartTargetting(selectedSpell));
+                    selectedSpell => StartTargetting(selectedSpell),
+                    Player.GetGoRogueComponent<IEndowmentPoolComponent>().Value);
 
                 return true;
             }

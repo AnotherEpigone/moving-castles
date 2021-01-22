@@ -11,12 +11,15 @@ namespace MovingCastles.Ui.Windows
     public class SpellSelectionWindow : McControlWindow
     {
         private const int SpellButtonWidth = 40;
+
         private readonly Button _castButton;
         private readonly Button _cancelButton;
         private readonly Console _descriptionArea;
         private readonly Dictionary<char, SpellTemplate> _hotkeys;
+
         private SpellTemplate _selectedSpell;
         private System.Action<SpellTemplate> _onCast;
+        private float _availableEndowment;
 
         public SpellSelectionWindow()
             : base(120, 30)
@@ -64,7 +67,8 @@ namespace MovingCastles.Ui.Windows
         {
             foreach (var key in info.KeysPressed)
             {
-                if (_hotkeys.TryGetValue(key.Character, out var spell))
+                if (_hotkeys.TryGetValue(key.Character, out var spell)
+                    && _availableEndowment >= spell.EndowmentCost)
                 {
                     _onCast(spell);
                     Hide();
@@ -75,8 +79,12 @@ namespace MovingCastles.Ui.Windows
             return base.ProcessKeyboard(info);
         }
 
-        public void Show(IEnumerable<SpellTemplate> spells, System.Action<SpellTemplate> onCast)
+        public void Show(
+            IEnumerable<SpellTemplate> spells,
+            System.Action<SpellTemplate> onCast,
+            float availableEndowment)
         {
+            _availableEndowment = availableEndowment;
             _onCast = onCast;
             _selectedSpell = null;
 
@@ -95,24 +103,25 @@ namespace MovingCastles.Ui.Windows
             var controlDictionary = spells
                 .OrderBy(s => s.Name)
                 .ToDictionary(
-                    i =>
+                    s =>
                     {
                         var hotkeyLetter = (char)('a' + yCount);
-                        _hotkeys.Add(hotkeyLetter, i);
+                        _hotkeys.Add(hotkeyLetter, s);
 
                         var spellButton = new McSelectionButton(SpellButtonWidth - 1, 1)
                         {
-                            Text = TextHelper.TruncateString($"{hotkeyLetter}. {i.Name}", SpellButtonWidth - 5),
+                            Text = TextHelper.TruncateString($"{hotkeyLetter}. {s.Name}", SpellButtonWidth - 5),
                             Position = new Point(0, yCount++),
+                            IsEnabled = _availableEndowment >= s.EndowmentCost,
                         };
                         spellButton.Click += (_, __) =>
                         {
-                            _onCast(i);
+                            _onCast(s);
                             Hide();
                         };
                         return spellButton;
                     },
-                    i => (System.Action)(() => OnSpellSelected(i)));
+                    s => (System.Action)(() => OnSpellSelected(s)));
 
             var buttons = controlDictionary.Keys.ToArray();
             for (int i = 1; i < buttons.Length; i++)

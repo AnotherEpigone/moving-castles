@@ -44,6 +44,8 @@ namespace MovingCastles.Ui
             Children.Add(_messageConsole);
             _textBackground = textBackground;
             _hideAfter = hideAfter;
+
+            UseMouse = false;
         }
 
         public new int Height { get; }

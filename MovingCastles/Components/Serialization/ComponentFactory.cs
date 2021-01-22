@@ -33,6 +33,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(InventoryComponent), s => new InventoryComponent(new SerializedObject() { Value = s }) },
                 { nameof(StoryMessageBoxComponent), s => new StoryMessageBoxComponent(new SerializedObject() { Value = s }) },
                 { nameof(ChangeLevelComponent), s => new ChangeLevelComponent(new SerializedObject() { Value = s }) },
+                { nameof(EndowmentPoolComponent), s => new EndowmentPoolComponent(new SerializedObject() { Value = s }) },
             };
         }
 

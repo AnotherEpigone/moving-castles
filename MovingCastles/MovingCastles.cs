@@ -76,7 +76,7 @@ namespace MovingCastles
             colors.ControlBack = ColorHelper.ControlBack;
             colors.ControlBackLight = ColorHelper.SelectedBackground;
             colors.ControlBackSelected = ColorHelper.SelectedBackground;
-            colors.ControlBackDark = ColorHelper.ControlBackDark;
+            colors.ControlBackDark = ColorHelper.ControlBack;
             colors.ControlHostBack = ColorHelper.ControlBack;
             colors.ControlHostFore = colors.Text;
 

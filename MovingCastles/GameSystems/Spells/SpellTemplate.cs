@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Spells
 {
-    public class SpellTemplate
+    public record SpellTemplate
     {
         public SpellTemplate(
             string id,
             string name,
             string description,
             int iconGlyph,
+            int endowmentCost,
             ITargettingStyle targettingStyle,
             List<ISpellEffect> effects)
         {
@@ -17,20 +18,17 @@ namespace MovingCastles.GameSystems.Spells
             Name = name;
             Description = description;
             IconGlyph = iconGlyph;
+            EndowmentCost = endowmentCost;
             TargettingStyle = targettingStyle;
             Effects = effects;
         }
 
         public string Id { get; }
-
         public string Name { get; }
-
         public string Description { get; }
-
         public int IconGlyph { get; }
-
+        public int EndowmentCost { get; }
         public ITargettingStyle TargettingStyle { get; }
-
         public List<ISpellEffect> Effects { get; }
     }
 }

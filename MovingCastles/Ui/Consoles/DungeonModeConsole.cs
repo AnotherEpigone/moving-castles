@@ -21,6 +21,7 @@ namespace MovingCastles.Ui.Consoles
         private List<Console> _entitySummaryConsoles;
         private DungeonMapConsole _mapConsole;
         private ProgressBar _healthBar;
+        private ProgressBar _endowmentBar;
 
         public DungeonModeConsole(
             int width,
@@ -128,7 +129,8 @@ namespace MovingCastles.Ui.Consoles
             {
                 menuProvider.SpellSelect.Show(
                     _mapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => _mapConsole.StartTargetting(selectedSpell));
+                    selectedSpell => _mapConsole.StartTargetting(selectedSpell),
+                    _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>().Value);
             };
 
             const string journalMenuText = "Journal (J)";
@@ -181,12 +183,15 @@ namespace MovingCastles.Ui.Consoles
         private ControlsConsole CreateInfoPanel()
         {
             var infoPanel = new ControlsConsole(LeftPaneWidth, InfoPanelHeight);
-            var manaBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
+            _endowmentBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 4),
             };
-            manaBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedManaBlue, ColorHelper.ManaBlue);
-            manaBar.Progress = 1;
+            _endowmentBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedManaBlue, ColorHelper.ManaBlue);
+
+            var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+            endowmentComponent.ValueChanged += Player_EndowmentChanged;
+            _endowmentBar.Progress = endowmentComponent.Value / endowmentComponent.MaxValue;
 
             _healthBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
             {
@@ -198,7 +203,7 @@ namespace MovingCastles.Ui.Consoles
             healthComponent.HealthChanged += Player_HealthChanged;
             _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
-            infoPanel.Add(manaBar);
+            infoPanel.Add(_endowmentBar);
             infoPanel.Add(_healthBar);
 
             // test data
@@ -207,6 +212,12 @@ namespace MovingCastles.Ui.Consoles
             infoPanel.Add(new Label("Old Alward's Tower") { Position = new Point(1, 2), TextColor = Color.DarkGray });
 
             return infoPanel;
+        }
+
+        private void Player_EndowmentChanged(object sender, float e)
+        {
+            var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+            _endowmentBar.Progress = endowmentComponent.Value / endowmentComponent.MaxValue;
         }
 
         private void Player_HealthChanged(object sender, float e)

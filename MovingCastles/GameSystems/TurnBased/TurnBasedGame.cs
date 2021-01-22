@@ -178,6 +178,10 @@ namespace MovingCastles.GameSystems.TurnBased
         {
             var hitResult = HitMan.Get(_rng);
             _logManager.CombatLog($"{_player.ColoredName} cast {TargettingSpell.Name}.", true);
+
+            var endowmentComponent = _player.GetGoRogueComponent<IEndowmentPoolComponent>();
+            endowmentComponent.ApplyDrain(TargettingSpell.EndowmentCost);
+
             foreach (var effect in TargettingSpell.Effects)
             {
                 effect.Apply(_player, TargettingSpell, Map, hitResult, mapCoord, _logManager);

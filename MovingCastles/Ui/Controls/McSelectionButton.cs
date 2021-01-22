@@ -72,7 +72,7 @@ namespace MovingCastles.Ui.Controls
         /// <returns>Returns the previous selection button.</returns>
         public McSelectionButton SelectPrevious()
         {
-            if (PreviousSelection == null)
+            if (PreviousSelection == null || PreviousSelection == this)
             {
                 return null;
             }
@@ -92,7 +92,7 @@ namespace MovingCastles.Ui.Controls
         /// <returns>Returns the next selection button.</returns>
         public McSelectionButton SelectNext()
         {
-            if (NextSelection == null)
+            if (NextSelection == null || NextSelection == this)
             {
                 return null;
             }
