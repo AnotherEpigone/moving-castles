@@ -11,6 +11,7 @@ using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Input;
+using System;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
@@ -21,7 +22,8 @@ namespace MovingCastles.Ui.Consoles
         private readonly IMapModeMenuProvider _menuProvider;
         private readonly IAppSettings _appSettings;
         private readonly ITurnBasedGame _game;
-
+        private readonly int _mapRendererPadding;
+        private readonly SadConsole.Console _mapRendererContainer;
         private Point _lastSummaryConsolePosition;
         private MouseHighlightConsole _mouseHighlight;
         private InteractTargettingConsole _interactTargettingConsole;
@@ -75,11 +77,20 @@ namespace MovingCastles.Ui.Consoles
 
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, viewportWidth, viewportHeight), tilesetFont);
             MapRenderer.UseMouse = false;
-            MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
 
-            Children.Add(MapRenderer);
+            _mapRendererPadding = (Math.Max(viewportWidth, viewportHeight) / 2) + 1;
+            _mapRendererContainer = new SadConsole.Console(viewportWidth, viewportHeight, tilesetFont)
+            {
+                UseMouse = false,
+            };
+            SetMapRendererPosition(new Point(_mapRendererPadding, _mapRendererPadding));
+            _mapRendererContainer.Children.Add(MapRenderer);
+
+            CenterMapViewOnPlayer();
+
+            Children.Add(_mapRendererContainer);
             Children.Add(_mouseHighlight);
             Children.Add(_interactTargettingConsole);
         }
@@ -120,7 +131,7 @@ namespace MovingCastles.Ui.Consoles
 
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, MapRenderer.Width, MapRenderer.Height), MapRenderer.Font);
             MapRenderer.UseMouse = false;
-            MapRenderer.CenterViewPortOnPoint(Player.Position);
+            CenterMapViewOnPlayer();
 
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
 
@@ -433,9 +444,24 @@ namespace MovingCastles.Ui.Consoles
             }
         }
 
-        private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
+        private void CenterMapViewOnPlayer()
         {
             MapRenderer.CenterViewPortOnPoint(Player.Position);
+            var rendererError = MapRenderer.ViewPort.Location - Player.Position;
+            var target = new Point(_mapRendererContainer.Width / 2, _mapRendererContainer.Height / 2) + rendererError;
+            SetMapRendererPosition(target);
+        }
+
+        private void SetMapRendererPosition(Point pos)
+        {
+            MapRenderer.Position = pos;
+            _mouseHighlight.Position = pos;
+            _interactTargettingConsole.Position = pos;
+        }
+
+        private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)
+        {
+            CenterMapViewOnPlayer();
         }
 
         private void Player_RemovedFromMap(object sender, System.EventArgs e)
