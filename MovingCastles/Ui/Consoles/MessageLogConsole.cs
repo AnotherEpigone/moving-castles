@@ -20,7 +20,7 @@ namespace MovingCastles.Ui
         private CancellationTokenSource _hideTaskCancelTokenSource;
 
         public MessageLogConsole(int width, int height, Font font)
-            : this(width, height, font, ColorHelper.ControlBack, ColorHelper.SelectedBackground, System.TimeSpan.Zero)
+            : this(width, height, font, ColorHelper.ControlBack, ColorHelper.ControlBack, System.TimeSpan.Zero)
         {
         }
 
