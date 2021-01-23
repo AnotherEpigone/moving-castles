@@ -242,6 +242,8 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private void ProcessTurn()
         {
+            _player.GetGoRogueComponent<IEndowmentPoolComponent>()?.ApplyBaseRegen();
+
             Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
 
             State = State.Processing;
