@@ -29,8 +29,8 @@ namespace MovingCastles.Ui.Consoles
         private MouseHighlightConsole _mouseHighlight;
         private InteractTargettingConsole _interactTargettingConsole;
 
-        public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
-        public event System.EventHandler<string> FlavorMessageChanged;
+        public event EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
+        public event EventHandler<string> FlavorMessageChanged;
 
         public Point _lastMousePos;
         public Point _targettedConsolePos;
@@ -89,11 +89,12 @@ namespace MovingCastles.Ui.Consoles
             SetMapRendererPosition(new Point(_mapRendererPadding, _mapRendererPadding));
             _mapRendererContainer.Children.Add(MapRenderer);
 
+            MapRenderer.Children.Add(_mouseHighlight);
+            MapRenderer.Children.Add(_interactTargettingConsole);
+
             CenterMapViewOnPlayer();
 
             Children.Add(_mapRendererContainer);
-            Children.Add(_mouseHighlight);
-            Children.Add(_interactTargettingConsole);
         }
 
         public void SetMap(DungeonMap map)
@@ -132,14 +133,17 @@ namespace MovingCastles.Ui.Consoles
 
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, MapRenderer.Width, MapRenderer.Height), MapRenderer.Font);
             MapRenderer.UseMouse = false;
-            CenterMapViewOnPlayer();
-
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
 
-            Children.Clear();
-            Children.Add(MapRenderer);
-            Children.Add(_mouseHighlight);
-            Children.Add(_interactTargettingConsole);
+            SetMapRendererPosition(new Point(_mapRendererPadding, _mapRendererPadding));
+            _mapRendererContainer.Children.Add(MapRenderer);
+
+            MapRenderer.Children.Add(_mouseHighlight);
+            MapRenderer.Children.Add(_interactTargettingConsole);
+
+            CenterMapViewOnPlayer();
+
+            Children.Add(_mapRendererContainer);
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
@@ -218,10 +222,10 @@ namespace MovingCastles.Ui.Consoles
             return base.ProcessMouse(state);
         }
 
-        public override void Update(System.TimeSpan timeElapsed)
+        public override void Update(TimeSpan timeElapsed)
         {
             _interactTargettingConsole.IsVisible = _game.State == State.InteractTargetting;
-            _interactTargettingConsole.Draw(Player.Position, _game.TargetInteractables);
+            _interactTargettingConsole.Draw(Player.Position - MapRenderer.ViewPort.Location, _game.TargetInteractables);
 
             base.Update(timeElapsed);
         }
@@ -457,8 +461,6 @@ namespace MovingCastles.Ui.Consoles
         private void SetMapRendererPosition(Point pos)
         {
             MapRenderer.Position = pos;
-            _mouseHighlight.Position = pos;
-            _interactTargettingConsole.Position = pos;
         }
 
         private void Player_Moved(object sender, ItemMovedEventArgs<IGameObject> e)

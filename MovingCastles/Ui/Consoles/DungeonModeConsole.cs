@@ -68,8 +68,8 @@ namespace MovingCastles.Ui.Consoles
             };
             logManager.RegisterEventListener(LogType.Story, (s, h) => storyEventLog.Add(s, h));
 
-            Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
             Children.Add(_mapConsole);
+            Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
             Children.Add(combatEventLog);
             Children.Add(storyEventLog);
             Children.Add(_leftPane);
