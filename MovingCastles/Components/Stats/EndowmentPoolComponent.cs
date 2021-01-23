@@ -67,7 +67,7 @@ namespace MovingCastles.Components.Stats
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            Id = nameof(HealthComponent),
+            Id = nameof(EndowmentPoolComponent),
             State = JsonConvert.SerializeObject(new State()
             {
                 MaxValue = MaxValue,
