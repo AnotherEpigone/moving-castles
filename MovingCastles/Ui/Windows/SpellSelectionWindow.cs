@@ -87,6 +87,7 @@ namespace MovingCastles.Ui.Windows
             _availableEndowment = availableEndowment;
             _onCast = onCast;
             _selectedSpell = null;
+            _descriptionArea.Clear();
 
             _castButton.IsEnabled = false;
 

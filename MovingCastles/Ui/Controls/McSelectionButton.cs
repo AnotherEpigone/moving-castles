@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using SadConsole.Controls;
+using System.Collections.Generic;
 
 namespace MovingCastles.Ui.Controls
 {
@@ -99,7 +100,31 @@ namespace MovingCastles.Ui.Controls
 
             if (!NextSelection.IsEnabled)
             {
-                return NextSelection.SelectNext();
+                // scanning for the next button like this will stack overflow if it loops,
+                // so we maintain the stack here.
+                // Note, we don't include this button yet. Looping back to self is acceptable.
+                return NextSelection.SelectNextProtected(new HashSet<McSelectionButton>());
+            }
+
+            NextSelection.IsFocused = true;
+            return NextSelection;
+        }
+
+        private McSelectionButton SelectNextProtected(HashSet<McSelectionButton> stack)
+        {
+            if (stack.Contains(this)
+                || NextSelection == null
+                || NextSelection == this)
+            {
+                // Either no next set, or we're in a loop with no enabled buttons
+                return null;
+            }
+
+            stack.Add(this);
+
+            if (!NextSelection.IsEnabled)
+            {
+                return NextSelection.SelectNextProtected(stack);
             }
 
             NextSelection.IsFocused = true;
