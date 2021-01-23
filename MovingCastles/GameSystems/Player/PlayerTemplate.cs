@@ -6,6 +6,17 @@ namespace MovingCastles.GameSystems.Player
 {
     public record PlayerTemplate
     {
+        public PlayerTemplate()
+            : this(
+                "Vede",
+                100,
+                100,
+                20,
+                20,
+                new List<ItemTemplate>(),
+                new List<JournalEntry>())
+        { }
+
         public PlayerTemplate(
             string name,
             float health,
@@ -23,15 +34,6 @@ namespace MovingCastles.GameSystems.Player
         public float Endowment { get; }
         public float MaxEndowment { get; }
         public List<ItemTemplate> Items { get; }
-        public List<JournalEntry> JournalEntries { get; }
-
-        public static PlayerTemplate CreateDefault() => new PlayerTemplate(
-            "Vede",
-            100,
-            100,
-            20,
-            20,
-            new List<ItemTemplate>(),
-            new List<JournalEntry>());
+        public List<JournalEntry> JournalEntries { get; init; }
     }
 }

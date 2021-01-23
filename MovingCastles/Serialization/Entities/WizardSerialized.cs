@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Journal;
 using MovingCastles.GameSystems.Player;
 using Newtonsoft.Json;
 using SadConsole.SerializedTypes;
@@ -20,6 +21,8 @@ namespace MovingCastles.Serialization.Entities
     [DataContract]
     public class WizardSerialized : McEntitySerialized
     {
+        [DataMember] public JournalEntry[] JournalEntries;
+
         public static implicit operator WizardSerialized(Wizard entity)
         {
             var serializedObject = new WizardSerialized()
@@ -42,6 +45,7 @@ namespace MovingCastles.Serialization.Entities
                 Components = entity.GetGoRogueComponents<ISerializableComponent>()
                                 .Select(c => c.GetSerializable())
                                 .ToList(),
+                JournalEntries = entity.JournalEntries.SelectMany(e => e).ToArray(),
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -54,9 +58,14 @@ namespace MovingCastles.Serialization.Entities
 
         public static implicit operator Wizard(WizardSerialized serializedObject)
         {
+            var playerTemplate = new PlayerTemplate()
+            {
+                JournalEntries = serializedObject.JournalEntries.ToList(),
+            };
+
             var entity = new Wizard(
                 (Point)serializedObject.Position,
-                PlayerTemplate.CreateDefault(), // TODO
+                playerTemplate, // TODO
                 serializedObject.Font);
 
             entity.Animations.Clear();
