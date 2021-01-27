@@ -45,7 +45,7 @@ namespace MovingCastles.Ui
         public DungeonModeConsole CreateDungeonMapScreen(
             IGameManager gameManager,
             ITurnBasedGame turnBasedGame,
-            DungeonMap map,
+            IDungeonMaster dungeonMaster,
             Font tilesetFont)
         {
             return new DungeonModeConsole(
@@ -53,7 +53,7 @@ namespace MovingCastles.Ui
                 ViewPortHeight,
                 tilesetFont,
                 CreateMenuProvider(gameManager),
-                map,
+                dungeonMaster,
                 _logManager,
                 _appSettings,
                 turnBasedGame);

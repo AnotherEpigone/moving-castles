@@ -1,6 +1,7 @@
 ﻿using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Player;
+using MovingCastles.GameSystems.Time;
 
 namespace MovingCastles.GameSystems
 {
@@ -18,11 +19,13 @@ namespace MovingCastles.GameSystems
             };
 
             var factionMaster = new FactionMaster();
+            var timeMaster = new TimeMaster();
 
             return new DungeonMaster(
                 player,
                 levelMaster,
-                factionMaster);
+                factionMaster,
+                timeMaster);
         }
     }
 }

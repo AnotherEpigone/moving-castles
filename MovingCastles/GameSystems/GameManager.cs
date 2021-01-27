@@ -68,7 +68,7 @@ namespace MovingCastles.GameSystems
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
         }
 
         public void Save()
@@ -132,7 +132,7 @@ namespace MovingCastles.GameSystems
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, level.Map, tilesetFont);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
         }
 
         public void StartDungeonModeDemo()
@@ -148,7 +148,7 @@ namespace MovingCastles.GameSystems
             DungeonMaster = _dungeonMasterFactory.Create(player, null, null);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, dungeonModeDemoMap, tilesetFont);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
         }
 
         public void StartCastleModeDemo()
@@ -174,10 +174,11 @@ namespace MovingCastles.GameSystems
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
 
+            // TODO add map
             DungeonMaster = _dungeonMasterFactory.Create(player, null, null);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, mapGenTestAreaMap, tilesetFont);
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
         }
 
         private void DungeonMaster_LevelChanged(object sender, EventArgs args)

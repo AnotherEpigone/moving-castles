@@ -1,7 +1,7 @@
 ﻿using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Player;
-using System;
+using MovingCastles.GameSystems.Time;
 
 namespace MovingCastles.GameSystems
 {
@@ -11,6 +11,8 @@ namespace MovingCastles.GameSystems
 
         ILevelMaster LevelMaster { get; }
 
-        public IFactionMaster FactionMaster { get; }
+        IFactionMaster FactionMaster { get; }
+
+        ITimeMaster TimeMaster { get; }
     }
 }

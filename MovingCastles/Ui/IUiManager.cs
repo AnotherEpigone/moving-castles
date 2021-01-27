@@ -16,7 +16,7 @@ namespace MovingCastles.Ui
         DungeonModeConsole CreateDungeonMapScreen(
             IGameManager gameManager,
             ITurnBasedGame turnBasedGame,
-            DungeonMap map,
+            IDungeonMaster dungeonMaster,
             Font tilesetFont);
 
         CastleModeConsole CreateCastleMapScreen(
