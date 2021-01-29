@@ -4,6 +4,6 @@ namespace MovingCastles.Components.Stats
 {
     public interface IActorStatComponent : IGameObjectComponent
     {
-        int WalkSpeed { get; }
+        float WalkSpeed { get; }
     }
 }

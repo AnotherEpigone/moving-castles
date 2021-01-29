@@ -15,12 +15,12 @@ namespace MovingCastles.Components.Stats
         }
 
         public ActorStatComponent(
-            int walkSpeed)
+            float walkSpeed)
         {
             WalkSpeed = walkSpeed;
         }
 
-        public int WalkSpeed { get; }
+        public float WalkSpeed { get; }
 
         public IGameObject Parent { get; set; }
 
@@ -36,7 +36,7 @@ namespace MovingCastles.Components.Stats
         [DataContract]
         private class State
         {
-            [DataMember] public int WalkSpeed;
+            [DataMember] public float WalkSpeed;
         }
     }
 }

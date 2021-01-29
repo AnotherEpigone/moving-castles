@@ -34,7 +34,7 @@ namespace MovingCastles.Entities
             createComponents: () => new List<object>
             {
                 new HealthComponent(10),
-                new ActorStatComponent(1),
+                new ActorStatComponent(1.2f),
                 new MeleeAttackerComponent(5),
                 new LinearCompositeAiComponent(
                     new WalkAtPlayerAiComponent(6),
@@ -50,7 +50,7 @@ namespace MovingCastles.Entities
             createComponents: () => new List<object>
             {
                 new HealthComponent(10),
-                new ActorStatComponent(1),
+                new ActorStatComponent(1f),
                 new RangedAttackerComponent(5, 4),
                 new LinearCompositeAiComponent(
                     new RangedAttackAiComponent(),
@@ -67,7 +67,7 @@ namespace MovingCastles.Entities
             createComponents: () => new List<object>
             {
                 new HealthComponent(10),
-                new ActorStatComponent(2),
+                new ActorStatComponent(2f),
                 new MeleeAttackerComponent(5),
                 new LinearCompositeAiComponent(
                     new WalkAtPlayerAiComponent(6),

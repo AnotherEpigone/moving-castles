@@ -2,6 +2,7 @@
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.Time;
 using MovingCastles.Maps;
 using Troschuetz.Random;
 
@@ -11,15 +12,17 @@ namespace MovingCastles.Components.AiComponents
     {
         public IGameObject Parent { get; set; }
 
-        public bool Run(DungeonMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent)
             {
-                return false;
+                return (false, -1);
             }
 
             var rangedAttackComponent = mcParent.GetGoRogueComponent<IRangedAttackerComponent>();
-            return rangedAttackComponent.TryAttack(map, rng, logManager);
+            return rangedAttackComponent.TryAttack(map, rng, logManager)
+                ? (true, TimeHelper.Attack)
+                : (false, -1);
         }
 
         public ComponentSerializable GetSerializable()

@@ -18,12 +18,11 @@ namespace MovingCastles.Ui.Consoles
         private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
 
-        private readonly Console _topLeftInfoPane;
-        private List<Console> _entitySummaryConsoles;
         private DungeonMapConsole _mapConsole;
         private ProgressBar _healthBar;
         private ProgressBar _endowmentBar;
         private Console _statOverlay;
+        private Console _infoPanel;
         private readonly IDungeonMaster _dungeonMaster;
 
         public DungeonModeConsole(
@@ -52,9 +51,8 @@ namespace MovingCastles.Ui.Consoles
             {
                 Position = new Point(LeftPaneWidth, TopPaneHeight)
             };
-            _mapConsole.SummaryConsolesChanged += (_, args) => HandleNewSummaryConsoles(args.Consoles);
 
-            _topLeftInfoPane = CreateInfoPanel();
+            CreateInfoPanel();
 
             var combatEventLog = new MessageLogConsole(
                 LeftPaneWidth,
@@ -77,7 +75,7 @@ namespace MovingCastles.Ui.Consoles
             Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
             Children.Add(combatEventLog);
             Children.Add(storyEventLog);
-            Children.Add(_topLeftInfoPane);
+            Children.Add(_infoPanel);
         }
 
         public void SetMap(DungeonMap map)
@@ -188,17 +186,13 @@ namespace MovingCastles.Ui.Consoles
         private Console CreateInfoPanel()
         {
             // base info panel
-            var infoPanel = new Console(LeftPaneWidth, InfoPanelHeight)
+            _infoPanel = new Console(LeftPaneWidth, InfoPanelHeight)
             {
                 DefaultBackground = ColorHelper.ControlBack,
             };
 
-            var defaultCell = new Cell(infoPanel.DefaultForeground, infoPanel.DefaultBackground);
-            infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n", defaultCell));
-            infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Material Plane, Ayen", Color.DarkGray)}\r\n", defaultCell));
-            infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Old Alward's Tower", Color.DarkGray)}\r\n\n", defaultCell));
-            var timeString = $"Time: {_dungeonMaster.TimeMaster.JourneyTime.Seconds}";
-            infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString(timeString, Color.DarkGray)}\r\n", defaultCell));
+            PrintInfoPanel();
+            _dungeonMaster.TimeMaster.TimeUpdated += (_, __) => PrintInfoPanel();
 
             // stat bar panel setup
             var controlPanel = new ControlsConsole(LeftPaneWidth, 2)
@@ -237,10 +231,22 @@ namespace MovingCastles.Ui.Consoles
 
             PrintStatOverlays(healthComponent, endowmentComponent);
 
-            infoPanel.Children.Add(controlPanel);
-            infoPanel.Children.Add(_statOverlay);
+            _infoPanel.Children.Add(controlPanel);
+            _infoPanel.Children.Add(_statOverlay);
 
-            return infoPanel;
+            return _infoPanel;
+        }
+
+        private void PrintInfoPanel()
+        {
+            var defaultCell = new Cell(_infoPanel.DefaultForeground, _infoPanel.DefaultBackground);
+            _infoPanel.Clear();
+            _infoPanel.Cursor.Position = new Point(0, 0);
+            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n", defaultCell));
+            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Material Plane, Ayen", Color.DarkGray)}\r\n", defaultCell));
+            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Old Alward's Tower", Color.DarkGray)}\r\n\n", defaultCell));
+            var timeString = $"Time: {_dungeonMaster.TimeMaster.JourneyTime.Seconds}";
+            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString(timeString, Color.DarkGray)}\r\n", defaultCell));
         }
 
         private void PrintStatOverlays(IHealthComponent healthComponent, IEndowmentPoolComponent endowmentComponent)
@@ -273,21 +279,6 @@ namespace MovingCastles.Ui.Consoles
             _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
             PrintStatOverlays(healthComponent, endowmentComponent);
-        }
-
-        private void HandleNewSummaryConsoles(List<Console> consoles)
-        {
-            _entitySummaryConsoles?.ForEach(c => _topLeftInfoPane.Children.Remove(c));
-
-            _entitySummaryConsoles = consoles;
-
-            var yOffset = 8;
-            _entitySummaryConsoles.ForEach(c =>
-            {
-                c.Position = new Point(20, yOffset);
-                yOffset += c.Height;
-                _topLeftInfoPane.Children.Add(c);
-            });
         }
     }
 }

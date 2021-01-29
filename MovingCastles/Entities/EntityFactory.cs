@@ -116,6 +116,7 @@ namespace MovingCastles.Entities
             wizard.AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health, 0));
             wizard.AddGoRogueComponent(new EndowmentPoolComponent(playerInfo.MaxEndowment, playerInfo.Endowment, 0.5f));
             wizard.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
+            wizard.AddGoRogueComponent(new ActorStatComponent(1f));
 
             return wizard;
         }

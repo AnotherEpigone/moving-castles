@@ -4,6 +4,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.Time;
 using MovingCastles.Maps;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
@@ -30,41 +31,34 @@ namespace MovingCastles.Components.AiComponents
 
         public IGameObject Parent { get; set; }
 
-        public bool Run(DungeonMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent)
             {
-                return false;
+                return (false, -1);
             }
 
             var walkSpeed = mcParent.GetGoRogueComponent<IActorStatComponent>()?.WalkSpeed ?? 1;
-
-            // if we bump into something, stop moving.
-            // walk speed doesn't allow you to attack or interact more than once.
             var bumped = false;
             System.EventHandler<ItemMovedEventArgs<McEntity>> bumpHandler = (_, __) => bumped = true;
             mcParent.Bumped += bumpHandler;
             try
             {
-                for (int i = 0; i < walkSpeed; i++)
+                if (TryGetDirectionAndMove(map, mcParent))
                 {
-                    if (!TryGetDirectionAndMove(map, mcParent))
-                    {
-                        return false;
-                    }
-
-                    if (bumped)
-                    {
-                        break;
-                    }
+                    return bumped
+                        ? (true, TimeHelper.Attack)
+                        : (true, TimeHelper.GetWalkTime(mcParent));
+                }
+                else
+                {
+                    return (true, TimeHelper.Wait);
                 }
             }
             finally
             {
                 mcParent.Bumped -= bumpHandler;
             }
-
-            return true;
         }
 
         public bool TryGetDirectionAndMove(DungeonMap map, McEntity mcParent)

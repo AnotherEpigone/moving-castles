@@ -46,17 +46,18 @@ namespace MovingCastles.Components.AiComponents
             }
         }
 
-        public bool Run(DungeonMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(DungeonMap map, IGenerator rng, ILogManager logManager)
         {
             foreach (var component in _components)
             {
-                if (component.Run(map, rng, logManager))
+                var (success, time) = component.Run(map, rng, logManager);
+                if (success)
                 {
-                    return true;
+                    return (success, time);
                 }
             }
 
-            return false;
+            return (false, -1);
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()

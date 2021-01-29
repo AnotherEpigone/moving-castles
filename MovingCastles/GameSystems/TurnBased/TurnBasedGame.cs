@@ -1,6 +1,5 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Components.AiComponents;
@@ -10,6 +9,7 @@ using MovingCastles.Entities;
 using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Spells;
+using MovingCastles.GameSystems.Time;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
 using System.Collections.Generic;
@@ -82,7 +82,7 @@ namespace MovingCastles.GameSystems.TurnBased
             {
                 _player.GetGoRogueComponent<IHealthComponent>()?.ApplyBaseRegen();
 
-                ProcessTurn();
+                ProcessTurn(TimeHelper.Wait);
                 return true;
             }
 
@@ -99,7 +99,7 @@ namespace MovingCastles.GameSystems.TurnBased
                 {
                     _player.Move(MovementDirectionMapping[key]);
 
-                    ProcessTurn();
+                    ProcessTurn(TimeHelper.GetWalkTime(_player));
                     return true;
                 }
             }
@@ -158,11 +158,36 @@ namespace MovingCastles.GameSystems.TurnBased
         public void RegisterPlayer(Wizard player)
         {
             _player = player;
-            RegisterEntity(player);
+
+            // Note, the player doesn't get a turn node enqueued yet, because the
+            // game always starts in the playerturn state!
+            _player.Moved += Entity_Moved;
+            _player.Bumped += Entity_Bumped;
+            _player.RemovedFromMap += (_, __) => UnregisterEntity(_player);
         }
 
         public void RegisterEntity(McEntity entity)
         {
+            var time = _dungeonMaster.TimeMaster.JourneyTime.Ticks + 10;
+            System.Func<long, long> entityTurnAction = time =>
+            {
+                if (!entity.HasMap)
+                {
+                    return -1;
+                }
+
+                var ai = entity.GetGoRogueComponent<IAiComponent>();
+                var (success, ticks) = ai?.Run(Map, _rng, _logManager) ?? (false, -1);
+                if (!success || ticks < 1)
+                {
+                    return -1;
+                }
+
+                return time + ticks;
+            };
+            var entityTurnNode = new TimeMasterNode(entityTurnAction, time);
+            _dungeonMaster.TimeMaster.Enqueue(entityTurnNode);
+
             entity.Moved += Entity_Moved;
             entity.Bumped += Entity_Bumped;
             entity.RemovedFromMap += (_, __) => UnregisterEntity(entity);
@@ -188,7 +213,7 @@ namespace MovingCastles.GameSystems.TurnBased
             }
 
             TargettingSpell = null;
-            ProcessTurn();
+            ProcessTurn(TimeHelper.Attack); // TODO spell casting time
         }
 
         public void StartSpellTargetting(SpellTemplate spell)
@@ -214,7 +239,7 @@ namespace MovingCastles.GameSystems.TurnBased
             components.First().Interact(_player, _logManager, _dungeonMaster);
 
             TargetInteractables.Clear();
-            ProcessTurn();
+            ProcessTurn(TimeHelper.Interact);
         }
 
         private void StartInteractTargetting()
@@ -240,27 +265,33 @@ namespace MovingCastles.GameSystems.TurnBased
             State = State.InteractTargetting;
         }
 
-        private void ProcessTurn()
+        private void ProcessTurn(int playerTurnTicks)
         {
+            var newTime = _dungeonMaster.TimeMaster.JourneyTime.Ticks + playerTurnTicks;
+            var playerTurnNode = new WizardTimeMasterNode(newTime);
+            _dungeonMaster.TimeMaster.Enqueue(playerTurnNode);
+
             _player.GetGoRogueComponent<IEndowmentPoolComponent>()?.ApplyBaseRegen();
 
             Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
 
             State = State.Processing;
-            foreach (var entity in Map.Entities.Items.OfType<McEntity>().ToList())
+            var node = _dungeonMaster.TimeMaster.Next();
+            while (node is not WizardTimeMasterNode)
             {
                 if (!_player.HasMap)
                 {
                     break;
                 }
 
-                if (entity.CurrentMap != Map)
+                var (action, nextTime) = node.Run();
+                if (nextTime > 0)
                 {
-                    continue;
+                    var nextTurnNode = new TimeMasterNode(action, nextTime);
+                    _dungeonMaster.TimeMaster.Enqueue(nextTurnNode);
                 }
 
-                var ai = entity.GetGoRogueComponent<IAiComponent>();
-                ai?.Run(Map, _rng, _logManager);
+                node = _dungeonMaster.TimeMaster.Next();
             }
             State = State.PlayerTurn;
         }
