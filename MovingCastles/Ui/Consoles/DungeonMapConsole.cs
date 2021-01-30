@@ -131,6 +131,7 @@ namespace MovingCastles.Ui.Consoles
                 _game.RegisterEntity(entity);
             }
 
+            _mapRendererContainer.Children.Remove(MapRenderer);
             MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, MapRenderer.Width, MapRenderer.Height), MapRenderer.Font);
             MapRenderer.UseMouse = false;
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
