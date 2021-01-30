@@ -1,5 +1,7 @@
 ﻿using Priority_Queue;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MovingCastles.GameSystems.Time
 {
@@ -29,5 +31,7 @@ namespace MovingCastles.GameSystems.Time
 
             return node;
         }
+
+        public IEnumerable<ITimeMasterNode> Nodes => _queue;
     }
 }

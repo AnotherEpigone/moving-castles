@@ -48,6 +48,7 @@ namespace MovingCastles.GameSystems.TurnBased
         private readonly ILogManager _logManager;
         private readonly IDungeonMaster _dungeonMaster;
         private readonly IGenerator _rng;
+        private readonly Dictionary<uint, McEntity> _registeredEntities;
 
         private Wizard _player;
 
@@ -62,6 +63,8 @@ namespace MovingCastles.GameSystems.TurnBased
             TargetableTiles = new List<Coord>();
 
             _rng = new StandardGenerator();
+
+            _registeredEntities = new Dictionary<uint, McEntity>();
         }
 
         public DungeonMap Map { get; set; }
@@ -168,26 +171,16 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void RegisterEntity(McEntity entity)
         {
-            var time = _dungeonMaster.TimeMaster.JourneyTime.Ticks + 10;
-            System.Func<long, long> entityTurnAction = time =>
+            if (!_dungeonMaster.TimeMaster.Nodes.Any(node =>
+                    node is EntityTurnTimeMasterNode entityNode
+                    && entityNode.EntityId == entity.ID))
             {
-                if (!entity.HasMap)
-                {
-                    return -1;
-                }
+                var time = _dungeonMaster.TimeMaster.JourneyTime.Ticks + 10;
+                var entityTurnNode = new EntityTurnTimeMasterNode(time, entity.ID);
+                _dungeonMaster.TimeMaster.Enqueue(entityTurnNode);
+            }
 
-                var ai = entity.GetGoRogueComponent<IAiComponent>();
-                var (success, ticks) = ai?.Run(Map, _rng, _logManager) ?? (false, -1);
-                if (!success || ticks < 1)
-                {
-                    return -1;
-                }
-
-                return time + ticks;
-            };
-            var entityTurnNode = new TimeMasterNode(entityTurnAction, time);
-            _dungeonMaster.TimeMaster.Enqueue(entityTurnNode);
-
+            _registeredEntities.Add(entity.ID, entity);
             entity.Moved += Entity_Moved;
             entity.Bumped += Entity_Bumped;
             entity.RemovedFromMap += (_, __) => UnregisterEntity(entity);
@@ -195,6 +188,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void UnregisterEntity(McEntity entity)
         {
+            _registeredEntities.Remove(entity.ID);
             entity.Moved -= Entity_Moved;
             entity.Bumped -= Entity_Bumped;
         }
@@ -242,6 +236,25 @@ namespace MovingCastles.GameSystems.TurnBased
             ProcessTurn(TimeHelper.Interact);
         }
 
+        private void ProcessAiTurn(uint id, long time)
+        {
+            if (!_registeredEntities.TryGetValue(id, out var entity)
+                || !entity.HasMap)
+            {
+                return;
+            }
+
+            var ai = entity.GetGoRogueComponent<IAiComponent>();
+            var (success, ticks) = ai?.Run(Map, _rng, _logManager) ?? (false, -1);
+            if (!success || ticks < 1)
+            {
+                return;
+            }
+
+            var nextTurnNode = new EntityTurnTimeMasterNode(time + ticks, entity.ID);
+            _dungeonMaster.TimeMaster.Enqueue(nextTurnNode);
+        }
+
         private void StartInteractTargetting()
         {
             TargetInteractables.Clear();
@@ -267,8 +280,8 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private void ProcessTurn(int playerTurnTicks)
         {
-            var newTime = _dungeonMaster.TimeMaster.JourneyTime.Ticks + playerTurnTicks;
-            var playerTurnNode = new WizardTimeMasterNode(newTime);
+            var playerTurnNode = new WizardTurnTimeMasterNode(
+                _dungeonMaster.TimeMaster.JourneyTime.Ticks + playerTurnTicks);
             _dungeonMaster.TimeMaster.Enqueue(playerTurnNode);
 
             _player.GetGoRogueComponent<IEndowmentPoolComponent>()?.ApplyBaseRegen();
@@ -277,18 +290,22 @@ namespace MovingCastles.GameSystems.TurnBased
 
             State = State.Processing;
             var node = _dungeonMaster.TimeMaster.Next();
-            while (node is not WizardTimeMasterNode)
+            while (node is not WizardTurnTimeMasterNode)
             {
                 if (!_player.HasMap)
                 {
                     break;
                 }
 
-                var (action, nextTime) = node.Run();
-                if (nextTime > 0)
+                switch (node)
                 {
-                    var nextTurnNode = new TimeMasterNode(action, nextTime);
-                    _dungeonMaster.TimeMaster.Enqueue(nextTurnNode);
+                    case EntityTurnTimeMasterNode entityTurnNode:
+                        ProcessAiTurn(
+                            entityTurnNode.EntityId,
+                            _dungeonMaster.TimeMaster.JourneyTime.Ticks);
+                        break;
+                    default:
+                        throw new System.NotSupportedException($"Unhandled time master node type: {node.GetType()}");
                 }
 
                 node = _dungeonMaster.TimeMaster.Next();
