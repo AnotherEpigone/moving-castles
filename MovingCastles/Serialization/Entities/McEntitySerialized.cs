@@ -3,6 +3,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using Newtonsoft.Json;
 using SadConsole.SerializedTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -28,6 +29,7 @@ namespace MovingCastles.Serialization.Entities
         [DataMember] public bool IsStatic;
         [DataMember] public List<ComponentSerializable> Components;
         [DataMember] public string FactionName;
+        [DataMember] public Guid Id;
 
         public static implicit operator McEntitySerialized(McEntity entity)
         {
@@ -53,6 +55,7 @@ namespace MovingCastles.Serialization.Entities
                                 .ToList(),
                 TemplateId = entity.TemplateId,
                 FactionName = entity.FactionName,
+                Id = entity.UniqueId,
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -76,9 +79,15 @@ namespace MovingCastles.Serialization.Entities
                 serializedObject.IsWalkable,
                 serializedObject.IsTransparent,
                 serializedObject.NameColor,
-                serializedObject.FactionName);
-
-            entity.Font = serializedObject.Font;
+                serializedObject.FactionName,
+                serializedObject.Id)
+            {
+                Font = serializedObject.Font,
+                IsVisible = serializedObject.IsVisible,
+                PositionOffset = serializedObject.PositionOffset,
+                UsePixelPositioning = serializedObject.UsePixelPositioning,
+                Name = serializedObject.Name,
+            };
 
             entity.Animations.Clear();
             foreach (AnimatedConsoleSerialized item in serializedObject.Animations)
@@ -94,11 +103,6 @@ namespace MovingCastles.Serialization.Entities
             {
                 entity.Animation = serializedObject.Animations[0];
             }
-
-            entity.IsVisible = serializedObject.IsVisible;
-            entity.PositionOffset = serializedObject.PositionOffset;
-            entity.UsePixelPositioning = serializedObject.UsePixelPositioning;
-            entity.Name = serializedObject.Name;
 
             foreach (var componentSerialized in serializedObject.Components)
             {

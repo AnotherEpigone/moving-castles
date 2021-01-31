@@ -9,6 +9,7 @@ using MovingCastles.Serialization.Entities;
 using MovingCastles.Ui;
 using Newtonsoft.Json;
 using SadConsole;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,6 +21,10 @@ namespace MovingCastles.Entities
     public sealed class Wizard : McEntity
     {
         public Wizard(Coord position, PlayerTemplate playerInfo, Font font)
+            : this(position, playerInfo, font, Guid.NewGuid())
+        { }
+
+        public Wizard(Coord position, PlayerTemplate playerInfo, Font font, Guid id)
             : base("Player-Wizard",
                   playerInfo.Name,
                   Color.White,
@@ -30,7 +35,8 @@ namespace MovingCastles.Entities
                   isWalkable: false,
                   isTransparent: true,
                   ColorHelper.PlayerNameBlue,
-                  Faction.Player)
+                  Faction.Player,
+                  id)
         {
             FovRadius = 10;
 

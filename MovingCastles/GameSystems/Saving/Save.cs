@@ -1,6 +1,6 @@
 ﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Time;
 using MovingCastles.Serialization.Map;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace MovingCastles.GameSystems.Saving
@@ -10,5 +10,6 @@ namespace MovingCastles.GameSystems.Saving
     {
         [DataMember] public MapState MapState;
         [DataMember] public Wizard Wizard;
+        [DataMember] public TimeMaster TimeMaster;
     }
 }

@@ -10,7 +10,8 @@ namespace MovingCastles.GameSystems
         public IDungeonMaster Create(
             PlayerTemplate player,
             Level level,
-            Structure structure)
+            Structure structure,
+            ITimeMaster timeMaster)
         {
             var levelMaster = new LevelMaster()
             {
@@ -19,7 +20,6 @@ namespace MovingCastles.GameSystems
             };
 
             var factionMaster = new FactionMaster();
-            var timeMaster = new TimeMaster();
 
             return new DungeonMaster(
                 player,
@@ -27,5 +27,8 @@ namespace MovingCastles.GameSystems
                 factionMaster,
                 timeMaster);
         }
+
+        public IDungeonMaster Create(PlayerTemplate player, Level level, Structure structure)
+            => Create(player, level, structure, new TimeMaster());
     }
 }

@@ -25,7 +25,8 @@ namespace MovingCastles.Entities
                   isWalkable: false,
                   isTransparent: true,
                   ColorHelper.PlayerNameBlue,
-                  Faction.Player)
+                  Faction.Player,
+                  System.Guid.NewGuid())
         {
             FOVRadius = 3;
 

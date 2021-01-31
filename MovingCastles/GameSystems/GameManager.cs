@@ -4,6 +4,7 @@ using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
+using MovingCastles.GameSystems.Time;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Map;
@@ -80,9 +81,9 @@ namespace MovingCastles.GameSystems
 
             var entities = DungeonMaster.LevelMaster.Level.Map.Entities.Items.OfType<McEntity>().ToList();
             var wizard = entities.OfType<Wizard>().Single();
-            var doors = entities.OfType<Door>().ToList();
             entities.Remove(wizard);
-            foreach(var door in doors)
+            var doors = entities.OfType<Door>().ToList();
+            foreach (var door in doors)
             {
                 entities.Remove(door);
             }
@@ -103,6 +104,7 @@ namespace MovingCastles.GameSystems
             {
                 MapState = mapState,
                 Wizard = wizard,
+                TimeMaster = (TimeMaster)DungeonMaster.TimeMaster,
             };
             _saveManager.Write(save);
         }
@@ -117,8 +119,7 @@ namespace MovingCastles.GameSystems
             var (success, save) = _saveManager.Read();
             if (!success)
             {
-                // TODO better error handling here
-                return;
+                throw new System.IO.IOException("Failed to load save file.");
             }
 
             var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
@@ -129,7 +130,7 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
             var level = structure.GetLevel(save);
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, save.TimeMaster);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);

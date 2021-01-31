@@ -35,7 +35,8 @@ namespace MovingCastles.Entities
                 isWalkable: false,
                 isTransparent: true,
                 actorTemplate.NameColor,
-                actorTemplate.FactionName);
+                actorTemplate.FactionName,
+                System.Guid.NewGuid());
 
             actorTemplate.CreateComponents().ForEach(c => actor.AddGoRogueComponent(c));
             actor.AddGoRogueComponent(new SummaryControlComponent());
@@ -60,7 +61,8 @@ namespace MovingCastles.Entities
                     isWalkable: true,
                     isTransparent: true,
                     Color.DarkGray,
-                    Faction.None);
+                    Faction.None,
+                    System.Guid.NewGuid());
             item.AddGoRogueComponent(new SummaryControlComponent());
             item.AddGoRogueComponent(new PickupableComponent(itemTemplate));
 
@@ -84,7 +86,8 @@ namespace MovingCastles.Entities
                     isWalkable: template.Walkable,
                     isTransparent: template.Transparent,
                     template.NameColor,
-                    Faction.None);
+                    Faction.None,
+                    System.Guid.NewGuid());
             doodad.AddGoRogueComponent(new SummaryControlComponent());
 
             // workaround Entity construction bugs by setting font afterward

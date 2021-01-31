@@ -34,7 +34,8 @@ namespace MovingCastles.Entities
                   isWalkable: false,
                   isTransparent: false,
                   Color.SaddleBrown,
-                  Faction.None)
+                  Faction.None,
+                  System.Guid.NewGuid())
         {
             // door open/close animations
             var closedAnimation = new AnimatedConsole(ClosedAnimationKey, 1, 1, font);

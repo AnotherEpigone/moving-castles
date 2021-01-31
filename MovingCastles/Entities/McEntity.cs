@@ -4,6 +4,7 @@ using MovingCastles.Serialization.Entities;
 using MovingCastles.Ui;
 using Newtonsoft.Json;
 using SadConsole;
+using System;
 using System.Diagnostics;
 
 namespace MovingCastles.Entities
@@ -26,26 +27,29 @@ namespace MovingCastles.Entities
             bool isWalkable,
             bool isTransparent,
             Color nameColor,
-            string faction)
+            string faction,
+            Guid id)
             : base(foreground, background, glyph, position, layer, isWalkable, isTransparent)
         {
             TemplateId = templateId;
             Name = name;
             NameColor = nameColor;
             FactionName = faction;
+            UniqueId = id;
         }
 
-        public event System.EventHandler<ItemMovedEventArgs<McEntity>> Bumped;
+        public event EventHandler<ItemMovedEventArgs<McEntity>> Bumped;
+        public event EventHandler RemovedFromMap;
 
-        public event System.EventHandler RemovedFromMap;
+        public string FactionName { get; }
 
         public bool HasMap => CurrentMap != null;
+
+        public Guid UniqueId { get; }
 
         public Color NameColor { get; }
 
         public string TemplateId { get; }
-
-        public string FactionName { get; }
 
         public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 

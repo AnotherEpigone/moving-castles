@@ -5,7 +5,7 @@ namespace MovingCastles.GameSystems.Time
     [DataContract]
     public class EntityTurnTimeMasterNode : ITimeMasterNode
     {
-        public EntityTurnTimeMasterNode(long time, uint entityId)
+        public EntityTurnTimeMasterNode(long time, System.Guid entityId)
         {
             Time = time;
             EntityId = entityId;
@@ -15,6 +15,6 @@ namespace MovingCastles.GameSystems.Time
         public long Time { get; init; }
 
         [DataMember]
-        public uint EntityId { get; init; }
+        public System.Guid EntityId { get; init; }
     }
 }

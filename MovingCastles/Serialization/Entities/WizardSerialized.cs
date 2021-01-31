@@ -46,6 +46,7 @@ namespace MovingCastles.Serialization.Entities
                                 .Select(c => c.GetSerializable())
                                 .ToList(),
                 JournalEntries = entity.JournalEntries.SelectMany(e => e).ToArray(),
+                Id = entity.UniqueId,
             };
 
             if (!entity.Animations.ContainsKey(serializedObject.AnimationName))
@@ -66,7 +67,16 @@ namespace MovingCastles.Serialization.Entities
             var entity = new Wizard(
                 (Point)serializedObject.Position,
                 playerTemplate, // TODO
-                serializedObject.Font);
+                serializedObject.Font,
+                serializedObject.Id)
+            {
+                IsVisible = serializedObject.IsVisible,
+                PositionOffset = serializedObject.PositionOffset,
+                UsePixelPositioning = serializedObject.UsePixelPositioning,
+                Name = serializedObject.Name,
+                DefaultBackground = serializedObject.DefaultBackground,
+                DefaultForeground = serializedObject.DefaultForeground
+            };
 
             entity.Animations.Clear();
             foreach (AnimatedConsoleSerialized item in serializedObject.Animations)
@@ -82,13 +92,6 @@ namespace MovingCastles.Serialization.Entities
             {
                 entity.Animation = serializedObject.Animations[0];
             }
-
-            entity.IsVisible = serializedObject.IsVisible;
-            entity.PositionOffset = serializedObject.PositionOffset;
-            entity.UsePixelPositioning = serializedObject.UsePixelPositioning;
-            entity.Name = serializedObject.Name;
-            entity.DefaultBackground = serializedObject.DefaultBackground;
-            entity.DefaultForeground = serializedObject.DefaultForeground;
 
             foreach (var componentSerialized in serializedObject.Components)
             {

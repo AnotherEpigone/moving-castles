@@ -86,9 +86,11 @@ namespace MovingCastles.Maps
                     true,
                     true,
                     Color.White,
-                    Faction.None);
+                    Faction.None,
+                    System.Guid.NewGuid());
                 ghost.IsVisible = true;
 
+                // update the font outside initializer (render position bug workaround)
                 ghost.Font = entity.Font;
                 ghost.OnCalculateRenderPosition();
 

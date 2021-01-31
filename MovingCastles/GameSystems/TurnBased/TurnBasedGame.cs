@@ -48,7 +48,7 @@ namespace MovingCastles.GameSystems.TurnBased
         private readonly ILogManager _logManager;
         private readonly IDungeonMaster _dungeonMaster;
         private readonly IGenerator _rng;
-        private readonly Dictionary<uint, McEntity> _registeredEntities;
+        private readonly Dictionary<System.Guid, McEntity> _registeredEntities;
 
         private Wizard _player;
 
@@ -64,7 +64,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
             _rng = new StandardGenerator();
 
-            _registeredEntities = new Dictionary<uint, McEntity>();
+            _registeredEntities = new Dictionary<System.Guid, McEntity>();
         }
 
         public DungeonMap Map { get; set; }
@@ -171,16 +171,17 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void RegisterEntity(McEntity entity)
         {
-            if (!_dungeonMaster.TimeMaster.Nodes.Any(node =>
+            if (entity.HasGoRogueComponent<IAiComponent>()
+                && !_dungeonMaster.TimeMaster.Nodes.Any(node =>
                     node is EntityTurnTimeMasterNode entityNode
-                    && entityNode.EntityId == entity.ID))
+                    && entityNode.EntityId == entity.UniqueId))
             {
                 var time = _dungeonMaster.TimeMaster.JourneyTime.Ticks + 10;
-                var entityTurnNode = new EntityTurnTimeMasterNode(time, entity.ID);
+                var entityTurnNode = new EntityTurnTimeMasterNode(time, entity.UniqueId);
                 _dungeonMaster.TimeMaster.Enqueue(entityTurnNode);
             }
 
-            _registeredEntities.Add(entity.ID, entity);
+            _registeredEntities.Add(entity.UniqueId, entity);
             entity.Moved += Entity_Moved;
             entity.Bumped += Entity_Bumped;
             entity.RemovedFromMap += (_, __) => UnregisterEntity(entity);
@@ -188,7 +189,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void UnregisterEntity(McEntity entity)
         {
-            _registeredEntities.Remove(entity.ID);
+            _registeredEntities.Remove(entity.UniqueId);
             entity.Moved -= Entity_Moved;
             entity.Bumped -= Entity_Bumped;
         }
@@ -236,7 +237,7 @@ namespace MovingCastles.GameSystems.TurnBased
             ProcessTurn(TimeHelper.Interact);
         }
 
-        private void ProcessAiTurn(uint id, long time)
+        private void ProcessAiTurn(System.Guid id, long time)
         {
             if (!_registeredEntities.TryGetValue(id, out var entity)
                 || !entity.HasMap)
@@ -251,7 +252,7 @@ namespace MovingCastles.GameSystems.TurnBased
                 return;
             }
 
-            var nextTurnNode = new EntityTurnTimeMasterNode(time + ticks, entity.ID);
+            var nextTurnNode = new EntityTurnTimeMasterNode(time + ticks, entity.UniqueId);
             _dungeonMaster.TimeMaster.Enqueue(nextTurnNode);
         }
 
