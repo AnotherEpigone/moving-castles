@@ -12,7 +12,8 @@ namespace MovingCastles.GameSystems.Spells
             int iconGlyph,
             int endowmentCost,
             ITargettingStyle targettingStyle,
-            List<ISpellEffect> effects)
+            List<ISpellEffect> effects,
+            int baseCastTime)
         {
             Id = id;
             Name = name;
@@ -21,6 +22,7 @@ namespace MovingCastles.GameSystems.Spells
             EndowmentCost = endowmentCost;
             TargettingStyle = targettingStyle;
             Effects = effects;
+            BaseCastTime = baseCastTime;
         }
 
         public string Id { get; }
@@ -30,5 +32,6 @@ namespace MovingCastles.GameSystems.Spells
         public int EndowmentCost { get; }
         public ITargettingStyle TargettingStyle { get; }
         public List<ISpellEffect> Effects { get; }
+        public int BaseCastTime { get; }
     }
 }

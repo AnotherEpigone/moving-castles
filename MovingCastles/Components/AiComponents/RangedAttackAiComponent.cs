@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
@@ -21,7 +22,7 @@ namespace MovingCastles.Components.AiComponents
 
             var rangedAttackComponent = mcParent.GetGoRogueComponent<IRangedAttackerComponent>();
             return rangedAttackComponent.TryAttack(map, rng, logManager)
-                ? (true, TimeHelper.Attack)
+                ? (true, TimeHelper.GetAttackTime(mcParent))
                 : (false, -1);
         }
 

@@ -47,7 +47,7 @@ namespace MovingCastles.Components.AiComponents
                 if (TryGetDirectionAndMove(map, mcParent))
                 {
                     return bumped
-                        ? (true, TimeHelper.Attack)
+                        ? (true, TimeHelper.GetAttackTime(mcParent))
                         : (true, TimeHelper.GetWalkTime(mcParent));
                 }
                 else

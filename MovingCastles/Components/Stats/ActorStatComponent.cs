@@ -12,15 +12,23 @@ namespace MovingCastles.Components.Stats
         {
             var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             WalkSpeed = stateObj.WalkSpeed;
+            AttackSpeed = stateObj.AttackSpeed;
+            CastSpeed = stateObj.CastSpeed;
         }
 
         public ActorStatComponent(
-            float walkSpeed)
+            float walkSpeed,
+            float attackSpeed,
+            float castSpeed)
         {
             WalkSpeed = walkSpeed;
+            AttackSpeed = attackSpeed;
+            CastSpeed = castSpeed;
         }
 
         public float WalkSpeed { get; }
+        public float AttackSpeed { get; }
+        public float CastSpeed { get; }
 
         public IGameObject Parent { get; set; }
 
@@ -30,6 +38,8 @@ namespace MovingCastles.Components.Stats
             State = JsonConvert.SerializeObject(new State()
             {
                 WalkSpeed = WalkSpeed,
+                AttackSpeed = AttackSpeed,
+                CastSpeed = CastSpeed,
             }),
         };
 
@@ -37,6 +47,8 @@ namespace MovingCastles.Components.Stats
         private class State
         {
             [DataMember] public float WalkSpeed;
+            [DataMember] public float AttackSpeed;
+            [DataMember] public float CastSpeed;
         }
     }
 }

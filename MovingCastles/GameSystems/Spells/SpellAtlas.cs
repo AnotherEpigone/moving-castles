@@ -30,7 +30,8 @@ namespace MovingCastles.GameSystems.Spells
             effects: new List<ISpellEffect>
                 {
                     new DamageTargetSpellEffect(10),
-                });
+                },
+            baseCastTime: 200);
         public static SpellTemplate RayOfFrost => new SpellTemplate(
             id: "SPELL_RAY_OF_FROST",
             name: "Ray of Frost",
@@ -41,7 +42,8 @@ namespace MovingCastles.GameSystems.Spells
             effects: new List<ISpellEffect>
                 {
                     new DamageTargetSpellEffect(10),
-                });
+                },
+            baseCastTime: 500);
         public static SpellTemplate EtherealStep => new SpellTemplate(
             id: "SPELL_ETHEREAL_STEP",
             name: "Ethereal step",
@@ -52,6 +54,7 @@ namespace MovingCastles.GameSystems.Spells
             effects: new List<ISpellEffect>
                 {
                     new TeleportToTargetSpellEffect(),
-                });
+                },
+            baseCastTime: 100);
     }
 }

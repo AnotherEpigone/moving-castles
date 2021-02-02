@@ -207,8 +207,10 @@ namespace MovingCastles.GameSystems.TurnBased
                 effect.Apply(_player, TargettingSpell, Map, hitResult, mapCoord, _logManager);
             }
 
+            var spell = TargettingSpell;
             TargettingSpell = null;
-            ProcessTurn(TimeHelper.Attack); // TODO spell casting time
+
+            ProcessTurn(TimeHelper.GetSpellcastingTime(_player, spell));
         }
 
         public void StartSpellTargetting(SpellTemplate spell)
