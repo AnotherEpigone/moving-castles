@@ -53,7 +53,8 @@ namespace MovingCastles.Ui.Windows
         private Dictionary<McSelectionButton, System.Action> BuildTopicControls(IEnumerable<string> topics)
         {
             var yCount = 0;
-            return topics.ToDictionary(
+            return topics
+                .ToDictionary(
                 topic =>
                 {
                     return new McSelectionButton(_topicButtonWidth - 1, 1)
@@ -76,8 +77,10 @@ namespace MovingCastles.Ui.Windows
         private ColoredString GetStringForEntries(IEnumerable<JournalEntry> entries)
         {
             var separator = $"\r\n\r\n{ColorHelper.GetParserString(new string('-', _entriesArea.Width), Color.AliceBlue)}\r\n\r\n";
-            var entryTexts = entries.Select(e => e.Message);
-            return new ColoredString(string.Join(separator, entryTexts),
+            var entryTexts = entries.ToList();
+            entryTexts.Sort((a, b) => b.ReceivedTime.Ticks.CompareTo(a.ReceivedTime.Ticks));
+                
+            return new ColoredString(string.Join(separator, entryTexts.Select(e => e.Message).ToArray()),
                     new Cell(_entriesArea.DefaultForeground, _entriesArea.DefaultBackground));
         }
 

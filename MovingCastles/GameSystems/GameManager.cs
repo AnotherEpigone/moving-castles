@@ -60,8 +60,8 @@ namespace MovingCastles.GameSystems
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
 
             var player = new PlayerTemplate();
-            player.JournalEntries.Add(AlwardsTowerJournalEntries.Quest);
-            player.JournalEntries.Add(AlwardsTowerJournalEntries.FirstEntrance);
+            player.JournalEntries.Add(AlwardsTowerJournalEntries.Quest(new McTimeSpan(-1)));
+            player.JournalEntries.Add(AlwardsTowerJournalEntries.FirstEntrance(new McTimeSpan(0)));
 
             var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
             var level = structure.GetLevel(LevelId.AlwardsTower1, player, new SpawnConditions(Spawn.Default, 0));
