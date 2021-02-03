@@ -51,6 +51,7 @@ namespace MovingCastles.Ui
         public static Color DarkGrey2 => new Color(50, 50, 50);
         public static Color EnemyRed => new Color(225, 15, 0);
         public static Color ActionYellow => new Color(157, 113, 0);
+        public static Color StoryBlue => BayeuxLightBlue;
 
 
         public static Colors GetThemeColorsForBackgroundColor(Color bgColor)

@@ -6,6 +6,7 @@ using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using MovingCastles.Text;
+using MovingCastles.Ui;
 using MovingCastles.Ui.Windows;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
@@ -39,11 +40,11 @@ namespace MovingCastles.Components.StoryComponents
                 return;
             }
 
-            Trigger(steppingEntity);
+            Trigger(steppingEntity, logManager);
         }
 
         public void Interact(McEntity interactingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
-            => Trigger(interactingEntity);
+            => Trigger(interactingEntity, logManager);
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
@@ -55,7 +56,7 @@ namespace MovingCastles.Components.StoryComponents
             }),
         };
 
-        private void Trigger(McEntity triggeringEntity)
+        private void Trigger(McEntity triggeringEntity, ILogManager logManager)
         {
             if (triggeringEntity is not Wizard)
             {
@@ -64,8 +65,7 @@ namespace MovingCastles.Components.StoryComponents
 
             _stepTriggerActive = false;
             var story = Story.ResourceManager.GetString(_resourceKey);
-            var msgbox = new StoryMessageBox(story);
-            msgbox.Show(true);
+            logManager.StoryLog(ColorHelper.GetParserString(story, ColorHelper.StoryBlue));
         }
 
         [DataContract]
