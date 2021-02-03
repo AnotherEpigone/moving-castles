@@ -65,7 +65,7 @@ namespace MovingCastles.Components.Stats
             Health = System.Math.Max(0, Health - damage);
             if (Dead && Parent is McEntity mcParent)
             {
-                logManager.StoryLog($"{mcParent.ColoredName} was slain.");
+                logManager.CombatLog($"{mcParent.ColoredName} was slain.");
                 mcParent.Remove();
             }
         }

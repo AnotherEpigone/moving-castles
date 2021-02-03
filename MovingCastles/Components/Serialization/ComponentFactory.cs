@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework.Components;
 using MovingCastles.Components.AiComponents;
+using MovingCastles.Components.Effects;
 using MovingCastles.Components.Levels;
 using MovingCastles.Components.Stats;
 using MovingCastles.Components.StoryComponents;
@@ -34,6 +35,9 @@ namespace MovingCastles.Components.Serialization
                 { nameof(StoryMessageBoxComponent), s => new StoryMessageBoxComponent(new SerializedObject() { Value = s }) },
                 { nameof(ChangeLevelComponent), s => new ChangeLevelComponent(new SerializedObject() { Value = s }) },
                 { nameof(EndowmentPoolComponent), s => new EndowmentPoolComponent(new SerializedObject() { Value = s }) },
+
+                // Effects
+                { nameof(BurningTimedEffect), s => new BurningTimedEffect(new SerializedObject() { Value = s }) },
             };
         }
 

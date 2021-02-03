@@ -60,7 +60,7 @@ namespace MovingCastles.Ui.Consoles
                 Global.FontDefault,
                 Color.Transparent,
                 Color.Black,
-                System.TimeSpan.FromSeconds(2.5))
+                System.TimeSpan.FromSeconds(5))
             {
                 Position = new Point(LeftPaneWidth, TopPaneHeight),
             };

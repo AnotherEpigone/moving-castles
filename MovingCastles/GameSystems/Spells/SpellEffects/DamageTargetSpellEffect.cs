@@ -1,5 +1,4 @@
 ﻿using GoRogue;
-using Microsoft.Xna.Framework;
 using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Combat;
@@ -18,7 +17,14 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             _damage = damage;
         }
 
-        public void Apply(McEntity caster, SpellTemplate spell, DungeonMap map, HitResult hitResult, Coord targetCoord, ILogManager logManager)
+        public void Apply(
+            IDungeonMaster dungeonMaster,
+            McEntity caster,
+            SpellTemplate spell,
+            DungeonMap map,
+            HitResult hitResult,
+            Coord targetCoord,
+            ILogManager logManager)
         {
             var target = map.GetEntity<McEntity>(targetCoord);
             var targetName = target.ColoredName;

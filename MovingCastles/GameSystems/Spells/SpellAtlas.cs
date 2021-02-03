@@ -29,21 +29,22 @@ namespace MovingCastles.GameSystems.Spells
             targettingStyle: new TargettingStyle(true, TargetMode.SingleTarget, 3),
             effects: new List<ISpellEffect>
                 {
-                    new DamageTargetSpellEffect(10),
+                    new DamageTargetSpellEffect(8),
+                    new BurningSpellEffect(1, 3),
                 },
-            baseCastTime: 200);
+            baseCastTime: 100);
         public static SpellTemplate RayOfFrost => new SpellTemplate(
             id: "SPELL_RAY_OF_FROST",
             name: "Ray of Frost",
             description: "TODO",
             iconGlyph: 0,
-            endowmentCost: 18,
+            endowmentCost: 8,
             targettingStyle: new TargettingStyle(true, TargetMode.Projectile, 8),
             effects: new List<ISpellEffect>
                 {
-                    new DamageTargetSpellEffect(10),
+                    new DamageTargetSpellEffect(5),
                 },
-            baseCastTime: 500);
+            baseCastTime: 300);
         public static SpellTemplate EtherealStep => new SpellTemplate(
             id: "SPELL_ETHEREAL_STEP",
             name: "Ethereal step",

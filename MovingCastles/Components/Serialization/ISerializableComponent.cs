@@ -2,7 +2,7 @@
 
 namespace MovingCastles.Components.Serialization
 {
-    interface ISerializableComponent : IGameObjectComponent
+    public interface ISerializableComponent : IGameObjectComponent
     {
         ComponentSerializable GetSerializable();
     }

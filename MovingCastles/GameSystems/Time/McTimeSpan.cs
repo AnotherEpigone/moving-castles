@@ -26,5 +26,26 @@
         {
             _centiseconds = centiseconds;
         }
+
+        public static McTimeSpan operator +(McTimeSpan a, McTimeSpan b)
+            => new McTimeSpan(a.Ticks + b.Ticks);
+        public static McTimeSpan operator -(McTimeSpan a, McTimeSpan b)
+            => new McTimeSpan(a.Ticks - b.Ticks);
+        public static McTimeSpan operator +(McTimeSpan a, int add)
+            => new McTimeSpan(a.Ticks + add);
+        public static McTimeSpan operator -(McTimeSpan a, int sub)
+            => new McTimeSpan(a.Ticks - sub);
+        public static bool operator >(McTimeSpan a, McTimeSpan b)
+            => a.Ticks > b.Ticks;
+        public static bool operator <(McTimeSpan a, McTimeSpan b)
+            => a.Ticks < b.Ticks;
+        public static bool operator >=(McTimeSpan a, McTimeSpan b)
+            => a.Ticks >= b.Ticks;
+        public static bool operator <=(McTimeSpan a, McTimeSpan b)
+            => a.Ticks <= b.Ticks;
+        public static bool operator ==(McTimeSpan a, McTimeSpan b)
+            => a.Ticks == b.Ticks;
+        public static bool operator !=(McTimeSpan a, McTimeSpan b)
+            => a.Ticks != b.Ticks;
     }
 }

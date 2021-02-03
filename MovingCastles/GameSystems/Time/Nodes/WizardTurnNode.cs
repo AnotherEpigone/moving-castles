@@ -1,11 +1,11 @@
 ﻿using System.Runtime.Serialization;
 
-namespace MovingCastles.GameSystems.Time
+namespace MovingCastles.GameSystems.Time.Nodes
 {
     [DataContract]
-    public class WizardTurnTimeMasterNode : ITimeMasterNode
+    public class WizardTurnNode : ITimeMasterNode
     {
-        public WizardTurnTimeMasterNode(long time)
+        public WizardTurnNode(long time)
         {
             Time = time;
         }

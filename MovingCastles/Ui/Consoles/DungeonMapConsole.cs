@@ -60,7 +60,7 @@ namespace MovingCastles.Ui.Consoles
             _interactTargettingConsole = new InteractTargettingConsole(tilesetFont, map);
 
             Map = map;
-            _game.Map = map;
+            _game.Init(map);
 
             foreach (var entity in map.Entities.Items.OfType<McEntity>())
             {
@@ -115,7 +115,7 @@ namespace MovingCastles.Ui.Consoles
             }
 
             Map = map;
-            _game.Map = map;
+            _game.Init(map);
 
             foreach (var entity in map.Entities.Items.OfType<McEntity>())
             {

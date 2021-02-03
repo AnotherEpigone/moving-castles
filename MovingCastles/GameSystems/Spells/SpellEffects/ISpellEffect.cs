@@ -9,6 +9,7 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
     public interface ISpellEffect
     {
         void Apply(
+            IDungeonMaster dungeonMaster,
             McEntity caster,
             SpellTemplate spell,
             DungeonMap map,

@@ -1,4 +1,5 @@
 ﻿using MovingCastles.GameSystems.Time;
+using MovingCastles.GameSystems.Time.Nodes;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -17,25 +18,25 @@ namespace MovingCastles.Serialization.Map
     public class TimeMasterSerialized
     {
         [DataMember] public long Ticks;
-        [DataMember] public WizardTurnTimeMasterNode WizardNode;
-        [DataMember] public List<EntityTurnTimeMasterNode> EntityNodes;
+        [DataMember] public WizardTurnNode WizardNode;
+        [DataMember] public List<EntityTurnNode> EntityNodes;
 
         public static implicit operator TimeMasterSerialized(TimeMaster timeMaster)
         {
             var serialized = new TimeMasterSerialized()
             {
                 Ticks = timeMaster.JourneyTime.Ticks,
-                EntityNodes = new List<EntityTurnTimeMasterNode>(),
+                EntityNodes = new List<EntityTurnNode>(),
             };
 
             foreach (var node in timeMaster.Nodes)
             {
                 switch (node)
                 {
-                    case WizardTurnTimeMasterNode w:
+                    case WizardTurnNode w:
                         serialized.WizardNode = w;
                         break;
-                    case EntityTurnTimeMasterNode e:
+                    case EntityTurnNode e:
                         serialized.EntityNodes.Add(e);
                         break;
                     default:
