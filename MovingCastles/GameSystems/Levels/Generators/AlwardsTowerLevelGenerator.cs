@@ -10,6 +10,7 @@ using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
 using MovingCastles.Serialization.Map;
 using MovingCastles.Text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Troschuetz.Random;
@@ -182,7 +183,14 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var doorsRound2 = doorGen.GenerateForWalkability(map, terrain, rooms);
             map.ApplyTerrainOverlay(terrain, MapFactory.SpawnDungeonTerrain);
 
-            return new Level(id, seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
+            var name = id switch
+            {
+                LevelId.AlwardsTower1 => "Old Alward's Tower, floor 1",
+                LevelId.AlwardsTower2 => "Old Alward's Tower, floor 2",
+                _ => throw new ArgumentException($"Invalid level id {nameof(id)} for generator {nameof(AlwardsTowerLevelGenerator)}"),
+            };
+
+            return new Level(id, name, seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
         }
     }
 }
