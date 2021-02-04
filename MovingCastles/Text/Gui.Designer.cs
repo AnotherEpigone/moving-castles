@@ -117,5 +117,50 @@ namespace MovingCastles.Text {
                 return ResourceManager.GetString("Command_Wait", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To manifest the power of the wellspring in flame is as natural as breath for the magi..
+        /// </summary>
+        internal static string Spell_ConjureFlame_Desc {
+            get {
+                return ResourceManager.GetString("Spell_ConjureFlame_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A most practical application of basic realmatic attunement. The magus steps briefly into the ethereal realm, utilizes a split second of mental movement, and re-enters the material plane at a nearby place..
+        /// </summary>
+        internal static string Spell_EtherealStep_Desc {
+            get {
+                return ResourceManager.GetString("Spell_EtherealStep_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A payload of raw fire, deftly contained in air. It explodes on impact..
+        /// </summary>
+        internal static string Spell_Fireball_Desc {
+            get {
+                return ResourceManager.GetString("Spell_Fireball_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The will of the magi evokes the frigid air of winter. A twisting beam of freezing wind shoots forth, driving the warmth of life from anything in its path..
+        /// </summary>
+        internal static string Spell_FreezingWind_Desc {
+            get {
+                return ResourceManager.GetString("Spell_FreezingWind_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bodies of mortals are but dust and water. Thus, a careful weaving of physical elements may push the flesh beyond its normal limits..
+        /// </summary>
+        internal static string Spell_Haste_Desc {
+            get {
+                return ResourceManager.GetString("Spell_Haste_Desc", resourceCulture);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MovingCastles.GameSystems.Spells.SpellEffects;
+using MovingCastles.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +24,7 @@ namespace MovingCastles.GameSystems.Spells
         public static SpellTemplate ConjureFlame => new SpellTemplate(
             id: "SPELL_CONJURE_FLAME",
             name: "Conjure flame",
-            description: "To manifest the power of the wellspring in flame is as natural as breath for the magi.",
+            description: Gui.Spell_ConjureFlame_Desc,
             iconGlyph: 0,
             endowmentCost: 4,
             targettingStyle: new TargettingStyle(true, TargetMode.SingleTarget, 3),
@@ -34,9 +35,9 @@ namespace MovingCastles.GameSystems.Spells
                 },
             baseCastTime: 100);
         public static SpellTemplate RayOfFrost => new SpellTemplate(
-            id: "SPELL_RAY_OF_FROST",
-            name: "Ray of Frost",
-            description: "TODO",
+            id: "SPELL_FREEZING_WIND",
+            name: "Freezing wind",
+            description: Gui.Spell_FreezingWind_Desc,
             iconGlyph: 0,
             endowmentCost: 8,
             targettingStyle: new TargettingStyle(true, TargetMode.Projectile, 8),
@@ -48,7 +49,7 @@ namespace MovingCastles.GameSystems.Spells
         public static SpellTemplate EtherealStep => new SpellTemplate(
             id: "SPELL_ETHEREAL_STEP",
             name: "Ethereal step",
-            description: "A most practical application of basic realmatic attunement. The magus steps briefly into the ethereal realm, utilizes a split second of mental movement, and re-enters the material plane at a nearby place.",
+            description: Gui.Spell_EtherealStep_Desc,
             iconGlyph: 0,
             endowmentCost: 8,
             targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
@@ -57,5 +58,27 @@ namespace MovingCastles.GameSystems.Spells
                     new TeleportToTargetSpellEffect(),
                 },
             baseCastTime: 100);
+        public static SpellTemplate Fireball => new SpellTemplate(
+            id: "SPELL_FIREBALL",
+            name: "Fireball",
+            description: Gui.Spell_EtherealStep_Desc,
+            iconGlyph: 0,
+            endowmentCost: 25,
+            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
+            effects: new List<ISpellEffect>
+                {
+                },
+            baseCastTime: 250);
+        public static SpellTemplate Haste => new SpellTemplate(
+            id: "SPELL_HASTE",
+            name: "Haste",
+            description: Gui.Spell_Haste_Desc,
+            iconGlyph: 0,
+            endowmentCost: 25,
+            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
+            effects: new List<ISpellEffect>
+            {
+            },
+            baseCastTime: 250);
     }
 }

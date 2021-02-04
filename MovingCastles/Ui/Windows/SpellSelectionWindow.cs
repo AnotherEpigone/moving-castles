@@ -141,7 +141,7 @@ namespace MovingCastles.Ui.Windows
             _descriptionArea.Cursor.Position = new Point(0, 0);
             _descriptionArea.Cursor.Print(
                 new ColoredString(
-                    _selectedSpell?.Description ?? string.Empty,
+                    GetSpellDescription(_selectedSpell),
                     new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
             _castButton.IsEnabled = true;
         }
@@ -154,6 +154,14 @@ namespace MovingCastles.Ui.Windows
             Add(_cancelButton);
 
             SetupSelectionButtons(BuildSpellControls(spells));
+        }
+
+        public string GetSpellDescription(SpellTemplate spell)
+        {
+            var desc = spell?.Description ?? string.Empty;
+            var stats = $"Endowment cost: {spell.EndowmentCost}\r\nRange: {spell.TargettingStyle.Range}";
+            var effects = string.Join("\r\n", spell.Effects.Select(e => e.Description));
+            return $"{desc}\r\n\n{stats}\r\n\n{effects}";
         }
     }
 }

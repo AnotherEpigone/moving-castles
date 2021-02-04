@@ -17,6 +17,8 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             _damage = damage;
         }
 
+        public string Description => $"Deals {_damage:0.#} damage to the target on a hit.";
+
         public void Apply(
             IDungeonMaster dungeonMaster,
             McEntity caster,

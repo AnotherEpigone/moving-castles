@@ -16,5 +16,7 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             HitResult hitResult,
             Coord targetCoord,
             ILogManager logManager);
+
+        string Description { get; }
     }
 }

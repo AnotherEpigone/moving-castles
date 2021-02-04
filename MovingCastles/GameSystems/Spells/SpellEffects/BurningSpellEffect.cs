@@ -18,6 +18,8 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             _lifetimeSeconds = lifetimeSeconds;
         }
 
+        public string Description => $"Sets target aflame on a hit or crit. Burns for {_dps:0.#} damage per second for {_lifetimeSeconds} seconds.";
+
         public void Apply(
             IDungeonMaster dungeonMaster,
             McEntity caster,

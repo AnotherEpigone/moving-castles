@@ -151,4 +151,19 @@ Skip a turn.
 Tip:
 Wait to regain health or wait for the right time to strike, but remember that there is a limited amount of time in each day!</value>
   </data>
+  <data name="Spell_ConjureFlame_Desc" xml:space="preserve">
+    <value>To manifest the power of the wellspring in flame is as natural as breath for the magi.</value>
+  </data>
+  <data name="Spell_EtherealStep_Desc" xml:space="preserve">
+    <value>A most practical application of basic realmatic attunement. The magus steps briefly into the ethereal realm, utilizes a split second of mental movement, and re-enters the material plane at a nearby place.</value>
+  </data>
+  <data name="Spell_Fireball_Desc" xml:space="preserve">
+    <value>A payload of raw fire, deftly contained in air. It explodes on impact.</value>
+  </data>
+  <data name="Spell_FreezingWind_Desc" xml:space="preserve">
+    <value>The will of the magi evokes the frigid air of winter. A twisting beam of freezing wind shoots forth, driving the warmth of life from anything in its path.</value>
+  </data>
+  <data name="Spell_Haste_Desc" xml:space="preserve">
+    <value>The bodies of mortals are but dust and water. Thus, a careful weaving of physical elements may push the flesh beyond its normal limits.</value>
+  </data>
 </root>

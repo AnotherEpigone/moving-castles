@@ -8,6 +8,8 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
 {
     public class TeleportToTargetSpellEffect : ISpellEffect
     {
+        public string Description => $"Teleports the caster to the target location.";
+
         public void Apply(
             IDungeonMaster dungeonMaster,
             McEntity caster,
