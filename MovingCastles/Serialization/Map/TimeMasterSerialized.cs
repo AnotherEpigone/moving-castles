@@ -20,6 +20,7 @@ namespace MovingCastles.Serialization.Map
         [DataMember] public long Ticks;
         [DataMember] public WizardTurnNode WizardNode;
         [DataMember] public List<EntityTurnNode> EntityNodes;
+        [DataMember] public List<SecondMarkerNode> SecondMarkerNodes;
 
         public static implicit operator TimeMasterSerialized(TimeMaster timeMaster)
         {
@@ -27,6 +28,7 @@ namespace MovingCastles.Serialization.Map
             {
                 Ticks = timeMaster.JourneyTime.Ticks,
                 EntityNodes = new List<EntityTurnNode>(),
+                SecondMarkerNodes = new List<SecondMarkerNode>(),
             };
 
             foreach (var node in timeMaster.Nodes)
@@ -38,6 +40,9 @@ namespace MovingCastles.Serialization.Map
                         break;
                     case EntityTurnNode e:
                         serialized.EntityNodes.Add(e);
+                        break;
+                    case SecondMarkerNode s:
+                        serialized.SecondMarkerNodes.Add(s);
                         break;
                     default:
                         throw new System.NotSupportedException($"Unsupported time master node type: {node.GetType()}");
@@ -56,6 +61,11 @@ namespace MovingCastles.Serialization.Map
             }
 
             foreach (var node in serialized.EntityNodes)
+            {
+                timeMaster.Enqueue(node);
+            }
+
+            foreach (var node in serialized.SecondMarkerNodes)
             {
                 timeMaster.Enqueue(node);
             }
