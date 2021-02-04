@@ -1,5 +1,6 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.GameSystems.Movement;
 using MovingCastles.Serialization.Entities;
 using MovingCastles.Ui;
 using Newtonsoft.Json;
@@ -9,6 +10,13 @@ using System.Diagnostics;
 
 namespace MovingCastles.Entities
 {
+    public enum MoveOutcome
+    {
+        Move,
+        NoMove,
+        Melee,
+    }
+
     /// <summary>
     /// It stands for Moving Castles entity... pun definitely intended.
     /// </summary>
@@ -38,7 +46,7 @@ namespace MovingCastles.Entities
             UniqueId = id;
         }
 
-        public event EventHandler<ItemMovedEventArgs<McEntity>> Bumped;
+        public event EventHandler<EntityBumpedEventArgs> Bumped;
         public event EventHandler RemovedFromMap;
 
         public string FactionName { get; }
@@ -68,23 +76,27 @@ namespace MovingCastles.Entities
             return $"You see a {ColoredName}.";
         }
 
-        public void Move(Direction direction)
+        public MoveOutcome Move(Direction direction)
         {
             if (CurrentMap.WalkabilityView[Position + direction])
             {
                 Position += direction;
+                return MoveOutcome.Move;
             }
             else
             {
                 // can't move because we just bumped into something solid
-                Bumped?.Invoke(this, new ItemMovedEventArgs<McEntity>(this, Position, Position + direction));
+                var bumpedEventArgs = new EntityBumpedEventArgs(this, Position + direction);
+                Bumped?.Invoke(this, bumpedEventArgs);
+
+                return bumpedEventArgs.MadeMeleeAttack ? MoveOutcome.Melee : MoveOutcome.NoMove;
             }
         }
 
         public void Remove()
         {
             CurrentMap.RemoveEntity(this);
-            RemovedFromMap?.Invoke(this, System.EventArgs.Empty);
+            RemovedFromMap?.Invoke(this, EventArgs.Empty);
         }
 
         private string DebuggerDisplay

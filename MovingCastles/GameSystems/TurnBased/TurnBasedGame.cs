@@ -9,6 +9,7 @@ using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.Movement;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.GameSystems.Time.Nodes;
@@ -374,9 +375,9 @@ namespace MovingCastles.GameSystems.TurnBased
             }
         }
 
-        private void Entity_Bumped(object sender, ItemMovedEventArgs<McEntity> e)
+        private void Entity_Bumped(object sender, EntityBumpedEventArgs e)
         {
-            var bumpTriggeredComponent = Map.GetEntities<McEntity>(e.NewPosition)
+            var bumpTriggeredComponent = Map.GetEntities<McEntity>(e.BumpedPosition)
                     .SelectMany(e =>
                     {
                         if (e is not IHasComponents entity)
@@ -387,13 +388,13 @@ namespace MovingCastles.GameSystems.TurnBased
                         return entity.GetComponents<IBumpTriggeredComponent>();
                     })
                     .FirstOrDefault();
-            bumpTriggeredComponent?.Bump(e.Item);
+            bumpTriggeredComponent?.Bump(e.BumpingEntity);
 
-            var meleeAttackComponent = e.Item.GetGoRogueComponent<IMeleeAttackerComponent>();
+            var meleeAttackComponent = e.BumpingEntity.GetGoRogueComponent<IMeleeAttackerComponent>();
             var attacker = meleeAttackComponent?.Parent as McEntity;
             if (attacker != null)
             {
-                var healthComponent = Map.GetEntities<McEntity>(e.NewPosition)
+                var healthComponent = Map.GetEntities<McEntity>(e.BumpedPosition)
                     .SelectMany(e =>
                     {
                         if (e is not IHasComponents entity)
@@ -408,7 +409,7 @@ namespace MovingCastles.GameSystems.TurnBased
                 if (attackee != null
                     && _dungeonMaster.FactionMaster.AreEnemies(attacker.FactionName, attackee.FactionName))
                 {
-                    MeleeAttack(e.Item, meleeAttackComponent, healthComponent);
+                    MeleeAttack(e.BumpingEntity, meleeAttackComponent, healthComponent);
                 }
             }
         }

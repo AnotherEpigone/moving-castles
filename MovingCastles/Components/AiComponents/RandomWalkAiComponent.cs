@@ -1,7 +1,6 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
-using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
@@ -38,9 +37,14 @@ namespace MovingCastles.Components.AiComponents
 
             var directionType = rng.Next(0, 8);
             var direction = Direction.ToDirection((Direction.Types)directionType);
-            mcParent.Move(direction);
-
-            return (true, TimeHelper.GetWalkTime(mcParent));
+            var outcome = mcParent.Move(direction);
+            return outcome switch
+            {
+                MoveOutcome.Move => (true, TimeHelper.GetWalkTime(mcParent)),
+                MoveOutcome.NoMove => (true, TimeHelper.Wait),
+                MoveOutcome.Melee => (true, TimeHelper.GetAttackTime(mcParent)),
+                _ => throw new System.NotSupportedException($"Unsupported move outcome {outcome}."),
+            };
         }
 
         public ComponentSerializable GetSerializable()

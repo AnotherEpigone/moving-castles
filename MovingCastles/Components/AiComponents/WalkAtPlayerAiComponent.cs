@@ -38,45 +38,31 @@ namespace MovingCastles.Components.AiComponents
                 return (false, -1);
             }
 
-            var walkSpeed = mcParent.GetGoRogueComponent<IActorStatComponent>()?.WalkSpeed ?? 1;
-            var bumped = false;
-            System.EventHandler<ItemMovedEventArgs<McEntity>> bumpHandler = (_, __) => bumped = true;
-            mcParent.Bumped += bumpHandler;
-            try
+            var outcome = TryGetDirectionAndMove(map, mcParent);
+            return outcome switch
             {
-                if (TryGetDirectionAndMove(map, mcParent))
-                {
-                    return bumped
-                        ? (true, TimeHelper.GetAttackTime(mcParent))
-                        : (true, TimeHelper.GetWalkTime(mcParent));
-                }
-                else
-                {
-                    return (true, TimeHelper.Wait);
-                }
-            }
-            finally
-            {
-                mcParent.Bumped -= bumpHandler;
-            }
+                MoveOutcome.Move => (true, TimeHelper.GetWalkTime(mcParent)),
+                MoveOutcome.NoMove => (true, TimeHelper.Wait),
+                MoveOutcome.Melee => (true, TimeHelper.GetAttackTime(mcParent)),
+                _ => throw new System.NotSupportedException($"Unsupported move outcome {outcome}."),
+            };
         }
 
-        public bool TryGetDirectionAndMove(DungeonMap map, McEntity mcParent)
+        public MoveOutcome TryGetDirectionAndMove(DungeonMap map, McEntity mcParent)
         {
             var path = map.AStar.ShortestPath(Parent.Position, map.Player.Position);
 
             Direction direction;
             if (path == null || path.Length > _range)
             {
-                return false;
+                return MoveOutcome.NoMove;
             }
             else
             {
                 direction = Direction.GetDirection(path.Steps.First() - Parent.Position);
             }
 
-            mcParent.Move(direction);
-            return true;
+            return mcParent.Move(direction);
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
