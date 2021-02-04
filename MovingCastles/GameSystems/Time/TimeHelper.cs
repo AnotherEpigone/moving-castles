@@ -1,6 +1,8 @@
-﻿using MovingCastles.Components.Stats;
+﻿using MovingCastles.Components.Effects;
+using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
+using System.Linq;
 
 namespace MovingCastles.GameSystems.Time
 {
@@ -14,19 +16,61 @@ namespace MovingCastles.GameSystems.Time
         public static int GetWalkTime(McEntity entity)
         {
             var speed = entity.GetGoRogueComponent<IActorStatComponent>()?.WalkSpeed ?? 1;
-            return (int)(Walk / speed);
+            var modifiers = entity.GetGoRogueComponents<ISpeedModifier>();
+
+            var negativeModifier = 1 + modifiers
+                .Select(m => m.Modifier)
+                .Where(m => m < 0)
+                .Sum(m => m);
+
+            var positiveModifier = 1 + modifiers
+                .Select(m => m.Modifier)
+                .Where(m => m > 0)
+                .Sum(m => m);
+
+            var effectiveSpeed = speed * positiveModifier * negativeModifier;
+
+            return (int)(Walk / effectiveSpeed);
         }
 
         public static int GetAttackTime(McEntity entity)
         {
             var speed = entity.GetGoRogueComponent<IActorStatComponent>()?.AttackSpeed ?? 1;
-            return (int)(Attack / speed);
+            var modifiers = entity.GetGoRogueComponents<ISpeedModifier>();
+
+            var negativeModifier = 1 + modifiers
+                .Select(m => m.Modifier)
+                .Where(m => m < 0)
+                .Sum(m => m);
+
+            var positiveModifier = 1 + modifiers
+                .Select(m => m.Modifier)
+                .Where(m => m > 0)
+                .Sum(m => m);
+
+            var effectiveSpeed = speed * positiveModifier * negativeModifier;
+
+            return (int)(Attack / effectiveSpeed);
         }
 
-        public static int GetSpellcastingTime(McEntity entity, SpellTemplate spell)
+        public static int GetCastTime(McEntity entity, SpellTemplate spell)
         {
             var speed = entity.GetGoRogueComponent<IActorStatComponent>()?.CastSpeed ?? 1;
-            return (int)(spell.BaseCastTime / speed);
+            var modifiers = entity.GetGoRogueComponents<ISpeedModifier>();
+
+            var negativeModifier = 1 + modifiers
+                .Select(m => m.Modifier)
+                .Where(m => m < 0)
+                .Sum(m => m);
+
+            var positiveModifier = 1 + modifiers
+                .Select(m => m.Modifier)
+                .Where(m => m > 0)
+                .Sum(m => m);
+
+            var effectiveSpeed = speed * positiveModifier * negativeModifier;
+
+            return (int)(spell.BaseCastTime / effectiveSpeed);
         }
     }
 }

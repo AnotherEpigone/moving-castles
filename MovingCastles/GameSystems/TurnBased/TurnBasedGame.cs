@@ -221,7 +221,7 @@ namespace MovingCastles.GameSystems.TurnBased
             var spell = TargettingSpell;
             TargettingSpell = null;
 
-            ProcessTurn(TimeHelper.GetSpellcastingTime(_player, spell));
+            ProcessTurn(TimeHelper.GetCastTime(_player, spell));
         }
 
         public void StartSpellTargetting(SpellTemplate spell)

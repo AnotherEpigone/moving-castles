@@ -44,6 +44,7 @@ namespace MovingCastles.GameSystems.Spells
             effects: new List<ISpellEffect>
                 {
                     new DamageTargetSpellEffect(5),
+                    new SpeedChangeSpellEffect(-0.2f, 5),
                 },
             baseCastTime: 300);
         public static SpellTemplate EtherealStep => new SpellTemplate(
@@ -75,9 +76,10 @@ namespace MovingCastles.GameSystems.Spells
             description: Gui.Spell_Haste_Desc,
             iconGlyph: 0,
             endowmentCost: 25,
-            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
+            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 0),
             effects: new List<ISpellEffect>
             {
+                new SpeedChangeSpellEffect(0.5f, 20),
             },
             baseCastTime: 250);
     }
