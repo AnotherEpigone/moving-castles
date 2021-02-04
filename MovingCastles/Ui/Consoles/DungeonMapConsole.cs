@@ -34,6 +34,7 @@ namespace MovingCastles.Ui.Consoles
 
         public Point _lastMousePos;
         public Point _targettedConsolePos;
+        public string _statusMessage;
 
         public DungeonMap Map { get; private set; }
 
@@ -187,7 +188,7 @@ namespace MovingCastles.Ui.Consoles
                     .Where(desc => !string.IsNullOrEmpty(desc))
                     .ToList();
                 _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
-                FlavorMessageChanged.Invoke(this, string.Join(' ', flavorDescriptions));
+                FlavorMessageChanged.Invoke(this, string.Join(' ', new[] { _statusMessage }.Concat(flavorDescriptions)));
             }
 
             if (coordIsTargetable && _lastMousePos != mapState.ConsolePixelPosition)
@@ -425,7 +426,9 @@ namespace MovingCastles.Ui.Consoles
         public void StartTargetting(SpellTemplate spell)
         {
             _game.StartSpellTargetting(spell);
-            FlavorMessageChanged?.Invoke(this, $"Aiming {spell.Name}...");
+
+            _statusMessage = ColorHelper.GetParserString($"Aiming {spell.Name}.", ColorHelper.BayeuxRed);
+            FlavorMessageChanged?.Invoke(this, _statusMessage);
             if (_game.TargetableTiles.Count > 0)
             {
                 _targettedConsolePos = _game.TargetableTiles[0] - MapRenderer.ViewPort.Location;
@@ -436,7 +439,9 @@ namespace MovingCastles.Ui.Consoles
         {
             _game.State = State.PlayerTurn;
             _game.TargetInteractables.Clear();
-            FlavorMessageChanged?.Invoke(this, string.Empty);
+
+            _statusMessage = string.Empty;
+            FlavorMessageChanged?.Invoke(this, _statusMessage);
         }
 
         private void ToggleFov()
