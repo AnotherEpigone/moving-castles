@@ -10,11 +10,14 @@ namespace MovingCastles.Serialization.Settings
         private const string FullScreenSettingKey = "fullscreen";
         private const string DebugPasswordSettingKey = "debug-pw";
         private const string DebugPassword = "In principio erat Verbum";
+        private const string ViewportSettingKey = "viewport";
+        private const string ViewportDefault = "1280x720";
 
         private const string ConfigPath = "config.ini";
 
         private bool _fullScreen;
         private bool _debug;
+        private (int width, int height) _viewport;
 
         public AppSettings()
         {
@@ -29,7 +32,7 @@ namespace MovingCastles.Serialization.Settings
 
                 Write();
             }
-            
+
         }
 
         public bool FullScreen
@@ -52,6 +55,16 @@ namespace MovingCastles.Serialization.Settings
             }
         }
 
+        public (int width, int height) Viewport
+        {
+            get { return _viewport; }
+            set
+            {
+                _viewport = value;
+                Write();
+            }
+        }
+
         private void Read()
         {
             var iniParser = new FileIniDataParser();
@@ -67,6 +80,12 @@ namespace MovingCastles.Serialization.Settings
             {
                 _debug = settings[DebugPasswordSettingKey] == DebugPassword;
             }
+
+            var viewportString = settings.ContainsKey(ViewportSettingKey)
+                ? settings[ViewportSettingKey]
+                : ViewportDefault;
+            var viewportSplit = viewportString.Split('x');
+            _viewport = (int.Parse(viewportSplit[0]), int.Parse(viewportSplit[1]));
         }
 
         private void Write()
@@ -78,6 +97,8 @@ namespace MovingCastles.Serialization.Settings
             {
                 data[SettingsIniKey][DebugPasswordSettingKey] = DebugPassword;
             }
+
+            data[SettingsIniKey][ViewportSettingKey] = $"{_viewport.width}x{_viewport.height}";
 
             var iniParser = new FileIniDataParser();
             iniParser.WriteFile(ConfigPath, data);

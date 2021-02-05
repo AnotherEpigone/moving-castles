@@ -25,5 +25,7 @@ namespace MovingCastles.Ui
             Font tilesetFont);
 
         void ToggleFullScreen();
+
+        void SetViewport(int width, int height);
     }
 }

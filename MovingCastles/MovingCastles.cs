@@ -25,6 +25,8 @@ namespace MovingCastles
 
         public void Run()
         {
+            Settings.AllowWindowResize = false;
+
             Game.Create(_uiManager.ViewPortWidth, _uiManager.ViewPortHeight);
             Game.OnInitialize = Init;
 
@@ -52,6 +54,10 @@ namespace MovingCastles
             if (_appSettings.FullScreen)
             {
                 _uiManager.ToggleFullScreen();
+            }
+            else
+            {
+                _uiManager.SetViewport(_appSettings.Viewport.width, _appSettings.Viewport.height);
             }
 
             _uiManager.ShowMainMenu(_gameManager);

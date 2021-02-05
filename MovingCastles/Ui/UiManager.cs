@@ -26,6 +26,15 @@ namespace MovingCastles.Ui
             _appSettings = appSettings;
         }
 
+        public void SetViewport(int width, int height)
+        {
+            Settings.ResizeWindow(width, height);
+
+            ViewPortWidth = width / Global.CurrentScreen.Font.Size.X;
+            ViewPortHeight = height / Global.CurrentScreen.Font.Size.Y;
+            Global.CurrentScreen.Resize(ViewPortWidth, ViewPortHeight, false);
+        }
+
         public void ToggleFullScreen()
         {
             Settings.ToggleFullScreen();
