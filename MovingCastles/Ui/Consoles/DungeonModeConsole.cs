@@ -8,13 +8,13 @@ using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Controls;
-using System.Collections.Generic;
 
 namespace MovingCastles.Ui.Consoles
 {
     public class DungeonModeConsole : ContainerConsole
     {
         private const int LeftPaneWidth = 40;
+        private const int RightPaneWidth = 40;
         private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
 
@@ -23,6 +23,7 @@ namespace MovingCastles.Ui.Consoles
         private ProgressBar _endowmentBar;
         private Console _statOverlay;
         private Console _infoPanel;
+        private Console _characterPanel;
         private readonly IDungeonMaster _dungeonMaster;
 
         public DungeonModeConsole(
@@ -37,11 +38,11 @@ namespace MovingCastles.Ui.Consoles
         {
             _dungeonMaster = dungeonMaster;
 
-            var rightSectionWidth = width - LeftPaneWidth;
+            var middleSectionWidth = width - LeftPaneWidth - RightPaneWidth;
 
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             _mapConsole = new DungeonMapConsole(
-                rightSectionWidth / tileSizeXFactor,
+                middleSectionWidth / tileSizeXFactor,
                 height - TopPaneHeight,
                 tilesetFont,
                 menuProvider,
@@ -53,6 +54,7 @@ namespace MovingCastles.Ui.Consoles
             };
 
             CreateInfoPanel();
+            CreateCharacterPanel(width, height);
 
             var combatEventLog = new MessageLogConsole(
                 LeftPaneWidth,
@@ -71,11 +73,18 @@ namespace MovingCastles.Ui.Consoles
             };
             logManager.RegisterEventListener(LogType.Story, (s, h) => storyEventLog.Add(s, h));
 
+            _dungeonMaster.TimeMaster.TimeUpdated += (_, __) =>
+            {
+                PrintInfoPanel();
+                PrintCharacterPanel();
+            };
+
             Children.Add(_mapConsole);
-            Children.Add(CreateTopPane(rightSectionWidth, menuProvider));
+            Children.Add(CreateTopPane(middleSectionWidth, menuProvider));
             Children.Add(combatEventLog);
             Children.Add(storyEventLog);
             Children.Add(_infoPanel);
+            Children.Add(_characterPanel);
         }
 
         public void SetMap(DungeonMap map)
@@ -183,21 +192,20 @@ namespace MovingCastles.Ui.Consoles
             return console;
         }
 
-        private Console CreateInfoPanel()
+        private Console CreateCharacterPanel(int viewportWidth, int viewportHeight)
         {
-            // base info panel
-            _infoPanel = new Console(LeftPaneWidth, InfoPanelHeight)
+            _characterPanel = new Console(RightPaneWidth, viewportHeight)
             {
                 DefaultBackground = ColorHelper.ControlBack,
+                Position = new Point(viewportWidth - RightPaneWidth, 0),
             };
 
-            PrintInfoPanel();
-            _dungeonMaster.TimeMaster.TimeUpdated += (_, __) => PrintInfoPanel();
+            PrintCharacterPanel();
 
             // stat bar panel setup
             var controlPanel = new ControlsConsole(LeftPaneWidth, 2)
             {
-                Position = new Point(0, 5),
+                Position = new Point(0, 2),
             };
             _endowmentBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
             {
@@ -231,10 +239,35 @@ namespace MovingCastles.Ui.Consoles
 
             PrintStatOverlays(healthComponent, endowmentComponent);
 
-            _infoPanel.Children.Add(controlPanel);
-            _infoPanel.Children.Add(_statOverlay);
+            _characterPanel.Children.Add(controlPanel);
+            _characterPanel.Children.Add(_statOverlay);
+
+            return _characterPanel;
+        }
+
+        private Console CreateInfoPanel()
+        {
+            // base info panel
+            _infoPanel = new Console(LeftPaneWidth, InfoPanelHeight)
+            {
+                DefaultBackground = ColorHelper.ControlBack,
+            };
+
+            PrintInfoPanel();
 
             return _infoPanel;
+        }
+
+        private void PrintCharacterPanel()
+        {
+            var defaultCell = new Cell(_characterPanel.DefaultForeground, _characterPanel.DefaultBackground);
+            _characterPanel.Clear();
+            _characterPanel.Cursor.Position = new Point(0, 0);
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n\n\n\n\n", defaultCell));
+            var stats = _mapConsole.Player.GetGoRogueComponent<IActorStatComponent>();
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {stats.WalkSpeed:f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {stats.AttackSpeed:f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {stats.CastSpeed:f2}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
         private void PrintInfoPanel()
@@ -242,9 +275,8 @@ namespace MovingCastles.Ui.Consoles
             var defaultCell = new Cell(_infoPanel.DefaultForeground, _infoPanel.DefaultBackground);
             _infoPanel.Clear();
             _infoPanel.Cursor.Position = new Point(0, 0);
-            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n", defaultCell));
-            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Material Plane, Ayen", Color.DarkGray)}\r\n", defaultCell));
-            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Old Alward's Tower", Color.DarkGray)}\r\n\n", defaultCell));
+            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Old Alward's Tower", Color.DarkGray)}\r\n", defaultCell));
+            _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Material Plane, Ayen", Color.DarkGray)}\r\n\n", defaultCell));
             var timeString = $"Time: {_dungeonMaster.TimeMaster.JourneyTime.Seconds}";
             _infoPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString(timeString, Color.DarkGray)}\r\n", defaultCell));
         }
