@@ -65,6 +65,7 @@ namespace MovingCastles.Ui.Consoles
                 case TargetMode.Projectile:
                     DrawProjectile(mousePos, playerPos, mapPos, targettingStyle);
                     break;
+                case TargetMode.Self:
                 default:
                     break;
             }

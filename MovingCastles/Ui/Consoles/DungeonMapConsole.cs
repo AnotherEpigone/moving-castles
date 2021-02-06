@@ -246,7 +246,7 @@ namespace MovingCastles.Ui.Consoles
                 EndTargettingMode();
                 _menuProvider.SpellSelect.Show(
                     Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => StartTargetting(selectedSpell),
+                    selectedSpell => OnSelectSpell(selectedSpell),
                     Player.GetGoRogueComponent<IEndowmentPoolComponent>().Value);
 
                 return true;
@@ -421,6 +421,19 @@ namespace MovingCastles.Ui.Consoles
             }
 
             return base.ProcessKeyboard(info);
+        }
+
+        public void OnSelectSpell(SpellTemplate spell)
+        {
+            if (spell.TargettingStyle.TargetMode == TargetMode.Self)
+            {
+                _game.StartSpellTargetting(spell);
+                _game.SpellTargetSelected(Player.Position);
+            }
+            else
+            {
+                StartTargetting(spell);
+            }
         }
 
         public void StartTargetting(SpellTemplate spell)

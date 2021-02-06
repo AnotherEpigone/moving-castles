@@ -27,7 +27,7 @@ namespace MovingCastles.GameSystems.Spells
             description: Gui.Spell_ConjureFlame_Desc,
             iconGlyph: 0,
             endowmentCost: 4,
-            targettingStyle: new TargettingStyle(true, TargetMode.SingleTarget, 3),
+            targettingStyle: new TargettingStyle(true, TargetMode.SingleTarget, 3, true),
             effects: new List<ISpellEffect>
                 {
                     new DamageTargetSpellEffect(8),
@@ -40,7 +40,7 @@ namespace MovingCastles.GameSystems.Spells
             description: Gui.Spell_FreezingWind_Desc,
             iconGlyph: 0,
             endowmentCost: 8,
-            targettingStyle: new TargettingStyle(true, TargetMode.Projectile, 8),
+            targettingStyle: new TargettingStyle(true, TargetMode.Projectile, 8, true),
             effects: new List<ISpellEffect>
                 {
                     new DamageTargetSpellEffect(5),
@@ -53,7 +53,7 @@ namespace MovingCastles.GameSystems.Spells
             description: Gui.Spell_EtherealStep_Desc,
             iconGlyph: 0,
             endowmentCost: 8,
-            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
+            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10, true),
             effects: new List<ISpellEffect>
                 {
                     new TeleportToTargetSpellEffect(),
@@ -65,7 +65,7 @@ namespace MovingCastles.GameSystems.Spells
             description: Gui.Spell_EtherealStep_Desc,
             iconGlyph: 0,
             endowmentCost: 25,
-            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10),
+            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 10, true),
             effects: new List<ISpellEffect>
                 {
                 },
@@ -75,11 +75,11 @@ namespace MovingCastles.GameSystems.Spells
             name: "Haste",
             description: Gui.Spell_Haste_Desc,
             iconGlyph: 0,
-            endowmentCost: 25,
-            targettingStyle: new TargettingStyle(false, TargetMode.SingleTarget, 0),
+            endowmentCost: 20,
+            targettingStyle: new TargettingStyle(false, TargetMode.Self, 0, false),
             effects: new List<ISpellEffect>
             {
-                new SpeedChangeSpellEffect(0.5f, 20),
+                new SpeedChangeSpellEffect(1.5f, 30),
             },
             baseCastTime: 250);
     }

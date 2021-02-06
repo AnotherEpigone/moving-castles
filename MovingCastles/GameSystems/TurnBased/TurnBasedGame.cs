@@ -207,7 +207,9 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void SpellTargetSelected(Coord mapCoord)
         {
-            var hitResult = HitMan.Get(_rng);
+            var hitResult = TargettingSpell.TargettingStyle.CanMiss
+                ? HitMan.Get(_rng)
+                : HitResult.Hit;
             _logManager.CombatLog($"{_player.ColoredName} cast {TargettingSpell.Name}.", true);
 
             var endowmentComponent = _player.GetGoRogueComponent<IEndowmentPoolComponent>();
@@ -226,7 +228,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void StartSpellTargetting(SpellTemplate spell)
         {
-            TargettingSpell = spell;            
+            TargettingSpell = spell;
             State = State.Targetting;
 
             TargetableTiles.Clear();

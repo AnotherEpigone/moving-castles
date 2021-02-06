@@ -3,6 +3,7 @@ using MovingCastles.Components;
 using MovingCastles.Components.Stats;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.GameSystems.Time;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
@@ -264,10 +265,9 @@ namespace MovingCastles.Ui.Consoles
             _characterPanel.Clear();
             _characterPanel.Cursor.Position = new Point(0, 0);
             _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n\n\n\n\n", defaultCell));
-            var stats = _mapConsole.Player.GetGoRogueComponent<IActorStatComponent>();
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {stats.WalkSpeed:f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {stats.AttackSpeed:f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {stats.CastSpeed:f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(_mapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(_mapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(_mapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
         private void PrintInfoPanel()

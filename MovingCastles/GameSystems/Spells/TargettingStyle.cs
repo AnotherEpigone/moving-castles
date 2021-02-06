@@ -5,16 +5,20 @@
         public TargettingStyle(
             bool offensive,
             TargetMode targetMode,
-            int range)
+            int range,
+            bool canMiss)
         {
             Offensive = offensive;
             TargetMode = targetMode;
             Range = range;
+            CanMiss = canMiss;
         }
 
         public bool Offensive { get; }
 
         public int Range { get; }
+
+        public bool CanMiss { get; }
 
         public TargetMode TargetMode { get; }
     }

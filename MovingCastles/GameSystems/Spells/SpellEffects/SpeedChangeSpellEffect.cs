@@ -40,7 +40,15 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             var target = map.GetEntity<McEntity>(targetCoord);
             var targetName = target.ColoredName;
 
-            logManager.CombatLog($"{targetName} was slowed.");
+            if (_modifier < 0)
+            {
+                logManager.CombatLog($"{targetName} was slowed.");
+            }
+            else
+            {
+                logManager.CombatLog($"{targetName} was sped up.");
+            }
+
             target.AddGoRogueComponent(new SpeedChangeTimedEffect(dungeonMaster.TimeMaster.JourneyTime, _modifier, _lifetimeSeconds * 100));
         }
     }

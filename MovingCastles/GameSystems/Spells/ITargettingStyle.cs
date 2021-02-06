@@ -4,10 +4,13 @@
     {
         SingleTarget,
         Projectile,
+        Self,
     }
 
     public interface ITargettingStyle
     {
+        bool CanMiss { get; }
+
         bool Offensive { get; }
 
         int Range { get; }
