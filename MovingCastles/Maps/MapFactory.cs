@@ -122,7 +122,8 @@ namespace MovingCastles.Maps
             map.AddEntity(trapdoor);
 
             // spawn player
-            spawnPosition = spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
+            //spawnPosition = spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
+            spawnPosition = new Coord(24, 2);
             var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
             map.AddEntity(player);
 

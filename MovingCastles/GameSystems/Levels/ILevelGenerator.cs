@@ -9,12 +9,19 @@ namespace MovingCastles.GameSystems.Levels
     {
         string Id { get; }
 
+        /// <summary>
+        /// New level from scratch
+        /// </summary>
         Level Generate(int seed, string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions);
 
+        /// <summary>
+        /// Load from Save
+        /// </summary>
         Level Generate(Save save);
 
+        /// <summary>
+        /// Return to previously generated level
+        /// </summary>
         Level Generate(MapState mapState, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions);
-
-        Level Generate(int seed, string id, PlayerTemplate playerInfo, Coord playerSpawnPosition);
     }
 }

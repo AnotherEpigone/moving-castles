@@ -10,6 +10,7 @@ namespace MovingCastles.GameSystems.Levels
     /// </summary>
     public class Structure
     {
+        public const string StructureId_MapgenDemo = "STRUCTURE_MAPGEN_DEMO";
         public const string StructureId_AlwardsTower = "STRUCTURE_ALWARDS_TOWER";
 
         private readonly Dictionary<string, Level> _generatedLevels;
@@ -30,8 +31,7 @@ namespace MovingCastles.GameSystems.Levels
 
         public Level GetLevel(string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
         {
-            Level level;
-            if (_generatedLevels.TryGetValue(id, out level))
+            if (_generatedLevels.TryGetValue(id, out Level level))
             {
                 return level;
             }
@@ -56,7 +56,7 @@ namespace MovingCastles.GameSystems.Levels
 
             var level = generator.Generate(save);
 
-            _generatedLevels.Add(generator.Id, level);
+            _generatedLevels.Add(save.MapState.Id, level);
             return level;
         }
     }

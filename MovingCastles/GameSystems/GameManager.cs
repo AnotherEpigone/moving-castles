@@ -1,4 +1,5 @@
-﻿using MovingCastles.Entities;
+﻿using GoRogue;
+using MovingCastles.Entities;
 using MovingCastles.GameSystems.Journal.Entries;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Logging;
@@ -12,6 +13,7 @@ using MovingCastles.Ui;
 using MovingCastles.Ui.Consoles;
 using SadConsole;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MovingCastles.GameSystems
@@ -174,9 +176,10 @@ namespace MovingCastles.GameSystems
             var player = new PlayerTemplate();
 
             var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
+            var level = new Level("mapgenlevel", "mapgenlevel", 0, new List<Rectangle>(), new List<Coord>(), mapGenTestAreaMap);
+            var structure = _structureFactory.CreateById(Structure.StructureId_MapgenDemo, entityFactory);
 
-            // TODO add map
-            DungeonMaster = _dungeonMasterFactory.Create(player, null, null);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
             Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);

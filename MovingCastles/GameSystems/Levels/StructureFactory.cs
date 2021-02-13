@@ -8,16 +8,15 @@ namespace MovingCastles.GameSystems.Levels
     {
         public Structure CreateById(string id, IEntityFactory entityFactory)
         {
-            switch (id)
+            return id switch
             {
-                case Structure.StructureId_AlwardsTower:
-                    return CreateAlwardsTower(id, entityFactory);
-                default:
-                    throw new ArgumentException($"Unknown id: {id}");
-            }
+                Structure.StructureId_MapgenDemo => new Structure(id),
+                Structure.StructureId_AlwardsTower => CreateAlwardsTower(id, entityFactory),
+                _ => throw new ArgumentException($"Unknown id: {id}"),
+            };
         }
 
-        private Structure CreateAlwardsTower(string id, IEntityFactory entityFactory)
+        private static Structure CreateAlwardsTower(string id, IEntityFactory entityFactory)
         {
             var structure = new Structure(id)
             {
