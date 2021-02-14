@@ -21,40 +21,38 @@ namespace MovingCastles.Maps.Generation
     /// </remarks>
     public class BorderlessMazeGenerator
     {
-        private readonly IGenerator _rng;
         private readonly int _crawlerChangeDirectionIncrease;
 
         public BorderlessMazeGenerator()
-            : this(SingletonRandom.DefaultRNG, 10) { }
+            : this(10) { }
 
-        public BorderlessMazeGenerator(IGenerator rng, int crawlerChangeDirectionIncrease)
+        public BorderlessMazeGenerator(int crawlerChangeDirectionIncrease)
         {
-            _rng = rng;
             _crawlerChangeDirectionIncrease = crawlerChangeDirectionIncrease;
         }
 
-        public IEnumerable<MapArea> Generate(ISettableMapView<bool> map)
+        public IEnumerable<MapArea> Generate(IGenerator rng, ISettableMapView<bool> map)
         {
             var crawlers = new List<Crawler>();
 
-            var nextStartPos = FindBorderSquare(map); // start from border
+            var nextStartPos = FindBorderSquare(rng, map); // start from border
             while (nextStartPos != Coord.NONE)
             {
-                var crawler = new Crawler(_rng, _crawlerChangeDirectionIncrease);
+                var crawler = new Crawler(rng, _crawlerChangeDirectionIncrease);
                 crawlers.Add(crawler);
                 crawler.Crawl(nextStartPos, map);
 
-                nextStartPos = EmptyTileFinder.Find(map, _rng);
+                nextStartPos = EmptyTileFinder.Find(map, rng);
             }
 
             return crawlers.Select(c => c.AllPositions).Where(a => a.Count != 0);
         }
 
-        private Coord FindBorderSquare(IMapView<bool> map)
+        private static Coord FindBorderSquare(IGenerator rng, IMapView<bool> map)
         {
-            var x = (int)_rng.NextUInt((uint)map.Width - 1);
-            var y = (int)_rng.NextUInt((uint)map.Height - 1);
-            switch (_rng.NextBoolean())
+            var x = (int)rng.NextUInt((uint)map.Width - 1);
+            var y = (int)rng.NextUInt((uint)map.Height - 1);
+            switch (rng.NextBoolean())
             {
                 case true:
                     x = x < map.Width / 2

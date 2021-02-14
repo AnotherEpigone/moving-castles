@@ -79,60 +79,6 @@ namespace MovingCastles.Maps
             return map;
         }
 
-        public DungeonMap CreateMapGenTestAreaMap(int width, int height, MapTemplate mapPlan, PlayerTemplate playerInfo)
-        {
-            var map = new DungeonMap(width, height);
-
-            // blank canvas
-            var emptyMapTerrain = new ArrayMap<bool>(map.Width, map.Height);
-            QuickGenerators.GenerateRectangleMap(emptyMapTerrain);
-            map.ApplyTerrainOverlay(emptyMapTerrain, SpawnOutdoorTerrain);
-
-            // add a 20x20 maze with an entrance
-            var mazeTerrain = new ArrayMap<bool>(20, 20);
-            new BorderlessMazeGenerator().Generate(mazeTerrain);
-            map.ApplyTerrainOverlay(mazeTerrain, new Coord(2, 2), SpawnDungeonTerrain);
-
-            // add a 20x20 forest, hopefully with a path through it (a path! a path!)
-            var forestPathTerrain = new ArrayMap<bool>(20, 20);
-            new TwoEntranceMazeGenerator().Generate(forestPathTerrain);
-            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(25, 2), SpawnOutdoorTerrain);
-
-            // add a 30x30 dungeon with rooms
-            var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
-            var rooms = new RoomFiller().Generate(roomDungeonTerrain, 10, 3, 3);
-            var roomDungeonOffset = new Coord(2, 25);
-            var doorGen = new DoorGenerator();
-            var doorsRound1 = doorGen.GenerateRandom(roomDungeonTerrain, rooms);
-            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, SpawnDungeonTerrain);
-
-            // extra doors to ensure walkability
-            var doorsRound2 = doorGen.GenerateForWalkability(map, roomDungeonTerrain, roomDungeonOffset, rooms);
-            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, SpawnDungeonTerrain);
-
-            foreach (var door in doorsRound1.Concat(doorsRound2))
-            {
-                map.AddEntity(_entityFactory.CreateDoor(door + roomDungeonOffset));
-            }
-
-            // spawn a trapdoor
-            var roomDungeonRect = new GoRogue.Rectangle(roomDungeonOffset.X, roomDungeonOffset.Y, roomDungeonTerrain.Width, roomDungeonTerrain.Height);
-            var spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
-            var trapdoor = _entityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
-            map.AddEntity(trapdoor);
-
-            // spawn player
-            //spawnPosition = spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
-            spawnPosition = new Coord(24, 2);
-            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
-            map.AddEntity(player);
-
-            // No FOV by default
-            map.FovVisibilityHandler.Disable();
-
-            return map;
-        }
-
         public static IGameObject SpawnDungeonTerrain(Coord position, bool mapGenValue)
         {
             if (mapGenValue)

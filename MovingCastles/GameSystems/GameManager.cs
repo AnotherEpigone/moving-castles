@@ -171,13 +171,11 @@ namespace MovingCastles.GameSystems
         {
             var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
             var entityFactory = new EntityFactory(tilesetFont, _logManager);
-            var mapFactory = new MapFactory(entityFactory);
 
             var player = new PlayerTemplate();
 
-            var mapGenTestAreaMap = mapFactory.CreateMapGenTestAreaMap(100, 60, null, player);
-            var level = new Level("mapgenlevel", "mapgenlevel", 0, new List<Rectangle>(), new List<Coord>(), mapGenTestAreaMap);
             var structure = _structureFactory.CreateById(Structure.StructureId_MapgenDemo, entityFactory);
+            var level = structure.GetLevel(LevelId.MapgenTest, player, new SpawnConditions(Spawn.Default, 0));
 
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
 

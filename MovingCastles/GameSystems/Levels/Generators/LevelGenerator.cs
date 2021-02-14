@@ -44,11 +44,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        protected abstract Level GenerateTerrain(IGenerator rng, int seed, string id, int width, int height);
+        protected abstract (Level, LevelGenerationMetadata) GenerateTerrain(IGenerator rng, int seed, string id, int width, int height);
 
         private Level RestoreTerrainAndEntities(MapState mapState, IGenerator rng)
         {
-            var level = GenerateTerrain(
+            var (level, _) = GenerateTerrain(
                 rng,
                 mapState.Seed,
                 mapState.Id,

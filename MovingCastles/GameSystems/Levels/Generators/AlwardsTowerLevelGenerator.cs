@@ -42,7 +42,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        protected override Level GenerateTerrain(IGenerator rng, int seed, string id, int width, int height)
+        protected override (Level, LevelGenerationMetadata) GenerateTerrain(IGenerator rng, int seed, string id, int width, int height)
         {
             var map = new DungeonMap(width, height);
             var terrain = new ArrayMap<bool>(width, height);
@@ -63,12 +63,15 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 _ => throw new ArgumentException($"Invalid level id {nameof(id)} for generator {nameof(AlwardsTowerLevelGenerator)}"),
             };
 
-            return new Level(id, name, seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
+            var level = new Level(id, name, seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
+            var meta = new LevelGenerationMetadata();
+
+            return (level, meta);
         }
 
         private Level Generate(int seed, string id, IGenerator rng)
         {
-            var level = GenerateTerrain(rng, seed, id, 30, 30);
+            var (level, _) = GenerateTerrain(rng, seed, id, 30, 30);
             var map = level.Map;
 
             // spawn doors
