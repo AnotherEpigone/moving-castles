@@ -7,6 +7,7 @@ using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Spells;
+using MovingCastles.Ui;
 using SadConsole;
 
 namespace MovingCastles.Entities
@@ -60,7 +61,7 @@ namespace MovingCastles.Entities
                     (int)Maps.DungeonMapLayer.ITEMS,
                     isWalkable: true,
                     isTransparent: true,
-                    Color.DarkGray,
+                    ColorHelper.ItemGrey,
                     Faction.None,
                     System.Guid.NewGuid());
             item.AddGoRogueComponent(new SummaryControlComponent());

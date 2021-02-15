@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Fonts;
+using MovingCastles.Ui;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -50,6 +51,14 @@ namespace MovingCastles.Entities
             name: "Etherium core",
             glyph: SpriteAtlas.EtheriumCore_Stand,
             nameColor: Color.Violet,
+            walkable: true,
+            transparent: true);
+
+        public static DoodadTemplate StoneRubble => new DoodadTemplate(
+            id: "DOODAD_STONE_RUBBLE",
+            name: "Stone rubble",
+            glyph: SpriteAtlas.StoneRubble,
+            nameColor: ColorHelper.ItemGrey,
             walkable: true,
             transparent: true);
     }

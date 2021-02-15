@@ -32,6 +32,7 @@
         public const int EtheriumCore_Stand = 27;
         public const int Staircase_Up = 37;
         public const int Staircase_Down = 38;
+        public const int StoneRubble = 39;
 
         // GUI
         public const int BlueArrow_Right = 12;

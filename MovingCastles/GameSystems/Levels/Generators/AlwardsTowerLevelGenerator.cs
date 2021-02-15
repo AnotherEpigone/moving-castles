@@ -3,6 +3,7 @@ using GoRogue.MapViews;
 using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
+using MovingCastles.Extensions;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
@@ -80,7 +81,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 map.AddEntity(EntityFactory.CreateDoor(door));
             }
 
-            // spawn doodads
+            // spawn room-based doodads
             Coord spawnPosition;
             if (id == LevelId.AlwardsTower1)
             {
@@ -107,6 +108,18 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 map.AddEntity(stairDown);
             }
 
+            // populate rooms
+            var rooms = ClassifyRooms(level);
+            foreach (var room in rooms)
+            {
+                switch (room.Type)
+                {
+                    case RoomType.Rubble:
+                        PopulateRubbleRoom(level, room, rng);
+                        break;
+                }
+            }
+
             // Spawn enemies
             var allTheActors = ActorAtlas.ActorsById.Values.ToList();
             for (int i = 0; i < 10; i++)
@@ -128,6 +141,25 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
 
             return level;
+        }
+
+        private IEnumerable<Room> ClassifyRooms(Level level)
+        {
+            foreach (var room in level.Rooms)
+            {
+                yield return new Room(room, RoomType.Rubble);
+            }
+        }
+
+        private void PopulateRubbleRoom(Level level, Room room, IGenerator rng)
+        {
+            foreach (var pos in room.Location.Positions())
+            {
+                if (rng.Next(100) > 75)
+                {
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
+                }
+            }
         }
     }
 }
