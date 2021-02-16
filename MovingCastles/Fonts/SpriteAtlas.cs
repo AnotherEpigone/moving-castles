@@ -33,6 +33,7 @@
         public const int Staircase_Up = 37;
         public const int Staircase_Down = 38;
         public const int StoneRubble = 39;
+        public const int HeavyStoneRubble = 40;
 
         // GUI
         public const int BlueArrow_Right = 12;

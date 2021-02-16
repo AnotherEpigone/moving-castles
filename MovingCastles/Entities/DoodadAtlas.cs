@@ -39,7 +39,7 @@ namespace MovingCastles.Entities
             transparent: true);
 
         public static DoodadTemplate StaircaseDown => new DoodadTemplate(
-            id: "DOODAD_STAIRCASE_Down",
+            id: "DOODAD_STAIRCASE_DOWN",
             name: "Staircase down",
             glyph: SpriteAtlas.Staircase_Down,
             nameColor: Color.SaddleBrown,
@@ -55,11 +55,19 @@ namespace MovingCastles.Entities
             transparent: true);
 
         public static DoodadTemplate StoneRubble => new DoodadTemplate(
-            id: "DOODAD_STONE_RUBBLE",
+            id: "DOODAD_STONERUBBLE",
             name: "Stone rubble",
             glyph: SpriteAtlas.StoneRubble,
             nameColor: ColorHelper.ItemGrey,
             walkable: true,
+            transparent: true);
+
+        public static DoodadTemplate HeavyStoneRubble => new DoodadTemplate(
+            id: "DOODAD_STONERUBBLE_HEAVY",
+            name: "Heavy stone rubble",
+            glyph: SpriteAtlas.HeavyStoneRubble,
+            nameColor: ColorHelper.ItemGrey,
+            walkable: false,
             transparent: true);
     }
 }

@@ -153,9 +153,19 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         private void PopulateRubbleRoom(Level level, Room room, IGenerator rng)
         {
+            var walls = room.Location.Expand(1, 1).PerimeterPositions();
+            var doors = level.Doors.Where(d => walls.Contains(d));
+
             foreach (var pos in room.Location.Positions())
             {
-                if (rng.Next(100) > 75)
+                if (!AdjacencyRule.EIGHT_WAY.Neighbors(pos).Any(n => doors.Contains(n))
+                    && rng.Next(100) < 10)
+                {
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
+                    continue;
+                }
+
+                if (rng.Next(100) < 25)
                 {
                     level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
                 }
