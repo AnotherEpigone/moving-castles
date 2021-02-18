@@ -109,13 +109,16 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
 
             // populate rooms
-            var rooms = ClassifyRooms(level);
+            var rooms = ClassifyRooms(level, rng);
             foreach (var room in rooms)
             {
                 switch (room.Type)
                 {
                     case RoomType.Rubble:
                         PopulateRubbleRoom(level, room, rng);
+                        break;
+                    case RoomType.Study:
+                        PopulateStudy(level, room, rng);
                         break;
                 }
             }
@@ -143,10 +146,17 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        private IEnumerable<Room> ClassifyRooms(Level level)
+        private IEnumerable<Room> ClassifyRooms(Level level, IGenerator rng)
         {
             foreach (var room in level.Rooms)
             {
+                if (room.Width < 8
+                    && room.Height < 8
+                    && rng.Next(100) < 15)
+                {
+                    yield return new Room(room, RoomType.Study);
+                }
+
                 yield return new Room(room, RoomType.Rubble);
             }
         }
@@ -166,6 +176,43 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 }
 
                 if (rng.Next(100) < 25)
+                {
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
+                }
+            }
+        }
+
+        private void PopulateStudy(Level level, Room room, IGenerator rng)
+        {
+            var walls = room.Location.Expand(1, 1).PerimeterPositions();
+            var doors = level.Doors.Where(d => walls.Contains(d));
+
+            foreach (var pos in room.Location.Positions())
+            {
+                var canPlaceBlocker = !AdjacencyRule.EIGHT_WAY.Neighbors(pos).Any(n => doors.Contains(n));
+                if (canPlaceBlocker
+                    && room.Location.IsOnPerimeter(pos)
+                    && rng.Next(100) < 15)
+                {
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallBookshelf));
+                    continue;
+                }
+
+                if (canPlaceBlocker
+                    && rng.Next(100) < 5)
+                {
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallDesk));
+                    continue;
+                }
+
+                if (canPlaceBlocker
+                    && rng.Next(100) < 5)
+                {
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
+                    continue;
+                }
+
+                if (rng.Next(100) < 15)
                 {
                     level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
                 }

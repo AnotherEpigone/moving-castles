@@ -69,5 +69,21 @@ namespace MovingCastles.Entities
             nameColor: ColorHelper.ItemGrey,
             walkable: false,
             transparent: true);
+
+        public static DoodadTemplate SmallBookshelf => new DoodadTemplate(
+            id: "DOODAD_BOOKSHELF_SMALL",
+            name: "Bookshelf",
+            glyph: SpriteAtlas.Bookshelf_Small,
+            nameColor: Color.SaddleBrown,
+            walkable: false,
+            transparent: true);
+
+        public static DoodadTemplate SmallDesk => new DoodadTemplate(
+            id: "DOODAD_DESK_SMALL",
+            name: "Desk",
+            glyph: SpriteAtlas.Desk_Small,
+            nameColor: Color.SaddleBrown,
+            walkable: false,
+            transparent: true);
     }
 }

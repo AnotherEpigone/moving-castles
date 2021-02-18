@@ -5,6 +5,7 @@ namespace MovingCastles.GameSystems.Levels
     public enum RoomType
     {
         Rubble,
+        Study,
     }
 
     public record Room(

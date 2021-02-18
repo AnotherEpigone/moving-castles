@@ -34,6 +34,8 @@
         public const int Staircase_Down = 38;
         public const int StoneRubble = 39;
         public const int HeavyStoneRubble = 40;
+        public const int Bookshelf_Small = 41;
+        public const int Desk_Small = 42;
 
         // GUI
         public const int BlueArrow_Right = 12;

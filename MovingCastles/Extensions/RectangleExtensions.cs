@@ -20,5 +20,13 @@ namespace MovingCastles.Extensions
                 }
             }
         }
+
+        public static bool IsOnPerimeter(this Rectangle rect, Coord point)
+        {
+            return point.X == rect.X
+                || point.X == rect.MaxExtentX
+                || point.Y == rect.Y
+                || point.Y == rect.MaxExtentY;
+        }
     }
 }
