@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using MovingCastles.Maps;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MovingCastles.GameSystems.Levels
 {
@@ -10,5 +11,12 @@ namespace MovingCastles.GameSystems.Levels
             int Seed,
             IList<Rectangle> Rooms,
             IList<Coord> Doors,
-            DungeonMap Map);
+            DungeonMap Map)
+    {
+        public IEnumerable<Coord> GetDoorsForRoom(Rectangle room)
+        {
+            var walls = room.Expand(1, 1).PerimeterPositions();
+            return Doors.Where(d => walls.Contains(d));
+        }
+    }
 }

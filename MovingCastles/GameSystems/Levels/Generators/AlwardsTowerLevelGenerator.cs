@@ -168,7 +168,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             foreach (var pos in room.Location.Positions())
             {
-                if (!AdjacencyRule.EIGHT_WAY.Neighbors(pos).Any(n => doors.Contains(n))
+                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
+                if (canPlaceBlocker
                     && rng.Next(100) < 10)
                 {
                     level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
@@ -184,12 +185,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         private void PopulateStudy(Level level, Room room, IGenerator rng)
         {
-            var walls = room.Location.Expand(1, 1).PerimeterPositions();
-            var doors = level.Doors.Where(d => walls.Contains(d));
+            var doors = level.GetDoorsForRoom(room.Location);
 
             foreach (var pos in room.Location.Positions())
             {
-                var canPlaceBlocker = !AdjacencyRule.EIGHT_WAY.Neighbors(pos).Any(n => doors.Contains(n));
+                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
                 if (canPlaceBlocker
                     && room.Location.IsOnPerimeter(pos)
                     && rng.Next(100) < 15)
