@@ -81,29 +81,17 @@ namespace MovingCastles.GameSystems
                 return;
             }
 
-            var entities = DungeonMaster.LevelMaster.Level.Map.Entities.Items.OfType<McEntity>().ToList();
-            var wizard = entities.OfType<Wizard>().Single();
-            entities.Remove(wizard);
-            var doors = entities.OfType<Door>().ToList();
-            foreach (var door in doors)
-            {
-                entities.Remove(door);
-            }
-
-            var mapState = new MapState()
-            {
-                Id = DungeonMaster.LevelMaster.Level.Id,
-                Seed = DungeonMaster.LevelMaster.Level.Seed,
-                Width = DungeonMaster.LevelMaster.Level.Map.Width,
-                Height = DungeonMaster.LevelMaster.Level.Map.Height,
-                Explored = DungeonMaster.LevelMaster.Level.Map.Explored,
-                Entities = entities,
-                Doors = doors,
-                StructureId = DungeonMaster.LevelMaster.Structure.Id,
-            };
+            var structure = DungeonMaster.LevelMaster.Structure;
+            var wizard = DungeonMaster.LevelMaster.Level.Map.Entities.Items.OfType<Wizard>().Single();
+            var mapState = new MapState(structure, DungeonMaster.LevelMaster.Level);
+            var knownMaps = structure.SerializedLevels.Values
+                .Concat(structure.GeneratedLevels
+                    .Select(g => new MapState(structure, g.Value)))
+                .ToArray();
 
             var save = new Save()
             {
+                KnownMaps = knownMaps,
                 MapState = mapState,
                 Wizard = wizard,
                 TimeMaster = (TimeMaster)DungeonMaster.TimeMaster,
