@@ -28,7 +28,12 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             Coord targetCoord,
             ILogManager logManager)
         {
-            var target = map.GetEntity<McEntity>(targetCoord);
+            var target = map.GetActor(targetCoord);
+            if (target == null)
+            {
+                return;
+            }
+
             var targetName = target.ColoredName;
             var targetHealth = target?.GetGoRogueComponent<IHealthComponent>();
             if (targetHealth == null)

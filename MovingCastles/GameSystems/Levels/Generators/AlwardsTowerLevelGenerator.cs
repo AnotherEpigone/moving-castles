@@ -48,13 +48,30 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var map = new DungeonMap(width, height);
             var terrain = new ArrayMap<bool>(width, height);
 
-            var rooms = new RoomFiller(rng).Generate(terrain, 12, 2, 2);
+            var roomFiller = new RoomFiller(rng);
+
+            var staticRooms = new List<Room>();
+            if (id == LevelId.AlwardsTower1)
+            {
+                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
+            }
+            else if (id == LevelId.AlwardsTower2)
+            {
+                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
+                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
+            }
+
+            var staticLocations = staticRooms.Select(r => r.Location);
+            var dynamicRoomLocations = roomFiller
+                .Generate(terrain, 12, 2, 2, staticLocations);
+            var roomLocations = dynamicRoomLocations
+                .Concat(staticLocations);
 
             var doorGen = new DoorGenerator(rng);
-            var doorsRound1 = doorGen.GenerateRandom(terrain, rooms);
+            var doorsRound1 = doorGen.GenerateRandom(terrain, roomLocations);
             map.ApplyTerrainOverlay(terrain, MapFactory.SpawnDungeonTerrain);
 
-            var doorsRound2 = doorGen.GenerateForWalkability(map, terrain, rooms);
+            var doorsRound2 = doorGen.GenerateForWalkability(map, terrain, roomLocations);
             map.ApplyTerrainOverlay(terrain, MapFactory.SpawnDungeonTerrain);
 
             var name = id switch
@@ -63,6 +80,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 LevelId.AlwardsTower2 => "Old Alward's Tower, floor 2",
                 _ => throw new ArgumentException($"Invalid level id {nameof(id)} for generator {nameof(AlwardsTowerLevelGenerator)}"),
             };
+
+            var rooms = dynamicRoomLocations
+                .Select(l => new Room(l, RoomType.None))
+                .Concat(staticRooms)
+                .ToList();
 
             var level = new Level(id, name, seed, rooms, doorsRound1.Concat(doorsRound2).ToList(), map);
             var meta = new LevelGenerationMetadata();
@@ -81,19 +103,16 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 map.AddEntity(EntityFactory.CreateDoor(door));
             }
 
-            // spawn room-based doodads
+            // spawn floor-based doodads
             Coord spawnPosition;
             if (id == LevelId.AlwardsTower1)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
                 var trapdoor = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
-                trapdoor.AddGoRogueComponent(new StoryMessageBoxComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
+                trapdoor.AddGoRogueComponent(new StoryMessageComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
                 map.AddEntity(trapdoor);
 
-                spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-                var stairsUp = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
-                stairsUp.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower2, new SpawnConditions(Spawn.Stairdown, 0)));
-                map.AddEntity(stairsUp);
+                PopulateStairwellRooms(level, level.Rooms.Where(r => r.Type == RoomType.Stairwell).ToList(), null, LevelId.AlwardsTower2);
             }
 
             if (id == LevelId.AlwardsTower2)
@@ -102,15 +121,12 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 var etheriumCore = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.EtheriumCoreWithStand);
                 map.AddEntity(etheriumCore);
 
-                spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-                var stairDown = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseDown);
-                stairDown.AddGoRogueComponent(new ChangeLevelComponent(LevelId.AlwardsTower1, new SpawnConditions(Spawn.StairUp, 0)));
-                map.AddEntity(stairDown);
+                PopulateStairwellRooms(level, level.Rooms.Where(r => r.Type == RoomType.Stairwell).ToList(), LevelId.AlwardsTower1, null);
             }
 
             // populate rooms
-            var rooms = ClassifyRooms(level, rng);
-            foreach (var room in rooms)
+            ClassifyRooms(level, rng);
+            foreach (var room in level.Rooms)
             {
                 switch (room.Type)
                 {
@@ -119,6 +135,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
                         break;
                     case RoomType.Study:
                         PopulateStudy(level, room, rng);
+                        break;
+                    case RoomType.Stairwell:
                         break;
                 }
             }
@@ -146,25 +164,59 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        private IEnumerable<Room> ClassifyRooms(Level level, IGenerator rng)
+        private void ClassifyRooms(Level level, IGenerator rng)
         {
-            foreach (var room in level.Rooms)
+            var unclassifiedRooms = level.Rooms
+                .Where(r => r.Type == RoomType.None)
+                .ToList();
+
+            foreach (var room in unclassifiedRooms)
             {
-                if (room.Width < 8
-                    && room.Height < 8
+                if (room.Location.Width < 8
+                    && room.Location.Height < 8
                     && rng.Next(100) < 15)
                 {
-                    yield return new Room(room, RoomType.Study);
+                    room.Type = RoomType.Study;
+                    continue;
                 }
 
-                yield return new Room(room, RoomType.Rubble);
+                room.Type = RoomType.Rubble;
+            }
+        }
+
+        private void PopulateStairwellRooms(
+            Level level,
+            IList<Room> rooms,
+            string downLevelId,
+            string upLevelId)
+        {
+            IList<Room> upRooms;
+            if (downLevelId != null)
+            {
+                var spawnPosition = rooms[0].Location.Center;
+                var stairDown = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseDown);
+                stairDown.AddGoRogueComponent(new ChangeLevelComponent(downLevelId, new SpawnConditions(Spawn.StairUp, 0)));
+                level.Map.AddEntity(stairDown);
+
+                upRooms = rooms.Skip(1).ToList();
+            }
+            else
+            {
+                upRooms = rooms;
+            }
+
+            foreach (var room in upRooms)
+            {
+                var spawnPosition = room.Location.Center;
+                var stairsUp = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
+                stairsUp.AddGoRogueComponent(new ChangeLevelComponent(upLevelId, new SpawnConditions(Spawn.Stairdown, 0)));
+                level.Map.AddEntity(stairsUp);
             }
         }
 
         private void PopulateRubbleRoom(Level level, Room room, IGenerator rng)
         {
-            var walls = room.Location.Expand(1, 1).PerimeterPositions();
-            var doors = level.Doors.Where(d => walls.Contains(d));
+            var doors = level.GetDoorsForRoom(room.Location);
 
             foreach (var pos in room.Location.Positions())
             {

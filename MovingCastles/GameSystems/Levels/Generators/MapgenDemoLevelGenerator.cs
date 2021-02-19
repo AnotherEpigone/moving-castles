@@ -6,6 +6,7 @@ using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Troschuetz.Random;
 using Troschuetz.Random.Generators;
@@ -70,20 +71,22 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             // add a 30x30 dungeon with rooms
             var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
-            var rooms = new RoomFiller(rng).Generate(roomDungeonTerrain, 10, 3, 3);
+            var roomLocations = new RoomFiller(rng).Generate(roomDungeonTerrain, 10, 3, 3, new List<Rectangle>());
             var roomDungeonOffset = new Coord(2, 25);
             var doorGen = new DoorGenerator(rng);
-            var doorsRound1 = doorGen.GenerateRandom(roomDungeonTerrain, rooms);
+            var doorsRound1 = doorGen.GenerateRandom(roomDungeonTerrain, roomLocations);
             map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, MapFactory.SpawnDungeonTerrain);
 
             // extra doors to ensure walkability
-            var doorsRound2 = doorGen.GenerateForWalkability(map, roomDungeonTerrain, roomDungeonOffset, rooms);
+            var doorsRound2 = doorGen.GenerateForWalkability(map, roomDungeonTerrain, roomDungeonOffset, roomLocations);
             map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, MapFactory.SpawnDungeonTerrain);
 
             var globalDoors = doorsRound1
                 .Concat(doorsRound2)
                 .Select(d => d + roomDungeonOffset)
                 .ToList();
+
+            var rooms = roomLocations.Select(l => new Room(l, RoomType.None)).ToList();
 
             var level = new Level(
                 id,

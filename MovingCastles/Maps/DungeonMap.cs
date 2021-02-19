@@ -45,6 +45,16 @@ namespace MovingCastles.Maps
 
         public Wizard Player => _player.Value;
 
+        public McEntity GetMonster(Coord target)
+        {
+            return GetEntity<McEntity>(target, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.MONSTERS));
+        }
+
+        public McEntity GetActor(Coord target)
+        {
+            return GetEntity<McEntity>(target, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.MONSTERS, (int)DungeonMapLayer.PLAYER));
+        }
+
         public (bool, Coord) GetTarget(Coord playerPos, Coord selectedTargetPos, ITargettingStyle targettingStyle)
         {
             var distance = Distance.CHEBYSHEV.Calculate(playerPos, selectedTargetPos);
@@ -82,7 +92,7 @@ namespace MovingCastles.Maps
         {
             if (targettingStyle.Offensive)
             {
-                var entity = GetEntity<McEntity>(target, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.MONSTERS));
+                var entity = GetMonster(target);
                 return entity?.HasGoRogueComponent<IHealthComponent>() ?? false;
             }
 

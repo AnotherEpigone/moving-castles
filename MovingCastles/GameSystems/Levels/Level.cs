@@ -9,7 +9,7 @@ namespace MovingCastles.GameSystems.Levels
             string Id,
             string Name,
             int Seed,
-            IList<Rectangle> Rooms,
+            IList<Room> Rooms,
             IList<Coord> Doors,
             DungeonMap Map)
     {

@@ -34,7 +34,12 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
                 return;
             }
 
-            var target = map.GetEntity<McEntity>(targetCoord);
+            var target = map.GetActor(targetCoord);
+            if (target == null)
+            {
+                return;
+            }
+
             var targetName = target.ColoredName;
 
             var effectiveDps = hitResult == HitResult.Crit

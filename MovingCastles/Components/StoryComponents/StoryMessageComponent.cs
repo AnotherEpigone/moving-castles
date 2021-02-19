@@ -13,19 +13,19 @@ using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.StoryComponents
 {
-    public class StoryMessageBoxComponent : IStepTriggeredComponent, ISerializableComponent, IInteractTriggeredComponent
+    public class StoryMessageComponent : IStepTriggeredComponent, ISerializableComponent, IInteractTriggeredComponent
     {
         private readonly string _resourceKey;
         private bool _stepTriggerActive;
 
-        public StoryMessageBoxComponent(SerializedObject state)
+        public StoryMessageComponent(SerializedObject state)
         {
             var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _resourceKey = stateObj.ResourceKey;
             _stepTriggerActive = stateObj.StepTriggerActive;
         }
 
-        public StoryMessageBoxComponent(string resourceKey, bool stepTriggerActive)
+        public StoryMessageComponent(string resourceKey, bool stepTriggerActive)
         {
             _resourceKey = resourceKey;
             _stepTriggerActive = stepTriggerActive;
@@ -48,7 +48,7 @@ namespace MovingCastles.Components.StoryComponents
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            Id = nameof(StoryMessageBoxComponent),
+            Id = nameof(StoryMessageComponent),
             State = JsonConvert.SerializeObject(new State()
             {
                 ResourceKey = _resourceKey,

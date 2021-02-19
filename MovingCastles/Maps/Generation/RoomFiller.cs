@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using GoRogue.MapViews;
 using GoRogue.Random;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Troschuetz.Random;
@@ -19,24 +20,38 @@ namespace MovingCastles.Maps.Generation
             _rng = rng;
         }
 
-        public IList<Rectangle> Generate(
+        public Rectangle PlaceRoom(ISettableMapView<bool> map, int width, int height)
+        {
+            var roomRect = new Rectangle(0, 0, width, height);
+            var rect = TryPlaceRoom(roomRect, map, new List<Rectangle>());
+            if (rect == Rectangle.EMPTY)
+            {
+                rect = ForcePlaceRoom(roomRect, map, new List<Rectangle>());
+            }
+
+            CarveRoom(rect, map);
+            return rect;
+        }
+
+        public IEnumerable<Rectangle> Generate(
             ISettableMapView<bool> map,
             int numberOfRooms,
             int minRoomWidth,
-            int minRoomHeight)
+            int minRoomHeight,
+            IEnumerable<Rectangle> usedAreas)
         {
             var minRoomRect = new Rectangle(0, 0, minRoomWidth, minRoomHeight);
             var rooms = new List<Rectangle>();
             for (int i = 0; i< numberOfRooms; i++)
             {
-                var newRoom = TryPlaceRoom(minRoomRect, map, rooms);
+                var newRoom = TryPlaceRoom(minRoomRect, map, rooms.Concat(usedAreas));
                 if (newRoom != Rectangle.EMPTY)
                 {
                     rooms.Add(newRoom);
                 }
             }
 
-            ExpandRooms(map, rooms);
+            ExpandRooms(map, rooms, usedAreas);
             foreach (var room in rooms)
             {
                 CarveRoom(room, map);
@@ -45,7 +60,7 @@ namespace MovingCastles.Maps.Generation
             return rooms;
         }
 
-        private void ExpandRooms(ISettableMapView<bool> map, List<Rectangle> rooms)
+        private void ExpandRooms(ISettableMapView<bool> map, List<Rectangle> rooms, IEnumerable<Rectangle> usedAreas)
         {
             const int expansionPasses = 200;
             for (int i = 0; i < expansionPasses; i++)
@@ -75,7 +90,8 @@ namespace MovingCastles.Maps.Generation
                         map,
                         rooms
                             .Except(new Rectangle[] { room })
-                            .Concat(newRooms)))
+                            .Concat(newRooms)
+                            .Concat(usedAreas)))
                     {
                         newRooms.Add(expandedRoom);
                     }
@@ -90,7 +106,7 @@ namespace MovingCastles.Maps.Generation
             }
         }
 
-        private Rectangle TryPlaceRoom(Rectangle room, ISettableMapView<bool> map, List<Rectangle> rooms)
+        private Rectangle TryPlaceRoom(Rectangle room, ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
         {
             const int placementAttempts = 200;
             for (int i = 0; i < placementAttempts; i++)
@@ -104,6 +120,20 @@ namespace MovingCastles.Maps.Generation
             }
 
             return Rectangle.EMPTY;
+        }
+
+        private Rectangle ForcePlaceRoom(Rectangle room, ISettableMapView<bool> map, List<Rectangle> rooms)
+        {
+            foreach (var pos in map.Positions())
+            {
+                var positionedRoom = room.WithPosition(pos);
+                if (!CheckAdjacency(positionedRoom, map, rooms))
+                {
+                    return positionedRoom;
+                }
+            }
+
+            throw new ArgumentException("Attempt to force room placement with no possible position.");
         }
 
         private bool CheckAdjacency(Rectangle room, ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
