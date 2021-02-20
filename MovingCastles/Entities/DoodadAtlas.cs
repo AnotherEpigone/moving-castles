@@ -85,5 +85,21 @@ namespace MovingCastles.Entities
             nameColor: Color.SaddleBrown,
             walkable: false,
             transparent: true);
+
+        public static DoodadTemplate SmallBarrel => new DoodadTemplate(
+            id: "DOODAD_BARREL_SMALL",
+            name: "Barrel",
+            glyph: SpriteAtlas.Barrel_Small,
+            nameColor: Color.SaddleBrown,
+            walkable: false,
+            transparent: true);
+
+        public static DoodadTemplate SmallChest => new DoodadTemplate(
+            id: "DOODAD_CHEST_SMALL",
+            name: "Chest",
+            glyph: SpriteAtlas.Chest_Small,
+            nameColor: Color.SaddleBrown,
+            walkable: false,
+            transparent: true);
     }
 }

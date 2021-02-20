@@ -8,6 +8,7 @@ namespace MovingCastles.GameSystems.Levels
         Rubble,
         Study,
         Stairwell,
+        Storeroom,
     }
 
     public class Room

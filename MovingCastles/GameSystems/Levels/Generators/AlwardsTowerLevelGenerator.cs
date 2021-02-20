@@ -57,7 +57,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
             else if (id == LevelId.AlwardsTower2)
             {
-                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
+                // TODO up stairwell here
+                // staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
                 staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
             }
 
@@ -136,6 +137,9 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     case RoomType.Study:
                         PopulateStudy(level, room, rng);
                         break;
+                    case RoomType.Storeroom:
+                        PopulateStoreroom(level, room, rng);
+                        break;
                     case RoomType.Stairwell:
                         break;
                 }
@@ -180,6 +184,12 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     continue;
                 }
 
+                if (rng.Next(100) < 15)
+                {
+                    room.Type = RoomType.Storeroom;
+                    continue;
+                }
+
                 room.Type = RoomType.Rubble;
             }
         }
@@ -221,17 +231,36 @@ namespace MovingCastles.GameSystems.Levels.Generators
             foreach (var pos in room.Location.Positions())
             {
                 var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
+                PlaceRubble(pos, canPlaceBlocker, rng, level);
+            }
+        }
+
+        private void PopulateStoreroom(Level level, Room room, IGenerator rng)
+        {
+            var doors = level.GetDoorsForRoom(room.Location);
+
+            foreach (var pos in room.Location.Positions())
+            {
+                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
+                var barrelRng = rng.Next(100);
                 if (canPlaceBlocker
-                    && rng.Next(100) < 10)
+                    && (barrelRng < 5
+                        || room.Location.IsOnPerimeter(pos) && barrelRng < 20))
                 {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallBarrel));
                     continue;
                 }
 
-                if (rng.Next(100) < 25)
+                var chestRng = rng.Next(100);
+                if (canPlaceBlocker
+                    && (chestRng < 5
+                        || room.Location.IsOnPerimeter(pos) && chestRng < 20))
                 {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallChest));
+                    continue;
                 }
+
+                PlaceRubble(pos, canPlaceBlocker, rng, level);
             }
         }
 
@@ -244,7 +273,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
                 if (canPlaceBlocker
                     && room.Location.IsOnPerimeter(pos)
-                    && rng.Next(100) < 15)
+                    && rng.Next(100) < 25)
                 {
                     level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallBookshelf));
                     continue;
@@ -257,17 +286,22 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     continue;
                 }
 
-                if (canPlaceBlocker
-                    && rng.Next(100) < 5)
-                {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
-                    continue;
-                }
+                PlaceRubble(pos, canPlaceBlocker, rng, level);
+            }
+        }
 
-                if (rng.Next(100) < 15)
-                {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
-                }
+        private void PlaceRubble(Coord pos, bool canPlaceBlocker, IGenerator rng, Level level)
+        {
+            if (canPlaceBlocker
+                    && rng.Next(100) < 5)
+            {
+                level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
+                return;
+            }
+
+            if (rng.Next(100) < 15)
+            {
+                level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
             }
         }
     }

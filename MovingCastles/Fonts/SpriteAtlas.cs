@@ -36,6 +36,8 @@
         public const int HeavyStoneRubble = 40;
         public const int Bookshelf_Small = 41;
         public const int Desk_Small = 42;
+        public const int Barrel_Small = 43;
+        public const int Chest_Small = 44;
 
         // GUI
         public const int BlueArrow_Right = 12;
