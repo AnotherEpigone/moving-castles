@@ -9,6 +9,8 @@ namespace MovingCastles.GameSystems.Levels
         Study,
         Stairwell,
         Storeroom,
+        Lobby,
+        Hallway,
     }
 
     public class Room

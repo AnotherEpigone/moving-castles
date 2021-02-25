@@ -24,19 +24,6 @@ namespace MovingCastles.Maps.Generation.Utils
             _changeDirectionIncrease = changeDirectionIncrease;
         }
 
-        public void Backtrack()
-        {
-            if (Path.Count != 0)
-                CurrentPosition = Path.Pop();
-        }
-
-        public void MoveTo(Coord position)
-        {
-            Path.Push(position);
-            AllPositions.Add(position);
-            CurrentPosition = position;
-        }
-
         public void Crawl(Coord start, ISettableMapView<bool> map)
         {
             MoveTo(start);
@@ -105,6 +92,19 @@ namespace MovingCastles.Maps.Generation.Utils
                     Backtrack();
                 }
             }
+        }
+
+        private void Backtrack()
+        {
+            if (Path.Count != 0)
+                CurrentPosition = Path.Pop();
+        }
+
+        private void MoveTo(Coord position)
+        {
+            Path.Push(position);
+            AllPositions.Add(position);
+            CurrentPosition = position;
         }
 
         private static bool IsPointWallsExceptSource(IMapView<bool> map, Coord location, Direction sourceDirection)

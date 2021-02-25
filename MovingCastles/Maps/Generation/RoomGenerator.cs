@@ -8,32 +8,29 @@ using Troschuetz.Random;
 
 namespace MovingCastles.Maps.Generation
 {
-    public class RoomFiller
+    public class RoomGenerator
     {
         private readonly IGenerator _rng;
 
-        public RoomFiller()
-            : this(SingletonRandom.DefaultRNG) { }
-
-        public RoomFiller(IGenerator rng)
+        public RoomGenerator(IGenerator rng)
         {
             _rng = rng;
         }
 
-        public Rectangle PlaceRoom(ISettableMapView<bool> map, int width, int height)
+        public Rectangle PlaceRoom(ISettableMapView<bool> map, int width, int height, IEnumerable<Rectangle> usedAreas)
         {
             var roomRect = new Rectangle(0, 0, width, height);
-            var rect = TryPlaceRoom(roomRect, map, new List<Rectangle>());
+            var rect = TryPlaceRoom(roomRect, map, usedAreas);
             if (rect == Rectangle.EMPTY)
             {
-                rect = ForcePlaceRoom(roomRect, map, new List<Rectangle>());
+                rect = ForcePlaceRoom(roomRect, map, usedAreas);
             }
 
             CarveRoom(rect, map);
             return rect;
         }
 
-        public IEnumerable<Rectangle> Generate(
+        public IEnumerable<Rectangle> FillRooms(
             ISettableMapView<bool> map,
             int numberOfRooms,
             int minRoomWidth,
@@ -85,7 +82,7 @@ namespace MovingCastles.Maps.Generation
                             break;
                     }
 
-                    if (!CheckAdjacency(
+                    if (!CheckLocationConflicts(
                         expandedRoom,
                         map,
                         rooms
@@ -113,7 +110,7 @@ namespace MovingCastles.Maps.Generation
             {
                 var pos = map.RandomPosition(_rng);
                 var positionedRoom = room.WithPosition(pos);
-                if (!CheckAdjacency(positionedRoom, map, rooms))
+                if (!CheckLocationConflicts(positionedRoom, map, rooms))
                 {
                     return positionedRoom;
                 }
@@ -122,21 +119,21 @@ namespace MovingCastles.Maps.Generation
             return Rectangle.EMPTY;
         }
 
-        private Rectangle ForcePlaceRoom(Rectangle room, ISettableMapView<bool> map, List<Rectangle> rooms)
+        private Rectangle ForcePlaceRoom(Rectangle room, ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
         {
             foreach (var pos in map.Positions())
             {
                 var positionedRoom = room.WithPosition(pos);
-                if (!CheckAdjacency(positionedRoom, map, rooms))
+                if (!CheckLocationConflicts(positionedRoom, map, rooms))
                 {
                     return positionedRoom;
                 }
             }
 
-            throw new ArgumentException("Attempt to force room placement with no possible position.");
+            throw new ArgumentException("Attempt to place room with no possible position.");
         }
 
-        private bool CheckAdjacency(Rectangle room, ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
+        private bool CheckLocationConflicts(Rectangle room, ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
         {
             var expanded = room.Expand(1, 1);
             return expanded.Positions().Any(pos => !map.Contains(pos) || map[pos])

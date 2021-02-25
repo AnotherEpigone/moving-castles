@@ -18,9 +18,6 @@ namespace MovingCastles.Maps.Generation
         private readonly float _doorSkipChance;
         private readonly int _maxWalkabilityDistance;
 
-        public DoorGenerator()
-            : this(SingletonRandom.DefaultRNG) { }
-
         public DoorGenerator(IGenerator rng)
             : this(0.6f, 0.8f, 50, rng) { }
 

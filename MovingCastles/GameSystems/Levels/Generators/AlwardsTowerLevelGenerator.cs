@@ -48,23 +48,28 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var map = new DungeonMap(width, height);
             var terrain = new ArrayMap<bool>(width, height);
 
-            var roomFiller = new RoomFiller(rng);
+            var roomFiller = new RoomGenerator(rng);
 
             var staticRooms = new List<Room>();
             if (id == LevelId.AlwardsTower1)
             {
-                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
+                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3, staticRooms.Select(r => r.Location)), RoomType.Stairwell));
+                var lobby = new Room(roomFiller.PlaceRoom(terrain, 8, 8, staticRooms.Select(r => r.Location)), RoomType.Lobby);
+                staticRooms.Add(lobby);
+                var hallwayGen = new HallwayGenerator(rng);
+                staticRooms.AddRange(hallwayGen.PlaceRandomHallway(terrain, lobby.Location, staticRooms.Select(r => r.Location), 25)
+                    .Select(l => new Room(l, RoomType.Hallway)));
             }
             else if (id == LevelId.AlwardsTower2)
             {
                 // TODO up stairwell here
                 // staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
-                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3), RoomType.Stairwell));
+                staticRooms.Add(new Room(roomFiller.PlaceRoom(terrain, 3, 3, staticRooms.Select(r => r.Location)), RoomType.Stairwell));
             }
 
             var staticLocations = staticRooms.Select(r => r.Location);
             var dynamicRoomLocations = roomFiller
-                .Generate(terrain, 12, 2, 2, staticLocations);
+                .FillRooms(terrain, 12, 2, 2, staticLocations);
             var roomLocations = dynamicRoomLocations
                 .Concat(staticLocations);
 
@@ -132,6 +137,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 switch (room.Type)
                 {
                     case RoomType.Rubble:
+                    case RoomType.Lobby:
                         PopulateRubbleRoom(level, room, rng);
                         break;
                     case RoomType.Study:

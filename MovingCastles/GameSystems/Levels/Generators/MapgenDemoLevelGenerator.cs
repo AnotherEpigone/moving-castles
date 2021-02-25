@@ -71,7 +71,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             // add a 30x30 dungeon with rooms
             var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
-            var roomLocations = new RoomFiller(rng).Generate(roomDungeonTerrain, 10, 3, 3, new List<Rectangle>());
+            var roomLocations = new RoomGenerator(rng).FillRooms(roomDungeonTerrain, 10, 3, 3, new List<Rectangle>());
             var roomDungeonOffset = new Coord(2, 25);
             var doorGen = new DoorGenerator(rng);
             var doorsRound1 = doorGen.GenerateRandom(roomDungeonTerrain, roomLocations);
