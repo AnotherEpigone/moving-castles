@@ -94,8 +94,6 @@ namespace MovingCastles.GameSystems.TurnBased
                 || info.IsKeyPressed(Keys.Z)
                 || info.IsKeyPressed(Keys.OemPeriod))
             {
-                _player.GetGoRogueComponent<IHealthComponent>()?.ApplyBaseRegen();
-
                 ProcessTurn(TimeHelper.Wait);
                 return true;
             }
@@ -411,6 +409,7 @@ namespace MovingCastles.GameSystems.TurnBased
                 if (attackee != null
                     && _dungeonMaster.FactionMaster.AreEnemies(attacker.FactionName, attackee.FactionName))
                 {
+                    e.MadeMeleeAttack = true;
                     MeleeAttack(e.BumpingEntity, meleeAttackComponent, healthComponent);
                 }
             }

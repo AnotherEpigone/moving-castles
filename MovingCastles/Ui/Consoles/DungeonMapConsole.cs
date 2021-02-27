@@ -109,7 +109,6 @@ namespace MovingCastles.Ui.Consoles
                 {
                     player.RemovedFromMap -= Player_RemovedFromMap;
                     Player.Moved -= Player_Moved;
-                    continue;
                 }
 
                 _game.UnregisterEntity(entity);
