@@ -19,7 +19,7 @@ namespace MovingCastles.Maps.Generation
         public IEnumerable<Rectangle> PlaceRandomHallway(
             ISettableMapView<bool> map,
             Rectangle startRoom,
-            IEnumerable<Rectangle> usedAreas,
+            IList<Rectangle> usedAreas,
             int minDistance)
         {
             List<Rectangle> rooms = null;
@@ -28,7 +28,7 @@ namespace MovingCastles.Maps.Generation
                 var target = map.RandomPosition(_rng);
                 if (Math.Abs(target.X - startRoom.Center.X) + Math.Abs(target.Y - startRoom.Center.Y) >= minDistance)
                 {
-                    var potentialRooms = PlaceHallway(startRoom, target).ToList();
+                    var potentialRooms = PlaceHallway(startRoom.Expand(1, 1), target).ToList();
                     if (!potentialRooms.Any(r => CheckLocationConflicts(r, map, usedAreas)))
                     {
                         rooms = potentialRooms;
@@ -43,7 +43,7 @@ namespace MovingCastles.Maps.Generation
                 {
                     if (Math.Abs(target.X - startRoom.Center.X) + Math.Abs(target.Y - startRoom.Center.Y) >= minDistance)
                     {
-                        var potentialRooms = PlaceHallway(startRoom, target).ToList();
+                        var potentialRooms = PlaceHallway(startRoom.Expand(1, 1), target).ToList();
                         if (!potentialRooms.Any(r => CheckLocationConflicts(r, map, usedAreas)))
                         {
                             rooms = potentialRooms;
@@ -123,19 +123,19 @@ namespace MovingCastles.Maps.Generation
             if (a.X == b.X)
             {
                 // vertical
-                return new Rectangle(a.X, Math.Min(a.Y, b.Y), 1, Math.Abs(b.Y - a.Y));
+                return new Rectangle(a.X, Math.Min(a.Y, b.Y), 1, Math.Abs(b.Y - a.Y) + 1);
             }
 
             if (a.Y == b.Y)
             {
                 // horizontal
-                return new Rectangle(Math.Min(a.X, b.X), a.Y, Math.Abs(b.X - a.X), 1);
+                return new Rectangle(Math.Min(a.X, b.X), a.Y, Math.Abs(b.X - a.X) + 1, 1);
             }
 
             throw new ArgumentException($"Hallway anchors don't form a straight line: ({a.X},{a.Y}) ({b.X},{b.Y}).");
         }
 
-        private static bool CheckLocationConflicts(Rectangle room, ISettableMapView<bool> map, IEnumerable<Rectangle> rooms)
+        private static bool CheckLocationConflicts(Rectangle room, ISettableMapView<bool> map, IList<Rectangle> rooms)
         {
             var expanded = room.Expand(1, 1);
             var derp = expanded.Positions().Any(pos => !map.Contains(pos) || map[pos]);
