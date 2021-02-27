@@ -29,6 +29,7 @@ namespace MovingCastles.Serialization.Settings
             {
                 _fullScreen = false;
                 _debug = false;
+                _viewport = (1280, 720);
 
                 Write();
             }

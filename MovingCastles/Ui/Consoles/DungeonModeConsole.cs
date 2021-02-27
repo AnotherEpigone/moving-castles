@@ -14,10 +14,10 @@ namespace MovingCastles.Ui.Consoles
 {
     public class DungeonModeConsole : ContainerConsole
     {
-        private const int LeftPaneWidth = 40;
-        private const int RightPaneWidth = 40;
         private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
+
+        private readonly IDungeonMaster _dungeonMaster;
 
         private DungeonMapConsole _mapConsole;
         private ProgressBar _healthBar;
@@ -25,7 +25,8 @@ namespace MovingCastles.Ui.Consoles
         private Console _statOverlay;
         private Console _infoPanel;
         private Console _characterPanel;
-        private readonly IDungeonMaster _dungeonMaster;
+        private int _leftPaneWidth;
+        private int _rightPaneWidth;
 
         public DungeonModeConsole(
             int width,
@@ -39,7 +40,18 @@ namespace MovingCastles.Ui.Consoles
         {
             _dungeonMaster = dungeonMaster;
 
-            var middleSectionWidth = width - LeftPaneWidth - RightPaneWidth;
+            if (width >= 180)
+            {
+                _leftPaneWidth = 40;
+                _rightPaneWidth = 40;
+            }
+            else
+            {
+                _leftPaneWidth = 30;
+                _rightPaneWidth = 30;
+            }
+
+            var middleSectionWidth = width - _leftPaneWidth - _rightPaneWidth;
 
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
             _mapConsole = new DungeonMapConsole(
@@ -51,24 +63,24 @@ namespace MovingCastles.Ui.Consoles
                 appSettings,
                 _dungeonMaster.LevelMaster.Level.Map)
             {
-                Position = new Point(LeftPaneWidth, TopPaneHeight)
+                Position = new Point(_leftPaneWidth, TopPaneHeight)
             };
 
             CreateInfoPanel();
             CreateCharacterPanel(width, height);
 
             var combatEventLog = new MessageLogConsole(
-                LeftPaneWidth,
+                _leftPaneWidth,
                 (height - InfoPanelHeight) / 2,
                 Global.FontDefault,
                 Color.Transparent,
                 Color.Black,
                 System.TimeSpan.FromSeconds(5))
             {
-                Position = new Point(LeftPaneWidth, TopPaneHeight),
+                Position = new Point(_leftPaneWidth, TopPaneHeight),
             };
             logManager.RegisterEventListener(LogType.Combat, (s, h) => combatEventLog.Add(s, h));
-            var storyEventLog = new MessageLogConsole(LeftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
+            var storyEventLog = new MessageLogConsole(_leftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
             {
                 Position = new Point(0, InfoPanelHeight),
             };
@@ -105,7 +117,7 @@ namespace MovingCastles.Ui.Consoles
         {
             var console = new ControlsConsole(rightSectionWidth, TopPaneHeight)
             {
-                Position = new Point(LeftPaneWidth, 0),
+                Position = new Point(_leftPaneWidth, 0),
                 DisableControlFocusing = true,
             };
 
@@ -195,20 +207,20 @@ namespace MovingCastles.Ui.Consoles
 
         private Console CreateCharacterPanel(int viewportWidth, int viewportHeight)
         {
-            _characterPanel = new Console(RightPaneWidth, viewportHeight)
+            _characterPanel = new Console(_rightPaneWidth, viewportHeight)
             {
                 DefaultBackground = ColorHelper.ControlBack,
-                Position = new Point(viewportWidth - RightPaneWidth, 0),
+                Position = new Point(viewportWidth - _rightPaneWidth, 0),
             };
 
             PrintCharacterPanel();
 
             // stat bar panel setup
-            var controlPanel = new ControlsConsole(LeftPaneWidth, 2)
+            var controlPanel = new ControlsConsole(_leftPaneWidth, 2)
             {
                 Position = new Point(0, 2),
             };
-            _endowmentBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
+            _endowmentBar = new ProgressBar(_leftPaneWidth, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 1),
             };
@@ -218,7 +230,7 @@ namespace MovingCastles.Ui.Consoles
             endowmentComponent.ValueChanged += Player_EndowmentChanged;
             _endowmentBar.Progress = endowmentComponent.Value / endowmentComponent.MaxValue;
 
-            _healthBar = new ProgressBar(LeftPaneWidth, 1, HorizontalAlignment.Left)
+            _healthBar = new ProgressBar(_leftPaneWidth, 1, HorizontalAlignment.Left)
             {
                 Position = new Point(0, 0),
             };
@@ -232,7 +244,7 @@ namespace MovingCastles.Ui.Consoles
             controlPanel.Add(_healthBar);
 
             // stat overlay setup
-            _statOverlay = new Console(LeftPaneWidth, InfoPanelHeight)
+            _statOverlay = new Console(_leftPaneWidth, InfoPanelHeight)
             {
                 Position = controlPanel.Position,
                 DefaultBackground = Color.Transparent,
@@ -249,7 +261,7 @@ namespace MovingCastles.Ui.Consoles
         private Console CreateInfoPanel()
         {
             // base info panel
-            _infoPanel = new Console(LeftPaneWidth, InfoPanelHeight)
+            _infoPanel = new Console(_leftPaneWidth, InfoPanelHeight)
             {
                 DefaultBackground = ColorHelper.ControlBack,
             };

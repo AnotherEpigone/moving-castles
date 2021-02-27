@@ -76,7 +76,7 @@ namespace MovingCastles.Ui.Consoles
 
             var setSize1920Button = new McSelectionButton(30, 1)
             {
-                Text = "Resize window: 1920x1072",
+                Text = "Resize window: 1920x1080",
                 Position = new Point(buttonX, topButtonY + 2),
             };
             setSize1920Button.Click += (_, __) =>
