@@ -58,9 +58,18 @@ namespace MovingCastles.Maps.Generation
                 }
             }
 
+            // carve out the doorway between start room and hallway
+            var expandedStartRoom = startRoom.Expand(1, 1);
             foreach (var room in rooms)
             {
                 CarveRoom(room, map);
+                var expandedSection = room.Width > room.Height
+                    ? room.Expand(1, 0)
+                    : room.Expand(0, 1);
+                foreach (var overlapPos in expandedSection.Positions().Intersect(expandedStartRoom.Positions()))
+                {
+                    map[overlapPos] = true;
+                }
             }
 
             return rooms;
@@ -94,7 +103,11 @@ namespace MovingCastles.Maps.Generation
                 var edgePositions = target.X > startRoom.Center.X
                     ? startRoom.MaxXPositions().Select(p => new Coord(p.X + 1, p.Y))
                     : startRoom.MinXPositions().Select(p => new Coord(p.X - 1, p.Y));
-                var start = edgePositions.ToList().RandomItem(_rng);
+                var start = edgePositions
+                    .Skip(1)
+                    .SkipLast(1)
+                    .ToList()
+                    .RandomItem(_rng);
                 var intermediateTarget = new Coord(target.X, start.Y);
                 yield return GetHallwaySection(start, intermediateTarget);
                 var secondStart = intermediateTarget.Y > target.Y
@@ -108,7 +121,11 @@ namespace MovingCastles.Maps.Generation
                 var edgePositions = target.Y > startRoom.Center.Y
                     ? startRoom.MaxYPositions().Select(p => new Coord(p.X, p.Y + 1))
                     : startRoom.MinYPositions().Select(p => new Coord(p.X, p.Y - 1));
-                var start = edgePositions.ToList().RandomItem(_rng);
+                var start = edgePositions
+                    .Skip(1)
+                    .SkipLast(1)
+                    .ToList()
+                    .RandomItem(_rng);
                 var intermediateTarget = new Coord(start.X, target.Y);
                 yield return GetHallwaySection(start, intermediateTarget);
                 var secondStart = intermediateTarget.X > target.X

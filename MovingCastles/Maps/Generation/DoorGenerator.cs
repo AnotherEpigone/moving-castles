@@ -84,6 +84,9 @@ namespace MovingCastles.Maps.Generation
                 }
             }
 
+            // remove if already carved
+            doors = doors.Where(d => !map[d]).ToList();
+
             // carve
             foreach (var door in doors)
             {
