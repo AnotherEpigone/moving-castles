@@ -236,7 +236,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             foreach (var pos in room.Location.Positions())
             {
-                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
+                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level, room);
                 PlaceRubble(pos, canPlaceBlocker, rng, level);
             }
         }
@@ -247,7 +247,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             foreach (var pos in room.Location.Positions())
             {
-                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
+                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level, room);
                 var barrelRng = rng.Next(100);
                 if (canPlaceBlocker
                     && (barrelRng < 5
@@ -276,7 +276,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             foreach (var pos in room.Location.Positions())
             {
-                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level);
+                var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level, room);
                 if (canPlaceBlocker
                     && room.Location.IsOnPerimeter(pos)
                     && rng.Next(100) < 25)
