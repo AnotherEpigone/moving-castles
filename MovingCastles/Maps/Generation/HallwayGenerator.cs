@@ -20,7 +20,8 @@ namespace MovingCastles.Maps.Generation
             ISettableMapView<bool> map,
             Rectangle startRoom,
             IList<Rectangle> usedAreas,
-            int minDistance)
+            int minDistance,
+            int width)
         {
             List<Rectangle> rooms = null;
             for (int i = 0; i < 200; ++i)
@@ -28,7 +29,7 @@ namespace MovingCastles.Maps.Generation
                 var target = map.RandomPosition(_rng);
                 if (Math.Abs(target.X - startRoom.Center.X) + Math.Abs(target.Y - startRoom.Center.Y) >= minDistance)
                 {
-                    var potentialRooms = PlaceHallway(startRoom.Expand(1, 1), target).ToList();
+                    var potentialRooms = PlaceHallway(startRoom.Expand(1, 1), target, width).ToList();
                     if (!potentialRooms.Any(r => CheckLocationConflicts(r, map, usedAreas)))
                     {
                         rooms = potentialRooms;
@@ -43,7 +44,7 @@ namespace MovingCastles.Maps.Generation
                 {
                     if (Math.Abs(target.X - startRoom.Center.X) + Math.Abs(target.Y - startRoom.Center.Y) >= minDistance)
                     {
-                        var potentialRooms = PlaceHallway(startRoom.Expand(1, 1), target).ToList();
+                        var potentialRooms = PlaceHallway(startRoom.Expand(1, 1), target, width).ToList();
                         if (!potentialRooms.Any(r => CheckLocationConflicts(r, map, usedAreas)))
                         {
                             rooms = potentialRooms;
@@ -77,7 +78,8 @@ namespace MovingCastles.Maps.Generation
 
         public IEnumerable<Rectangle> PlaceHallway(
             Rectangle startRoom,
-            Coord target)
+            Coord target,
+            int width)
         {
             if (target.Y > startRoom.Y && target.Y < startRoom.MaxExtentY)
             {
@@ -86,7 +88,11 @@ namespace MovingCastles.Maps.Generation
                     ? startRoom.MaxExtentX + 1
                     : startRoom.X - 1;
                 var start = new Coord(startX, target.Y);
-                yield return GetHallwaySection(start, target);
+                var effectiveTargetY = target.Y < startRoom.Center.Y
+                    ? target.Y + width - 1
+                    : target.Y - width + 1;
+                var effectiveTarget = new Coord(target.X, effectiveTargetY);
+                yield return GetHallwaySection(start, effectiveTarget);
             }
             else if (target.X > startRoom.X && target.X < startRoom.MaxExtentX)
             {
@@ -95,7 +101,11 @@ namespace MovingCastles.Maps.Generation
                     ? startRoom.MaxExtentY + 1
                     : startRoom.Y - 1;
                 var start = new Coord(target.X, startY);
-                yield return GetHallwaySection(start, target);
+                var effectiveTargetX = target.X < startRoom.Center.X
+                    ? target.X + width - 1
+                    : target.X - width + 1;
+                var effectiveTarget = new Coord(effectiveTargetX, target.Y);
+                yield return GetHallwaySection(start, effectiveTarget);
             }
             else if (_rng.Next(2) < 1)
             {
@@ -109,11 +119,19 @@ namespace MovingCastles.Maps.Generation
                     .ToList()
                     .RandomItem(_rng);
                 var intermediateTarget = new Coord(target.X, start.Y);
-                yield return GetHallwaySection(start, intermediateTarget);
+                var effectiveIntermediateTargetY = start.Y < startRoom.Center.Y
+                    ? start.Y + width - 1
+                    : start.Y - width + 1;
+                var effectiveIntermediateTarget = new Coord(target.X, effectiveIntermediateTargetY);
+                yield return GetHallwaySection(start, effectiveIntermediateTarget);
                 var secondStart = intermediateTarget.Y > target.Y
                     ? new Coord(intermediateTarget.X, intermediateTarget.Y - 1)
                     : new Coord(intermediateTarget.X, intermediateTarget.Y + 1);
-                yield return GetHallwaySection(secondStart, target);
+                var effectiveTargetX = target.X < startRoom.Center.X
+                    ? target.X + width - 1
+                    : target.X - width + 1;
+                var effectiveTarget = new Coord(effectiveTargetX, target.Y);
+                yield return GetHallwaySection(secondStart, effectiveTarget);
             }
             else
             {
@@ -127,29 +145,29 @@ namespace MovingCastles.Maps.Generation
                     .ToList()
                     .RandomItem(_rng);
                 var intermediateTarget = new Coord(start.X, target.Y);
-                yield return GetHallwaySection(start, intermediateTarget);
+                var effectiveIntermediateTargetX = start.X < startRoom.Center.X
+                    ? start.X + width - 1
+                    : start.X - width + 1;
+                var effectiveIntermediateTarget = new Coord(effectiveIntermediateTargetX, target.Y);
+                yield return GetHallwaySection(start, effectiveIntermediateTarget);
                 var secondStart = intermediateTarget.X > target.X
                     ? new Coord(intermediateTarget.X - 1, intermediateTarget.Y)
                     : new Coord(intermediateTarget.X + 1, intermediateTarget.Y);
-                yield return GetHallwaySection(secondStart, target);
+                var effectiveTargetY = target.Y < startRoom.Center.Y
+                    ? target.Y + width - 1
+                    : target.Y - width + 1;
+                var effectiveTarget = new Coord(target.X, effectiveTargetY);
+                yield return GetHallwaySection(secondStart, effectiveTarget);
             }
         }
 
         private static Rectangle GetHallwaySection(Coord a, Coord b)
         {
-            if (a.X == b.X)
-            {
-                // vertical
-                return new Rectangle(a.X, Math.Min(a.Y, b.Y), 1, Math.Abs(b.Y - a.Y) + 1);
-            }
-
-            if (a.Y == b.Y)
-            {
-                // horizontal
-                return new Rectangle(Math.Min(a.X, b.X), a.Y, Math.Abs(b.X - a.X) + 1, 1);
-            }
-
-            throw new ArgumentException($"Hallway anchors don't form a straight line: ({a.X},{a.Y}) ({b.X},{b.Y}).");
+            var minExtent = new Coord(Math.Min(a.X, b.X),
+                                        Math.Min(a.Y, b.Y));
+            var maxExtent = new Coord(Math.Max(a.X, b.X),
+                                        Math.Max(a.Y, b.Y));
+            return new Rectangle(minExtent, maxExtent);
         }
 
         private static bool CheckLocationConflicts(Rectangle room, ISettableMapView<bool> map, IList<Rectangle> rooms)
