@@ -144,7 +144,7 @@ namespace MovingCastles.GameSystems.TurnBased
                     return true;
                 }
 
-                _logManager.StoryLog("What do you want to interact with?");
+                _logManager.CombatLog("What do you want to interact with?");
                 return false;
             }
 
@@ -159,7 +159,7 @@ namespace MovingCastles.GameSystems.TurnBased
                         return true;
                     }
 
-                    _logManager.StoryLog("Nothing to interact with there.");
+                    _logManager.CombatLog("Nothing to interact with there.");
                     return false;
                 }
             }
@@ -285,7 +285,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
             if (TargetInteractables.Count == 0)
             {
-                _logManager.StoryLog("Nothing to interact with.");
+                _logManager.CombatLog("Nothing to interact with.");
                 return;
             }
 
