@@ -6,6 +6,7 @@ using MovingCastles.Ui;
 using Newtonsoft.Json;
 using SadConsole;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MovingCastles.Entities
@@ -58,6 +59,17 @@ namespace MovingCastles.Entities
         public Color NameColor { get; }
 
         public string TemplateId { get; }
+
+        /// <summary>
+        /// Null for standalone entities. If this is part of a multi-tile entity, Anchor is
+        /// the entity which can be interacted with.
+        /// </summary>
+        public McEntity Anchor { get; }
+
+        /// <summary>
+        /// Add child entities to make this the anchor of a multi-tile entity
+        /// </summary>
+        public IList<McEntity> SubTiles { get; }
 
         public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 

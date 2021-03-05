@@ -19,6 +19,10 @@
         public const int Goblin = 16;
         public const int Warg = 17;
         public const int GoblinArcher = 18;
+        public const int Troll_TopLeft = 19;
+        public const int Troll_TopRight = 20;
+        public const int Troll_BottomLeft = 35;
+        public const int Troll_BottomRight = 36;
 
         // Items
         public const int EtheriumShard = 10;
