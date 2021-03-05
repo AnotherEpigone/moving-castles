@@ -28,7 +28,10 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var firstDoor = doorList[0];
             if (doorList.Count == 1)
             {
-                return AdjacencyRule.EIGHT_WAY.Neighbors(firstDoor).Any(p => room.Location.Contains(p) && level.Map.WalkabilityView[p]);
+                return AdjacencyRule.EIGHT_WAY.Neighbors(firstDoor).Any(p =>
+                                            p != pos
+                                            && room.Location.Contains(p)
+                                            && level.Map.WalkabilityView[p]);
             }
 
             var blockedMapView = new LambdaMapView<bool>(
