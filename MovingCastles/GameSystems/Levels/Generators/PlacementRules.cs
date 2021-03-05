@@ -1,4 +1,6 @@
 ﻿using GoRogue;
+using GoRogue.MapViews;
+using MovingCastles.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,15 +31,12 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 return AdjacencyRule.EIGHT_WAY.Neighbors(firstDoor).Any(p => room.Location.Contains(p) && level.Map.WalkabilityView[p]);
             }
 
-            foreach (var door in doors.Skip(1))
-            {
-                if (level.Map.AStar.ShortestPath(firstDoor, door) == null)
-                {
-                    return false;
-                }
-            }
+            var blockedMapView = new LambdaMapView<bool>(
+                level.Map.Width,
+                level.Map.Height,
+                p => p != pos && level.Map.WalkabilityView[p]);
 
-            return true;
+            return blockedMapView.CoordsReachable(doorList, room.Location);
         }
     }
 }
