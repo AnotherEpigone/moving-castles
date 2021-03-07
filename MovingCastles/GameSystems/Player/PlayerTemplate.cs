@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Player
 {
-    public record PlayerTemplate
+    public record WizardTemplate
     {
-        public PlayerTemplate()
+        public WizardTemplate()
             : this(
                 "Vede",
                 100,
@@ -17,7 +17,7 @@ namespace MovingCastles.GameSystems.Player
                 new List<JournalEntry>())
         { }
 
-        public PlayerTemplate(
+        public WizardTemplate(
             string name,
             float health,
             float maxHealth,

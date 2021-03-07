@@ -1,5 +1,4 @@
-﻿using GoRogue;
-using MovingCastles.GameSystems.Player;
+﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Serialization.Map;
 
@@ -12,7 +11,7 @@ namespace MovingCastles.GameSystems.Levels
         /// <summary>
         /// New level from scratch
         /// </summary>
-        Level Generate(int seed, string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions);
+        Level Generate(int seed, string id, Wizard player, SpawnConditions playerSpawnConditions);
 
         /// <summary>
         /// Load from Save
@@ -22,6 +21,6 @@ namespace MovingCastles.GameSystems.Levels
         /// <summary>
         /// Return to previously generated level
         /// </summary>
-        Level Generate(MapState mapState, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions);
+        Level Generate(MapState mapState, Wizard player, SpawnConditions playerSpawnConditions);
     }
 }

@@ -1,6 +1,6 @@
-﻿using MovingCastles.GameSystems.Factions;
+﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Time;
 
 namespace MovingCastles.GameSystems
@@ -8,7 +8,7 @@ namespace MovingCastles.GameSystems
     public class DungeonMasterFactory : IDungeonMasterFactory
     {
         public IDungeonMaster Create(
-            PlayerTemplate player,
+            Wizard player,
             Level level,
             Structure structure,
             ITimeMaster timeMaster)
@@ -28,7 +28,7 @@ namespace MovingCastles.GameSystems
                 timeMaster);
         }
 
-        public IDungeonMaster Create(PlayerTemplate player, Level level, Structure structure)
+        public IDungeonMaster Create(Wizard player, Level level, Structure structure)
             => Create(player, level, structure, new TimeMaster());
     }
 }

@@ -5,9 +5,6 @@ using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using MovingCastles.Entities;
 using MovingCastles.Fonts;
-using MovingCastles.GameSystems.Items;
-using MovingCastles.GameSystems.Player;
-using MovingCastles.Maps.Generation;
 using SadConsole;
 using System.Linq;
 
@@ -22,47 +19,7 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
         }
 
-        public DungeonMap CreateDungeonMap(int width, int height, MapTemplate mapTemplate, PlayerTemplate playerInfo)
-        {
-            var map = new DungeonMap(width, height);
-
-            // Generate map via GoRogue, and update the real map with appropriate terrain.
-            var tempMap = new ArrayMap<bool>(map.Width, map.Height);
-            QuickGenerators.GenerateRandomRoomsMap(tempMap, maxRooms: 180, roomMinSize: 8, roomMaxSize: 12);
-            map.ApplyTerrainOverlay(tempMap, SpawnDungeonTerrain);
-
-            Coord spawnPosition;
-
-            // Spawn a few mock enemies
-            var allTheActors = ActorAtlas.ActorsById.Values.ToList();
-            for (int i = 0; i < 30; i++)
-            {
-                spawnPosition = map.WalkabilityView.RandomPosition(true); // Get a location that is walkable
-
-                var goblin = _entityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
-                map.AddEntity(goblin);
-            }
-
-            // Spawn a few items
-            for (int i = 0; i < 30; i++)
-            {
-                spawnPosition = map.WalkabilityView.RandomPosition(true);
-
-                var item = _entityFactory.CreateItem(spawnPosition, mapTemplate.FloorItems.ConvertAll(i => ItemAtlas.ItemsById[i]).RandomItem());
-
-                map.AddEntity(item);
-            }
-
-            // Spawn player
-            spawnPosition = map.WalkabilityView.RandomPosition(true);
-
-            var player = _entityFactory.CreatePlayer(spawnPosition, playerInfo);
-            map.AddEntity(player);
-
-            return map;
-        }
-
-        public CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, PlayerTemplate playerInfo)
+        public CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Wizard player)
         {
             var map = new CastleMap(width, height);
 
@@ -71,10 +28,8 @@ namespace MovingCastles.Maps
             QuickGenerators.GenerateRectangleMap(tempMap);
             map.ApplyTerrainOverlay(tempMap, SpawnOutdoorTerrain);
 
-            var spawnPosition = new Point(3, 3);
-
-            var castle = _entityFactory.CreateCastle(spawnPosition, playerInfo);
-            map.AddEntity(castle);
+            player.Position = new Point(3, 3);
+            map.AddEntity(player);
 
             return map;
         }

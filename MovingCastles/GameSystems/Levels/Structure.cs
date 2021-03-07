@@ -1,4 +1,4 @@
-﻿using MovingCastles.GameSystems.Player;
+﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Serialization.Map;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace MovingCastles.GameSystems.Levels
 
         public Dictionary<string, MapState> SerializedLevels { get; }
 
-        public Level GetLevel(string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
+        public Level GetLevel(string id, Wizard player, SpawnConditions playerSpawnConditions)
         {
             if (GeneratedLevels.TryGetValue(id, out Level level))
             {
@@ -40,11 +40,11 @@ namespace MovingCastles.GameSystems.Levels
             var generator = Generators[id];
             if (SerializedLevels.TryGetValue(id, out var mapState))
             {
-                level = generator.Generate(mapState, playerInfo, playerSpawnConditions);
+                level = generator.Generate(mapState, player, playerSpawnConditions);
             }
             else
             {
-                level = generator.Generate(McRandom.GetSeed(), id, playerInfo, playerSpawnConditions);
+                level = generator.Generate(McRandom.GetSeed(), id, player, playerSpawnConditions);
             }
 
             GeneratedLevels.Add(id, level);

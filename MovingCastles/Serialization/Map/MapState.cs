@@ -28,7 +28,7 @@ namespace MovingCastles.Serialization.Map
         public MapState(Structure structure, Level level)
         {
             var entities = level.Map.Entities.Items.OfType<McEntity>().ToList();
-            var wizard = entities.OfType<Wizard>().Single();
+            var wizard = entities.OfType<Wizard>().SingleOrDefault();
             entities.Remove(wizard);
             var doors = entities.OfType<Door>().ToList();
             foreach (var door in doors)

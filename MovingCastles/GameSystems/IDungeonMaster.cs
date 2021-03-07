@@ -1,13 +1,13 @@
-﻿using MovingCastles.GameSystems.Factions;
+﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Time;
 
 namespace MovingCastles.GameSystems
 {
     public interface IDungeonMaster
     {
-        PlayerTemplate Player { get; }
+        Wizard Player { get; }
 
         ILevelMaster LevelMaster { get; }
 

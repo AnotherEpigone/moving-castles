@@ -1,5 +1,5 @@
-﻿using MovingCastles.GameSystems.Logging;
-using MovingCastles.GameSystems.Player;
+﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Logging;
 using System;
 
 namespace MovingCastles.GameSystems.Levels
@@ -12,7 +12,7 @@ namespace MovingCastles.GameSystems.Levels
 
         public Structure Structure { get; set; }
 
-        public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, PlayerTemplate player, ILogManager logManager)
+        public void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, Wizard player, ILogManager logManager)
         {
             Level = Structure.GetLevel(targetMapId, player, spawnConditions);
 

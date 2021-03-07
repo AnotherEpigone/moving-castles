@@ -2,10 +2,8 @@
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
 using MovingCastles.Entities;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Troschuetz.Random;
@@ -22,7 +20,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public override string Id { get; } = "GENERATOR_MAPGENDEMO";
 
-        public override Level Generate(int seed, string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
+        public override Level Generate(int seed, string id, Wizard player, SpawnConditions playerSpawnConditions)
         {
             var rng = new StandardGenerator(seed);
             var (level, meta) = GenerateTerrain(rng, seed, LevelId.MapgenTest, 100, 60);
@@ -40,8 +38,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             // spawn player
             //spawnPosition = spawnPosition = map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
-            spawnPosition = new Coord(24, 2);
-            var player = EntityFactory.CreatePlayer(spawnPosition, playerInfo);
+            player.Position = new Coord(24, 2);
             level.Map.AddEntity(player);
 
             // No FOV by default

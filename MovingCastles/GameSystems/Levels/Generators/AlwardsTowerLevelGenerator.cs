@@ -30,14 +30,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         public override string Id { get; } = "GENERATOR_ALWARDS_TOWER";
 
-        public override Level Generate(int seed, string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
+        public override Level Generate(int seed, string id, Wizard player, SpawnConditions playerSpawnConditions)
         {
             var rng = new StandardGenerator(seed);
             var level = Generate(seed, id, rng);
 
             // spawn player
-            var spawnPosition = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
-            var player = EntityFactory.CreatePlayer(spawnPosition, playerInfo);
+            player.Position = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
             level.Map.AddEntity(player);
 
             return level;
@@ -57,7 +56,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 var lobby = new Room(roomFiller.PlaceRoom(terrain, 8, 8, staticRooms.Select(r => r.Location), RoomPlacementConstraints.MapEdge), RoomType.Lobby);
                 staticRooms.Add(lobby);
                 var hallwayGen = new HallwayGenerator(rng);
-                staticRooms.AddRange(hallwayGen.PlaceRandomHallway(terrain, lobby.Location, staticRooms.Select(r => r.Location).ToList(), 25, 2)
+                staticRooms.AddRange(hallwayGen.PlaceRandomHallway(terrain, lobby.Location, staticRooms.ConvertAll(r => r.Location), 25, 2)
                     .Select(l => new Room(l, RoomType.Hallway)));
             }
             else if (id == LevelId.AlwardsTower2)

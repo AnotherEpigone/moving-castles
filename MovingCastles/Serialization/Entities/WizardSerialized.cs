@@ -2,7 +2,6 @@
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Journal;
-using MovingCastles.GameSystems.Player;
 using Newtonsoft.Json;
 using SadConsole.SerializedTypes;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace MovingCastles.Serialization.Entities
     {
         public override void WriteJson(JsonWriter writer, Wizard value, JsonSerializer serializer) => serializer.Serialize(writer, (WizardSerialized)value);
 
-        public override Wizard ReadJson(JsonReader reader, System.Type objectType, Wizard existingValue,
+        public override global::MovingCastles.Entities.Wizard ReadJson(JsonReader reader, System.Type objectType, global::MovingCastles.Entities.Wizard existingValue,
                                         bool hasExistingValue, JsonSerializer serializer) => serializer.Deserialize<WizardSerialized>(reader);
     }
 
@@ -59,7 +58,7 @@ namespace MovingCastles.Serialization.Entities
 
         public static implicit operator Wizard(WizardSerialized serializedObject)
         {
-            var playerTemplate = new PlayerTemplate()
+            var playerTemplate = new GameSystems.Player.WizardTemplate()
             {
                 JournalEntries = serializedObject.JournalEntries.ToList(),
             };

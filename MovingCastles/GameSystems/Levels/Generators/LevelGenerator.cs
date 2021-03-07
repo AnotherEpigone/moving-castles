@@ -1,6 +1,5 @@
 ﻿using GoRogue.MapViews;
 using MovingCastles.Entities;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Serialization.Map;
 using Troschuetz.Random;
@@ -19,7 +18,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         protected IEntityFactory EntityFactory { get; }
 
-        public abstract Level Generate(int seed, string id, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions);
+        public abstract Level Generate(int seed, string id, Wizard player, SpawnConditions playerSpawnConditions);
 
         public Level Generate(Save save)
         {
@@ -31,14 +30,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
             return level;
         }
 
-        public Level Generate(MapState mapState, PlayerTemplate playerInfo, SpawnConditions playerSpawnConditions)
+        public Level Generate(MapState mapState, Wizard player, SpawnConditions playerSpawnConditions)
         {
             var rng = new StandardGenerator(mapState.Seed);
             var level = RestoreTerrainAndEntities(mapState, rng);
 
             // spawn player
-            var spawnPosition = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
-            var player = EntityFactory.CreatePlayer(spawnPosition, playerInfo);
+            player.Position = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
             level.Map.AddEntity(player);
 
             return level;
