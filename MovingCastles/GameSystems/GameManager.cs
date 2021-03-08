@@ -49,10 +49,12 @@ namespace MovingCastles.GameSystems
                 if (_dungeonMaster != null)
                 {
                     _dungeonMaster.LevelMaster.LevelChanged -= DungeonMaster_LevelChanged;
+                    _dungeonMaster.LevelMaster.LevelChanging -= DungeonMaster_LevelChanging;
                 }
 
                 _dungeonMaster = value;
                 _dungeonMaster.LevelMaster.LevelChanged += DungeonMaster_LevelChanged;
+                _dungeonMaster.LevelMaster.LevelChanging += DungeonMaster_LevelChanging;
             }
         }
 
@@ -167,6 +169,11 @@ namespace MovingCastles.GameSystems
         private void DungeonMaster_LevelChanged(object sender, EventArgs args)
         {
             ((DungeonModeConsole)Global.CurrentScreen).SetMap(DungeonMaster.LevelMaster.Level.Map);
+        }
+
+        private void DungeonMaster_LevelChanging(object sender, EventArgs args)
+        {
+            ((DungeonModeConsole)Global.CurrentScreen).UnsetMap();
         }
     }
 }

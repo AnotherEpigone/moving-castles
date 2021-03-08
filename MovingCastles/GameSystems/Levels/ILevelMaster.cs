@@ -11,6 +11,7 @@ namespace MovingCastles.GameSystems.Levels
         Structure Structure { get; set; }
 
         event EventHandler LevelChanged;
+        event EventHandler LevelChanging;
 
         void ChangeLevel(string targetMapId, SpawnConditions spawnConditions, Wizard player, ILogManager logManager);
     }

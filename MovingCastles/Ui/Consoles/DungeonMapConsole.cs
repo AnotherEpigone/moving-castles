@@ -98,11 +98,8 @@ namespace MovingCastles.Ui.Consoles
             Children.Add(_mapRendererContainer);
         }
 
-        public void SetMap(DungeonMap map)
+        public void UnsetMap()
         {
-            _mouseHighlight = new MouseHighlightConsole(_mouseHighlight.Width, _mouseHighlight.Height, _mouseHighlight.Font, _game, map);
-            _interactTargettingConsole = new InteractTargettingConsole(_interactTargettingConsole.Font, map);
-
             foreach (var entity in Map.Entities.Items.OfType<McEntity>())
             {
                 if (entity is Wizard player)
@@ -113,6 +110,14 @@ namespace MovingCastles.Ui.Consoles
 
                 _game.UnregisterEntity(entity);
             }
+
+            Map = null;
+        }
+
+        public void SetMap(DungeonMap map)
+        {
+            _mouseHighlight = new MouseHighlightConsole(_mouseHighlight.Width, _mouseHighlight.Height, _mouseHighlight.Font, _game, map);
+            _interactTargettingConsole = new InteractTargettingConsole(_interactTargettingConsole.Font, map);
 
             Map = map;
             _game.Init(map);

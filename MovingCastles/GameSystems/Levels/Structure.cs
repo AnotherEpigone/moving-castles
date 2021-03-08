@@ -2,6 +2,7 @@
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.Serialization.Map;
 using System.Collections.Generic;
+using Troschuetz.Random.Generators;
 
 namespace MovingCastles.GameSystems.Levels
 {
@@ -30,10 +31,19 @@ namespace MovingCastles.GameSystems.Levels
 
         public Dictionary<string, MapState> SerializedLevels { get; }
 
-        public Level GetLevel(string id, Wizard player, SpawnConditions playerSpawnConditions)
+        public Level GetLevel(
+            string id,
+            Wizard player,
+            SpawnConditions playerSpawnConditions)
         {
             if (GeneratedLevels.TryGetValue(id, out Level level))
             {
+                var rng = new StandardGenerator();
+
+                // spawn player
+                player.Position = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
+                level.Map.AddEntity(player);
+
                 return level;
             }
 

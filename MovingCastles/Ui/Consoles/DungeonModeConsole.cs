@@ -111,6 +111,11 @@ namespace MovingCastles.Ui.Consoles
             healthComponent.HealthChanged += Player_HealthChanged;
         }
 
+        public void UnsetMap()
+        {
+            _mapConsole.UnsetMap();
+        }
+
         private ControlsConsole CreateTopPane(
             int rightSectionWidth,
             IMapModeMenuProvider menuProvider)
