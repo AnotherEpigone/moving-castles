@@ -6,6 +6,6 @@ namespace MovingCastles.Components
 {
     public interface IRangedAttackerComponent
     {
-        bool TryAttack(DungeonMap map, IGenerator rng, ILogManager logManager);
+        bool TryAttack(McMap map, IGenerator rng, ILogManager logManager);
     }
 }

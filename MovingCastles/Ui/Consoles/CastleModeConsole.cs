@@ -22,7 +22,7 @@ namespace MovingCastles.Ui.Consoles
             int height,
             Font tilesetFont,
             IMapModeMenuProvider menuProvider,
-            CastleMap map,
+            McMap map,
             ILogManager logManager)
             : base(width, height)
         {

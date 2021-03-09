@@ -10,9 +10,9 @@ namespace MovingCastles.Ui.Consoles
     public class InteractTargettingConsole : Console
     {
         private readonly List<(Coord, int)> _sprites;
-        private readonly DungeonMap _map;
+        private readonly McMap _map;
 
-        public InteractTargettingConsole(Font font, DungeonMap map)
+        public InteractTargettingConsole(Font font, McMap map)
             : base(3, 3, font)
         {
             UseMouse = false;

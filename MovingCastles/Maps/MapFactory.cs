@@ -19,9 +19,9 @@ namespace MovingCastles.Maps
             _entityFactory = entityFactory;
         }
 
-        public CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Wizard player)
+        public McMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Wizard player)
         {
-            var map = new CastleMap(width, height);
+            var map = new McMap(width, height);
 
             // Generate map via GoRogue, and update the real map with appropriate terrain.
             var tempMap = new ArrayMap<bool>(map.Width, map.Height);

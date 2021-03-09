@@ -44,7 +44,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         protected override (Level, LevelGenerationMetadata) GenerateTerrain(IGenerator rng, int seed, string id, int width, int height)
         {
-            var map = new DungeonMap(width, height);
+            var map = new McMap(width, height);
             var terrain = new ArrayMap<bool>(width, height);
 
             var roomFiller = new RoomGenerator(rng);

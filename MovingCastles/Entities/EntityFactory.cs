@@ -32,7 +32,7 @@ namespace MovingCastles.Entities
                 Color.Transparent,
                 actorTemplate.Glyph,
                 position,
-                (int)Maps.DungeonMapLayer.MONSTERS,
+                (int)Maps.DungeonMapLayer.ACTORS,
                 isWalkable: false,
                 isTransparent: true,
                 actorTemplate.NameColor,

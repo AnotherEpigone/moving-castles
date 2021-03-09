@@ -100,7 +100,7 @@ namespace MovingCastles.Ui.Consoles
             Children.Add(_characterPanel);
         }
 
-        public void SetMap(DungeonMap map)
+        public void SetMap(McMap map)
         {
             var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged -= Player_HealthChanged;

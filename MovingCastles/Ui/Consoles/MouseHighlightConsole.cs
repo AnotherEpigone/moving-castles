@@ -11,14 +11,14 @@ namespace MovingCastles.Ui.Consoles
     public class MouseHighlightConsole : Console
     {
         private readonly ITurnBasedGame _game;
-        private readonly DungeonMap _map;
+        private readonly McMap _map;
 
         public MouseHighlightConsole(
             int width,
             int height,
             Font font,
             ITurnBasedGame game,
-            DungeonMap map)
+            McMap map)
             : base(width, height, font)
         {
             UseMouse = false;

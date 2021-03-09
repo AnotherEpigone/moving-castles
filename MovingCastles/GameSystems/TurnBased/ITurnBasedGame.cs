@@ -9,7 +9,7 @@ namespace MovingCastles.GameSystems.TurnBased
 {
     public interface ITurnBasedGame
     {
-        DungeonMap Map { get; }
+        McMap Map { get; }
         State State { get; set; }
         SpellTemplate TargettingSpell { get; }
         List<Coord> TargetInteractables { get; }
@@ -23,6 +23,6 @@ namespace MovingCastles.GameSystems.TurnBased
         void StartSpellTargetting(SpellTemplate spell);
         void InteractTargetSelected(Coord mapCoord);
         bool HandleAsInteractTargettingInput(Keyboard info);
-        void Init(DungeonMap map);
+        void Init(McMap map);
     }
 }

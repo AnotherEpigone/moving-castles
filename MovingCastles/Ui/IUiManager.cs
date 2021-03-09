@@ -21,7 +21,7 @@ namespace MovingCastles.Ui
 
         CastleModeConsole CreateCastleMapScreen(
             IGameManager gameManager,
-            CastleMap map,
+            McMap map,
             Font tilesetFont);
 
         void ToggleFullScreen();

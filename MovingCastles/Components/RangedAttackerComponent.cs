@@ -35,7 +35,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public bool TryAttack(DungeonMap map, IGenerator rng, ILogManager logManager)
+        public bool TryAttack(McMap map, IGenerator rng, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent
                 || map.DistanceMeasurement.Calculate(Parent.Position, map.Player.Position) > _range)

@@ -11,7 +11,7 @@ namespace MovingCastles.GameSystems.Levels
             int Seed,
             IList<Room> Rooms,
             IList<Coord> Doors,
-            DungeonMap Map)
+            McMap Map)
     {
         public IEnumerable<Coord> GetDoorsForRoom(Rectangle room)
         {

@@ -46,7 +46,7 @@ namespace MovingCastles.Components.AiComponents
             }
         }
 
-        public (bool success, int ticks) Run(DungeonMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(McMap map, IGenerator rng, ILogManager logManager)
         {
             foreach (var component in _components)
             {

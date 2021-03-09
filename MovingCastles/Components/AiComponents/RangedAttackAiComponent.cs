@@ -13,7 +13,7 @@ namespace MovingCastles.Components.AiComponents
     {
         public IGameObject Parent { get; set; }
 
-        public (bool success, int ticks) Run(DungeonMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(McMap map, IGenerator rng, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent)
             {

@@ -20,18 +20,18 @@ namespace MovingCastles.Ui.Consoles
         private Point _lastSummaryConsolePosition;
         public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
 
-        public CastleMap Map { get; }
+        public McMap Map { get; }
 
         public ScrollingConsole MapRenderer { get; }
 
-        public Castle Castle { get; }
+        public Wizard Player { get; }
 
         public CastleMapConsole(
             int width,
             int height,
             Font font,
             IMapModeMenuProvider menuProvider,
-            CastleMap map)
+            McMap map)
         {
             _menuProvider = menuProvider;
 
@@ -46,10 +46,10 @@ namespace MovingCastles.Ui.Consoles
 
             IsFocused = true;
 
-            Castle = map.Castle;
+            Player = map.Player;
 
-            Map.CalculateFOV(Castle.Position, Castle.FOVRadius, Radius.DIAMOND);
-            MapRenderer.CenterViewPortOnPoint(Castle.Position);
+            Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.DIAMOND);
+            MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Children.Add(MapRenderer);
             Children.Add(_mouseHighlight);
@@ -65,7 +65,7 @@ namespace MovingCastles.Ui.Consoles
 
             if (info.IsKeyPressed(Keys.I))
             {
-                _menuProvider.Inventory.Show(Castle.GetGoRogueComponent<IInventoryComponent>());
+                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
 

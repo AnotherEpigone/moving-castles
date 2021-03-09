@@ -70,7 +70,7 @@ namespace MovingCastles.GameSystems.TurnBased
             _registeredEntities = new Dictionary<System.Guid, McEntity>();
         }
 
-        public DungeonMap Map { get; private set; }
+        public McMap Map { get; private set; }
 
         public State State { get; set; }
 
@@ -80,7 +80,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public List<Coord> TargetInteractables { get; }
 
-        public void Init(DungeonMap map)
+        public void Init(McMap map)
         {
             Map = map;
 

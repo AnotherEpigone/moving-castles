@@ -70,7 +70,7 @@ namespace MovingCastles.Ui
 
         public CastleModeConsole CreateCastleMapScreen(
             IGameManager gameManager,
-            CastleMap map,
+            McMap map,
             Font tilesetFont)
         {
             return new CastleModeConsole(

@@ -12,7 +12,7 @@ namespace MovingCastles.GameSystems.Spells.SpellEffects
             IDungeonMaster dungeonMaster,
             McEntity caster,
             SpellTemplate spell,
-            DungeonMap map,
+            McMap map,
             HitResult hitResult,
             Coord targetCoord,
             ILogManager logManager);

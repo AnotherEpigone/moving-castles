@@ -7,6 +7,6 @@ namespace MovingCastles.Components.AiComponents
 {
     public interface IAiComponent : IGameObjectComponent
     {
-        (bool success, int ticks) Run(DungeonMap map, IGenerator rng, ILogManager logManager);
+        (bool success, int ticks) Run(McMap map, IGenerator rng, ILogManager logManager);
     }
 }

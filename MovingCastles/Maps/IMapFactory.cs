@@ -4,6 +4,6 @@ namespace MovingCastles.Maps
 {
     public interface IMapFactory
     {
-        CastleMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Wizard player);
+        McMap CreateCastleMap(int width, int height, MapTemplate mapPlan, Wizard player);
     }
 }
