@@ -18,7 +18,7 @@ using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Ui.Consoles
 {
-    internal class DungeonMapConsole : ContainerConsole
+    internal class DungeonMapConsole : ContainerConsole, ITurnBasedGameConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
         private readonly IAppSettings _appSettings;
@@ -41,6 +41,8 @@ namespace MovingCastles.Ui.Consoles
         public ScrollingConsole MapRenderer { get; private set; }
 
         public Wizard Player { get; private set; }
+
+        public SadConsole.Console ThisConsole => this;
 
         public DungeonMapConsole(
             int viewportWidth,
@@ -111,6 +113,7 @@ namespace MovingCastles.Ui.Consoles
                 _game.UnregisterEntity(entity);
             }
 
+            Map.RemoveEntity(Player);
             Map = null;
         }
 

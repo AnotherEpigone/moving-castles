@@ -3,28 +3,33 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.Components;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
 using SadConsole;
 using SadConsole.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Ui.Consoles
 {
-    public class CastleMapConsole : ContainerConsole
+    public class CastleMapConsole : ContainerConsole, ITurnBasedGameConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
-        private readonly Console _mouseHighlight;
+        private readonly SadConsole.Console _mouseHighlight;
 
         private Point _lastSummaryConsolePosition;
-        public event System.EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
+        public event EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
+        public event EventHandler<string> FlavorMessageChanged;
 
         public McMap Map { get; }
 
         public ScrollingConsole MapRenderer { get; }
 
         public Wizard Player { get; }
+
+        public SadConsole.Console ThisConsole => this;
 
         public CastleMapConsole(
             int width,
@@ -35,7 +40,7 @@ namespace MovingCastles.Ui.Consoles
         {
             _menuProvider = menuProvider;
 
-            _mouseHighlight = new Console(1, 1, font);
+            _mouseHighlight = new SadConsole.Console(1, 1, font);
             _mouseHighlight.SetGlyph(0, 0, 1, ColorHelper.WhiteHighlight);
             _mouseHighlight.UseMouse = false;
 
@@ -88,7 +93,7 @@ namespace MovingCastles.Ui.Consoles
                 && Map.FOV.CurrentFOV.Contains(mapCoord))
             {
                 // update summaries
-                var summaryControls = new List<Console>();
+                var summaryControls = new List<SadConsole.Console>();
                 foreach (var entity in Map.GetEntities<BasicEntity>(mapCoord))
                 {
                     var control = entity.GetGoRogueComponent<ISummaryControlComponent>()?.GetSidebarSummary();
@@ -112,6 +117,21 @@ namespace MovingCastles.Ui.Consoles
             }
 
             return base.ProcessMouse(state);
+        }
+
+        public void StartTargetting(SpellTemplate spell)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetMap(McMap map)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnsetMap()
+        {
+            throw new NotImplementedException();
         }
     }
 }

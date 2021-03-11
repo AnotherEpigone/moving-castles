@@ -51,21 +51,23 @@ namespace MovingCastles.Ui
             menu.IsFocused = true;
         }
 
-        public DungeonModeConsole CreateDungeonMapScreen(
+        public MainConsole CreateDungeonMapScreen(
             IGameManager gameManager,
-            ITurnBasedGame turnBasedGame,
+            ITurnBasedGame game,
+            ITurnBasedGameConsoleFactory turnBasedGameConsoleFactory,
             IDungeonMaster dungeonMaster,
             Font tilesetFont)
         {
-            return new DungeonModeConsole(
+            return new MainConsole(
                 ViewPortWidth,
                 ViewPortHeight,
                 tilesetFont,
                 CreateMenuProvider(gameManager),
                 dungeonMaster,
                 _logManager,
+                game,
                 _appSettings,
-                turnBasedGame);
+                turnBasedGameConsoleFactory);
         }
 
         public CastleModeConsole CreateCastleMapScreen(

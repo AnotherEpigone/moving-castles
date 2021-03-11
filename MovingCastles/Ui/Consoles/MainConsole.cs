@@ -12,14 +12,14 @@ using SadConsole.Controls;
 
 namespace MovingCastles.Ui.Consoles
 {
-    public class DungeonModeConsole : ContainerConsole
+    public class MainConsole : ContainerConsole
     {
         private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
 
         private readonly IDungeonMaster _dungeonMaster;
 
-        private DungeonMapConsole _mapConsole;
+        private ITurnBasedGameConsole _mapConsole;
         private ProgressBar _healthBar;
         private ProgressBar _endowmentBar;
         private Console _statOverlay;
@@ -28,15 +28,16 @@ namespace MovingCastles.Ui.Consoles
         private int _leftPaneWidth;
         private int _rightPaneWidth;
 
-        public DungeonModeConsole(
+        public MainConsole(
             int width,
             int height,
             Font tilesetFont,
             IMapModeMenuProvider menuProvider,
             IDungeonMaster dungeonMaster,
             ILogManager logManager,
+            ITurnBasedGame game,
             IAppSettings appSettings,
-            ITurnBasedGame game)
+            ITurnBasedGameConsoleFactory gameConsoleFactory)
         {
             _dungeonMaster = dungeonMaster;
 
@@ -54,17 +55,16 @@ namespace MovingCastles.Ui.Consoles
             var middleSectionWidth = width - _leftPaneWidth - _rightPaneWidth;
 
             var tileSizeXFactor = tilesetFont.Size.X / Global.FontDefault.Size.X;
-            _mapConsole = new DungeonMapConsole(
+            _mapConsole = gameConsoleFactory.Create(
+                _leftPaneWidth,
+                TopPaneHeight,
                 middleSectionWidth / tileSizeXFactor,
                 height - TopPaneHeight,
                 tilesetFont,
                 menuProvider,
                 game,
                 appSettings,
-                _dungeonMaster.LevelMaster.Level.Map)
-            {
-                Position = new Point(_leftPaneWidth, TopPaneHeight)
-            };
+                _dungeonMaster.LevelMaster.Level.Map);
 
             CreateInfoPanel();
             CreateCharacterPanel(width, height);
@@ -92,7 +92,7 @@ namespace MovingCastles.Ui.Consoles
                 PrintCharacterPanel();
             };
 
-            Children.Add(_mapConsole);
+            Children.Add(_mapConsole.ThisConsole);
             Children.Add(CreateTopPane(middleSectionWidth, menuProvider));
             Children.Add(combatEventLog);
             Children.Add(storyEventLog);

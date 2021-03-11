@@ -75,7 +75,9 @@ namespace MovingCastles.GameSystems
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
+            var gameConsoleFactory = new DungeonMapConsoleFactory();
+
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
         }
 
         public void Save()
@@ -128,7 +130,9 @@ namespace MovingCastles.GameSystems
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, save.TimeMaster);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
+            var gameConsoleFactory = new DungeonMapConsoleFactory();
+
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
         }
 
         public void StartDungeonModeDemo()
@@ -163,17 +167,19 @@ namespace MovingCastles.GameSystems
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure);
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, DungeonMaster, tilesetFont);
+            var gameConsoleFactory = new DungeonMapConsoleFactory();
+
+            Global.CurrentScreen = _uiManager.CreateDungeonMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
         }
 
         private void DungeonMaster_LevelChanged(object sender, EventArgs args)
         {
-            ((DungeonModeConsole)Global.CurrentScreen).SetMap(DungeonMaster.LevelMaster.Level.Map);
+            ((MainConsole)Global.CurrentScreen).SetMap(DungeonMaster.LevelMaster.Level.Map);
         }
 
         private void DungeonMaster_LevelChanging(object sender, EventArgs args)
         {
-            ((DungeonModeConsole)Global.CurrentScreen).UnsetMap();
+            ((MainConsole)Global.CurrentScreen).UnsetMap();
         }
     }
 }
