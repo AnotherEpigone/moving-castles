@@ -53,7 +53,7 @@ namespace MovingCastles.Ui.Consoles
 
             Player = map.Player;
 
-            Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.DIAMOND);
+            Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
             MapRenderer.CenterViewPortOnPoint(Player.Position);
 
             Children.Add(MapRenderer);

@@ -5,7 +5,6 @@ using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
 using MovingCastles.Extensions;
 using MovingCastles.GameSystems.Items;
-using MovingCastles.GameSystems.Player;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
 using MovingCastles.Text;

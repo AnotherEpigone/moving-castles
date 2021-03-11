@@ -6,5 +6,7 @@
 
         public const string AlwardsTower1 = "LEVEL_ALWARDS_TOWER_1";
         public const string AlwardsTower2 = "LEVEL_ALWARDS_TOWER_2";
+
+        public const string SaraniHighlands = "SARANI_HIGHLANDS";
     }
 }

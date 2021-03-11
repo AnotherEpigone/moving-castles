@@ -12,6 +12,7 @@ namespace MovingCastles.GameSystems.Levels
             {
                 Structure.StructureId_MapgenDemo => CreateMapgenTest(id, entityFactory),
                 Structure.StructureId_AlwardsTower => CreateAlwardsTower(id, entityFactory),
+                Structure.StructureId_SaraniDesert_Highlands => CreateSaraniHighlands(id, entityFactory),
                 _ => throw new ArgumentException($"Unknown id: {id}"),
             };
         }
@@ -25,6 +26,16 @@ namespace MovingCastles.GameSystems.Levels
             structure.Generators.Add(
                 LevelId.AlwardsTower2,
                 new AlwardsTowerLevelGenerator(entityFactory));
+
+            return structure;
+        }
+
+        private static Structure CreateSaraniHighlands(string id, IEntityFactory entityFactory)
+        {
+            var structure = new Structure(id);
+            structure.Generators.Add(
+                LevelId.SaraniHighlands,
+                new SaraniHighlandsLevelGenerator(entityFactory));
 
             return structure;
         }

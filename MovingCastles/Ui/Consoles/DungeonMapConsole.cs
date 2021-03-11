@@ -212,7 +212,10 @@ namespace MovingCastles.Ui.Consoles
 
             var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
 
-            _mouseHighlight.IsVisible = Map.FOV.CurrentFOV.Contains(_targettedConsolePos) && Map.Explored[targetMapCoord];
+            _mouseHighlight.IsVisible =
+                Map.FOV.CurrentFOV.Contains(_targettedConsolePos)
+                && Map.Explored.Contains(targetMapCoord)
+                && Map.Explored[targetMapCoord];
             _mouseHighlight.Draw(_targettedConsolePos, MapRenderer.ViewPort.Location, Map.FOV.CurrentFOV.Contains(targetMapCoord));
 
             if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)

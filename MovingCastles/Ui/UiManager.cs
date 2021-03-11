@@ -51,7 +51,7 @@ namespace MovingCastles.Ui
             menu.IsFocused = true;
         }
 
-        public MainConsole CreateDungeonMapScreen(
+        public MainConsole CreateMapScreen(
             IGameManager gameManager,
             ITurnBasedGame game,
             ITurnBasedGameConsoleFactory turnBasedGameConsoleFactory,
@@ -68,20 +68,6 @@ namespace MovingCastles.Ui
                 game,
                 _appSettings,
                 turnBasedGameConsoleFactory);
-        }
-
-        public CastleModeConsole CreateCastleMapScreen(
-            IGameManager gameManager,
-            McMap map,
-            Font tilesetFont)
-        {
-            return new CastleModeConsole(
-                ViewPortWidth,
-                ViewPortHeight,
-                tilesetFont,
-                CreateMenuProvider(gameManager),
-                map,
-                _logManager);
         }
 
         private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager)

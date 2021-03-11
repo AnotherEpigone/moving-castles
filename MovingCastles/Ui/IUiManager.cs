@@ -13,16 +13,11 @@ namespace MovingCastles.Ui
 
         void ShowMainMenu(IGameManager gameManager);
 
-        MainConsole CreateDungeonMapScreen(
+        MainConsole CreateMapScreen(
             IGameManager gameManager,
             ITurnBasedGame game,
             ITurnBasedGameConsoleFactory turnBasedGameConsoleFactory,
             IDungeonMaster dungeonMaster,
-            Font tilesetFont);
-
-        CastleModeConsole CreateCastleMapScreen(
-            IGameManager gameManager,
-            McMap map,
             Font tilesetFont);
 
         void ToggleFullScreen();
