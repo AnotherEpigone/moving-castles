@@ -18,9 +18,9 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             // if adjacent to a door, or to more than 1 other blocked tile, this has the potential to
             // cut off pathing
-            var dangerous = !AdjacencyRule.CARDINALS.Neighbors(pos).Any(n => doors.Contains(n))
+            var safe = !AdjacencyRule.CARDINALS.Neighbors(pos).Any(n => doors.Contains(n))
                     && AdjacencyRule.CARDINALS.Neighbors(pos).Count(n => !level.Map.WalkabilityView[n]) < 2;
-            if (!dangerous)
+            if (safe)
             {
                 return true;
             }
