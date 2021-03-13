@@ -44,7 +44,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         private Level Generate(int seed, string id, IGenerator rng)
         {
-            var (level, _) = GenerateTerrain(rng, seed, id, 30, 30);
+            var (level, _) = GenerateTerrain(rng, seed, id, 50, 50);
             var map = level.Map;
 
             // spawn doors

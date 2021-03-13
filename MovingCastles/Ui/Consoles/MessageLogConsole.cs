@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using SadConsole;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MovingCastles.Ui
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class MessageLogConsole : ContainerConsole
     {
         private const int _maxLines = 50;
@@ -39,6 +41,7 @@ namespace MovingCastles.Ui
             _messageConsole = new ScrollingConsole(width, height, font)
             {
                 DefaultBackground = consoleBackground,
+                UseMouse = false,
             };
 
             Children.Add(_messageConsole);
@@ -104,6 +107,14 @@ namespace MovingCastles.Ui
 
             var coloredMessage = new ColoredString($"> {message}\r\n", new Cell(Color.Gainsboro, backgroundColor));
             _messageConsole.Cursor.Print(coloredMessage);
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(MessageLogConsole)} ({Position.X}, {Position.Y})");
+            }
         }
     }
 }

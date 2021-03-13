@@ -9,11 +9,13 @@ using SadConsole;
 using SadConsole.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class CastleMapConsole : ContainerConsole, ITurnBasedGameConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
@@ -132,6 +134,14 @@ namespace MovingCastles.Ui.Consoles
         public void UnsetMap()
         {
             throw new NotImplementedException();
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(CastleMapConsole)} ({Position.X}, {Position.Y})");
+            }
         }
     }
 }

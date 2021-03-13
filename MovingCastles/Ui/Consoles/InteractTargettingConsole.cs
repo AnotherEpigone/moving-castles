@@ -4,9 +4,11 @@ using MovingCastles.Fonts;
 using MovingCastles.Maps;
 using SadConsole;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class InteractTargettingConsole : Console
     {
         private readonly List<(Coord, int)> _sprites;
@@ -55,6 +57,14 @@ namespace MovingCastles.Ui.Consoles
                 {
                     SetGlyph(overlayPos.X, overlayPos.Y, glyph, ColorHelper.GreyHighlight);
                 }
+            }
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(InteractTargettingConsole)} ({Position.X}, {Position.Y})");
             }
         }
     }

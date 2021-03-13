@@ -13,11 +13,13 @@ using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Input;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using XnaRect = Microsoft.Xna.Framework.Rectangle;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class DungeonMapConsole : ContainerConsole, ITurnBasedGameConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
@@ -195,7 +197,7 @@ namespace MovingCastles.Ui.Consoles
                     .Where(desc => !string.IsNullOrEmpty(desc))
                     .ToList();
                 _lastSummaryConsolePosition = mapState.ConsoleCellPosition;
-                FlavorMessageChanged.Invoke(this, string.Join(' ', new[] { _statusMessage }.Concat(flavorDescriptions)));
+                FlavorMessageChanged?.Invoke(this, string.Join(' ', new[] { _statusMessage }.Concat(flavorDescriptions)));
             }
 
             if (coordIsTargetable && _lastMousePos != mapState.ConsolePixelPosition)
@@ -213,9 +215,9 @@ namespace MovingCastles.Ui.Consoles
             var targetMapCoord = _targettedConsolePos + MapRenderer.ViewPort.Location;
 
             _mouseHighlight.IsVisible =
-                Map.FOV.CurrentFOV.Contains(_targettedConsolePos)
-                && Map.Explored.Contains(targetMapCoord)
-                && Map.Explored[targetMapCoord];
+                Map.FOV.CurrentFOV.Contains(targetMapCoord);
+                ////&& Map.Explored.Contains(targetMapCoord)
+                ////&& Map.Explored[targetMapCoord];
             _mouseHighlight.Draw(_targettedConsolePos, MapRenderer.ViewPort.Location, Map.FOV.CurrentFOV.Contains(targetMapCoord));
 
             if (!_mouseHighlight.IsVisible && _lastSummaryConsolePosition != default)
@@ -500,6 +502,14 @@ namespace MovingCastles.Ui.Consoles
         private void Player_RemovedFromMap(object sender, System.EventArgs e)
         {
             _menuProvider.Death.Show("You died.");
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(DungeonMapConsole)} ({Position.X}, {Position.Y})");
+            }
         }
     }
 }

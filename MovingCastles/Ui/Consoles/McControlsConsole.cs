@@ -1,10 +1,12 @@
 ﻿using MovingCastles.Ui.Controls;
 using SadConsole;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class McControlsConsole : ControlsConsole
     {
         public McControlsConsole(int width, int height)
@@ -68,6 +70,14 @@ namespace MovingCastles.Ui.Consoles
             _selectionButtons[focusedButton]();
 
             base.Update(time);
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(McControlsConsole)} ({Position.X}, {Position.Y})");
+            }
         }
     }
 }

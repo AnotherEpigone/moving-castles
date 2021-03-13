@@ -9,9 +9,11 @@ using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Controls;
+using System.Diagnostics;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class MainConsole : ContainerConsole
     {
         private const int TopPaneHeight = 2;
@@ -39,6 +41,8 @@ namespace MovingCastles.Ui.Consoles
             IAppSettings appSettings,
             ITurnBasedGameConsoleFactory gameConsoleFactory)
         {
+            UseMouse = false;
+
             _dungeonMaster = dungeonMaster;
 
             if (width >= 180)
@@ -329,6 +333,14 @@ namespace MovingCastles.Ui.Consoles
             _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
             PrintStatOverlays(healthComponent, endowmentComponent);
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(MainConsole)} ({Position.X}, {Position.Y})");
+            }
         }
     }
 }

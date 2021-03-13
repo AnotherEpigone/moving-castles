@@ -4,10 +4,12 @@ using MovingCastles.GameSystems.Spells;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using SadConsole;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class MouseHighlightConsole : Console
     {
         private readonly ITurnBasedGame _game;
@@ -110,6 +112,14 @@ namespace MovingCastles.Ui.Consoles
                 {
                     break;
                 }
+            }
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(MouseHighlightConsole)} ({Position.X}, {Position.Y})");
             }
         }
     }

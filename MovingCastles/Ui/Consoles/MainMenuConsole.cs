@@ -5,9 +5,11 @@ using MovingCastles.Ui.Controls;
 using SadConsole;
 using SadConsole.Controls;
 using SadConsole.Input;
+using System.Diagnostics;
 
 namespace MovingCastles.Ui.Consoles
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public sealed class MainMenuConsole : ContainerConsole
     {
         private readonly McControlsConsole _menuConsole;
@@ -198,6 +200,14 @@ namespace MovingCastles.Ui.Consoles
             menuConsole.SetupSelectionButtons(continueButton, newGameButton, settingsButton, exitButton, dungeonModeButton, castleModeButton, mapTestButton);
 
             return menuConsole;
+        }
+
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return string.Format($"{nameof(MainMenuConsole)} ({Position.X}, {Position.Y})");
+            }
         }
     }
 }
