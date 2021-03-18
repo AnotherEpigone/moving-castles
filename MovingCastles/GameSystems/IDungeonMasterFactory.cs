@@ -6,8 +6,19 @@ namespace MovingCastles.GameSystems
 {
     public interface IDungeonMasterFactory
     {
-        IDungeonMaster Create(Wizard player, Level level, Structure structure);
+        IDungeonMaster Create(
+            Wizard player,
+            Level level,
+            Structure structure,
+            IEntityFactory entityFactory,
+            IStructureFactory structureFactory);
 
-        IDungeonMaster Create(Wizard player, Level level, Structure structure, ITimeMaster timeMaster);
+        IDungeonMaster Create(
+            Wizard player,
+            Level level,
+            Structure structure,
+            IEntityFactory entityFactory,
+            IStructureFactory structureFactory,
+            ITimeMaster timeMaster);
     }
 }

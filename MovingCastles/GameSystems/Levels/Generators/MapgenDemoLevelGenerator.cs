@@ -33,7 +33,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // spawn a trapdoor
             var roomDungeonRect = meta.Areas[DungeonAreaKey];       
             var spawnPosition = level.Map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
-            var trapdoor = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
+            var trapdoor = EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.Trapdoor);
             level.Map.AddEntity(trapdoor);
 
             // spawn player

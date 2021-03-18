@@ -112,7 +112,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             if (id == LevelId.AlwardsTower1)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-                var trapdoor = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.Trapdoor);
+                var trapdoor = EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.Trapdoor);
                 trapdoor.AddGoRogueComponent(new StoryMessageComponent(nameof(Story.AlwardsTower_TrapdoorStep), true));
                 map.AddEntity(trapdoor);
 
@@ -122,7 +122,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             if (id == LevelId.AlwardsTower2)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-                var etheriumCore = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.EtheriumCoreWithStand);
+                var etheriumCore = EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.EtheriumCoreWithStand);
                 map.AddEntity(etheriumCore);
 
                 PopulateStairwellRooms(level, level.Rooms.Where(r => r.Type == RoomType.Stairwell).ToList(), LevelId.AlwardsTower1, null);
@@ -208,7 +208,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             if (downLevelId != null)
             {
                 var spawnPosition = rooms[0].Location.Center;
-                var stairDown = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseDown);
+                var stairDown = EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.StaircaseDown);
                 stairDown.AddGoRogueComponent(new ChangeLevelComponent(downLevelId, new SpawnConditions(Spawn.StairUp, 0)));
                 level.Map.AddEntity(stairDown);
 
@@ -222,7 +222,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             foreach (var room in upRooms)
             {
                 var spawnPosition = room.Location.Center;
-                var stairsUp = EntityFactory.CreateDoodad(spawnPosition, DoodadAtlas.StaircaseUp);
+                var stairsUp = EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.StaircaseUp);
                 stairsUp.AddGoRogueComponent(new ChangeLevelComponent(upLevelId, new SpawnConditions(Spawn.Stairdown, 0)));
                 level.Map.AddEntity(stairsUp);
             }
@@ -251,7 +251,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     && (barrelRng < 5
                         || room.Location.IsOnPerimeter(pos) && barrelRng < 20))
                 {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallBarrel));
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.SmallBarrel));
                     continue;
                 }
 
@@ -260,7 +260,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     && (chestRng < 5
                         || room.Location.IsOnPerimeter(pos) && chestRng < 20))
                 {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallChest));
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.SmallChest));
                     continue;
                 }
 
@@ -279,14 +279,14 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     && room.Location.IsOnPerimeter(pos)
                     && rng.Next(100) < 25)
                 {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallBookshelf));
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.SmallBookshelf));
                     continue;
                 }
 
                 if (canPlaceBlocker
                     && rng.Next(100) < 5)
                 {
-                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.SmallDesk));
+                    level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.SmallDesk));
                     continue;
                 }
 
@@ -299,13 +299,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
             if (canPlaceBlocker
                     && rng.Next(100) < 5)
             {
-                level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.HeavyStoneRubble));
+                level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.HeavyStoneRubble));
                 return;
             }
 
             if (rng.Next(100) < 15)
             {
-                level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DoodadAtlas.StoneRubble));
+                level.Map.AddEntity(EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.StoneRubble));
             }
         }
     }

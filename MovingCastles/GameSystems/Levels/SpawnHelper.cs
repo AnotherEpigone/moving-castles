@@ -14,9 +14,9 @@ namespace MovingCastles.GameSystems.Levels
             return conditions.Spawn switch
             {
                 Spawn.Default => level.Map.WalkabilityView.RandomPosition(true, rng),
-                Spawn.Stairdown => GetEntityWithTemplateId(level, DoodadAtlas.StaircaseDown.Id, conditions.LandmarkId)
+                Spawn.Stairdown => GetEntityWithTemplateId(level, DungeonModeDoodadAtlas.StaircaseDown.Id, conditions.LandmarkId)
                                         .Position,
-                Spawn.StairUp => GetEntityWithTemplateId(level, DoodadAtlas.StaircaseUp.Id, conditions.LandmarkId)
+                Spawn.StairUp => GetEntityWithTemplateId(level, DungeonModeDoodadAtlas.StaircaseUp.Id, conditions.LandmarkId)
                                         .Position,
                 Spawn.Door => throw new NotSupportedException(conditions.Spawn.ToString()),
                 _ => throw new ArgumentException(conditions.Spawn.ToString()),

@@ -7,11 +7,11 @@ using System.Reflection;
 
 namespace MovingCastles.Entities
 {
-    public static class DoodadAtlas
+    public static class DungeonModeDoodadAtlas
     {
-        static DoodadAtlas()
+        static DungeonModeDoodadAtlas()
         {
-            ById = typeof(DoodadAtlas)
+            ById = typeof(DungeonModeDoodadAtlas)
                 .GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .Select(p => p.GetValue(null))
                 .OfType<DoodadTemplate>()

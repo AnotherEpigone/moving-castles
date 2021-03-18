@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
+using MovingCastles.Components.Levels;
 using MovingCastles.Entities;
 using MovingCastles.Maps;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         private Level Generate(int seed, string id, IGenerator rng)
         {
-            var (level, _) = GenerateTerrain(rng, seed, id, 50, 50);
+            var (level, _) = GenerateTerrain(rng, seed, id, 20, 20);
             var map = level.Map;
 
             // spawn doors
@@ -52,6 +53,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
             {
                 map.AddEntity(EntityFactory.CreateDoor(door));
             }
+
+            var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+            var tower = EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
+            tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
+            map.AddEntity(tower);
 
             return level;
         }

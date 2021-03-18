@@ -58,7 +58,7 @@ namespace MovingCastles.Maps
             else
             {
                 // Wall
-                return new BasicTerrain(Color.White, new Color(41, 25, 40, 255), SpriteAtlas.Forest, position, isWalkable: true, isTransparent: false);
+                return new BasicTerrain(Color.White, new Color(41, 25, 40, 255), SpriteAtlas.Forest, position, isWalkable: false, isTransparent: false);
             }
         }
     }
