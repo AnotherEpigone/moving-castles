@@ -2,6 +2,7 @@
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
+using SadConsole;
 using System;
 
 namespace MovingCastles.Ui.Consoles
@@ -20,7 +21,7 @@ namespace MovingCastles.Ui.Consoles
 
         void StartTargetting(SpellTemplate spell);
 
-        void SetMap(McMap map);
+        void SetMap(McMap map, Font tilesetFont);
 
         void UnsetMap();
     }

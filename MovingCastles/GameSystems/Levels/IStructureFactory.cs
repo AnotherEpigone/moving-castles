@@ -1,9 +1,7 @@
-﻿using MovingCastles.Entities;
-
-namespace MovingCastles.GameSystems.Levels
+﻿namespace MovingCastles.GameSystems.Levels
 {
     public interface IStructureFactory
     {
-        Structure CreateById(string id, IEntityFactory entityFactory);
+        Structure CreateById(string id, IGameModeMaster gameModeMaster);
     }
 }

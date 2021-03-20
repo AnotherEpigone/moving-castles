@@ -12,8 +12,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
 {
     public class SaraniHighlandsLevelGenerator : LevelGenerator
     {
-        public SaraniHighlandsLevelGenerator(IEntityFactory entityFactory)
-            : base(entityFactory) { }
+        public SaraniHighlandsLevelGenerator(IGameModeMaster gameModeMaster)
+            : base(gameModeMaster) { }
 
         public override string Id { get; } = "GENERATOR_SARANI_HIGHLANDS";
 
@@ -51,11 +51,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // spawn doors
             foreach (var door in level.Doors)
             {
-                map.AddEntity(EntityFactory.CreateDoor(door));
+                map.AddEntity(GameModeMaster.EntityFactory.CreateDoor(door));
             }
 
             var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
-            var tower = EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
+            var tower = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
             tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
             map.AddEntity(tower);
 

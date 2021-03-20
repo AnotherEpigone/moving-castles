@@ -15,16 +15,19 @@ namespace MovingCastles.GameSystems.Levels
         public const string StructureId_AlwardsTower = "STRUCTURE_ALWARDS_TOWER";
         public const string StructureId_SaraniDesert_Highlands = "STRUCTURE_SARANI_HIGHLANDS";
 
-        public Structure(string id)
+        public Structure(string id, GameMode mode)
         {
             GeneratedLevels = new Dictionary<string, Level>();
             SerializedLevels = new Dictionary<string, MapState>();
             Generators = new Dictionary<string, ILevelGenerator>();
 
             Id = id;
+            Mode = mode;
         }
 
         public string Id { get; init; }
+
+        public GameMode Mode { get; }
 
         public Dictionary<string, ILevelGenerator> Generators { get; }
 

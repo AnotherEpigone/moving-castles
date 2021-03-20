@@ -7,13 +7,11 @@ using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Saving;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.GameSystems.TurnBased;
-using MovingCastles.Maps;
 using MovingCastles.Serialization.Map;
 using MovingCastles.Ui;
 using MovingCastles.Ui.Consoles;
 using SadConsole;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MovingCastles.GameSystems
@@ -60,24 +58,24 @@ namespace MovingCastles.GameSystems
 
         public void StartNewGame()
         {
-            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
-            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            var gameModeMaster = new GameModeMaster(_logManager);
+            gameModeMaster.SetGameMode(GameMode.Dungeon);
 
             var playerTemplate = new WizardTemplate();
             playerTemplate.JournalEntries.Add(AlwardsTowerJournalEntries.Quest(new McTimeSpan(-1)));
             playerTemplate.JournalEntries.Add(AlwardsTowerJournalEntries.FirstEntrance(new McTimeSpan(0)));
 
-            var player = entityFactory.CreatePlayer(Coord.NONE, playerTemplate);
+            var player = gameModeMaster.EntityFactory.CreatePlayer(Coord.NONE, playerTemplate);
 
-            var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, entityFactory);
+            var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, gameModeMaster);
             var level = structure.GetLevel(LevelId.AlwardsTower1, player, new SpawnConditions(Spawn.Default, 0));
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, entityFactory, _structureFactory);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory);
+
+            gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            var gameConsoleFactory = new DungeonMapConsoleFactory();
-
-            Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
+            Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameModeMaster.GameConsoleFactory, DungeonMaster, gameModeMaster.Font);
         }
 
         public void Save()
@@ -112,27 +110,27 @@ namespace MovingCastles.GameSystems
 
         public void Load()
         {
-            var (success, save) = _saveManager.Read();
-            if (!success)
-            {
-                throw new System.IO.IOException("Failed to load save file.");
-            }
+            ////var (success, save) = _saveManager.Read();
+            ////if (!success)
+            ////{
+            ////    throw new System.IO.IOException("Failed to load save file.");
+            ////}
 
-            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
-            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            ////var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+            ////var entityFactory = new EntityFactory(tilesetFont, _logManager);
 
-            var playerTemplate = new WizardTemplate();
-            var player = entityFactory.CreatePlayer(Coord.NONE, playerTemplate);
+            ////var playerTemplate = new WizardTemplate();
+            ////var player = entityFactory.CreatePlayer(Coord.NONE, playerTemplate);
 
-            var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
-            var level = structure.GetLevel(save);
+            ////var structure = _structureFactory.CreateById(save.MapState.StructureId, entityFactory);
+            ////var level = structure.GetLevel(save);
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, entityFactory, _structureFactory, save.TimeMaster);
+            ////DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, entityFactory, _structureFactory, save.TimeMaster);
 
-            var game = new TurnBasedGame(_logManager, DungeonMaster);
-            var gameConsoleFactory = new DungeonMapConsoleFactory();
+            ////var game = new TurnBasedGame(_logManager, DungeonMaster);
+            ////var gameConsoleFactory = new DungeonMapConsoleFactory();
 
-            Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
+            ////Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
         }
 
         public void StartDungeonModeDemo()
@@ -141,40 +139,42 @@ namespace MovingCastles.GameSystems
 
         public void StartCastleModeDemo()
         {
-            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.Two);
-            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            var gameModeMaster = new GameModeMaster(_logManager);
+            gameModeMaster.SetGameMode(GameMode.Castle);
 
             var playerTemplate = new WizardTemplate();
-            var player = entityFactory.CreatePlayer(Coord.NONE, playerTemplate);
+            playerTemplate.JournalEntries.Add(AlwardsTowerJournalEntries.Quest(new McTimeSpan(-1)));
 
-            var structure = _structureFactory.CreateById(Structure.StructureId_SaraniDesert_Highlands, entityFactory);
+            var player = gameModeMaster.EntityFactory.CreatePlayer(Coord.NONE, playerTemplate);
+
+            var structure = _structureFactory.CreateById(Structure.StructureId_SaraniDesert_Highlands, gameModeMaster);
             var level = structure.GetLevel(LevelId.SaraniHighlands, player, new SpawnConditions(Spawn.Default, 0));
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, entityFactory, _structureFactory);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory);
+
+            gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
-            var gameConsoleFactory = new DungeonMapConsoleFactory();
-
-            Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
+            Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameModeMaster.GameConsoleFactory, DungeonMaster, gameModeMaster.Font);
         }
 
         public void StartMapGenDemo()
         {
-            var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
-            var entityFactory = new EntityFactory(tilesetFont, _logManager);
+            ////var tilesetFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
+            ////var entityFactory = new EntityFactory(tilesetFont, _logManager);
 
-            var playerTemplate = new WizardTemplate();
-            var player = entityFactory.CreatePlayer(Coord.NONE, playerTemplate);
+            ////var playerTemplate = new WizardTemplate();
+            ////var player = entityFactory.CreatePlayer(Coord.NONE, playerTemplate);
 
-            var structure = _structureFactory.CreateById(Structure.StructureId_MapgenDemo, entityFactory);
-            var level = structure.GetLevel(LevelId.MapgenTest, player, new SpawnConditions(Spawn.Default, 0));
+            ////var structure = _structureFactory.CreateById(Structure.StructureId_MapgenDemo, entityFactory);
+            ////var level = structure.GetLevel(LevelId.MapgenTest, player, new SpawnConditions(Spawn.Default, 0));
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, entityFactory, _structureFactory);
+            ////DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, entityFactory, _structureFactory);
 
-            var game = new TurnBasedGame(_logManager, DungeonMaster);
-            var gameConsoleFactory = new DungeonMapConsoleFactory();
+            ////var game = new TurnBasedGame(_logManager, DungeonMaster);
+            ////var gameConsoleFactory = new DungeonMapConsoleFactory();
 
-            Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
+            ////Global.CurrentScreen = _uiManager.CreateMapScreen(this, game, gameConsoleFactory, DungeonMaster, tilesetFont);
         }
 
         private void DungeonMaster_LevelChanged(object sender, EventArgs args)
@@ -185,6 +185,20 @@ namespace MovingCastles.GameSystems
         private void DungeonMaster_LevelChanging(object sender, EventArgs args)
         {
             ((MainConsole)Global.CurrentScreen).UnsetMap();
+        }
+
+        private void GameModeMaster_ModeChanged(object sender, EventArgs e)
+        {
+            DungeonMaster.Player.Font = DungeonMaster.ModeMaster.Font;
+            DungeonMaster.Player.OnCalculateRenderPosition();
+
+            var game = new TurnBasedGame(_logManager, DungeonMaster);
+            Global.CurrentScreen = _uiManager.CreateMapScreen(
+                                        this,
+                                        game,
+                                        DungeonMaster.ModeMaster.GameConsoleFactory,
+                                        DungeonMaster,
+                                        DungeonMaster.ModeMaster.Font);
         }
     }
 }

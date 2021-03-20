@@ -126,7 +126,7 @@ namespace MovingCastles.Ui.Consoles
             throw new NotImplementedException();
         }
 
-        public void SetMap(McMap map)
+        public void SetMap(McMap map, Font tilesetFont)
         {
             throw new NotImplementedException();
         }

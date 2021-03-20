@@ -15,8 +15,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
     {
         private const string DungeonAreaKey = "MAPAREA_DUNGEON";
 
-        public MapgenDemoLevelGenerator(IEntityFactory entityFactory)
-            : base(entityFactory) { }
+        public MapgenDemoLevelGenerator(IGameModeMaster gameModeMaster)
+            : base(gameModeMaster) { }
 
         public override string Id { get; } = "GENERATOR_MAPGENDEMO";
 
@@ -27,13 +27,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             foreach (var door in level.Doors)
             {
-                level.Map.AddEntity(EntityFactory.CreateDoor(door));
+                level.Map.AddEntity(GameModeMaster.EntityFactory.CreateDoor(door));
             }
 
             // spawn a trapdoor
             var roomDungeonRect = meta.Areas[DungeonAreaKey];       
             var spawnPosition = level.Map.WalkabilityView.RandomPosition((pos, walkable) => walkable && roomDungeonRect.Contains(pos));
-            var trapdoor = EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.Trapdoor);
+            var trapdoor = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, DungeonModeDoodadAtlas.Trapdoor);
             level.Map.AddEntity(trapdoor);
 
             // spawn player

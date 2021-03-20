@@ -125,14 +125,5 @@ namespace MovingCastles.Entities
 
             return wizard;
         }
-
-        public Castle CreateCastle(Coord position, WizardTemplate playerInfo)
-        {
-            var castle = new Castle(position, playerInfo, _font);
-
-            castle.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
-
-            return castle;
-        }
     }
 }

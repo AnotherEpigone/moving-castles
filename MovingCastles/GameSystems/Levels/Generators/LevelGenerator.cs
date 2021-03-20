@@ -9,14 +9,14 @@ namespace MovingCastles.GameSystems.Levels.Generators
 {
     public abstract class LevelGenerator : ILevelGenerator
     {
-        protected LevelGenerator(IEntityFactory entityFactory)
+        protected LevelGenerator(IGameModeMaster gameModeMaster)
         {
-            EntityFactory = entityFactory;
+            GameModeMaster = gameModeMaster;
         }
 
         public abstract string Id { get; }
 
-        protected IEntityFactory EntityFactory { get; }
+        protected IGameModeMaster GameModeMaster { get; }
 
         public abstract Level Generate(int seed, string id, Wizard player, SpawnConditions playerSpawnConditions);
 

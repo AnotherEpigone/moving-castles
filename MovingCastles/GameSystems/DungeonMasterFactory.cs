@@ -11,11 +11,11 @@ namespace MovingCastles.GameSystems
             Wizard player,
             Level level,
             Structure structure,
-            IEntityFactory entityFactory,
+            IGameModeMaster gameModeMaster,
             IStructureFactory structureFactory,
             ITimeMaster timeMaster)
         {
-            var levelMaster = new LevelMaster(structureFactory, entityFactory)
+            var levelMaster = new LevelMaster(structureFactory, gameModeMaster)
             {
                 Level = level,
                 Structure = structure,
@@ -27,20 +27,21 @@ namespace MovingCastles.GameSystems
                 player,
                 levelMaster,
                 factionMaster,
-                timeMaster);
+                timeMaster,
+                gameModeMaster);
         }
 
         public IDungeonMaster Create(
             Wizard player,
             Level level,
             Structure structure,
-            IEntityFactory entityFactory,
+            IGameModeMaster gameModeMaster,
             IStructureFactory structureFactory)
             => Create(
                 player,
                 level,
                 structure,
-                entityFactory,
+                gameModeMaster,
                 structureFactory,
                 new TimeMaster());
     }

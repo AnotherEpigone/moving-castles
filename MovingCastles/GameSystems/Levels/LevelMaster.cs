@@ -1,21 +1,20 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using System;
-using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Levels
 {
     public class LevelMaster : ILevelMaster
     {
         private readonly IStructureFactory _structureFactory;
-        private readonly IEntityFactory _entityFactory;
+        private readonly IGameModeMaster _gameModeMaster;
 
         public LevelMaster(
             IStructureFactory structureFactory,
-            IEntityFactory entityFactory)
+            IGameModeMaster gameModeMaster)
         {
             _structureFactory = structureFactory;
-            _entityFactory = entityFactory;
+            _gameModeMaster = gameModeMaster;
         }
 
         public event EventHandler LevelChanging;
@@ -44,11 +43,17 @@ namespace MovingCastles.GameSystems.Levels
 
             LevelChanging?.Invoke(this, EventArgs.Empty);
 
-            Structure = _structureFactory.CreateById(structureId, _entityFactory);
+            Structure = _structureFactory.CreateById(structureId, _gameModeMaster);
+
             Level = Structure.GetLevel(targetMapId, player, spawnConditions);
+            LevelChanged?.Invoke(this, EventArgs.Empty);
+
+            if (Structure.Mode != _gameModeMaster.Mode)
+            {
+                _gameModeMaster.SetGameMode(Structure.Mode);
+            }
 
             logManager.StoryLog($"Entered {Level.Name}.");
-            LevelChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

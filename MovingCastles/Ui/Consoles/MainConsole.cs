@@ -110,7 +110,7 @@ namespace MovingCastles.Ui.Consoles
             var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged -= Player_HealthChanged;
 
-            _mapConsole.SetMap(map);
+            _mapConsole.SetMap(map, _dungeonMaster.ModeMaster.Font);
 
             healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged += Player_HealthChanged;

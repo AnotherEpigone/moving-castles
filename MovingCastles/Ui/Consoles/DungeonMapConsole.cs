@@ -78,6 +78,9 @@ namespace MovingCastles.Ui.Consoles
                     continue;
                 }
 
+                entity.Font = tilesetFont;
+                entity.OnCalculateRenderPosition();
+
                 _game.RegisterEntity(entity);
             }
 
@@ -119,10 +122,10 @@ namespace MovingCastles.Ui.Consoles
             Map = null;
         }
 
-        public void SetMap(McMap map)
+        public void SetMap(McMap map, Font tilesetFont)
         {
-            _mouseHighlight = new MouseHighlightConsole(_mouseHighlight.Width, _mouseHighlight.Height, _mouseHighlight.Font, _game, map);
-            _interactTargettingConsole = new InteractTargettingConsole(_interactTargettingConsole.Font, map);
+            _mouseHighlight = new MouseHighlightConsole(_mouseHighlight.Width, _mouseHighlight.Height, tilesetFont, _game, map);
+            _interactTargettingConsole = new InteractTargettingConsole(tilesetFont, map);
 
             Map = map;
             _game.Init(map);
@@ -138,11 +141,14 @@ namespace MovingCastles.Ui.Consoles
                     continue;
                 }
 
+                entity.Font = tilesetFont;
+                entity.OnCalculateRenderPosition();
+
                 _game.RegisterEntity(entity);
             }
 
             _mapRendererContainer.Children.Remove(MapRenderer);
-            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, MapRenderer.Width, MapRenderer.Height), MapRenderer.Font);
+            MapRenderer = Map.CreateRenderer(new XnaRect(0, 0, MapRenderer.Width, MapRenderer.Height), tilesetFont);
             MapRenderer.UseMouse = false;
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
 

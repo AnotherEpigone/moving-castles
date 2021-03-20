@@ -10,14 +10,14 @@ namespace MovingCastles.GameSystems
             Wizard player,
             Level level,
             Structure structure,
-            IEntityFactory entityFactory,
+            IGameModeMaster gameModeMaster,
             IStructureFactory structureFactory);
 
         IDungeonMaster Create(
             Wizard player,
             Level level,
             Structure structure,
-            IEntityFactory entityFactory,
+            IGameModeMaster gameModeMaster,
             IStructureFactory structureFactory,
             ITimeMaster timeMaster);
     }

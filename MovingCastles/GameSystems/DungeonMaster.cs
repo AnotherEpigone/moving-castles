@@ -11,15 +11,18 @@ namespace MovingCastles.GameSystems
             Wizard player,
             ILevelMaster levelMaster,
             IFactionMaster factionMaster,
-            ITimeMaster timeMaster)
+            ITimeMaster timeMaster,
+            IGameModeMaster modeMaster)
         {
             Player = player;
             LevelMaster = levelMaster;
             FactionMaster = factionMaster;
             TimeMaster = timeMaster;
+            ModeMaster = modeMaster;
         }
 
         public Wizard Player { get; }
+        public IGameModeMaster ModeMaster { get; }
         public ILevelMaster LevelMaster { get; }
         public IFactionMaster FactionMaster { get; }
         public ITimeMaster TimeMaster { get; }

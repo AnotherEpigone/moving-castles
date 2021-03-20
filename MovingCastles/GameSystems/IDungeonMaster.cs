@@ -9,6 +9,8 @@ namespace MovingCastles.GameSystems
     {
         Wizard Player { get; }
 
+        IGameModeMaster ModeMaster { get; }
+
         ILevelMaster LevelMaster { get; }
 
         IFactionMaster FactionMaster { get; }
