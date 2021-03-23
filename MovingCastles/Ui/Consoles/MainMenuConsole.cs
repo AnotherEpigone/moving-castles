@@ -172,18 +172,10 @@ namespace MovingCastles.Ui.Consoles
                 IsVisible = appSettings.Debug,
             };
 
-            var dungeonModeButton = new McSelectionButton(30, 1)
-            {
-                Text = "Dungeon mode testarea",
-                Position = new Point(debugButtonX, topButtonY + 14),
-                IsVisible = appSettings.Debug,
-            };
-            dungeonModeButton.Click += (_, __) => gameManager.StartDungeonModeDemo();
-
             var castleModeButton = new McSelectionButton(30, 1)
             {
                 Text = "Castle mode testarea",
-                Position = new Point(debugButtonX, topButtonY + 16),
+                Position = new Point(debugButtonX, topButtonY + 14),
                 IsVisible = appSettings.Debug,
             };
             castleModeButton.Click += (_, __) => gameManager.StartCastleModeDemo();
@@ -191,13 +183,13 @@ namespace MovingCastles.Ui.Consoles
             var mapTestButton = new McSelectionButton(30, 1)
             {
                 Text = "Map generation testarea",
-                Position = new Point(debugButtonX, topButtonY + 18),
+                Position = new Point(debugButtonX, topButtonY + 16),
                 IsVisible = appSettings.Debug,
             };
             mapTestButton.Click += (_, __) => gameManager.StartMapGenDemo();
 
             menuConsole.Add(debugLabel);
-            menuConsole.SetupSelectionButtons(continueButton, newGameButton, settingsButton, exitButton, dungeonModeButton, castleModeButton, mapTestButton);
+            menuConsole.SetupSelectionButtons(continueButton, newGameButton, settingsButton, exitButton, castleModeButton, mapTestButton);
 
             return menuConsole;
         }

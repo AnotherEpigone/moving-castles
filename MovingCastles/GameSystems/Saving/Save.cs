@@ -12,5 +12,6 @@ namespace MovingCastles.GameSystems.Saving
         [DataMember] public MapState MapState;
         [DataMember] public Wizard Wizard;
         [DataMember] public TimeMaster TimeMaster;
+        [DataMember] public GameMode GameMode;
     }
 }

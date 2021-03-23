@@ -56,7 +56,7 @@ namespace MovingCastles.Components.Levels
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            Id = nameof(ChangeLevelComponent),
+            Id = nameof(ChangeStructureComponent),
             State = JsonConvert.SerializeObject(new State()
             {
                 TargetMapId = _targetMapId,

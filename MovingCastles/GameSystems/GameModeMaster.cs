@@ -16,7 +16,7 @@ namespace MovingCastles.GameSystems
         private readonly ITurnBasedGameConsoleFactory _dungeonConsoleFactory;
         private readonly ITurnBasedGameConsoleFactory _castleConsoleFactory;
 
-        public GameModeMaster(ILogManager logManager)
+        public GameModeMaster(ILogManager logManager, GameMode mode)
         {
             _dungeonFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
             _castleFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.Two);
@@ -24,6 +24,8 @@ namespace MovingCastles.GameSystems
             _castleEntityFactory = new EntityFactory(_castleFont, logManager);
             _dungeonConsoleFactory = new DungeonMapConsoleFactory();
             _castleConsoleFactory = new DungeonMapConsoleFactory(); // todo castle
+            
+            Mode = mode;
         }
 
         public event EventHandler ModeChanged;

@@ -34,6 +34,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(InventoryComponent), s => new InventoryComponent(new SerializedObject() { Value = s }) },
                 { nameof(StoryMessageComponent), s => new StoryMessageComponent(new SerializedObject() { Value = s }) },
                 { nameof(ChangeLevelComponent), s => new ChangeLevelComponent(new SerializedObject() { Value = s }) },
+                { nameof(ChangeStructureComponent), s => new ChangeStructureComponent(new SerializedObject() { Value = s }) },
                 { nameof(EndowmentPoolComponent), s => new EndowmentPoolComponent(new SerializedObject() { Value = s }) },
 
                 // Effects
