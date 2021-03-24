@@ -1,13 +1,16 @@
 ﻿using GoRogue;
 using GoRogue.MapViews;
+using Microsoft.Xna.Framework;
 using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
 using MovingCastles.Extensions;
+using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
 using MovingCastles.Text;
+using SadConsole;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -134,8 +137,10 @@ namespace MovingCastles.GameSystems.Levels.Generators
             {
                 switch (room.Type)
                 {
-                    case RoomType.Rubble:
                     case RoomType.Lobby:
+                        PopulateLobby(level, room, rng);
+                        break;
+                    case RoomType.Rubble:
                         PopulateRubbleRoom(level, room, rng);
                         break;
                     case RoomType.Study:
@@ -226,6 +231,28 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 stairsUp.AddGoRogueComponent(new ChangeLevelComponent(upLevelId, new SpawnConditions(Spawn.Stairdown, 0)));
                 level.Map.AddEntity(stairsUp);
             }
+        }
+
+        private void PopulateLobby(Level level, Room room, IGenerator rng)
+        {
+            var walls = room.Location
+                .Expand(1, 1)
+                .PerimeterPositions()
+                .ToList();
+            walls.Remove(new Coord(0, 0));
+            walls.Remove(new Coord(0, room.Location.Width + 1));
+            walls.Remove(new Coord(room.Location.Height + 1, 0));
+            walls.Remove(new Coord(room.Location.Height + 1, room.Location.Width + 1));
+            var doorPosition = walls
+                .Intersect(level.Map.Bounds().PerimeterPositions())
+                .ToList()
+                .RandomItem(rng);
+            var door = GameModeMaster.EntityFactory.CreateDoodad(doorPosition, DungeonModeDoodadAtlas.BandedWoodenDoor);
+            door.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_SaraniDesert_Highlands, LevelId.SaraniHighlands, new SpawnConditions(Spawn.Default, 0)));
+
+            // walkability would prevent adding the entity
+            level.Map.Terrain[doorPosition].IsWalkable = true;
+            level.Map.AddEntity(door);
         }
 
         private void PopulateRubbleRoom(Level level, Room room, IGenerator rng)

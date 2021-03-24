@@ -2,6 +2,8 @@
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
+using MovingCastles.GameSystems.Logging;
 
 namespace MovingCastles.Components
 {
@@ -9,9 +11,9 @@ namespace MovingCastles.Components
     {
         public IGameObject Parent { get; set; }
 
-        public void Bump(McEntity bumpingEntity)
+        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
-            if (!(Parent is Door door))
+            if (Parent is not Door door)
             {
                 return;
             }

@@ -388,7 +388,7 @@ namespace MovingCastles.GameSystems.TurnBased
                         return entity.GetComponents<IBumpTriggeredComponent>();
                     })
                     .FirstOrDefault();
-            bumpTriggeredComponent?.Bump(e.BumpingEntity);
+            bumpTriggeredComponent?.Bump(e.BumpingEntity, _logManager, _dungeonMaster);
 
             var meleeAttackComponent = e.BumpingEntity.GetGoRogueComponent<IMeleeAttackerComponent>();
             var attacker = meleeAttackComponent?.Parent as McEntity;

@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.Levels
 {
-    public class ChangeStructureComponent : IStepTriggeredComponent, IInteractTriggeredComponent, ISerializableComponent
+    public class ChangeStructureComponent : IStepTriggeredComponent, IInteractTriggeredComponent, IBumpTriggeredComponent, ISerializableComponent
     {
         private readonly string _targetMapId;
         private readonly string _targetStructureId;
@@ -64,6 +64,16 @@ namespace MovingCastles.Components.Levels
                 SpawnConditions = _spawnConditions,
             }),
         };
+
+        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
+        {
+            if (bumpingEntity is not Wizard)
+            {
+                return;
+            }
+
+            dungeonMaster.LevelMaster.ChangeStructure(_targetStructureId, _targetMapId, _spawnConditions, dungeonMaster.Player, logManager);
+        }
 
         [DataContract]
         private class State

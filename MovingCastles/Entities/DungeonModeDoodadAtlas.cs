@@ -22,6 +22,14 @@ namespace MovingCastles.Entities
 
         public static Dictionary<string, DoodadTemplate> ById { get; }
 
+        public static DoodadTemplate BandedWoodenDoor => new DoodadTemplate(
+            id: "DOODAD_BANDED_WOODEN_DOOR",
+            name: "Iron-banded wooden door",
+            glyph: SpriteAtlas.Door_Banded_Closed,
+            nameColor: Color.SaddleBrown,
+            walkable: false,
+            transparent: false);
+
         public static DoodadTemplate Trapdoor => new DoodadTemplate(
             id: "DOODAD_TRAPDOOR_WOOD",
             name: "Wooden trapdoor",

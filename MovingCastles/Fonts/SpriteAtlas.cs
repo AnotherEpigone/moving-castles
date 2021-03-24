@@ -38,6 +38,7 @@
         public const int Desk_Small = 42;
         public const int Barrel_Small = 43;
         public const int Chest_Small = 44;
+        public const int Door_Banded_Closed = 45;
 
         // GUI
         public const int BlueArrow_Right = 12;
