@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace MovingCastles.Entities
@@ -10,8 +11,9 @@ namespace MovingCastles.Entities
             string name,
             int glyph,
             Color nameColor,
-            System.Func<List<object>> createComponents,
-            string factionName)
+            Func<List<object>> createComponents,
+            string factionName,
+            List<SubTileTemplate> subTiles)
         {
             Id = id;
             Name = name;
@@ -19,6 +21,7 @@ namespace MovingCastles.Entities
             NameColor = nameColor;
             CreateComponents = createComponents;
             FactionName = factionName;
+            SubTiles = subTiles;
         }
 
         public string Id { get; }
@@ -31,6 +34,8 @@ namespace MovingCastles.Entities
 
         public string FactionName { get; }
 
-        public System.Func<List<object>> CreateComponents { get; }
+        public Func<List<object>> CreateComponents { get; }
+
+        public List<SubTileTemplate> SubTiles { get; }
     }
 }

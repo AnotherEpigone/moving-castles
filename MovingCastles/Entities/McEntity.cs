@@ -45,6 +45,8 @@ namespace MovingCastles.Entities
             NameColor = nameColor;
             FactionName = faction;
             UniqueId = id;
+
+            SubTiles = new List<McEntity>();
         }
 
         public event EventHandler<EntityBumpedEventArgs> Bumped;
@@ -64,12 +66,14 @@ namespace MovingCastles.Entities
         /// Null for standalone entities. If this is part of a multi-tile entity, Anchor is
         /// the entity which can be interacted with.
         /// </summary>
-        public McEntity Anchor { get; }
+        public McEntity Anchor { get; init; }
 
         /// <summary>
         /// Add child entities to make this the anchor of a multi-tile entity
         /// </summary>
         public IList<McEntity> SubTiles { get; }
+
+        public bool IsSubTile => Anchor != null;
 
         public string ColoredName => ColorHelper.GetParserString(Name, NameColor);
 

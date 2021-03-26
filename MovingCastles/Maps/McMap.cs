@@ -74,6 +74,36 @@ namespace MovingCastles.Maps
             return (CheckTarget(target, targettingStyle), target);
         }
 
+        public bool AddEntity(McEntity entity)
+        {
+            var rollback = false;
+            foreach (var subTile in entity.SubTiles)
+            {
+                if (!base.AddEntity(subTile))
+                {
+                    rollback = true;
+                    break;
+                }
+            }
+
+            if (rollback || !base.AddEntity(entity))
+            {
+                rollback = true;
+            }
+
+            if (rollback)
+            {
+                foreach (var subTile in entity.SubTiles)
+                {
+                    RemoveEntity(subTile);
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
         public void ApplyTerrainOverlay<T>(IMapView<T> overlay, Coord position, Func<Coord, T, IGameObject> translator)
         {
             foreach (var overlayPos in overlay.Positions())

@@ -46,7 +46,39 @@ namespace MovingCastles.Entities
             actor.Font = _font;
             actor.OnCalculateRenderPosition();
 
+            foreach (var subTileTemplate in actorTemplate.SubTiles)
+            {
+                actor.SubTiles.Add(CreateSubTile(actor, subTileTemplate));
+            }
+
             return actor;
+        }
+
+        public McEntity CreateSubTile(McEntity parent, SubTileTemplate template)
+        {
+            var subTile = new McEntity(
+                parent.TemplateId,
+                parent.Name,
+                Color.White,
+                Color.Transparent,
+                template.Glyph,
+                parent.Position + template.Offset,
+                (int)Maps.DungeonMapLayer.ACTORS,
+                isWalkable: false,
+                isTransparent: true,
+                parent.NameColor,
+                parent.FactionName,
+                parent.UniqueId)
+            {
+                ////Parent = parent,
+                Anchor = parent,
+            };
+
+            // workaround Entity construction bugs by setting font afterward
+            subTile.Font = _font;
+            subTile.OnCalculateRenderPosition();
+
+            return subTile;
         }
 
         public McEntity CreateItem(Coord position, ItemTemplate itemTemplate)

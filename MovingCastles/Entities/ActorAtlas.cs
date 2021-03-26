@@ -40,7 +40,8 @@ namespace MovingCastles.Entities
                     new WalkAtPlayerAiComponent(6),
                     new RandomWalkAiComponent()),
             },
-            Faction.Goblins);
+            Faction.Goblins,
+            new List<SubTileTemplate>());
 
         public static ActorTemplate GoblinArcher => new ActorTemplate(
             id: "ACTOR_GOBLIN_ARCHER",
@@ -57,7 +58,8 @@ namespace MovingCastles.Entities
                     new WalkAtPlayerAiComponent(6),
                     new RandomWalkAiComponent()),
             },
-            Faction.Goblins);
+            Faction.Goblins,
+            new List<SubTileTemplate>());
 
         public static ActorTemplate Warg => new ActorTemplate(
             id: "ACTOR_WARG",
@@ -73,6 +75,29 @@ namespace MovingCastles.Entities
                     new WalkAtPlayerAiComponent(6),
                     new RandomWalkAiComponent()),
             },
-            Faction.Goblins);
+            Faction.Goblins,
+            new List<SubTileTemplate>());
+
+        public static ActorTemplate Troll => new ActorTemplate(
+            id: "ACTOR_TROLL",
+            name: "Troll",
+            glyph: SpriteAtlas.Troll_TopLeft,
+            nameColor: ColorHelper.EnemyName,
+            createComponents: () => new List<object>
+            {
+                new HealthComponent(50),
+                new ActorStatComponent(0.8f, 0.6f, 1f),
+                new MeleeAttackerComponent(25),
+                new LinearCompositeAiComponent(
+                    new WalkAtPlayerAiComponent(6),
+                    new RandomWalkAiComponent()),
+            },
+            Faction.Goblins,
+            new List<SubTileTemplate> 
+            {
+                new SubTileTemplate(SpriteAtlas.Troll_TopRight, new Point(1, 0)),
+                new SubTileTemplate(SpriteAtlas.Troll_BottomLeft, new Point(0, 1)),
+                new SubTileTemplate(SpriteAtlas.Troll_BottomRight, new Point(1, 1)),
+            });
     }
 }

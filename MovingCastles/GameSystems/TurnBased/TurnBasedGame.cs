@@ -180,6 +180,11 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void RegisterEntity(McEntity entity)
         {
+            if (entity.IsSubTile)
+            {
+                return;
+            }
+
             if (entity.HasGoRogueComponent<IAiComponent>()
                 && !_dungeonMaster.TimeMaster.Nodes.Any(node =>
                     node is EntityTurnNode entityNode
@@ -198,6 +203,11 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void UnregisterEntity(McEntity entity)
         {
+            if (entity.IsSubTile)
+            {
+                return;
+            }
+
             _registeredEntities.Remove(entity.UniqueId);
             entity.Moved -= Entity_Moved;
             entity.Bumped -= Entity_Bumped;

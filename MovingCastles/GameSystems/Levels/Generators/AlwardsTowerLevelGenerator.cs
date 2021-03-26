@@ -155,12 +155,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
 
             // Spawn enemies
-            var allTheActors = ActorAtlas.ActorsById.Values.ToList();
+            ////var allTheActors = ActorAtlas.ActorsById.Values.ToList();
             for (int i = 0; i < 10; i++)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true);
 
-                var enemy = GameModeMaster.EntityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
+                ////var enemy = GameModeMaster.EntityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
+                var enemy = GameModeMaster.EntityFactory.CreateActor(spawnPosition, ActorAtlas.Troll);
                 map.AddEntity(enemy);
             }
 
