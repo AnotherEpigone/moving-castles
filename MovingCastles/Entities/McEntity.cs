@@ -8,6 +8,7 @@ using SadConsole;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MovingCastles.Entities
 {
@@ -94,19 +95,39 @@ namespace MovingCastles.Entities
 
         public MoveOutcome Move(Direction direction)
         {
-            if (CurrentMap.WalkabilityView[Position + direction])
+            var tiles = SubTiles
+                .Select(st => st.Position)
+                .Append(Position);
+            var bumpedEvents = new List<EntityBumpedEventArgs>();
+            foreach (var tile in tiles)
+            {
+                var target = tile + direction;
+                if (tiles.Contains(target))
+                {
+                    continue;
+                }
+
+                if (!CurrentMap.WalkabilityView[target])
+                {
+                    var bumpedEventArgs = new EntityBumpedEventArgs(this, Position + direction);
+                    Bumped?.Invoke(this, bumpedEventArgs);
+
+                    bumpedEvents.Add(bumpedEventArgs);
+                }
+            }
+
+            if (bumpedEvents.Count == 0)
             {
                 Position += direction;
+                foreach (var subTile in SubTiles)
+                {
+                    subTile.Position += direction;
+                }
+
                 return MoveOutcome.Move;
             }
-            else
-            {
-                // can't move because we just bumped into something solid
-                var bumpedEventArgs = new EntityBumpedEventArgs(this, Position + direction);
-                Bumped?.Invoke(this, bumpedEventArgs);
 
-                return bumpedEventArgs.MadeMeleeAttack ? MoveOutcome.Melee : MoveOutcome.NoMove;
-            }
+            return bumpedEvents.Any(be => be.MadeMeleeAttack) ? MoveOutcome.Melee : MoveOutcome.NoMove;
         }
 
         public void Remove()
