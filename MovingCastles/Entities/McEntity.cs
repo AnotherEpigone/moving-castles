@@ -118,12 +118,7 @@ namespace MovingCastles.Entities
 
             if (bumpedEvents.Count == 0)
             {
-                Position += direction;
-                foreach (var subTile in SubTiles)
-                {
-                    subTile.Position += direction;
-                }
-
+                BulkMove(SubTiles.Append(this), direction);
                 return MoveOutcome.Move;
             }
 
@@ -134,6 +129,33 @@ namespace MovingCastles.Entities
         {
             CurrentMap.RemoveEntity(this);
             RemovedFromMap?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BulkMove(IEnumerable<McEntity> entities, Direction direction)
+        {
+            const int maxCycles = 100;
+            var cycles = 0;
+            var toMove = new List<McEntity>(entities);
+            while (toMove.Count > 0 && cycles < maxCycles)
+            {
+                var moved = new List<McEntity>();
+                foreach (var entity in toMove)
+                {
+                    var oldPos = entity.Position;
+                    entity.Position += direction;
+                    if (entity.Position != oldPos)
+                    {
+                        moved.Add(entity);
+                    }
+                }
+
+                foreach (var movedEntity in moved)
+                {
+                    toMove.Remove(movedEntity);
+                }
+
+                cycles++;
+            }
         }
 
         private string DebuggerDisplay
