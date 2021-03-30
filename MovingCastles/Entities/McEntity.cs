@@ -131,7 +131,7 @@ namespace MovingCastles.Entities
             RemovedFromMap?.Invoke(this, EventArgs.Empty);
         }
 
-        private void BulkMove(IEnumerable<McEntity> entities, Direction direction)
+        private static void BulkMove(IEnumerable<McEntity> entities, Direction direction)
         {
             const int maxCycles = 100;
             var cycles = 0;

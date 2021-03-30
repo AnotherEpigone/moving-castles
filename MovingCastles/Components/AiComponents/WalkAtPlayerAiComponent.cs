@@ -1,11 +1,13 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
+using GoRogue.Pathing;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.Maps;
+using MovingCastles.Maps.Pathing;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Linq;
@@ -50,19 +52,47 @@ namespace MovingCastles.Components.AiComponents
 
         public MoveOutcome TryGetDirectionAndMove(McMap map, McEntity mcParent)
         {
-            var path = map.AStar.ShortestPath(Parent.Position, map.Player.Position);
-
-            Direction direction;
-            if (path == null || path.Length > _range)
+            if (Distance.CHEBYSHEV.Calculate(Parent.Position, map.Player.Position) > _range)
             {
                 return MoveOutcome.NoMove;
             }
-            else
+
+            // Multi-track drifting!!
+            // we don't want to get blocked by our own subtiles, they'll move with us
+            SetWalkability(mcParent, true);
+            try
             {
-                direction = Direction.GetDirection(path.Steps.First() - Parent.Position);
+                var subTileOffsets = mcParent.SubTiles.Select(st => st.Position - mcParent.Position);
+                var algorithm = new McAStar(map.WalkabilityView, Distance.CHEBYSHEV, subTileOffsets);
+                var path = algorithm.ShortestPath(Parent.Position, map.Player.Position);
+
+                Direction direction;
+                if (path == null || path.Length > _range)
+                {
+
+                    return MoveOutcome.NoMove;
+                }
+                else
+                {
+                    direction = Direction.GetDirection(path.Steps.First() - Parent.Position);
+                }
+
+                return mcParent.Move(direction);
+            }
+            finally
+            {
+                SetWalkability(mcParent, false);
+            }
+        }
+
+        private void SetWalkability(McEntity mcParent, bool value)
+        {
+            foreach (var tile in mcParent.SubTiles)
+            {
+                tile.IsWalkable = value;
             }
 
-            return mcParent.Move(direction);
+            mcParent.IsWalkable = value;
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
