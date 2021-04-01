@@ -69,7 +69,6 @@ namespace MovingCastles.Components.AiComponents
                 Direction direction;
                 if (path == null || path.Length > _range)
                 {
-
                     return MoveOutcome.NoMove;
                 }
                 else

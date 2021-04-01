@@ -390,12 +390,12 @@ namespace MovingCastles.GameSystems.TurnBased
             var bumpTriggeredComponent = Map.GetEntities<McEntity>(e.BumpedPosition)
                     .SelectMany(e =>
                     {
-                        if (e is not IHasComponents entity)
+                        if (!(e is McEntity entity))
                         {
                             return System.Array.Empty<IBumpTriggeredComponent>();
                         }
 
-                        return entity.GetComponents<IBumpTriggeredComponent>();
+                        return entity.GetGoRogueComponents<IBumpTriggeredComponent>();
                     })
                     .FirstOrDefault();
             bumpTriggeredComponent?.Bump(e.BumpingEntity, _logManager, _dungeonMaster);
@@ -407,12 +407,12 @@ namespace MovingCastles.GameSystems.TurnBased
                 var healthComponent = Map.GetEntities<McEntity>(e.BumpedPosition)
                     .SelectMany(e =>
                     {
-                        if (e is not IHasComponents entity)
+                        if (!(e is McEntity entity))
                         {
                             return System.Array.Empty<IHealthComponent>();
                         }
 
-                        return entity.GetComponents<IHealthComponent>();
+                        return entity.GetGoRogueComponents<IHealthComponent>();
                     })
                     .FirstOrDefault();
                 var attackee = healthComponent?.Parent as McEntity;
@@ -440,12 +440,12 @@ namespace MovingCastles.GameSystems.TurnBased
             var stepTriggers = Map.GetEntities<McEntity>(movingEntity.Position)
                 .SelectMany(e =>
                 {
-                    if (e is not IHasComponents entity)
+                    if (!(e is McEntity entity))
                     {
                         return System.Array.Empty<IStepTriggeredComponent>();
                     }
 
-                    return entity.GetComponents<IStepTriggeredComponent>();
+                    return entity.GetGoRogueComponents<IStepTriggeredComponent>();
                 });
 
             foreach (var trigger in stepTriggers)

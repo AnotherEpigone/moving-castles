@@ -80,6 +80,11 @@ namespace MovingCastles.Entities
 
         public virtual string GetFlavorDescription()
         {
+            if (IsSubTile)
+            {
+                return Anchor.GetFlavorDescription();
+            }
+
             if (!HasMap)
             {
                 return string.Empty;
@@ -109,7 +114,7 @@ namespace MovingCastles.Entities
 
                 if (!CurrentMap.WalkabilityView[target])
                 {
-                    var bumpedEventArgs = new EntityBumpedEventArgs(this, Position + direction);
+                    var bumpedEventArgs = new EntityBumpedEventArgs(this, target);
                     Bumped?.Invoke(this, bumpedEventArgs);
 
                     bumpedEvents.Add(bumpedEventArgs);
@@ -127,8 +132,84 @@ namespace MovingCastles.Entities
 
         public void Remove()
         {
+            foreach (var subTile in SubTiles)
+            {
+                subTile.Remove();
+            }
+
             CurrentMap.RemoveEntity(this);
             RemovedFromMap?.Invoke(this, EventArgs.Empty);
+        }
+
+        public new void AddGoRogueComponent(object component)
+        {
+            if (IsSubTile)
+            {
+                Anchor.AddGoRogueComponent(component);
+            }
+            else
+            {
+                base.AddGoRogueComponent(component);
+            }
+        }
+
+        public new void RemoveGoRogueComponent(object component)
+        {
+            if (IsSubTile)
+            {
+                Anchor.RemoveGoRogueComponent(component);
+            }
+            else
+            {
+                base.RemoveGoRogueComponent(component);
+            }
+        }
+
+        public new void RemoveGoRogueComponents(params object[] components)
+        {
+            if (IsSubTile)
+            {
+                Anchor.RemoveGoRogueComponents(components);
+            }
+            else
+            {
+                base.RemoveGoRogueComponents(components);
+            }
+        }
+
+        public new T GetGoRogueComponent<T>()
+        {
+            return IsSubTile
+                ? Anchor.GetGoRogueComponent<T>()
+                : base.GetGoRogueComponent<T>();
+        }
+
+        public new IEnumerable<T> GetGoRogueComponents<T>()
+        {
+            return IsSubTile
+                ? Anchor.GetGoRogueComponents<T>()
+                : base.GetGoRogueComponents<T>();
+        }
+
+        public new bool HasGoRogueComponent(Type componentType)
+        {
+            return IsSubTile
+                ? Anchor.HasGoRogueComponent(componentType)
+                : base.HasGoRogueComponent(componentType);
+        }
+
+        public new bool HasGoRogueComponent<T>()
+        {
+            return IsSubTile
+                ? Anchor.HasGoRogueComponent<T>()
+                : base.HasGoRogueComponent<T>();
+        }
+
+        public new bool HasGoRogueComponents(params Type[] componentTypes)
+        {
+            return IsSubTile
+                ? Anchor.HasGoRogueComponents(componentTypes)
+                : base.HasGoRogueComponents(componentTypes);
         }
 
         private static void BulkMove(IEnumerable<McEntity> entities, Direction direction)
