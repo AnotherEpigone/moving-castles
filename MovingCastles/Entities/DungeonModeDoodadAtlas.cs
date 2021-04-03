@@ -25,7 +25,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate BandedWoodenDoor => new DoodadTemplate(
             id: "DOODAD_BANDED_WOODEN_DOOR",
             name: "Iron-banded wooden door",
-            glyph: SpriteAtlas.Door_Banded_Closed,
+            glyph: DungeonModeSpriteAtlas.Door_Banded_Closed,
             nameColor: Color.SaddleBrown,
             walkable: false,
             transparent: false);
@@ -33,7 +33,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate Trapdoor => new DoodadTemplate(
             id: "DOODAD_TRAPDOOR_WOOD",
             name: "Wooden trapdoor",
-            glyph: SpriteAtlas.Trapdoor_Wood,
+            glyph: DungeonModeSpriteAtlas.Trapdoor_Wood,
             nameColor: Color.SaddleBrown,
             walkable: true,
             transparent: true);
@@ -41,7 +41,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate StaircaseUp => new DoodadTemplate(
             id: "DOODAD_STAIRCASE_UP",
             name: "Staircase up",
-            glyph: SpriteAtlas.Staircase_Up,
+            glyph: DungeonModeSpriteAtlas.Staircase_Up,
             nameColor: Color.SaddleBrown,
             walkable: true,
             transparent: true);
@@ -49,7 +49,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate StaircaseDown => new DoodadTemplate(
             id: "DOODAD_STAIRCASE_DOWN",
             name: "Staircase down",
-            glyph: SpriteAtlas.Staircase_Down,
+            glyph: DungeonModeSpriteAtlas.Staircase_Down,
             nameColor: Color.SaddleBrown,
             walkable: true,
             transparent: true);
@@ -57,7 +57,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate EtheriumCoreWithStand => new DoodadTemplate(
             id: "DOODAD_ETHERIUMCORE_STAND",
             name: "Etherium core",
-            glyph: SpriteAtlas.EtheriumCore_Stand,
+            glyph: DungeonModeSpriteAtlas.EtheriumCore_Stand,
             nameColor: Color.Violet,
             walkable: true,
             transparent: true);
@@ -65,7 +65,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate StoneRubble => new DoodadTemplate(
             id: "DOODAD_STONERUBBLE",
             name: "Stone rubble",
-            glyph: SpriteAtlas.StoneRubble,
+            glyph: DungeonModeSpriteAtlas.StoneRubble,
             nameColor: ColorHelper.ItemGrey,
             walkable: true,
             transparent: true);
@@ -73,7 +73,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate HeavyStoneRubble => new DoodadTemplate(
             id: "DOODAD_STONERUBBLE_HEAVY",
             name: "Heavy stone rubble",
-            glyph: SpriteAtlas.HeavyStoneRubble,
+            glyph: DungeonModeSpriteAtlas.HeavyStoneRubble,
             nameColor: ColorHelper.ItemGrey,
             walkable: false,
             transparent: true);
@@ -81,7 +81,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate SmallBookshelf => new DoodadTemplate(
             id: "DOODAD_BOOKSHELF_SMALL",
             name: "Bookshelf",
-            glyph: SpriteAtlas.Bookshelf_Small,
+            glyph: DungeonModeSpriteAtlas.Bookshelf_Small,
             nameColor: Color.SaddleBrown,
             walkable: false,
             transparent: true);
@@ -89,7 +89,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate SmallDesk => new DoodadTemplate(
             id: "DOODAD_DESK_SMALL",
             name: "Desk",
-            glyph: SpriteAtlas.Desk_Small,
+            glyph: DungeonModeSpriteAtlas.Desk_Small,
             nameColor: Color.SaddleBrown,
             walkable: false,
             transparent: true);
@@ -97,7 +97,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate SmallBarrel => new DoodadTemplate(
             id: "DOODAD_BARREL_SMALL",
             name: "Barrel",
-            glyph: SpriteAtlas.Barrel_Small,
+            glyph: DungeonModeSpriteAtlas.Barrel_Small,
             nameColor: Color.SaddleBrown,
             walkable: false,
             transparent: true);
@@ -105,7 +105,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate SmallChest => new DoodadTemplate(
             id: "DOODAD_CHEST_SMALL",
             name: "Chest",
-            glyph: SpriteAtlas.Chest_Small,
+            glyph: DungeonModeSpriteAtlas.Chest_Small,
             nameColor: Color.SaddleBrown,
             walkable: false,
             transparent: true);

@@ -1,8 +1,8 @@
 {
-  "FilePath": "sprites.png",
+  "FilePath": "dungeon.png",
   "GlyphHeight": 16,
   "GlyphPadding": 0,
   "GlyphWidth": 16,
-  "Name": "sprites",
+  "Name": "dungeon",
   "SolidGlyphIndex": 1
 }

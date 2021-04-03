@@ -29,7 +29,7 @@ namespace MovingCastles.Entities
         public static ActorTemplate Goblin => new ActorTemplate(
             id: "ACTOR_GOBLIN",
             name: "Goblin",
-            glyph: SpriteAtlas.Goblin,
+            glyph: DungeonModeSpriteAtlas.Goblin,
             nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
@@ -46,7 +46,7 @@ namespace MovingCastles.Entities
         public static ActorTemplate GoblinArcher => new ActorTemplate(
             id: "ACTOR_GOBLIN_ARCHER",
             name: "Goblin archer",
-            glyph: SpriteAtlas.GoblinArcher,
+            glyph: DungeonModeSpriteAtlas.GoblinArcher,
             nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
@@ -64,7 +64,7 @@ namespace MovingCastles.Entities
         public static ActorTemplate Warg => new ActorTemplate(
             id: "ACTOR_WARG",
             name: "Warg",
-            glyph: SpriteAtlas.Warg,
+            glyph: DungeonModeSpriteAtlas.Warg,
             nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
@@ -81,7 +81,7 @@ namespace MovingCastles.Entities
         public static ActorTemplate Troll => new ActorTemplate(
             id: "ACTOR_TROLL",
             name: "Troll",
-            glyph: SpriteAtlas.Troll_TopLeft,
+            glyph: DungeonModeSpriteAtlas.Troll_TopLeft,
             nameColor: ColorHelper.EnemyName,
             createComponents: () => new List<object>
             {
@@ -95,9 +95,9 @@ namespace MovingCastles.Entities
             Faction.Goblins,
             new List<SubTileTemplate> 
             {
-                new SubTileTemplate(SpriteAtlas.Troll_TopRight, new Point(1, 0)),
-                new SubTileTemplate(SpriteAtlas.Troll_BottomLeft, new Point(0, 1)),
-                new SubTileTemplate(SpriteAtlas.Troll_BottomRight, new Point(1, 1)),
+                new SubTileTemplate(DungeonModeSpriteAtlas.Troll_TopRight, new Point(1, 0)),
+                new SubTileTemplate(DungeonModeSpriteAtlas.Troll_BottomLeft, new Point(0, 1)),
+                new SubTileTemplate(DungeonModeSpriteAtlas.Troll_BottomRight, new Point(1, 1)),
             });
     }
 }

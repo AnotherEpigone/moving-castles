@@ -35,7 +35,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var terrain = new ArrayMap<bool>(width, height);
 
             QuickGenerators.GenerateRectangleMap(terrain);
-            map.ApplyTerrainOverlay(terrain, MapFactory.SpawnOutdoorTerrain);
+            map.ApplyTerrainOverlay(terrain, TerrainSpawning.SpawnMountainTerrain);
 
             var level = new Level(id, "Sarani Desert Highlands", seed, new List<Room>(), new List<Coord>(), map);
             var meta = new LevelGenerationMetadata();

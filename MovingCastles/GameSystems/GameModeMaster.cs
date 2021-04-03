@@ -18,8 +18,8 @@ namespace MovingCastles.GameSystems
 
         public GameModeMaster(ILogManager logManager, GameMode mode)
         {
-            _dungeonFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.One);
-            _castleFont = Global.Fonts[UiManager.TilesetFontName].GetFont(Font.FontSizes.Two);
+            _dungeonFont = Global.Fonts[UiManager.DungeonFontName].GetFont(Font.FontSizes.One);
+            _castleFont = Global.Fonts[UiManager.CastleFontName].GetFont(Font.FontSizes.One);
             _dungeonEntityFactory = new EntityFactory(_dungeonFont, logManager);
             _castleEntityFactory = new EntityFactory(_castleFont, logManager);
             _dungeonConsoleFactory = new DungeonMapConsoleFactory();

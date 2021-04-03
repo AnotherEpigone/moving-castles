@@ -24,7 +24,7 @@ namespace MovingCastles.Entities
         public static DoodadTemplate AlwardsTower => new DoodadTemplate(
             id: "DOODAD_ALWARDS",
             name: "Old Alward's Tower",
-            glyph: SpriteAtlas.PlayerCastle,
+            glyph: DungeonModeSpriteAtlas.PlayerCastle,
             nameColor: ColorHelper.ItemGrey,
             walkable: true,
             transparent: true);

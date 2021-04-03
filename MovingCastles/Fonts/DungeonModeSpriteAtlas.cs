@@ -1,6 +1,6 @@
 ﻿namespace MovingCastles.Fonts
 {
-    public static class SpriteAtlas
+    public static class DungeonModeSpriteAtlas
     {
         // Player
         public const int PlayerDefault = 2;

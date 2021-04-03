@@ -54,17 +54,17 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // blank canvas
             var emptyMapTerrain = new ArrayMap<bool>(map.Width, map.Height);
             QuickGenerators.GenerateRectangleMap(emptyMapTerrain);
-            map.ApplyTerrainOverlay(emptyMapTerrain, MapFactory.SpawnOutdoorTerrain);
+            map.ApplyTerrainOverlay(emptyMapTerrain, TerrainSpawning.SpawnOutdoorTerrain);
 
             // add a 20x20 maze with an entrance
             var mazeTerrain = new ArrayMap<bool>(20, 20);
             new BorderlessMazeGenerator().Generate(rng, mazeTerrain);
-            map.ApplyTerrainOverlay(mazeTerrain, new Coord(2, 2), MapFactory.SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(mazeTerrain, new Coord(2, 2), TerrainSpawning.SpawnDungeonTerrain);
 
             // add a 20x20 forest, hopefully with a path through it (a path! a path!)
             var forestPathTerrain = new ArrayMap<bool>(20, 20);
             new TwoEntranceMazeGenerator().Generate(rng, forestPathTerrain);
-            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(25, 2), MapFactory.SpawnOutdoorTerrain);
+            map.ApplyTerrainOverlay(forestPathTerrain, new Coord(25, 2), TerrainSpawning.SpawnOutdoorTerrain);
 
             // add a 30x30 dungeon with rooms
             var roomDungeonTerrain = new ArrayMap<bool>(30, 30);
@@ -72,11 +72,11 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var roomDungeonOffset = new Coord(2, 25);
             var doorGen = new DoorGenerator(rng);
             var doorsRound1 = doorGen.GenerateRandom(roomDungeonTerrain, roomLocations);
-            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, MapFactory.SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, TerrainSpawning.SpawnDungeonTerrain);
 
             // extra doors to ensure walkability
             var doorsRound2 = doorGen.GenerateForWalkability(map, roomDungeonTerrain, roomDungeonOffset, roomLocations);
-            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, MapFactory.SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(roomDungeonTerrain, roomDungeonOffset, TerrainSpawning.SpawnDungeonTerrain);
 
             var globalDoors = doorsRound1
                 .Concat(doorsRound2)

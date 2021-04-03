@@ -76,10 +76,10 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             var doorGen = new DoorGenerator(rng);
             var doorsRound1 = doorGen.GenerateRandom(terrain, roomLocations);
-            map.ApplyTerrainOverlay(terrain, MapFactory.SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(terrain, TerrainSpawning.SpawnDungeonTerrain);
 
             var doorsRound2 = doorGen.GenerateForWalkability(map, terrain, roomLocations);
-            map.ApplyTerrainOverlay(terrain, MapFactory.SpawnDungeonTerrain);
+            map.ApplyTerrainOverlay(terrain, TerrainSpawning.SpawnDungeonTerrain);
 
             var name = id switch
             {
@@ -155,13 +155,12 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
 
             // Spawn enemies
-            ////var allTheActors = ActorAtlas.ActorsById.Values.ToList();
+            var allTheActors = ActorAtlas.ActorsById.Values.ToList();
             for (int i = 0; i < 10; i++)
             {
                 spawnPosition = map.WalkabilityView.RandomPosition(true);
 
-                ////var enemy = GameModeMaster.EntityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
-                var enemy = GameModeMaster.EntityFactory.CreateActor(spawnPosition, ActorAtlas.Troll);
+                var enemy = GameModeMaster.EntityFactory.CreateActor(spawnPosition, allTheActors.RandomItem());
                 map.AddEntity(enemy);
             }
 

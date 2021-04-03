@@ -14,8 +14,11 @@ namespace MovingCastles.Ui
         private readonly ILogManager _logManager;
         private readonly IAppSettings _appSettings;
 
-        public const string TilesetFontPath = "Fonts\\sprites.font";
-        public const string TilesetFontName = "sprites";
+        public const string DungeonFontPath = "Fonts\\dungeon.font";
+        public const string DungeonFontName = "dungeon";
+
+        public const string CastleFontPath = "Fonts\\castle.font";
+        public const string CastleFontName = "castle";
 
         public int ViewPortWidth { get; private set; } = 160; // 160 x 8 = 1280
         public int ViewPortHeight { get; private set; } = 45; // 45 x 16 = 720

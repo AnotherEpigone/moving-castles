@@ -58,13 +58,13 @@ namespace MovingCastles.Ui.Consoles
 
             var middleSectionWidth = width - _leftPaneWidth - _rightPaneWidth;
 
-            var tileSizeXFactor = tilesetFont.Size.X / Font.Size.X;
-            var tileSizeYFactor = tilesetFont.Size.Y / Font.Size.Y;
+            var tileSizeXFactor = (double)tilesetFont.Size.X / Font.Size.X;
+            var tileSizeYFactor = (double)tilesetFont.Size.Y / Font.Size.Y;
             _mapConsole = gameConsoleFactory.Create(
-                _leftPaneWidth,
-                TopPaneHeight,
-                middleSectionWidth / tileSizeXFactor,
-                (height - TopPaneHeight) / tileSizeYFactor,
+                (int)(_leftPaneWidth / tileSizeXFactor),
+                (int)(TopPaneHeight / tileSizeYFactor),
+                (int)(middleSectionWidth / tileSizeXFactor),
+                (int)((height - TopPaneHeight) / tileSizeYFactor),
                 tilesetFont,
                 menuProvider,
                 game,

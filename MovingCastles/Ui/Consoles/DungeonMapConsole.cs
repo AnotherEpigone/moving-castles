@@ -64,6 +64,7 @@ namespace MovingCastles.Ui.Consoles
             _mouseHighlight = new MouseHighlightConsole(viewportWidth, viewportHeight, tilesetFont, game, map);
             _interactTargettingConsole = new InteractTargettingConsole(tilesetFont, map);
 
+            Font = tilesetFont;
             Map = map;
             _game.Init(map);
 
@@ -89,12 +90,10 @@ namespace MovingCastles.Ui.Consoles
 
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
 
-            _mapRendererPadding = (Math.Max(viewportWidth, viewportHeight) / 2) + 1;
             _mapRendererContainer = new SadConsole.Console(viewportWidth, viewportHeight, tilesetFont)
             {
                 UseMouse = false,
             };
-            SetMapRendererPosition(new Point(_mapRendererPadding, _mapRendererPadding));
             _mapRendererContainer.Children.Add(MapRenderer);
 
             MapRenderer.Children.Add(_mouseHighlight);
@@ -152,7 +151,6 @@ namespace MovingCastles.Ui.Consoles
             MapRenderer.UseMouse = false;
             Map.CalculateFOV(Player.Position, Player.FovRadius, Radius.SQUARE);
 
-            SetMapRendererPosition(new Point(_mapRendererPadding, _mapRendererPadding));
             _mapRendererContainer.Children.Add(MapRenderer);
 
             MapRenderer.Children.Add(_mouseHighlight);
@@ -160,7 +158,7 @@ namespace MovingCastles.Ui.Consoles
 
             CenterMapViewOnPlayer();
 
-            Children.Add(_mapRendererContainer);
+            Children.Add(_mapRendererContainer); // todo, is this removed?
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
@@ -505,7 +503,7 @@ namespace MovingCastles.Ui.Consoles
             CenterMapViewOnPlayer();
         }
 
-        private void Player_RemovedFromMap(object sender, System.EventArgs e)
+        private void Player_RemovedFromMap(object sender, EventArgs e)
         {
             _menuProvider.Death.Show("You died.");
         }

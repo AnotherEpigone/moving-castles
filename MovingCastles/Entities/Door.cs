@@ -28,7 +28,7 @@ namespace MovingCastles.Entities
                   "Door",
                   Color.White,
                   Color.Transparent,
-                  SpriteAtlas.Door_Wood_Closed,
+                  DungeonModeSpriteAtlas.Door_Wood_Closed,
                   position,
                   (int)DungeonMapLayer.DOODADS,
                   isWalkable: false,
@@ -39,9 +39,9 @@ namespace MovingCastles.Entities
         {
             // door open/close animations
             var closedAnimation = new AnimatedConsole(ClosedAnimationKey, 1, 1, font);
-            closedAnimation.CreateFrame().SetGlyph(0, 0, SpriteAtlas.Door_Wood_Closed, Color.White, Color.Transparent);
+            closedAnimation.CreateFrame().SetGlyph(0, 0, DungeonModeSpriteAtlas.Door_Wood_Closed, Color.White, Color.Transparent);
             var openAnimation = new AnimatedConsole(OpenAnimationKey, 1, 1, font);
-            openAnimation.CreateFrame().SetGlyph(0, 0, SpriteAtlas.Door_Wood_Open, Color.White, Color.Transparent);
+            openAnimation.CreateFrame().SetGlyph(0, 0, DungeonModeSpriteAtlas.Door_Wood_Open, Color.White, Color.Transparent);
             Animations.Clear();
             Animations.Add(ClosedAnimationKey, closedAnimation);
             Animations.Add(OpenAnimationKey, openAnimation);

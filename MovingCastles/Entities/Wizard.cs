@@ -28,7 +28,7 @@ namespace MovingCastles.Entities
                   playerInfo.Name,
                   Color.White,
                   Color.Transparent,
-                  SpriteAtlas.PlayerDefault,
+                  DungeonModeSpriteAtlas.PlayerDefault,
                   position,
                   (int)DungeonMapLayer.PLAYER,
                   isWalkable: false,

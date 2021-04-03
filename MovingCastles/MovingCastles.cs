@@ -42,7 +42,8 @@ namespace MovingCastles
 
         private void Init()
         {
-            Global.LoadFont(UiManager.TilesetFontPath);
+            Global.LoadFont(UiManager.DungeonFontPath);
+            Global.LoadFont(UiManager.CastleFontPath);
 
             InitColors();
             InitControls();

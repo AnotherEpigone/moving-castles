@@ -21,14 +21,14 @@ namespace MovingCastles.Ui.Consoles
             _map = map;
             _sprites = new List<(Coord, int)>
             {
-                { (new Coord(-1, -1), SpriteAtlas.BlueArrow_UpLeft) },
-                { (new Coord(0, -1), SpriteAtlas.BlueArrow_Up) },
-                { (new Coord(1, -1), SpriteAtlas.BlueArrow_UpRight) },
-                { (new Coord(1, 0), SpriteAtlas.BlueArrow_Right) },
-                { (new Coord(1, 1), SpriteAtlas.BlueArrow_DownRight) },
-                { (new Coord(0, 1), SpriteAtlas.BlueArrow_Down) },
-                { (new Coord(-1, 1), SpriteAtlas.BlueArrow_DownLeft) },
-                { (new Coord(-1, 0), SpriteAtlas.BlueArrow_Left) },
+                { (new Coord(-1, -1), DungeonModeSpriteAtlas.BlueArrow_UpLeft) },
+                { (new Coord(0, -1), DungeonModeSpriteAtlas.BlueArrow_Up) },
+                { (new Coord(1, -1), DungeonModeSpriteAtlas.BlueArrow_UpRight) },
+                { (new Coord(1, 0), DungeonModeSpriteAtlas.BlueArrow_Right) },
+                { (new Coord(1, 1), DungeonModeSpriteAtlas.BlueArrow_DownRight) },
+                { (new Coord(0, 1), DungeonModeSpriteAtlas.BlueArrow_Down) },
+                { (new Coord(-1, 1), DungeonModeSpriteAtlas.BlueArrow_DownLeft) },
+                { (new Coord(-1, 0), DungeonModeSpriteAtlas.BlueArrow_Left) },
                 { (new Coord(0, 0), 0) },
             };
         }
