@@ -15,6 +15,7 @@ using MovingCastles.GameSystems.Time;
 using MovingCastles.GameSystems.Time.Nodes;
 using MovingCastles.Maps;
 using MovingCastles.Ui;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Troschuetz.Random;
@@ -54,6 +55,7 @@ namespace MovingCastles.GameSystems.TurnBased
         private readonly Dictionary<System.Guid, McEntity> _registeredEntities;
 
         private Wizard _player;
+        private bool _disposed;
 
         public TurnBasedGame(ILogManager logManager, IDungeonMaster dungeonMaster)
         {
@@ -345,7 +347,7 @@ namespace MovingCastles.GameSystems.TurnBased
             foreach (var entity in _registeredEntities.Values)
             {
                 var effects = entity.GetGoRogueComponents<ITimedEffect>();
-                foreach (var effect in effects)
+                foreach (var effect in effects.ToArray())
                 {
                     effect.OnTick(time, _logManager);
                 }
@@ -452,6 +454,30 @@ namespace MovingCastles.GameSystems.TurnBased
             {
                 trigger.OnStep(movingEntity, _logManager, _dungeonMaster);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    UnregisterEntity(_player);
+
+                    foreach (var entity in _registeredEntities.Values)
+                    {
+                        UnregisterEntity(entity);
+                    }
+                }
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

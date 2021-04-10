@@ -22,6 +22,8 @@ namespace MovingCastles.Ui.Consoles
         private readonly SadConsole.Console _mouseHighlight;
 
         private Point _lastSummaryConsolePosition;
+        private bool _disposed;
+
         public event EventHandler<ConsoleListEventArgs> SummaryConsolesChanged;
         public event EventHandler<string> FlavorMessageChanged;
 
@@ -142,6 +144,27 @@ namespace MovingCastles.Ui.Consoles
             {
                 return string.Format($"{nameof(CastleMapConsole)} ({Position.X}, {Position.Y})");
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

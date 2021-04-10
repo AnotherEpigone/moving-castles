@@ -180,6 +180,8 @@ namespace MovingCastles.GameSystems
 
         private void GameModeMaster_ModeChanged(object sender, EventArgs e)
         {
+            var oldConsole = (MainConsole)Global.CurrentScreen;
+
             DungeonMaster.Player.Font = DungeonMaster.ModeMaster.Font;
             DungeonMaster.Player.OnCalculateRenderPosition();
 
@@ -190,6 +192,8 @@ namespace MovingCastles.GameSystems
                                         DungeonMaster.ModeMaster.GameConsoleFactory,
                                         DungeonMaster,
                                         DungeonMaster.ModeMaster.Font);
+
+            oldConsole.Dispose();
         }
     }
 }

@@ -7,7 +7,7 @@ using System;
 
 namespace MovingCastles.Ui.Consoles
 {
-    public interface ITurnBasedGameConsole
+    public interface ITurnBasedGameConsole : IDisposable
     {
         event EventHandler<string> FlavorMessageChanged;
 

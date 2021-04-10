@@ -25,8 +25,8 @@ namespace MovingCastles.Ui.Consoles
         private readonly IMapModeMenuProvider _menuProvider;
         private readonly IAppSettings _appSettings;
         private readonly ITurnBasedGame _game;
-        private readonly int _mapRendererPadding;
         private readonly SadConsole.Console _mapRendererContainer;
+
         private Point _lastSummaryConsolePosition;
         private MouseHighlightConsole _mouseHighlight;
         private InteractTargettingConsole _interactTargettingConsole;
@@ -37,6 +37,7 @@ namespace MovingCastles.Ui.Consoles
         public Point _lastMousePos;
         public Point _targettedConsolePos;
         public string _statusMessage;
+        private bool _disposed;
 
         public McMap Map { get; private set; }
 
@@ -514,6 +515,25 @@ namespace MovingCastles.Ui.Consoles
             {
                 return string.Format($"{nameof(DungeonMapConsole)} ({Position.X}, {Position.Y})");
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _game.Dispose();
+                }
+
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

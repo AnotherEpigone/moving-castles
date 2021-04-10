@@ -14,7 +14,7 @@ using System.Diagnostics;
 namespace MovingCastles.Ui.Consoles
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class MainConsole : ContainerConsole
+    public class MainConsole : ContainerConsole, System.IDisposable
     {
         private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
@@ -29,6 +29,7 @@ namespace MovingCastles.Ui.Consoles
         private Console _characterPanel;
         private int _leftPaneWidth;
         private int _rightPaneWidth;
+        private bool disposedValue;
 
         public MainConsole(
             int width,
@@ -91,11 +92,7 @@ namespace MovingCastles.Ui.Consoles
             };
             logManager.RegisterEventListener(LogType.Story, (s, h) => storyEventLog.Add(s, h));
 
-            _dungeonMaster.TimeMaster.TimeUpdated += (_, __) =>
-            {
-                PrintInfoPanel();
-                PrintCharacterPanel();
-            };
+            _dungeonMaster.TimeMaster.TimeUpdated += TimeMaster_TimeUpdated;
 
             Children.Add(_mapConsole.ThisConsole);
             Children.Add(CreateTopPane(middleSectionWidth, menuProvider));
@@ -335,12 +332,45 @@ namespace MovingCastles.Ui.Consoles
             PrintStatOverlays(healthComponent, endowmentComponent);
         }
 
+        private void TimeMaster_TimeUpdated(object sender, McTimeSpan args)
+        {
+            PrintInfoPanel();
+            PrintCharacterPanel();
+        }
+
         private string DebuggerDisplay
         {
             get
             {
                 return string.Format($"{nameof(MainConsole)} ({Position.X}, {Position.Y})");
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _dungeonMaster.TimeMaster.TimeUpdated -= TimeMaster_TimeUpdated;
+
+                    var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+                    endowmentComponent.ValueChanged -= Player_EndowmentChanged;
+
+                    var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+                    healthComponent.HealthChanged -= Player_HealthChanged;
+
+                    _mapConsole.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            System.GC.SuppressFinalize(this);
         }
     }
 }

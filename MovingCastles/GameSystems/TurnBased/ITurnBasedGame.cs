@@ -3,11 +3,12 @@ using MovingCastles.Entities;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.Maps;
 using SadConsole.Input;
+using System;
 using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.TurnBased
 {
-    public interface ITurnBasedGame
+    public interface ITurnBasedGame : IDisposable
     {
         McMap Map { get; }
         State State { get; set; }
