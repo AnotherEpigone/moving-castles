@@ -79,7 +79,7 @@ namespace MovingCastles.Ui.Consoles
             var distance = Distance.CHEBYSHEV.Calculate(playerPos, mouseMapPos);
             if (distance > targettingStyle.Range)
             {
-                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.DarkGreyHighlight);
+                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.GreyHighlight);
                 return;
             }
 
@@ -95,7 +95,7 @@ namespace MovingCastles.Ui.Consoles
             var distance = Distance.CHEBYSHEV.Calculate(playerPos, mouseMapPos);
             if (distance > targettingStyle.Range)
             {
-                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.DarkGreyHighlight);
+                SetGlyph(mousePos.X, mousePos.Y, 1, ColorHelper.GreyHighlight);
                 return;
             }
 

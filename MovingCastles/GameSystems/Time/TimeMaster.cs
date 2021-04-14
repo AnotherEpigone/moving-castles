@@ -26,9 +26,11 @@ namespace MovingCastles.GameSystems.Time
 
         public McTimeSpan JourneyTime => new McTimeSpan(_journeyTime.Ticks);
 
+        public IEnumerable<ITimeMasterNode> Nodes => _queue;
+
         public void Enqueue(ITimeMasterNode node) => _queue.Enqueue(node, node.Time);
 
-        public ITimeMasterNode Next()
+        public ITimeMasterNode Dequeue()
         {
             var node = _queue.Dequeue();
 
@@ -38,6 +40,6 @@ namespace MovingCastles.GameSystems.Time
             return node;
         }
 
-        public IEnumerable<ITimeMasterNode> Nodes => _queue;
+        public void ClearNodes() => _queue.Clear();
     }
 }

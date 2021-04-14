@@ -57,6 +57,9 @@ namespace MovingCastles.GameSystems.TurnBased
         private Wizard _player;
         private bool _disposed;
 
+        // we don't want to grab a key that was pressed on a previous map!
+        private bool _keyDebounced;
+
         public TurnBasedGame(ILogManager logManager, IDungeonMaster dungeonMaster)
         {
             _logManager = logManager;
@@ -64,6 +67,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
             State = State.PlayerTurn;
             _dungeonMaster = dungeonMaster;
+            _keyDebounced = false;
 
             TargetableTiles = new List<Coord>();
 
@@ -87,6 +91,8 @@ namespace MovingCastles.GameSystems.TurnBased
             Map = map;
 
             var secondMarkerNode = new SecondMarkerNode((_dungeonMaster.TimeMaster.JourneyTime.Seconds + 1) * 100);
+
+            _dungeonMaster.TimeMaster.ClearNodes();
             _dungeonMaster.TimeMaster.Enqueue(secondMarkerNode);
         }
 
@@ -96,6 +102,11 @@ namespace MovingCastles.GameSystems.TurnBased
                 || info.IsKeyPressed(Keys.Z)
                 || info.IsKeyPressed(Keys.OemPeriod))
             {
+                if (!_keyDebounced)
+                {
+                    return true;
+                }
+
                 ProcessTurn(TimeHelper.Wait);
                 return true;
             }
@@ -103,6 +114,11 @@ namespace MovingCastles.GameSystems.TurnBased
             if (info.IsKeyPressed(Keys.E)
                 || info.IsKeyPressed(Keys.Enter))
             {
+                if (!_keyDebounced)
+                {
+                    return true;
+                }
+
                 StartInteractTargetting();
                 return true;
             }
@@ -111,6 +127,11 @@ namespace MovingCastles.GameSystems.TurnBased
             {
                 if (info.IsKeyPressed(key))
                 {
+                    if (!_keyDebounced)
+                    {
+                        return true;
+                    }
+
                     _player.Move(MovementDirectionMapping[key]);
 
                     ProcessTurn(TimeHelper.GetWalkTime(_player));
@@ -118,6 +139,11 @@ namespace MovingCastles.GameSystems.TurnBased
                 }
             }
 
+            if (!_keyDebounced)
+            {
+                _keyDebounced = true;
+            }
+            
             return false;
         }
 
@@ -306,6 +332,11 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private void ProcessTurn(int playerTurnTicks)
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             var playerTurnNode = new WizardTurnNode(
                 _dungeonMaster.TimeMaster.JourneyTime.Ticks + playerTurnTicks);
             _dungeonMaster.TimeMaster.Enqueue(playerTurnNode);
@@ -315,7 +346,7 @@ namespace MovingCastles.GameSystems.TurnBased
             Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
 
             State = State.Processing;
-            var node = _dungeonMaster.TimeMaster.Next();
+            var node = _dungeonMaster.TimeMaster.Dequeue();
             while (node is not WizardTurnNode)
             {
                 if (!_player.HasMap)
@@ -337,7 +368,7 @@ namespace MovingCastles.GameSystems.TurnBased
                         throw new System.NotSupportedException($"Unhandled time master node type: {node.GetType()}");
                 }
 
-                node = _dungeonMaster.TimeMaster.Next();
+                node = _dungeonMaster.TimeMaster.Dequeue();
             }
             State = State.PlayerTurn;
         }
