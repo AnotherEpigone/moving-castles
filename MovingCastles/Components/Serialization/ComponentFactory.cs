@@ -32,10 +32,13 @@ namespace MovingCastles.Components.Serialization
                 { nameof(RandomWalkAiComponent), _ => new RandomWalkAiComponent() },
                 { nameof(LinearCompositeAiComponent), s => new LinearCompositeAiComponent(new SerializedObject() { Value = s }) },
                 { nameof(InventoryComponent), s => new InventoryComponent(new SerializedObject() { Value = s }) },
-                { nameof(StoryMessageComponent), s => new StoryMessageComponent(new SerializedObject() { Value = s }) },
                 { nameof(ChangeLevelComponent), s => new ChangeLevelComponent(new SerializedObject() { Value = s }) },
                 { nameof(ChangeStructureComponent), s => new ChangeStructureComponent(new SerializedObject() { Value = s }) },
                 { nameof(EndowmentPoolComponent), s => new EndowmentPoolComponent(new SerializedObject() { Value = s }) },
+
+                // Story
+                { nameof(StoryMessageComponent), s => new StoryMessageComponent(new SerializedObject() { Value = s }) },
+                { nameof(StoryActionComponent), s => new StoryActionComponent(new SerializedObject() { Value = s }) },
 
                 // Effects
                 { nameof(BurningTimedEffect), s => new BurningTimedEffect(new SerializedObject() { Value = s }) },

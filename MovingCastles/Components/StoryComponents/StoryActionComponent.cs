@@ -6,44 +6,32 @@ using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using MovingCastles.Text;
-using MovingCastles.Ui;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.StoryComponents
 {
-    public class StoryMessageComponent : IStepTriggeredComponent, ISerializableComponent, IInteractTriggeredComponent
+    public class StoryActionComponent : IStepTriggeredComponent, ISerializableComponent
     {
         private readonly string _resourceKey;
-        private bool _stepTriggerActive;
 
-        public StoryMessageComponent(SerializedObject state)
+        public StoryActionComponent(SerializedObject state)
         {
             var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
             _resourceKey = stateObj.ResourceKey;
-            _stepTriggerActive = stateObj.StepTriggerActive;
         }
 
-        public StoryMessageComponent(string resourceKey, bool stepTriggerActive)
+        public StoryActionComponent(string resourceKey)
         {
             _resourceKey = resourceKey;
-            _stepTriggerActive = stepTriggerActive;
         }
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
-            if (!_stepTriggerActive)
-            {
-                return;
-            }
-
-            Trigger(steppingEntity, logManager);
+            Trigger(steppingEntity, dungeonMaster);
         }
-
-        public void Interact(McEntity interactingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
-            => Trigger(interactingEntity, logManager);
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
@@ -51,27 +39,24 @@ namespace MovingCastles.Components.StoryComponents
             State = JsonConvert.SerializeObject(new State()
             {
                 ResourceKey = _resourceKey,
-                StepTriggerActive = _stepTriggerActive,
             }),
         };
 
-        private void Trigger(McEntity triggeringEntity, ILogManager logManager)
+        private void Trigger(McEntity triggeringEntity, IDungeonMaster dungeonMaster)
         {
             if (triggeringEntity is not Wizard)
             {
                 return;
             }
 
-            _stepTriggerActive = false;
             var story = Story.ResourceManager.GetString(_resourceKey);
-            logManager.StoryLog(ColorHelper.GetParserString(story, ColorHelper.StoryBlue));
+            dungeonMaster.StoryActionWindow.Show(true);
         }
 
         [DataContract]
         private class State
         {
             [DataMember] public string ResourceKey;
-            [DataMember] public bool StepTriggerActive;
         }
     }
 }

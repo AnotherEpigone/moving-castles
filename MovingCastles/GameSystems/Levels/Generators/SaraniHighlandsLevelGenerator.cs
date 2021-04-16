@@ -2,8 +2,10 @@
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
 using MovingCastles.Components.Levels;
+using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
 using MovingCastles.Maps;
+using MovingCastles.Text;
 using System.Collections.Generic;
 using Troschuetz.Random;
 using Troschuetz.Random.Generators;
@@ -67,6 +69,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             spawnPosition = doodadPlacementView.RandomPosition(true, rng);
             var nomadTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.NomadicTent);
+            nomadTent.AddGoRogueComponent(new StoryActionComponent(nameof(Story.AlwardsTower_TrapdoorStep)));
             map.AddEntity(nomadTent);
 
             return level;
