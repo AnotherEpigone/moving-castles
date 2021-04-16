@@ -54,10 +54,20 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 map.AddEntity(GameModeMaster.EntityFactory.CreateDoor(door));
             }
 
-            var spawnPosition = map.WalkabilityView.RandomPosition(true, rng);
+            var doodadPlacementView = new LambdaMapView<bool>(
+                map.Width,
+                map.Height,
+                c => map.WalkabilityView[c]
+                    && map.GetEntity<McEntity>(c, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null);
+
+            var spawnPosition = doodadPlacementView.RandomPosition(true, rng); // TODO unoccupied lambda view
             var tower = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
             tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
             map.AddEntity(tower);
+
+            spawnPosition = doodadPlacementView.RandomPosition(true, rng);
+            var nomadTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.NomadicTent);
+            map.AddEntity(nomadTent);
 
             return level;
         }

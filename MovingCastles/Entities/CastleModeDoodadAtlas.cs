@@ -24,7 +24,7 @@ namespace MovingCastles.Entities
 
         public static DoodadTemplate AlwardsTower => new DoodadTemplate(
             id: "DOODAD_ALWARDS",
-            name: "Old Alward's Tower",
+            name: "Old Alward's tower",
             glyph: CastleModeSpriteAtlas.AlwardsTowerTop,
             nameColor: ColorHelper.ItemGrey,
             walkable: true,
@@ -33,5 +33,14 @@ namespace MovingCastles.Entities
             {
                 new SubTileTemplate(CastleModeSpriteAtlas.AlwardsTowerBottom, new Point(0, 1)),
             });
+
+        public static DoodadTemplate NomadicTent => new DoodadTemplate(
+            id: "DOODAD_NOMADS_TENT",
+            name: "Nomad's tent",
+            glyph: CastleModeSpriteAtlas.NomadTent,
+            nameColor: ColorHelper.BayeuxParchment,
+            walkable: true,
+            transparent: true,
+            subTiles: new List<SubTileTemplate>());
     }
 }
