@@ -70,7 +70,6 @@ namespace MovingCastles.Entities
                 parent.FactionName,
                 parent.UniqueId)
             {
-                ////Parent = parent,
                 Anchor = parent,
             };
 
@@ -126,6 +125,11 @@ namespace MovingCastles.Entities
             // workaround Entity construction bugs by setting font afterward
             doodad.Font = _font;
             doodad.OnCalculateRenderPosition();
+
+            foreach (var subTileTemplate in template.SubTiles)
+            {
+                doodad.SubTiles.Add(CreateSubTile(doodad, subTileTemplate));
+            }
 
             return doodad;
         }

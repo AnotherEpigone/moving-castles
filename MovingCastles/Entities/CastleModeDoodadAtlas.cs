@@ -1,4 +1,5 @@
-﻿using MovingCastles.Fonts;
+﻿using Microsoft.Xna.Framework;
+using MovingCastles.Fonts;
 using MovingCastles.Ui;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,13 @@ namespace MovingCastles.Entities
         public static DoodadTemplate AlwardsTower => new DoodadTemplate(
             id: "DOODAD_ALWARDS",
             name: "Old Alward's Tower",
-            glyph: DungeonModeSpriteAtlas.PlayerCastle,
+            glyph: CastleModeSpriteAtlas.AlwardsTowerTop,
             nameColor: ColorHelper.ItemGrey,
             walkable: true,
-            transparent: true);
+            transparent: true,
+            subTiles: new List<SubTileTemplate>
+            {
+                new SubTileTemplate(CastleModeSpriteAtlas.AlwardsTowerBottom, new Point(0, 1)),
+            });
     }
 }

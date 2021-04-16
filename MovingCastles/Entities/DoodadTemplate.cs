@@ -11,7 +11,8 @@ namespace MovingCastles.Entities
             int glyph,
             Color nameColor,
             bool walkable,
-            bool transparent)
+            bool transparent,
+            List<SubTileTemplate> subTiles)
         {
             Id = id;
             Name = name;
@@ -19,6 +20,7 @@ namespace MovingCastles.Entities
             NameColor = nameColor;
             Walkable = walkable;
             Transparent = transparent;
+            SubTiles = subTiles;
         }
 
         public string Id { get; }
@@ -32,5 +34,7 @@ namespace MovingCastles.Entities
         public bool Walkable { get; }
 
         public bool Transparent { get; }
+
+        public List<SubTileTemplate> SubTiles { get; }
     }
 }

@@ -10,6 +10,7 @@
         public const int Wall_Rock = 6;
 
         //Entities
-        public const int AlwardsTower = 3;
+        public const int AlwardsTowerTop = 3;
+        public const int AlwardsTowerBottom = 19;
     }
 }
