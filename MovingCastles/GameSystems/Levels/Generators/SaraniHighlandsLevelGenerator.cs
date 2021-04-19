@@ -7,6 +7,7 @@ using MovingCastles.Entities;
 using MovingCastles.Maps;
 using MovingCastles.Text;
 using System.Collections.Generic;
+using System.Linq;
 using Troschuetz.Random;
 using Troschuetz.Random.Generators;
 
@@ -47,7 +48,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
         private Level Generate(int seed, string id, IGenerator rng)
         {
-            var (level, _) = GenerateTerrain(rng, seed, id, 20, 20);
+            var (level, _) = GenerateTerrain(rng, seed, id, 10, 10);
             var map = level.Map;
 
             // spawn doors
@@ -56,13 +57,22 @@ namespace MovingCastles.GameSystems.Levels.Generators
                 map.AddEntity(GameModeMaster.EntityFactory.CreateDoor(door));
             }
 
+            // TODO reusable method for producing these spawning views.
             var doodadPlacementView = new LambdaMapView<bool>(
                 map.Width,
                 map.Height,
                 c => map.WalkabilityView[c]
                     && map.GetEntity<McEntity>(c, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null);
 
-            var spawnPosition = doodadPlacementView.RandomPosition(true, rng); // TODO unoccupied lambda view
+            var castlePlacementView = new LambdaMapView<bool>(
+                map.Width,
+                map.Height,
+                c => map.WalkabilityView[c]
+                    && map.GetEntity<McEntity>(c, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null
+                    && CastleModeDoodadAtlas.AlwardsTower.SubTiles.All(
+                        st => map.WalkabilityView[c + st.Offset]
+                        && map.GetEntity<McEntity>(c + st.Offset, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null));
+            var spawnPosition = castlePlacementView.RandomPosition(true, rng); // TODO unoccupied lambda view
             var tower = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
             tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
             map.AddEntity(tower);

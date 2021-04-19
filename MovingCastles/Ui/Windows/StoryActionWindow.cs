@@ -29,6 +29,7 @@ namespace MovingCastles.Ui.Windows
             {
                 Text = "Option 1",
                 Position = new Point(1, Height - 18),
+                TextAlignment = SadConsole.HorizontalAlignment.Left,
             };
             option1Button.Click += (_, __) => Hide();
 
