@@ -3,6 +3,7 @@ using MovingCastles.Serialization.Settings;
 using MovingCastles.Ui;
 using MovingCastles.Ui.Controls;
 using SadConsole;
+using SadConsole.Controls;
 using SadConsole.Themes;
 using System;
 
@@ -92,7 +93,14 @@ namespace MovingCastles
 
         private static void InitControls()
         {
-            Library.Default.SetControlTheme(typeof(McSelectionButton), new ButtonTheme());
+            var buttonTheme = new ButtonTheme
+            {
+                EndCharacterLeft = 4,
+                EndCharacterRight = 4,
+            };
+
+            Library.Default.SetControlTheme(typeof(McSelectionButton), buttonTheme);
+            Library.Default.SetControlTheme(typeof(Button), buttonTheme);
         }
 
         private void Dispose(bool disposing)
