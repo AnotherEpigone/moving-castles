@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MovingCastles.GameSystems;
 using SadConsole.Controls;
 using SadConsole.Themes;
 
@@ -7,13 +8,21 @@ namespace MovingCastles.Ui.Windows
     public class StoryActionWindow : McControlWindow
     {
         private readonly SadConsole.Console _storyArea;
+        private readonly IScenarioMaster _scenarioMaster;
 
-        public StoryActionWindow()
-            : base (120, 40)
+        public StoryActionWindow(
+            int width,
+            int height,
+            IScenarioMaster scenarioMaster)
+            : base(width, height)
         {
             CloseOnEscKey = false;
+            IsModalDefault = true;
             Center();
+
             IsFocused = true;
+
+            _scenarioMaster = scenarioMaster;
 
             _storyArea = new SadConsole.Console(Width - 2, Height - 20)
             {
@@ -31,7 +40,7 @@ namespace MovingCastles.Ui.Windows
                 Position = new Point(1, Height - 18),
                 TextAlignment = SadConsole.HorizontalAlignment.Left,
             };
-            option1Button.Click += (_, __) => Hide();
+            option1Button.Click += (_, __) => _scenarioMaster.Hide();
 
             var actionTheme = (ButtonTheme)option1Button.Theme;
             actionTheme.ShowEnds = false;

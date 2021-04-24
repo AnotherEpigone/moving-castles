@@ -483,7 +483,7 @@ namespace MovingCastles.GameSystems.TurnBased
 
             foreach (var trigger in stepTriggers)
             {
-                trigger.OnStep(movingEntity, _logManager, _dungeonMaster);
+                trigger.OnStep(movingEntity, _logManager, _dungeonMaster, _rng);
             }
         }
 

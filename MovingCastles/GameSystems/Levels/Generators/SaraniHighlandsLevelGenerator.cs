@@ -78,7 +78,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             map.AddEntity(tower);
 
             spawnPosition = doodadPlacementView.RandomPosition(true, rng);
-            var nomadTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.NomadicTent);
+            var nomadTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.NomadsTent);
             nomadTent.AddGoRogueComponent(new StoryActionComponent(nameof(Story.AlwardsTower_TrapdoorStep)));
             map.AddEntity(nomadTent);
 

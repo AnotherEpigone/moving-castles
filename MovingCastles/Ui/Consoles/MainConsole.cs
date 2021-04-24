@@ -21,7 +21,6 @@ namespace MovingCastles.Ui.Consoles
 
         private readonly IDungeonMaster _dungeonMaster;
 
-        private ITurnBasedGameConsole _mapConsole;
         private ProgressBar _healthBar;
         private ProgressBar _endowmentBar;
         private Console _statOverlay;
@@ -61,7 +60,7 @@ namespace MovingCastles.Ui.Consoles
 
             var tileSizeXFactor = (double)tilesetFont.Size.X / Font.Size.X;
             var tileSizeYFactor = (double)tilesetFont.Size.Y / Font.Size.Y;
-            _mapConsole = gameConsoleFactory.Create(
+            MapConsole = gameConsoleFactory.Create(
                 (int)(_leftPaneWidth / tileSizeXFactor),
                 (int)(TopPaneHeight / tileSizeYFactor),
                 (int)(middleSectionWidth / tileSizeXFactor),
@@ -94,7 +93,7 @@ namespace MovingCastles.Ui.Consoles
 
             _dungeonMaster.TimeMaster.TimeUpdated += TimeMaster_TimeUpdated;
 
-            Children.Add(_mapConsole.ThisConsole);
+            Children.Add(MapConsole.ThisConsole);
             Children.Add(CreateTopPane(middleSectionWidth, menuProvider));
             Children.Add(combatEventLog);
             Children.Add(storyEventLog);
@@ -104,18 +103,18 @@ namespace MovingCastles.Ui.Consoles
 
         public void SetMap(McMap map)
         {
-            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged -= Player_HealthChanged;
 
-            _mapConsole.SetMap(map, _dungeonMaster.ModeMaster.Font);
+            MapConsole.SetMap(map, _dungeonMaster.ModeMaster.Font);
 
-            healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged += Player_HealthChanged;
         }
 
         public void UnsetMap()
         {
-            _mapConsole.UnsetMap();
+            MapConsole.UnsetMap();
         }
 
         private ControlsConsole CreateTopPane(
@@ -146,7 +145,7 @@ namespace MovingCastles.Ui.Consoles
             };
             inventoryMenuButton.Click += (_, __) =>
             {
-                var inventory = _mapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
+                var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
                 menuProvider.Inventory.Show(inventory);
             };
 
@@ -160,9 +159,9 @@ namespace MovingCastles.Ui.Consoles
             spellMenuButton.Click += (_, __) =>
             {
                 menuProvider.SpellSelect.Show(
-                    _mapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
-                    selectedSpell => _mapConsole.StartTargetting(selectedSpell),
-                    _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>().Value);
+                    MapConsole.Player.GetGoRogueComponent<ISpellCastingComponent>().Spells,
+                    selectedSpell => MapConsole.StartTargetting(selectedSpell),
+                    MapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>().Value);
             };
 
             const string journalMenuText = "Journal (J)";
@@ -174,7 +173,7 @@ namespace MovingCastles.Ui.Consoles
             };
             journalMenuButton.Click += (_, __) =>
             {
-                menuProvider.Journal.Show(_mapConsole.Player.JournalEntries);
+                menuProvider.Journal.Show(MapConsole.Player.JournalEntries);
             };
 
             const string commandMenuText = "Commands (C)";
@@ -193,12 +192,12 @@ namespace MovingCastles.Ui.Consoles
             {
                 Position = new Point(1, 1),
             };
-            _mapConsole.FlavorMessageChanged += (_, message) =>
+            MapConsole.FlavorMessageChanged += (_, message) =>
             {
                 flavorMessage.Clear();
                 flavorMessage.Cursor.Position = new Point(0, 0);
 
-                var coloredMessage = new ColoredString(message, new Cell(Color.Gainsboro, _mapConsole.DefaultBackground));
+                var coloredMessage = new ColoredString(message, new Cell(Color.Gainsboro, MapConsole.DefaultBackground));
                 flavorMessage.Cursor.Print(coloredMessage);
             };
 
@@ -233,7 +232,7 @@ namespace MovingCastles.Ui.Consoles
             };
             _endowmentBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedManaBlue, ColorHelper.ManaBlue);
 
-            var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+            var endowmentComponent = MapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
             endowmentComponent.ValueChanged += Player_EndowmentChanged;
             _endowmentBar.Progress = endowmentComponent.Value / endowmentComponent.MaxValue;
 
@@ -243,7 +242,7 @@ namespace MovingCastles.Ui.Consoles
             };
             _healthBar.ThemeColors = ColorHelper.GetProgressBarThemeColors(ColorHelper.DepletedHealthRed, ColorHelper.HealthRed);
 
-            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged += Player_HealthChanged;
             _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
@@ -284,9 +283,9 @@ namespace MovingCastles.Ui.Consoles
             _characterPanel.Clear();
             _characterPanel.Cursor.Position = new Point(0, 0);
             _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n\n\n\n\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(_mapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(_mapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(_mapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
         private void PrintInfoPanel()
@@ -314,8 +313,8 @@ namespace MovingCastles.Ui.Consoles
 
         private void Player_EndowmentChanged(object sender, float e)
         {
-            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
-            var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+            var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            var endowmentComponent = MapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
 
             _endowmentBar.Progress = endowmentComponent.Value / endowmentComponent.MaxValue;
 
@@ -324,8 +323,8 @@ namespace MovingCastles.Ui.Consoles
 
         private void Player_HealthChanged(object sender, float e)
         {
-            var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
-            var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+            var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+            var endowmentComponent = MapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
 
             _healthBar.Progress = healthComponent.Health / healthComponent.MaxHealth;
 
@@ -346,6 +345,8 @@ namespace MovingCastles.Ui.Consoles
             }
         }
 
+        public ITurnBasedGameConsole MapConsole { get; }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -354,13 +355,13 @@ namespace MovingCastles.Ui.Consoles
                 {
                     _dungeonMaster.TimeMaster.TimeUpdated -= TimeMaster_TimeUpdated;
 
-                    var endowmentComponent = _mapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
+                    var endowmentComponent = MapConsole.Player.GetGoRogueComponent<IEndowmentPoolComponent>();
                     endowmentComponent.ValueChanged -= Player_EndowmentChanged;
 
-                    var healthComponent = _mapConsole.Player.GetGoRogueComponent<IHealthComponent>();
+                    var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
                     healthComponent.HealthChanged -= Player_HealthChanged;
 
-                    _mapConsole.Dispose();
+                    MapConsole.Dispose();
                 }
 
                 disposedValue = true;

@@ -2,7 +2,7 @@
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
-using MovingCastles.Ui.Windows;
+using MovingCastles.Ui.Consoles;
 
 namespace MovingCastles.GameSystems
 {
@@ -14,14 +14,14 @@ namespace MovingCastles.GameSystems
             IFactionMaster factionMaster,
             ITimeMaster timeMaster,
             IGameModeMaster modeMaster,
-            StoryActionWindow storyActionWindow)
+            IScenarioMaster scenarioMaster)
         {
             Player = player;
             LevelMaster = levelMaster;
             FactionMaster = factionMaster;
             TimeMaster = timeMaster;
             ModeMaster = modeMaster;
-            StoryActionWindow = storyActionWindow;
+            ScenarioMaster = scenarioMaster;
         }
 
         public Wizard Player { get; }
@@ -29,6 +29,6 @@ namespace MovingCastles.GameSystems
         public ILevelMaster LevelMaster { get; }
         public IFactionMaster FactionMaster { get; }
         public ITimeMaster TimeMaster { get; }
-        public StoryActionWindow StoryActionWindow { get; }
+        public IScenarioMaster ScenarioMaster { get; }
     }
 }

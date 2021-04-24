@@ -8,6 +8,7 @@ using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components.Levels
 {
@@ -31,7 +32,7 @@ namespace MovingCastles.Components.Levels
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             if (steppingEntity is not Wizard)
             {

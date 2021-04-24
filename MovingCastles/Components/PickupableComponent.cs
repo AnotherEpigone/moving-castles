@@ -9,6 +9,7 @@ using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components
 {
@@ -26,7 +27,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager, IGenerator rng)
         {
             var inventory = steppingEntity.GetGoRogueComponent<IInventoryComponent>();
             if (inventory == null)

@@ -9,6 +9,7 @@ using MovingCastles.Text;
 using MovingCastles.Ui;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components.StoryComponents
 {
@@ -32,7 +33,7 @@ namespace MovingCastles.Components.StoryComponents
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager, IGenerator rng)
         {
             if (!_stepTriggerActive)
             {

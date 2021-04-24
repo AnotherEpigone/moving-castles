@@ -2,7 +2,6 @@
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
-using MovingCastles.Ui.Windows;
 
 namespace MovingCastles.GameSystems
 {
@@ -17,6 +16,7 @@ namespace MovingCastles.GameSystems
         IFactionMaster FactionMaster { get; }
 
         ITimeMaster TimeMaster { get; }
-        StoryActionWindow StoryActionWindow { get; }
+
+        IScenarioMaster ScenarioMaster { get; }
     }
 }
