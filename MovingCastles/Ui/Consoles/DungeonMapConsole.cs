@@ -39,14 +39,6 @@ namespace MovingCastles.Ui.Consoles
         public string _statusMessage;
         private bool _disposed;
 
-        public McMap Map { get; private set; }
-
-        public ScrollingConsole MapRenderer { get; private set; }
-
-        public Wizard Player { get; private set; }
-
-        public SadConsole.Console ThisConsole => this;
-
         public DungeonMapConsole(
             int viewportWidth,
             int viewportHeight,
@@ -57,6 +49,10 @@ namespace MovingCastles.Ui.Consoles
             McMap map)
         {
             IsFocused = true;
+
+            ViewportWidth = viewportWidth;
+            ViewportHeight = viewportHeight;
+            Font = tilesetFont;
 
             _menuProvider = menuProvider;
             _appSettings = appSettings;
@@ -104,6 +100,18 @@ namespace MovingCastles.Ui.Consoles
 
             Children.Add(_mapRendererContainer);
         }
+
+        public int ViewportWidth { get; }
+
+        public int ViewportHeight { get; }
+
+        public McMap Map { get; private set; }
+
+        public ScrollingConsole MapRenderer { get; private set; }
+
+        public Wizard Player { get; private set; }
+
+        public SadConsole.Console ThisConsole => this;
 
         public void UnsetMap()
         {

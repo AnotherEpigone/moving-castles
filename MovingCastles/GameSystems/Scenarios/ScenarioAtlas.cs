@@ -23,7 +23,7 @@ namespace MovingCastles.GameSystems.Scenarios
         public static Dictionary<string, IScenario> ById => _byId.Value;
 
         public static IScenario NomadsTent => new SimpleScenario(
-            id: "SCENARIO_NOMADSTENT",
+            id: "SCENARIO_NOMADS_TENT",
             firstStep: new SimpleScenarioStep(
                 description: "Step description",
                 actions: new List<ScenarioStepAction>

@@ -146,6 +146,10 @@ namespace MovingCastles.Ui.Consoles
             }
         }
 
+        public int ViewportWidth => throw new NotImplementedException();
+
+        public int ViewportHeight => throw new NotImplementedException();
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

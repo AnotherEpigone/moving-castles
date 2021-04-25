@@ -38,7 +38,7 @@ namespace MovingCastles.Components.Serialization
 
                 // Story
                 { nameof(StoryMessageComponent), s => new StoryMessageComponent(new SerializedObject() { Value = s }) },
-                { nameof(StoryActionComponent), s => new StoryActionComponent(new SerializedObject() { Value = s }) },
+                { nameof(ScenarioComponent), s => new ScenarioComponent(new SerializedObject() { Value = s }) },
 
                 // Effects
                 { nameof(BurningTimedEffect), s => new BurningTimedEffect(new SerializedObject() { Value = s }) },

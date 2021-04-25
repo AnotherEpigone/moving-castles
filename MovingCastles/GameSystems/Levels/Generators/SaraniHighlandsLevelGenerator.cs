@@ -4,6 +4,7 @@ using GoRogue.MapViews;
 using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems.Scenarios;
 using MovingCastles.Maps;
 using MovingCastles.Text;
 using System.Collections.Generic;
@@ -72,14 +73,14 @@ namespace MovingCastles.GameSystems.Levels.Generators
                     && CastleModeDoodadAtlas.AlwardsTower.SubTiles.All(
                         st => map.WalkabilityView[c + st.Offset]
                         && map.GetEntity<McEntity>(c + st.Offset, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null));
-            var spawnPosition = castlePlacementView.RandomPosition(true, rng); // TODO unoccupied lambda view
+            var spawnPosition = castlePlacementView.RandomPosition(true, rng);
             var tower = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
             tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
             map.AddEntity(tower);
 
             spawnPosition = doodadPlacementView.RandomPosition(true, rng);
             var nomadTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.NomadsTent);
-            nomadTent.AddGoRogueComponent(new StoryActionComponent(nameof(Story.AlwardsTower_TrapdoorStep)));
+            nomadTent.AddGoRogueComponent(new ScenarioComponent(ScenarioAtlas.NomadsTent));
             map.AddEntity(nomadTent);
 
             return level;

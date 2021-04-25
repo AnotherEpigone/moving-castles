@@ -9,7 +9,7 @@ namespace MovingCastles.GameSystems.Scenarios
         public ScenarioStepAction(
             string description,
             Action<IDungeonMaster, ILogManager> selectAction,
-            Option<SimpleScenarioStep> nextStep)
+            Option<IScenarioStep> nextStep)
         {
             Description = description;
             SelectAction = selectAction;
@@ -19,12 +19,12 @@ namespace MovingCastles.GameSystems.Scenarios
         public static ScenarioStepAction End(string description) => new ScenarioStepAction(
                 description,
                 (_, __) => { },
-                Option.None<SimpleScenarioStep>());
+                Option.None<IScenarioStep>());
 
         public string Description { get; }
 
         public Action<IDungeonMaster, ILogManager> SelectAction { get; }
 
-        public Option<SimpleScenarioStep> NextStep { get; }
+        public Option<IScenarioStep> NextStep { get; }
     }
 }

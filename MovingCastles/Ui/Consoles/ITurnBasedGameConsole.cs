@@ -11,6 +11,12 @@ namespace MovingCastles.Ui.Consoles
     {
         event EventHandler<string> FlavorMessageChanged;
 
+        int ViewportWidth { get; }
+
+        int ViewportHeight { get; }
+
+        Font Font { get; }
+
         SadConsole.Console ThisConsole { get; }
 
         Wizard Player { get; }
