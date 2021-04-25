@@ -2,6 +2,7 @@
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Scenarios;
+using SadConsole;
 using SadConsole.Controls;
 using SadConsole.Themes;
 using System.Collections.Generic;
@@ -16,8 +17,6 @@ namespace MovingCastles.Ui.Windows
         private readonly ILogManager _logManager;
 
         private readonly ButtonTheme _actionTheme;
-
-        private IScenarioStep _step;
 
         public ScenarioWindow(
             int width,
@@ -53,12 +52,13 @@ namespace MovingCastles.Ui.Windows
 
         private void SetupStep(IScenarioStep step)
         {
-            _step = step;
             _storyArea.Clear();
-            _storyArea.Cursor.Print(step.Description);
+
+            var coloredDescription = new ColoredString(step.Description, new Cell(Color.Gainsboro, ColorHelper.ControlBackDark));
+            _storyArea.Cursor.Print(coloredDescription);
 
             RemoveAll();
-            var buttonY = Height - 10;
+            var buttonY = Height - 16;
             foreach (var action in step.Actions)
             {
                 buttonY -= 2;
