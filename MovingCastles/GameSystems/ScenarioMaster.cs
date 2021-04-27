@@ -25,8 +25,8 @@ namespace MovingCastles.GameSystems
             float widthFactor = _mapConsole.Font.Size.X / (float)Global.FontDefault.Size.X;
             float heightFactor = _mapConsole.Font.Size.Y / (float)Global.FontDefault.Size.Y;
             _window = new ScenarioWindow(
-                (int)(_mapConsole.ViewportWidth * widthFactor),
-                (int)(_mapConsole.ViewportHeight * heightFactor),
+                (int)(_mapConsole.ViewportWidth * widthFactor) - 32,
+                (int)(_mapConsole.ViewportHeight * heightFactor) - 8,
                 firstStep,
                 dungeonMaster,
                 logManager);

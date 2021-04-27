@@ -5,7 +5,6 @@ using MovingCastles.GameSystems.Scenarios;
 using SadConsole;
 using SadConsole.Controls;
 using SadConsole.Themes;
-using System.Collections.Generic;
 
 namespace MovingCastles.Ui.Windows
 {
