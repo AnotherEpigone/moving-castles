@@ -61,6 +61,15 @@ namespace MovingCastles.Text {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Commend the soul of the dead to Ael and go your way..
+        /// </summary>
+        internal static string ActDesc_HermitTent_Empty {
+            get {
+                return ResourceManager.GetString("ActDesc_HermitTent_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The heavy boards of this rough trapdoor hum with power to your mage senses. Placing a hand on the wood, you can sense spells of preservation, strength and locking. You&apos;ll need a key or passphrase of some kind to get through here..
         /// </summary>
         internal static string AlwardsTower_TrapdoorStep {
@@ -84,6 +93,15 @@ namespace MovingCastles.Text {
         internal static string Entry_AlwardsTower_Quest {
             get {
                 return ResourceManager.GetString("Entry_AlwardsTower_Quest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You stumble across the rough campsite of a hermit. An air of supernatural quiet pervades the area. Inside the ragged tent you find the long-dead bones of a man. Of his earthly possessions, nothing remains..
+        /// </summary>
+        internal static string ScenDesc_HermitTent_Empty {
+            get {
+                return ResourceManager.GetString("ScenDesc_HermitTent_Empty", resourceCulture);
             }
         }
     }

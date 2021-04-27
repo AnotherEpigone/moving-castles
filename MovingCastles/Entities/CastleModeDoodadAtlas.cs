@@ -34,9 +34,9 @@ namespace MovingCastles.Entities
                 new SubTileTemplate(CastleModeSpriteAtlas.AlwardsTowerBottom, new Point(0, 1)),
             });
 
-        public static DoodadTemplate NomadsTent => new DoodadTemplate(
-            id: "DOODAD_NOMADS_TENT",
-            name: "Nomad's tent",
+        public static DoodadTemplate HermitsTent => new DoodadTemplate(
+            id: "DOODAD_HERMITS_TENT",
+            name: "Hermit's tent",
             glyph: CastleModeSpriteAtlas.NomadTent,
             nameColor: ColorHelper.BayeuxParchment,
             walkable: true,

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovingCastles.Text;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -22,13 +23,13 @@ namespace MovingCastles.GameSystems.Scenarios
 
         public static Dictionary<string, IScenario> ById => _byId.Value;
 
-        public static IScenario NomadsTent => new SimpleScenario(
-            id: "SCENARIO_NOMADS_TENT",
+        public static IScenario HermitsTent => new SimpleScenario(
+            id: "SCENARIO_HERMITS_TENT",
             firstStep: new SimpleScenarioStep(
-                description: "Step description",
+                description: Story.ScenDesc_HermitTent_Empty,
                 actions: new List<ScenarioStepAction>
                 {
-                    ScenarioStepAction.End("Option description"),
+                    ScenarioStepAction.End(Story.ActDesc_HermitTent_Empty),
                 }));
     }
 }

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActDesc_HermitTent_Empty" xml:space="preserve">
+    <value>Commend the soul of the dead to Ael and go your way.</value>
+  </data>
   <data name="AlwardsTower_TrapdoorStep" xml:space="preserve">
     <value>The heavy boards of this rough trapdoor hum with power to your mage senses. Placing a hand on the wood, you can sense spells of preservation, strength and locking. You'll need a key or passphrase of some kind to get through here.</value>
   </data>
@@ -125,5 +128,8 @@
   </data>
   <data name="Entry_AlwardsTower_Quest" xml:space="preserve">
     <value>Old Alward's Tower, known as the Watcher over the Desert, is the traditional destination of pilgrims from the east. Like the fathers of centuries ago, you must cross the desert and find it before your journey to become a mage can truly begin.</value>
+  </data>
+  <data name="ScenDesc_HermitTent_Empty" xml:space="preserve">
+    <value>You stumble across the rough campsite of a hermit. An air of supernatural quiet pervades the area. Inside the ragged tent you find the long-dead bones of a man. Of his earthly possessions, nothing remains.</value>
   </data>
 </root>

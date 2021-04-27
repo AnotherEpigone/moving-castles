@@ -55,6 +55,7 @@ namespace MovingCastles.Ui.Windows
             _storyArea.Clear();
 
             var coloredDescription = new ColoredString(step.Description, new Cell(Color.Gainsboro, ColorHelper.ControlBackDark));
+            _storyArea.Cursor.Position = new Point(0, 1);
             _storyArea.Cursor.Print(coloredDescription);
 
             RemoveAll();
@@ -64,9 +65,9 @@ namespace MovingCastles.Ui.Windows
                 buttonY -= 2;
                 var button = new Button(Width - 2)
                 {
-                    Text = action.Description,
+                    Text = $"> {action.Description}",
                     Position = new Point(1, buttonY),
-                    TextAlignment = SadConsole.HorizontalAlignment.Left,
+                    TextAlignment = HorizontalAlignment.Left,
                     Theme = _actionTheme,
                 };
                 button.Click += (_, __) =>

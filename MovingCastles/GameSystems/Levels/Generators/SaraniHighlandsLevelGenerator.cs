@@ -79,9 +79,9 @@ namespace MovingCastles.GameSystems.Levels.Generators
             map.AddEntity(tower);
 
             spawnPosition = doodadPlacementView.RandomPosition(true, rng);
-            var nomadTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.NomadsTent);
-            nomadTent.AddGoRogueComponent(new ScenarioComponent(ScenarioAtlas.NomadsTent));
-            map.AddEntity(nomadTent);
+            var hermitTent = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.HermitsTent);
+            hermitTent.AddGoRogueComponent(new ScenarioComponent(ScenarioAtlas.HermitsTent));
+            map.AddEntity(hermitTent);
 
             return level;
         }
