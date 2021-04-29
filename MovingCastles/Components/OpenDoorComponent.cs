@@ -4,6 +4,7 @@ using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components
 {
@@ -11,7 +12,7 @@ namespace MovingCastles.Components
     {
         public IGameObject Parent { get; set; }
 
-        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
+        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             if (Parent is not Door door)
             {

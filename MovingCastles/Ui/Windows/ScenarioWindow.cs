@@ -58,10 +58,10 @@ namespace MovingCastles.Ui.Windows
             _storyArea.Cursor.Print(coloredDescription);
 
             RemoveAll();
-            var buttonY = Height - 16;
+            var buttonY = Height - 20;
             foreach (var action in step.Actions)
             {
-                buttonY -= 2;
+                buttonY += 2;
                 var button = new Button(Width - 2)
                 {
                     Text = $"> {action.Description}",

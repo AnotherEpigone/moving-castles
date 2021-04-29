@@ -75,7 +75,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
                         && map.GetEntity<McEntity>(c + st.Offset, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null));
             var spawnPosition = castlePlacementView.RandomPosition(true, rng);
             var tower = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
-            tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
+            ////tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));
+            tower.AddGoRogueComponent(new ScenarioComponent(ScenarioAtlas.OldAlwardsTower));
             map.AddEntity(tower);
 
             spawnPosition = doodadPlacementView.RandomPosition(true, rng);

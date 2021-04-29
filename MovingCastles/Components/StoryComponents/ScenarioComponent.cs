@@ -12,7 +12,7 @@ using Troschuetz.Random;
 
 namespace MovingCastles.Components.StoryComponents
 {
-    public class ScenarioComponent : IStepTriggeredComponent, ISerializableComponent
+    public class ScenarioComponent : IStepTriggeredComponent, IBumpTriggeredComponent, ISerializableComponent
     {
         private readonly IScenario _scenario;
 
@@ -32,6 +32,11 @@ namespace MovingCastles.Components.StoryComponents
         public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             Trigger(steppingEntity, dungeonMaster, logManager, rng);
+        }
+
+        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
+        {
+            Trigger(bumpingEntity, dungeonMaster, logManager, rng);
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()

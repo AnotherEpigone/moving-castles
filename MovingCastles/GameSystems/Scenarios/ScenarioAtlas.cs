@@ -1,4 +1,6 @@
-﻿using MovingCastles.Text;
+﻿using MovingCastles.GameSystems.Levels;
+using MovingCastles.Text;
+using Optional;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +32,27 @@ namespace MovingCastles.GameSystems.Scenarios
                 actions: new List<ScenarioStepAction>
                 {
                     ScenarioStepAction.End(Story.ActDesc_HermitTent_Empty),
+                }));
+
+        public static IScenario OldAlwardsTower => new SimpleScenario(
+            id: "SCENARIO_OLD_ALWARDS",
+            firstStep: new SimpleScenarioStep(
+                description: "Big ol castle",
+                actions: new List<ScenarioStepAction>
+                {
+                    new ScenarioStepAction(
+                        "Go in.",
+                        (dm, lm) =>
+                        {
+                            dm.LevelMaster.ChangeStructure(
+                                Structure.StructureId_AlwardsTower,
+                                LevelId.AlwardsTower1,
+                                new SpawnConditions(Spawn.Default, 0),
+                                dm.Player,
+                                lm);
+                        },
+                        Option.None<IScenarioStep>()),
+                    ScenarioStepAction.End("Don't go in."),
                 }));
     }
 }

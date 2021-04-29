@@ -10,7 +10,6 @@ namespace MovingCastles.GameSystems
     public class ScenarioMaster : IScenarioMaster
     {
         private ScenarioWindow _window;
-        private ITurnBasedGameConsole _mapConsole;
 
         public void Show(
             IScenario scenario,
@@ -20,13 +19,13 @@ namespace MovingCastles.GameSystems
         {
             var firstStep = scenario.Encounter(dungeonMaster, rng);
 
-            _mapConsole = ((MainConsole)Global.CurrentScreen).MapConsole;
+            var mapConsole = ((MainConsole)Global.CurrentScreen).MapConsole;
 
-            float widthFactor = _mapConsole.Font.Size.X / (float)Global.FontDefault.Size.X;
-            float heightFactor = _mapConsole.Font.Size.Y / (float)Global.FontDefault.Size.Y;
+            float widthFactor = mapConsole.Font.Size.X / (float)Global.FontDefault.Size.X;
+            float heightFactor = mapConsole.Font.Size.Y / (float)Global.FontDefault.Size.Y;
             _window = new ScenarioWindow(
-                (int)(_mapConsole.ViewportWidth * widthFactor) - 32,
-                (int)(_mapConsole.ViewportHeight * heightFactor) - 8,
+                (int)(mapConsole.ViewportWidth * widthFactor) - 32,
+                (int)(mapConsole.ViewportHeight * heightFactor) - 8,
                 firstStep,
                 dungeonMaster,
                 logManager);
@@ -36,7 +35,8 @@ namespace MovingCastles.GameSystems
         public void Hide()
         {
             _window.Hide();
-            ((Console)_mapConsole).IsFocused = true;
+            var mapConsole = (Console)((MainConsole)Global.CurrentScreen).MapConsole;
+            mapConsole.IsFocused = true;
         }
     }
 }

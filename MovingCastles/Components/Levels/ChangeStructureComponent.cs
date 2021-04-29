@@ -66,7 +66,7 @@ namespace MovingCastles.Components.Levels
             }),
         };
 
-        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster)
+        public void Bump(McEntity bumpingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             if (bumpingEntity is not Wizard)
             {

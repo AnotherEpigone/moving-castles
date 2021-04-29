@@ -119,6 +119,33 @@ namespace MovingCastles.Text {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crystalized by the precise artistry of master artificers, etherium is the closest thing you can get to the pure substance of the Torrent..
+        /// </summary>
+        internal static string Item_EtheriumShard_Desc {
+            get {
+                return ResourceManager.GetString("Item_EtheriumShard_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut from the sacred woods of the Kurisau Oasis, this staff has served you since you first learned to sense the Wellspring..
+        /// </summary>
+        internal static string Item_StarterOakStaff_Desc {
+            get {
+                return ResourceManager.GetString("Item_StarterOakStaff_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The nobleman&apos;s weapon of war, with a well-used leather grip and a blade of the finest Ayeni steel..
+        /// </summary>
+        internal static string Item_SteelLongsword_Desc {
+            get {
+                return ResourceManager.GetString("Item_SteelLongsword_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To manifest the power of the wellspring in flame is as natural as breath for the magi..
         /// </summary>
         internal static string Spell_ConjureFlame_Desc {
