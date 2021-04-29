@@ -262,6 +262,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
             foreach (var pos in room.Location.Positions())
             {
                 var canPlaceBlocker = PlacementRules.CanPlaceBlockingObject(pos, doors, level, room);
+                if (canPlaceBlocker
+                    && rng.Next(100) < 5)
+                {
+                    level.Map.AddEntity(GameModeMaster.EntityFactory.CreateDoodad(pos, DungeonModeDoodadAtlas.Trollshroom));
+                    continue;
+                }
+
                 PlaceRubble(pos, canPlaceBlocker, rng, level);
             }
         }

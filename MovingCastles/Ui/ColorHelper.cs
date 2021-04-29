@@ -28,6 +28,7 @@ namespace MovingCastles.Ui
         public static Color SelectedBackground => DarkGrey2;
         public static Color EnemyName => EnemyRed;
         public static Color ImportantAction => ActionYellow;
+        public static Color GoblinGreen => BayeuxGreen;
 
         // colors
         public static Color BayeuxParchment => new Color(217, 209, 159);
