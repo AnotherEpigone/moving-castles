@@ -9,6 +9,7 @@ using MovingCastles.GameSystems.Player;
 using MovingCastles.GameSystems.Spells;
 using MovingCastles.Ui;
 using SadConsole;
+using System.Linq;
 
 namespace MovingCastles.Entities
 {
@@ -96,7 +97,7 @@ namespace MovingCastles.Entities
                     Faction.None,
                     System.Guid.NewGuid());
             item.AddGoRogueComponent(new SummaryControlComponent());
-            item.AddGoRogueComponent(new PickupableComponent(itemTemplate));
+            item.AddGoRogueComponent(new PickupItemTemplateComponent(itemTemplate));
 
             // workaround Entity construction bugs by setting font afterward
             item.Font = _font;
@@ -156,7 +157,7 @@ namespace MovingCastles.Entities
                 SpellAtlas.Haste));
             wizard.AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health, 0));
             wizard.AddGoRogueComponent(new EndowmentPoolComponent(playerInfo.MaxEndowment, playerInfo.Endowment, 0.5f));
-            wizard.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.ToArray()));
+            wizard.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.Select(i => Item.FromTemplate(i)).ToArray()));
             wizard.AddGoRogueComponent(new ActorStatComponent(1f, 1f, 1f));
 
             return wizard;

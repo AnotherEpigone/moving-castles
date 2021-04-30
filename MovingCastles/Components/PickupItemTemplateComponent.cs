@@ -1,6 +1,6 @@
 ﻿using GoRogue.GameFramework;
-using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Components.Triggers;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
@@ -13,14 +13,14 @@ using Troschuetz.Random;
 
 namespace MovingCastles.Components
 {
-    public class PickupableComponent : IGameObjectComponent, IPickupableComponent, ISerializableComponent
+    public class PickupItemTemplateComponent : ISerializableComponent, IStepTriggeredComponent
     {
-        public PickupableComponent(params ItemTemplate[] items)
+        public PickupItemTemplateComponent(params ItemTemplate[] items)
         {
             Items = new List<ItemTemplate>(items);
         }
 
-        public PickupableComponent(SerializedObject state)
+        public PickupItemTemplateComponent(SerializedObject state)
             : this(JsonConvert.DeserializeObject<List<ItemTemplate>>(state.Value).ToArray()) { }
 
         public List<ItemTemplate> Items { get; }
@@ -35,7 +35,7 @@ namespace MovingCastles.Components
                 return;
             }
 
-            inventory.Items.AddRange(Items);
+            inventory.Items.AddRange(Items.Select(i => Item.FromTemplate(i)));
             Parent.CurrentMap.RemoveEntity(Parent);
 
             logManager.StoryLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
@@ -45,7 +45,7 @@ namespace MovingCastles.Components
         {
             return new ComponentSerializable()
             {
-                Id = nameof(PickupableComponent),
+                Id = nameof(PickupItemTemplateComponent),
                 State = JsonConvert.SerializeObject(Items),
             };
         }

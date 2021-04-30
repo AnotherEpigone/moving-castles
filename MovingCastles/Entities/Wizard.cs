@@ -19,11 +19,11 @@ namespace MovingCastles.Entities
     [JsonConverter(typeof(WizardJsonConverter))]
     public sealed class Wizard : McEntity
     {
-        public Wizard(Coord position, GameSystems.Player.WizardTemplate playerInfo, Font font)
+        public Wizard(Coord position, WizardTemplate playerInfo, Font font)
             : this(position, playerInfo, font, Guid.NewGuid())
         { }
 
-        public Wizard(Coord position, GameSystems.Player.WizardTemplate playerInfo, Font font, Guid id)
+        public Wizard(Coord position, WizardTemplate playerInfo, Font font, Guid id)
             : base("Player-Wizard",
                   playerInfo.Name,
                   Color.White,

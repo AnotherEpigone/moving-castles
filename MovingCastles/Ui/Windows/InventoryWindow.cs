@@ -16,7 +16,7 @@ namespace MovingCastles.Ui.Windows
         private readonly Button _useButton;
         private readonly Button _closeButton;
         private readonly int _itemButtonWidth;
-        private ItemTemplate _selectedItem;
+        private Item _selectedItem;
 
         public InventoryWindow(int width, int height)
             : base(width, height)
@@ -61,7 +61,7 @@ namespace MovingCastles.Ui.Windows
             base.Show(true);
         }
 
-        private void OnItemSelected(ItemTemplate item)
+        private void OnItemSelected(Item item)
         {
             _selectedItem = item;
             _descriptionArea.Clear();
@@ -72,7 +72,7 @@ namespace MovingCastles.Ui.Windows
                     new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
         }
 
-        private Dictionary<McSelectionButton, System.Action> BuildItemControls(IEnumerable<ItemTemplate> items)
+        private Dictionary<McSelectionButton, System.Action> BuildItemControls(IEnumerable<Item> items)
         {
             var yCount = 0;
             return items.ToDictionary(

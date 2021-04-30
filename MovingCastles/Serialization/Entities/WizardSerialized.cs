@@ -13,7 +13,7 @@ namespace MovingCastles.Serialization.Entities
     {
         public override void WriteJson(JsonWriter writer, Wizard value, JsonSerializer serializer) => serializer.Serialize(writer, (WizardSerialized)value);
 
-        public override global::MovingCastles.Entities.Wizard ReadJson(JsonReader reader, System.Type objectType, global::MovingCastles.Entities.Wizard existingValue,
+        public override Wizard ReadJson(JsonReader reader, System.Type objectType, Wizard existingValue,
                                         bool hasExistingValue, JsonSerializer serializer) => serializer.Deserialize<WizardSerialized>(reader);
     }
 
@@ -76,26 +76,6 @@ namespace MovingCastles.Serialization.Entities
                 DefaultBackground = serializedObject.DefaultBackground,
                 DefaultForeground = serializedObject.DefaultForeground
             };
-
-            entity.Animations.Clear();
-            foreach (AnimatedConsoleSerialized item in serializedObject.Animations)
-            {
-                entity.Animations[item.Name] = item;
-            }
-
-            if (entity.Animations.ContainsKey(serializedObject.AnimationName))
-            {
-                entity.Animation = entity.Animations[serializedObject.AnimationName];
-            }
-            else
-            {
-                entity.Animation = serializedObject.Animations[0];
-            }
-
-            foreach (var componentSerialized in serializedObject.Components)
-            {
-                entity.AddGoRogueComponent(ComponentFactory.Create(componentSerialized));
-            }
 
             return entity;
         }
