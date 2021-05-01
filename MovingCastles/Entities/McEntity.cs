@@ -46,6 +46,7 @@ namespace MovingCastles.Entities
             NameColor = nameColor;
             FactionName = faction;
             UniqueId = id;
+            Glyph = glyph;
 
             SubTiles = new List<McEntity>();
         }
@@ -62,6 +63,8 @@ namespace MovingCastles.Entities
         public Color NameColor { get; }
 
         public string TemplateId { get; }
+
+        public int Glyph { get; }
 
         /// <summary>
         /// Null for standalone entities. If this is part of a multi-tile entity, Anchor is

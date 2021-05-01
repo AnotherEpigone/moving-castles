@@ -65,7 +65,7 @@ namespace MovingCastles.Ui
                 ViewPortWidth,
                 ViewPortHeight,
                 tilesetFont,
-                CreateMenuProvider(gameManager),
+                CreateMenuProvider(gameManager, dungeonMaster),
                 dungeonMaster,
                 _logManager,
                 game,
@@ -73,9 +73,9 @@ namespace MovingCastles.Ui
                 turnBasedGameConsoleFactory);
         }
 
-        private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager)
+        private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager, IDungeonMaster dungeonMaster)
         {
-            var inventory = new InventoryWindow(120, 30);
+            var inventory = new InventoryWindow(120, 30, dungeonMaster);
             var death = new DeathWindow(this, gameManager);
             var pop = new PopupMenuWindow(this, gameManager);
             var spellSelect = new SpellSelectionWindow();

@@ -20,7 +20,7 @@ using XnaRect = Microsoft.Xna.Framework.Rectangle;
 namespace MovingCastles.Ui.Consoles
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal class DungeonMapConsole : ContainerConsole, ITurnBasedGameConsole
+    public class DungeonMapConsole : ContainerConsole, ITurnBasedGameConsole
     {
         private readonly IMapModeMenuProvider _menuProvider;
         private readonly IAppSettings _appSettings;
@@ -168,6 +168,12 @@ namespace MovingCastles.Ui.Consoles
             CenterMapViewOnPlayer();
 
             Children.Add(_mapRendererContainer); // todo, is this removed?
+        }
+
+        public void AddEntity(McEntity entity)
+        {
+            Map.AddEntity(entity);
+            _game.RegisterEntity(entity);
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)

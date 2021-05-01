@@ -3,6 +3,7 @@ using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.Ui.Consoles;
+using Optional;
 
 namespace MovingCastles.GameSystems
 {
@@ -30,5 +31,16 @@ namespace MovingCastles.GameSystems
         public IFactionMaster FactionMaster { get; }
         public ITimeMaster TimeMaster { get; }
         public IScenarioMaster ScenarioMaster { get; }
+
+        public Option<DungeonMapConsole> GetCurrentMapConsole()
+        {
+            if (!(SadConsole.Global.CurrentScreen is MainConsole main)
+                || !(main.MapConsole is DungeonMapConsole mapConsole))
+            {
+                return Option.None<DungeonMapConsole>();
+            }
+
+            return Option.Some(mapConsole);
+        }
     }
 }

@@ -1,28 +1,37 @@
 ﻿using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
+using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Controls;
 using SadConsole;
 using SadConsole.Controls;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
 
 namespace MovingCastles.Ui.Windows
 {
     public class InventoryWindow : McControlWindow
     {
+        private readonly IDungeonMaster _dungeonMaster;
         private readonly Console _descriptionArea;
         private readonly Button _useButton;
+        private readonly Button _dropButton;
         private readonly Button _closeButton;
         private readonly int _itemButtonWidth;
-        private Item _selectedItem;
 
-        public InventoryWindow(int width, int height)
+        private Item _selectedItem;
+        private IInventoryComponent _inventory;
+
+        public InventoryWindow(int width, int height, IDungeonMaster dungeonMaster)
             : base(width, height)
         {
             Contract.Requires(width > 40, "Menu width must be > 40");
             Contract.Requires(width > 10, "Menu width must be > 10");
+
+            _dungeonMaster = dungeonMaster;
 
             _itemButtonWidth = width / 3;
             CloseOnEscKey = true;
@@ -32,12 +41,20 @@ namespace MovingCastles.Ui.Windows
             _useButton = new Button(7)
             {
                 Text = "Use",
+                IsEnabled = false,
                 Position = new Point(_itemButtonWidth + 2, height - 2),
             };
 
-            _closeButton = new Button(9)
+            _dropButton = new Button(12)
             {
-                Text = "Close",
+                Text = "Drop (D)",
+                Position = new Point(_useButton.Position.X + _useButton.Width + 2, height - 2),
+            };
+            _dropButton.Click += (_, __) => Drop();
+
+            _closeButton = new Button(15)
+            {
+                Text = "Close (Esc)",
                 Position = new Point(width - 9, height - 2),
             };
             _closeButton.Click += (_, __) => Hide();
@@ -56,14 +73,27 @@ namespace MovingCastles.Ui.Windows
 
         public void Show(IInventoryComponent inventory)
         {
-            RefreshControls(BuildItemControls(inventory.Items));
+            _inventory = inventory;
+            RefreshControls(BuildItemControls(_inventory.Items));
 
             base.Show(true);
+        }
+
+        public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
+        {
+            if (info.IsKeyPressed(Keys.D))
+            {
+                Drop();
+                return true;
+            }
+
+            return base.ProcessKeyboard(info);
         }
 
         private void OnItemSelected(Item item)
         {
             _selectedItem = item;
+            _dropButton.IsEnabled = true;
             _descriptionArea.Clear();
             _descriptionArea.Cursor.Position = new Point(0, 0);
             _descriptionArea.Cursor.Print(
@@ -87,12 +117,34 @@ namespace MovingCastles.Ui.Windows
                 i => (System.Action)(() => OnItemSelected(i)));
         }
 
+        private void Drop()
+        {
+            _inventory.Items.Remove(_selectedItem);
+
+            var mapConsoleResult = _dungeonMaster.GetCurrentMapConsole();
+            if (_dungeonMaster.ModeMaster.Mode == GameMode.Dungeon
+                && mapConsoleResult.HasValue)
+            {
+                var droppedItem = _dungeonMaster.ModeMaster.EntityFactory.CreateItem(_dungeonMaster.Player.Position, _selectedItem);
+                var mapConsole = mapConsoleResult.ValueOr(default(DungeonMapConsole));
+                mapConsole.AddEntity(droppedItem);
+            }
+
+            RefreshControls(BuildItemControls(_inventory.Items));
+        }
+
         private void RefreshControls(Dictionary<McSelectionButton, System.Action> buttons)
         {
+            _selectedItem = null;
+            _descriptionArea.Clear();
+
             RemoveAll();
 
             Add(_useButton);
             Add(_closeButton);
+            Add(_dropButton);
+
+            _dropButton.IsEnabled = false;
 
             SetupSelectionButtons(buttons);
         }

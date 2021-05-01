@@ -106,6 +106,31 @@ namespace MovingCastles.Entities
             return item;
         }
 
+        public McEntity CreateItem(Coord position, Item item)
+        {
+            var mapItem = new McEntity(
+                    item.TemplateId,
+                    item.Name,
+                    Color.White,
+                    Color.Transparent,
+                    item.Glyph,
+                    position,
+                    (int)Maps.DungeonMapLayer.ITEMS,
+                    isWalkable: true,
+                    isTransparent: true,
+                    ColorHelper.ItemGrey,
+                    Faction.None,
+                    System.Guid.NewGuid());
+            mapItem.AddGoRogueComponent(new SummaryControlComponent());
+            mapItem.AddGoRogueComponent(new PickupItemComponent(item));
+
+            // workaround Entity construction bugs by setting font afterward
+            mapItem.Font = _font;
+            mapItem.OnCalculateRenderPosition();
+
+            return mapItem;
+        }
+
         public McEntity CreateDoodad(Coord position, DoodadTemplate template)
         {
             var doodad = new McEntity(
