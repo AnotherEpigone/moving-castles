@@ -375,12 +375,12 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private void ProcessSecondMarker(McTimeSpan time)
         {
-            foreach (var entity in _registeredEntities.Values)
+            foreach (var entity in _registeredEntities.Values.Append(_player))
             {
                 var effects = entity.GetGoRogueComponents<ITimedEffect>();
                 foreach (var effect in effects.ToArray())
                 {
-                    effect.OnTick(time, _logManager);
+                    effect.OnTick(time, _logManager, _dungeonMaster);
                 }
             }
 

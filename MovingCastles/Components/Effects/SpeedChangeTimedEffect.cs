@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.Serialization;
@@ -32,7 +33,7 @@ namespace MovingCastles.Components.Effects
 
         public float Modifier { get; }
 
-        public void OnTick(McTimeSpan time, ILogManager logManager)
+        public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
             if (time >= (_startTime + _lifetimeTicks))
             {

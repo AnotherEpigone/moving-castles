@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using GoRogue.MapGeneration;
 using GoRogue.MapViews;
+using Microsoft.Xna.Framework;
 using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
@@ -59,20 +60,13 @@ namespace MovingCastles.GameSystems.Levels.Generators
             }
 
             // TODO reusable method for producing these spawning views.
-            var doodadPlacementView = new LambdaMapView<bool>(
-                map.Width,
-                map.Height,
-                c => map.WalkabilityView[c]
-                    && map.GetEntity<McEntity>(c, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null);
+            var doodadPlacementView = MapViewHelper.WalkableEmptyLayerView(map, DungeonMapLayer.DOODADS);
 
-            var castlePlacementView = new LambdaMapView<bool>(
-                map.Width,
-                map.Height,
-                c => map.WalkabilityView[c]
-                    && map.GetEntity<McEntity>(c, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null
-                    && CastleModeDoodadAtlas.AlwardsTower.SubTiles.All(
-                        st => map.WalkabilityView[c + st.Offset]
-                        && map.GetEntity<McEntity>(c + st.Offset, LayerMasker.DEFAULT.Mask((int)DungeonMapLayer.DOODADS)) == null));
+            var castlePlacementView = MapViewHelper.MultiTileWalkableEmptyLayerView(
+                map,
+                DungeonMapLayer.DOODADS,
+                CastleModeDoodadAtlas.AlwardsTower.SubTiles.Select(st => (Coord)st.Offset));
+
             var spawnPosition = castlePlacementView.RandomPosition(true, rng);
             var tower = GameModeMaster.EntityFactory.CreateDoodad(spawnPosition, CastleModeDoodadAtlas.AlwardsTower);
             ////tower.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_AlwardsTower, LevelId.AlwardsTower1, new SpawnConditions(Spawn.Default, 0)));

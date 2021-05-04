@@ -1,6 +1,7 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
 using MovingCastles.Components;
+using MovingCastles.Components.ItemComponents;
 using MovingCastles.Components.Stats;
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Items;

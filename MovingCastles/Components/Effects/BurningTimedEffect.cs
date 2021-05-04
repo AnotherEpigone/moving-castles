@@ -1,6 +1,7 @@
 ﻿using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
@@ -32,7 +33,7 @@ namespace MovingCastles.Components.Effects
 
         public IGameObject Parent { get; set; }
 
-        public void OnTick(McTimeSpan time, ILogManager logManager)
+        public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
             var mcParent = (McEntity)Parent;
             logManager.CombatLog($"{mcParent.ColoredName} burned for {_dps} damage.");
