@@ -7,6 +7,7 @@ using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.Maps;
+using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -22,6 +23,14 @@ namespace MovingCastles.Components.ItemComponents
         private readonly int _ticks;
 
         private long _startTime;
+
+        public SpawnActorAtParentComponent(SerializedObject state)
+        {
+            var stateObj = JsonConvert.DeserializeObject<State>(state.Value);
+            _templateId = stateObj.TemplateId;
+            _ticks = stateObj.Ticks;
+            _startTime = stateObj.StartTime;
+        }
 
         public SpawnActorAtParentComponent(string templateId, int ticks)
         {
