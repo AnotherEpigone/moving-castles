@@ -56,6 +56,7 @@ namespace MovingCastles.Components.ItemComponents
             }
 
             var parentPos = Parent.Position;
+            var parent = Parent;
             Parent.RemoveComponent(this);
 
             var mapConsole = dungeonMaster.GetCurrentMapConsole().ValueOr(() => null);
@@ -72,8 +73,17 @@ namespace MovingCastles.Components.ItemComponents
                 actorTemplate.SubTiles.Select(st => (Coord)st.Offset));
 
             Coord spawnPosition = Coord.NONE;
-            foreach (var pos in AdjacencyRule.EIGHT_WAY.Neighbors(parentPos))
+            foreach (var direction in AdjacencyRule.EIGHT_WAY.DirectionsOfNeighbors())
             {
+                var pos = parentPos + direction;
+
+                // attempt to find a spot for multi-tile entities by pushing them back if they
+                // overlap a non-walkable spawner
+                while (!parent.IsWalkable && actorTemplate.SubTiles.Any(st => pos + st.Offset == parentPos))
+                {
+                    pos += direction;
+                }
+
                 if (actorPlacementView[pos])
                 {
                     spawnPosition = pos;
