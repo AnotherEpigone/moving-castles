@@ -20,9 +20,11 @@ namespace MovingCastles.Components.ItemComponents
     public class SpawnActorAtParentComponent : ITimedEffect
     {
         private readonly string _templateId;
-        private readonly int _ticks;
 
+        private int _ticks;
         private long _startTime;
+        private int _elapsed;
+        private IGameObject _parent;
 
         public SpawnActorAtParentComponent(SerializedObject state)
         {
@@ -36,10 +38,23 @@ namespace MovingCastles.Components.ItemComponents
         {
             _templateId = templateId;
             _ticks = ticks;
+            _elapsed = 0;
             _startTime = long.MinValue;
         }
 
-        public IGameObject Parent { get; set; }
+        public IGameObject Parent
+        {
+            get { return _parent; }
+            set
+            {
+                _parent = value;
+                if (_parent == null)
+                {
+                    _ticks -= _elapsed;
+                    _startTime = long.MinValue;
+                }
+            }
+        }
 
         public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
@@ -49,8 +64,8 @@ namespace MovingCastles.Components.ItemComponents
                 return;
             }
 
-            var elapsed = time.Ticks - _startTime;
-            if (elapsed < _ticks)
+            _elapsed = (int)(time.Ticks - _startTime);
+            if (_elapsed < _ticks)
             {
                 return;
             }
