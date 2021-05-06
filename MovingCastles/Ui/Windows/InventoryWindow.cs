@@ -58,7 +58,7 @@ namespace MovingCastles.Ui.Windows
             _closeButton = new Button(15)
             {
                 Text = "Close (Esc)",
-                Position = new Point(width - 9, height - 2),
+                Position = new Point(width - 16, height - 2),
             };
             _closeButton.Click += (_, __) => Hide();
 
