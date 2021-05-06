@@ -39,13 +39,17 @@ namespace MovingCastles.GameSystems.Items
 
         public static Item FromTemplate(ItemTemplate template)
         {
-            return new Item(
+            var item = new Item(
                 template.Id,
                 template.Name,
                 template.Glyph,
                 ColorHelper.ItemGrey,
                 Guid.NewGuid(),
                 template.Description);
+
+            template.CreateComponents().ForEach(c => item.AddGoRogueComponent(c));
+
+            return item;
         }
 
         public string Description { get; }

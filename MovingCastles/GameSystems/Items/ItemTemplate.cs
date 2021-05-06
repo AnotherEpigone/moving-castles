@@ -1,28 +1,33 @@
-﻿using System.Runtime.Serialization;
+﻿using MovingCastles.Components.Serialization;
+using System;
+using System.Collections.Generic;
 
 namespace MovingCastles.GameSystems.Items
 {
-    [DataContract]
     public class ItemTemplate
     {
         public ItemTemplate(
             string id,
             string name,
             string description,
-            int glyph)
+            int glyph,
+            Func<List<ISerializableComponent>> createComponents)
         {
             Id = id;
             Name = name;
             Description = description;
             Glyph = glyph;
+            CreateComponents = createComponents;
         }
 
-        [DataMember] public string Id { get; }
+        public string Id { get; }
 
-        [DataMember] public string Name { get; }
+        public string Name { get; }
 
-        [DataMember] public string Description { get; }
+        public string Description { get; }
 
-        [DataMember] public int Glyph { get; }
+        public int Glyph { get; }
+
+        public Func<List<ISerializableComponent>> CreateComponents { get; }
     }
 }

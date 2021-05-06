@@ -1,7 +1,6 @@
 ﻿using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.TurnBased;
-using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
 using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Windows;
@@ -75,7 +74,7 @@ namespace MovingCastles.Ui
 
         private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager, IDungeonMaster dungeonMaster)
         {
-            var inventory = new InventoryWindow(120, 30, dungeonMaster);
+            var inventory = new InventoryWindow(120, 30, dungeonMaster, _logManager);
             var death = new DeathWindow(this, gameManager);
             var pop = new PopupMenuWindow(this, gameManager);
             var spellSelect = new SpellSelectionWindow();

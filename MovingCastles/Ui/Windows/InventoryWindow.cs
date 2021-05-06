@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
+using MovingCastles.GameSystems.Logging;
 
 namespace MovingCastles.Ui.Windows
 {
@@ -24,14 +25,16 @@ namespace MovingCastles.Ui.Windows
 
         private Item _selectedItem;
         private IInventoryComponent _inventory;
+        private readonly ILogManager _logManager;
 
-        public InventoryWindow(int width, int height, IDungeonMaster dungeonMaster)
+        public InventoryWindow(int width, int height, IDungeonMaster dungeonMaster, ILogManager logManager)
             : base(width, height)
         {
             Contract.Requires(width > 40, "Menu width must be > 40");
             Contract.Requires(width > 10, "Menu width must be > 10");
 
             _dungeonMaster = dungeonMaster;
+            _logManager = logManager;
 
             _itemButtonWidth = width / 3;
             CloseOnEscKey = true;
@@ -74,7 +77,7 @@ namespace MovingCastles.Ui.Windows
         public void Show(IInventoryComponent inventory)
         {
             _inventory = inventory;
-            RefreshControls(BuildItemControls(_inventory.Items));
+            RefreshControls(BuildItemControls(_inventory.GetItems()));
 
             base.Show(true);
         }
@@ -119,7 +122,7 @@ namespace MovingCastles.Ui.Windows
 
         private void Drop()
         {
-            _inventory.Items.Remove(_selectedItem);
+            _inventory.RemoveItem(_selectedItem, _dungeonMaster, _logManager);
 
             var mapConsoleResult = _dungeonMaster.GetCurrentMapConsole();
             if (_dungeonMaster.ModeMaster.Mode == GameMode.Dungeon
@@ -130,7 +133,7 @@ namespace MovingCastles.Ui.Windows
                 mapConsole.AddEntity(droppedItem);
             }
 
-            RefreshControls(BuildItemControls(_inventory.Items));
+            RefreshControls(BuildItemControls(_inventory.GetItems()));
         }
 
         private void RefreshControls(Dictionary<McSelectionButton, System.Action> buttons)

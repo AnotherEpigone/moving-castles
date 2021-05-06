@@ -27,7 +27,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager, IGenerator rng)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             var inventory = steppingEntity.GetGoRogueComponent<IInventoryComponent>();
             if (inventory == null)
@@ -35,7 +35,11 @@ namespace MovingCastles.Components
                 return;
             }
 
-            inventory.Items.AddRange(Items);
+            foreach (var item in Items)
+            {
+                inventory.AddItem(item, dungeonMaster, logManager);
+            }
+
             Parent.CurrentMap.RemoveEntity(Parent);
 
             logManager.StoryLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");

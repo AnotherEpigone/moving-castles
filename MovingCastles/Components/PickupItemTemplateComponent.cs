@@ -21,13 +21,13 @@ namespace MovingCastles.Components
         }
 
         public PickupItemTemplateComponent(SerializedObject state)
-            : this(JsonConvert.DeserializeObject<List<ItemTemplate>>(state.Value).ToArray()) { }
+            : this(JsonConvert.DeserializeObject<string[]>(state.Value).Select(id => ItemAtlas.ItemsById[id]).ToArray()) { }
 
         public List<ItemTemplate> Items { get; }
 
         public IGameObject Parent { get; set; }
 
-        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager, IGenerator rng)
+        public void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             var inventory = steppingEntity.GetGoRogueComponent<IInventoryComponent>();
             if (inventory == null)
@@ -35,7 +35,11 @@ namespace MovingCastles.Components
                 return;
             }
 
-            inventory.Items.AddRange(Items.Select(i => Item.FromTemplate(i)));
+            foreach (var item in Items)
+            {
+                inventory.AddItem(Item.FromTemplate(item), dungeonMaster, logManager);
+            }
+
             Parent.CurrentMap.RemoveEntity(Parent);
 
             logManager.StoryLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
@@ -46,7 +50,7 @@ namespace MovingCastles.Components
             return new ComponentSerializable()
             {
                 Id = nameof(PickupItemTemplateComponent),
-                State = JsonConvert.SerializeObject(Items),
+                State = JsonConvert.SerializeObject(Items.Select(i => i.Id).ToArray()),
             };
         }
     }

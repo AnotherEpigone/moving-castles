@@ -8,6 +8,6 @@ namespace MovingCastles.Components.Triggers
 {
     public interface IStepTriggeredComponent : IGameObjectComponent
     {
-        void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster gameManager, IGenerator rng);
+        void OnStep(McEntity steppingEntity, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng);
     }
 }

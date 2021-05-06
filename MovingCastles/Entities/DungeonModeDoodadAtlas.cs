@@ -121,13 +121,13 @@ namespace MovingCastles.Entities
             transparent: true,
             subTiles: new List<SubTileTemplate>());
 
-        public static DoodadTemplate Trollshroom => new DoodadTemplate(
-            id: "DOODAD_TROLLSHROOM",
-            name: "Trollshroom",
-            glyph: DungeonModeSpriteAtlas.Trollshroom_Small,
-            nameColor: ColorHelper.GoblinGreen,
-            walkable: false,
-            transparent: true,
-            subTiles: new List<SubTileTemplate>());
+        ////public static DoodadTemplate Trollshroom => new DoodadTemplate(
+        ////    id: "DOODAD_TROLLSHROOM",
+        ////    name: "Trollshroom",
+        ////    glyph: DungeonModeSpriteAtlas.Trollshroom_Small,
+        ////    nameColor: ColorHelper.GoblinGreen,
+        ////    walkable: false,
+        ////    transparent: true,
+        ////    subTiles: new List<SubTileTemplate>());
     }
 }
