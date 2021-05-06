@@ -167,7 +167,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // Spawn items
             for (int i = 0; i < 10; i++)
             {
-                spawnPosition = map.WalkabilityView.RandomPosition(true);
+                var itemPlacementView = MapViewHelper.WalkableEmptyLayerView(map, DungeonMapLayer.ITEMS);
+                spawnPosition = itemPlacementView.RandomPosition(true);
 
                 var item = GameModeMaster.EntityFactory.CreateItem(spawnPosition, _floorItems.RandomItem());
 
