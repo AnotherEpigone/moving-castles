@@ -1,16 +1,13 @@
 ﻿using GoRogue;
 using GoRogue.MapViews;
-using Microsoft.Xna.Framework;
 using MovingCastles.Components.Levels;
 using MovingCastles.Components.StoryComponents;
 using MovingCastles.Entities;
 using MovingCastles.Extensions;
-using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.Maps;
 using MovingCastles.Maps.Generation;
 using MovingCastles.Text;
-using SadConsole;
 using System;
 using System.Collections.Generic;
 using System.Linq;

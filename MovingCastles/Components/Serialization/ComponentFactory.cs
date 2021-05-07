@@ -13,11 +13,11 @@ namespace MovingCastles.Components.Serialization
 {
     public static class ComponentFactory
     {
-        private static readonly Dictionary<string, Func<string, IGameObjectComponent>> _constructors;
+        private static readonly Dictionary<string, Func<string, ISerializableComponent>> _constructors;
 
         static ComponentFactory()
         {
-            _constructors = new Dictionary<string, Func<string, IGameObjectComponent>>()
+            _constructors = new Dictionary<string, Func<string, ISerializableComponent>>()
             {
                 { nameof(PickupItemTemplateComponent), s => new PickupItemTemplateComponent(new SerializedObject() { Value = s }) },
                 { nameof(OpenDoorComponent), _ => new OpenDoorComponent() },
@@ -48,7 +48,7 @@ namespace MovingCastles.Components.Serialization
             };
         }
 
-        public static IGameObjectComponent Create(ComponentSerializable serialized)
+        public static ISerializableComponent Create(ComponentSerializable serialized)
         {
             if (!_constructors.TryGetValue(serialized.Id, out var constructor))
             {

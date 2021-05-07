@@ -16,14 +16,17 @@ namespace MovingCastles.Serialization.Entities
                                         bool hasExistingValue, JsonSerializer serializer) => serializer.Deserialize<ItemSerialized>(reader);
     }
 
+    [DataContract]
     public class ItemSerialized : McEntitySerialized
     {
-        [DataMember] public string Description; 
+        [DataMember] public string Description;
 
         public static implicit operator ItemSerialized(Item entity)
         {
             var serializedObject = new ItemSerialized()
             {
+                AnimationName = entity.Animation != null ? entity.Animation.Name : "",
+                Animations = entity.Animations.Values.Select(a => (AnimatedConsoleSerialized)a).ToList(),
                 Name = entity.Name,
                 NameColor = entity.NameColor,
                 Layer = entity.Layer,

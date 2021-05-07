@@ -7,6 +7,7 @@ using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MovingCastles.Components.ItemComponents
 {
@@ -15,7 +16,7 @@ namespace MovingCastles.Components.ItemComponents
         private readonly IEnumerable<ISerializableComponent> _components;
 
         public ApplyInInventoryEffectsComponent(SerializedObject serialized)
-            : this(JsonConvert.DeserializeObject<IEnumerable<ISerializableComponent>>(serialized.Value))
+            : this(JsonConvert.DeserializeObject<List<ComponentSerializable>>(serialized.Value).Select(cs => ComponentFactory.Create(cs)))
         {
         }
 
@@ -45,7 +46,7 @@ namespace MovingCastles.Components.ItemComponents
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
             Id = nameof(ApplyInInventoryEffectsComponent),
-            State = JsonConvert.SerializeObject(_components),
+            State = JsonConvert.SerializeObject(_components.Select(c => c.GetSerializable()).ToList()),
         };
     }
 }

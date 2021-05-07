@@ -161,7 +161,7 @@ Wait to regain health or wait for the right time to strike, but remember that th
     <value>The nobleman's weapon of war, with a well-used leather grip and a blade of the finest Ayeni steel.</value>
   </data>
   <data name="Item_TrollShroom_Desc" xml:space="preserve">
-    <value>The Boletus Troglodytam or "Trollshroom" is the juvenile, fungal stage of the Common Cave Troll life-cycle. It has well-known endowment-enhancing properties, but can be quite dangerous to carry. Once uprooted, progress toward spawning is greatly accelerated, and can easily catch the unsuspecting harvester off guard.</value>
+    <value>Boletus Troglodytam or "Trollshroom" is the juvenile, fungal stage of the Common Cave Troll life-cycle. It has well-known endowment-enhancing properties, but can be quite dangerous to carry. Once uprooted, progress toward spawning is greatly accelerated, and can easily catch the unsuspecting harvester off guard.</value>
   </data>
   <data name="Spell_ConjureFlame_Desc" xml:space="preserve">
     <value>To manifest the power of the wellspring in flame is as natural as breath for the magi.</value>

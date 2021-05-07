@@ -77,6 +77,26 @@ namespace MovingCastles.Serialization.Entities
                 DefaultForeground = serializedObject.DefaultForeground
             };
 
+            entity.Animations.Clear();
+            foreach (AnimatedConsoleSerialized item in serializedObject.Animations)
+            {
+                entity.Animations[item.Name] = item;
+            }
+
+            if (entity.Animations.ContainsKey(serializedObject.AnimationName))
+            {
+                entity.Animation = entity.Animations[serializedObject.AnimationName];
+            }
+            else
+            {
+                entity.Animation = serializedObject.Animations[0];
+            }
+
+            foreach (var componentSerialized in serializedObject.Components)
+            {
+                entity.AddGoRogueComponent(ComponentFactory.Create(componentSerialized));
+            }
+
             return entity;
         }
     }

@@ -1,11 +1,11 @@
 ﻿using MovingCastles.Entities;
 using Microsoft.Xna.Framework;
 using GoRogue;
-using System.Text.Json.Serialization;
 using MovingCastles.Serialization.Entities;
 using System.Diagnostics;
 using System;
 using MovingCastles.Ui;
+using Newtonsoft.Json;
 
 namespace MovingCastles.GameSystems.Items
 {

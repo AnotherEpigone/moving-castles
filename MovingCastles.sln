@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovingCastles", "MovingCastles\MovingCastles.csproj", "{9965D56B-4A91-4C3A-8BC1-AD9C927FF291}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovingCastles", "MovingCastles\MovingCastles.csproj", "{9965D56B-4A91-4C3A-8BC1-AD9C927FF291}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McTests", "McTests\McTests.csproj", "{815982D9-2533-44FF-B894-49B90805E818}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9965D56B-4A91-4C3A-8BC1-AD9C927FF291}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9965D56B-4A91-4C3A-8BC1-AD9C927FF291}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9965D56B-4A91-4C3A-8BC1-AD9C927FF291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{815982D9-2533-44FF-B894-49B90805E818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{815982D9-2533-44FF-B894-49B90805E818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{815982D9-2533-44FF-B894-49B90805E818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{815982D9-2533-44FF-B894-49B90805E818}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
