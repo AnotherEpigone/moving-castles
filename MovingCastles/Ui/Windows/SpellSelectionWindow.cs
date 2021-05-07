@@ -111,7 +111,7 @@ namespace MovingCastles.Ui.Windows
 
                         var spellButton = new McSelectionButton(SpellButtonWidth - 1, 1)
                         {
-                            Text = TextHelper.TruncateString($"{hotkeyLetter}. {s.Name}", SpellButtonWidth - 5),
+                            Text = TextHelper.TruncateString($"{System.Char.ToUpper(hotkeyLetter)}. {s.Name}", SpellButtonWidth - 5),
                             Position = new Point(0, yCount++),
                             IsEnabled = _availableEndowment >= s.EndowmentCost,
                         };
