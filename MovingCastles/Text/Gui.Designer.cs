@@ -146,6 +146,15 @@ namespace MovingCastles.Text {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Boletus Troglodytam or &quot;Trollshroom&quot; is the juvenile, fungal stage of the Common Cave Troll life-cycle. It has well-known endowment-enhancing properties, but can be quite dangerous to carry. Once uprooted, progress toward spawning is greatly accelerated, and can easily catch the unsuspecting harvester off guard..
+        /// </summary>
+        internal static string Item_TrollShroom_Desc {
+            get {
+                return ResourceManager.GetString("Item_TrollShroom_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To manifest the power of the wellspring in flame is as natural as breath for the magi..
         /// </summary>
         internal static string Spell_ConjureFlame_Desc {

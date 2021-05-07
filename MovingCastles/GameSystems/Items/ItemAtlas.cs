@@ -45,7 +45,7 @@ namespace MovingCastles.GameSystems.Items
         public static ItemTemplate TrollShroom => new ItemTemplate(
             id: "ITEM_TROLLSHROOM",
             name: "Trollshroom",
-            description: "Todo trollshroom description",
+            description: Gui.Item_TrollShroom_Desc,
             glyph: DungeonModeSpriteAtlas.Trollshroom_Small,
             createComponents: () => new List<ISerializableComponent>
             {
