@@ -70,7 +70,7 @@ namespace MovingCastles.Entities
         /// Null for standalone entities. If this is part of a multi-tile entity, Anchor is
         /// the entity which can be interacted with.
         /// </summary>
-        public McEntity Anchor { get; init; }
+        public McEntity Anchor { get; set; }
 
         /// <summary>
         /// Add child entities to make this the anchor of a multi-tile entity

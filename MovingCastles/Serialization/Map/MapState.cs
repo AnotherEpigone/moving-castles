@@ -1,5 +1,6 @@
 ﻿using MovingCastles.Entities;
 using MovingCastles.GameSystems.Levels;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -9,17 +10,17 @@ namespace MovingCastles.Serialization.Map
     /// <summary>
     /// All the information needed to recreate a DungeonMap
     /// </summary>
-    [DataContract]
+    [JsonConverter(typeof(MapStateJsonConverter))]
     public class MapState
     {
-        [DataMember] public string Id;
-        [DataMember] public int Seed;
-        [DataMember] public int Height;
-        [DataMember] public int Width;
-        [DataMember] public bool[] Explored;
-        [DataMember] public List<McEntity> Entities;
-        [DataMember] public List<Door> Doors;
-        [DataMember] public string StructureId;
+        public string Id;
+        public int Seed;
+        public int Height;
+        public int Width;
+        public bool[] Explored;
+        public List<McEntity> Entities;
+        public List<Door> Doors;
+        public string StructureId;
 
         // Keep for serialization
         public MapState()
