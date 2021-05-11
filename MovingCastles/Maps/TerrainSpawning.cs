@@ -1,9 +1,6 @@
 ﻿using GoRogue;
 using GoRogue.GameFramework;
-using GoRogue.MapGeneration;
-using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
-using MovingCastles.Entities;
 using MovingCastles.Fonts;
 using SadConsole;
 

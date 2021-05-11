@@ -67,6 +67,11 @@ namespace MovingCastles.Ui.Consoles
 
             foreach (var entity in map.Entities.Items.OfType<McEntity>())
             {
+                if (entity.IsSubTile)
+                {
+                    continue;
+                }
+
                 if (entity is Wizard player)
                 {
                     Player = player;

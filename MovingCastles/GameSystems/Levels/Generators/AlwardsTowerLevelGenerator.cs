@@ -248,8 +248,8 @@ namespace MovingCastles.GameSystems.Levels.Generators
             var door = GameModeMaster.EntityFactory.CreateDoodad(doorPosition, DungeonModeDoodadAtlas.BandedWoodenDoor);
             door.AddGoRogueComponent(new ChangeStructureComponent(Structure.StructureId_SaraniDesert_Highlands, LevelId.SaraniHighlands, new SpawnConditions(Spawn.Default, 0)));
 
-            // walkability would prevent adding the entity
-            level.Map.Terrain[doorPosition].IsWalkable = true;
+            // walkability would prevent adding the entity if we leave a wall behind it
+            level.Map.SetTerrain(TerrainSpawning.SpawnDungeonTerrain(door.Position, true));
             level.Map.AddEntity(door);
         }
 

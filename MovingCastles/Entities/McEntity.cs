@@ -246,7 +246,9 @@ namespace MovingCastles.Entities
         {
             get
             {
-                return string.Format($"{nameof(McEntity)}: {Name}");
+                return IsSubTile
+                    ? string.Format($"{nameof(McEntity)}: {Name} Subtile")
+                    : string.Format($"{nameof(McEntity)}: {Name}");
             }
         }
     }
