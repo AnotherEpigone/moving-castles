@@ -16,7 +16,6 @@ namespace MovingCastles.Ui.Consoles
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class MainConsole : ContainerConsole, System.IDisposable
     {
-        private const int TopPaneHeight = 2;
         private const int InfoPanelHeight = 8;
 
         private readonly IDungeonMaster _dungeonMaster;
@@ -39,22 +38,15 @@ namespace MovingCastles.Ui.Consoles
             ILogManager logManager,
             ITurnBasedGame game,
             IAppSettings appSettings,
-            ITurnBasedGameConsoleFactory gameConsoleFactory)
+            ITurnBasedGameConsoleFactory gameConsoleFactory,
+            IUiManager uiManager)
         {
             UseMouse = false;
 
             _dungeonMaster = dungeonMaster;
 
-            if (width >= 180)
-            {
-                _leftPaneWidth = 40;
-                _rightPaneWidth = 40;
-            }
-            else
-            {
-                _leftPaneWidth = 30;
-                _rightPaneWidth = 30;
-            }
+            _leftPaneWidth = uiManager.GetSidePanelWidth();
+            _rightPaneWidth = uiManager.GetSidePanelWidth();
 
             var middleSectionWidth = width - _leftPaneWidth - _rightPaneWidth;
 
@@ -62,9 +54,9 @@ namespace MovingCastles.Ui.Consoles
             var tileSizeYFactor = (double)tilesetFont.Size.Y / Font.Size.Y;
             MapConsole = gameConsoleFactory.Create(
                 (int)(_leftPaneWidth / tileSizeXFactor),
-                (int)(TopPaneHeight / tileSizeYFactor),
+                (int)(UiManager.TopPaneHeight / tileSizeYFactor),
                 (int)(middleSectionWidth / tileSizeXFactor),
-                (int)((height - TopPaneHeight) / tileSizeYFactor),
+                (int)((height - UiManager.TopPaneHeight) / tileSizeYFactor),
                 tilesetFont,
                 menuProvider,
                 game,
@@ -82,7 +74,7 @@ namespace MovingCastles.Ui.Consoles
                 Color.Black,
                 System.TimeSpan.FromSeconds(5))
             {
-                Position = new Point(_leftPaneWidth, TopPaneHeight),
+                Position = new Point(_leftPaneWidth, UiManager.TopPaneHeight),
             };
             logManager.RegisterEventListener(LogType.Combat, (s, h) => combatEventLog.Add(s, h));
             var storyEventLog = new MessageLogConsole(_leftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
@@ -121,7 +113,7 @@ namespace MovingCastles.Ui.Consoles
             int rightSectionWidth,
             IMapModeMenuProvider menuProvider)
         {
-            var console = new ControlsConsole(rightSectionWidth, TopPaneHeight)
+            var console = new ControlsConsole(rightSectionWidth, UiManager.TopPaneHeight)
             {
                 Position = new Point(_leftPaneWidth, 0),
                 DisableControlFocusing = true,

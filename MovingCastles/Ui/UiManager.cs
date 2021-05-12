@@ -1,4 +1,5 @@
-﻿using MovingCastles.GameSystems;
+﻿using GoRogue;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Serialization.Settings;
@@ -10,6 +11,8 @@ namespace MovingCastles.Ui
 {
     public sealed class UiManager : IUiManager
     {
+        private const int WindowWidthThreshold = 180; // if smaller, shrink the GUI
+
         private readonly ILogManager _logManager;
         private readonly IAppSettings _appSettings;
 
@@ -19,6 +22,8 @@ namespace MovingCastles.Ui
         public const string CastleFontPath = "Fonts\\castle.font";
         public const string CastleFontName = "castle";
 
+        public const int TopPaneHeight = 2;
+
         public int ViewPortWidth { get; private set; } = 160; // 160 x 8 = 1280
         public int ViewPortHeight { get; private set; } = 45; // 45 x 16 = 720
 
@@ -26,6 +31,19 @@ namespace MovingCastles.Ui
         {
             _logManager = logManager;
             _appSettings = appSettings;
+        }
+
+        public int GetSidePanelWidth() => ViewPortWidth >= WindowWidthThreshold ? 40 : 30;
+
+        public Coord GetMapConsoleSize()
+        {
+            var sidePanelWidth = GetSidePanelWidth();
+            return new Coord(ViewPortWidth - sidePanelWidth * 2, ViewPortHeight - TopPaneHeight);
+        }
+
+        public Coord GetCentralWindowSize()
+        {
+            return GetMapConsoleSize() - new Coord(16, 4);
         }
 
         public void SetViewport(int width, int height)
@@ -69,17 +87,20 @@ namespace MovingCastles.Ui
                 _logManager,
                 game,
                 _appSettings,
-                turnBasedGameConsoleFactory);
+                turnBasedGameConsoleFactory,
+                this);
         }
 
         private IMapModeMenuProvider CreateMenuProvider(IGameManager gameManager, IDungeonMaster dungeonMaster)
         {
-            var inventory = new InventoryWindow(120, 30, dungeonMaster, _logManager);
+            var centralWindowSize = GetCentralWindowSize();
+
+            var inventory = new InventoryWindow(centralWindowSize.X, centralWindowSize.Y, dungeonMaster, _logManager);
             var death = new DeathWindow(this, gameManager);
             var pop = new PopupMenuWindow(this, gameManager);
-            var spellSelect = new SpellSelectionWindow();
+            var spellSelect = new SpellSelectionWindow(centralWindowSize.X, centralWindowSize.Y);
             var commands = new CommandWindow();
-            var journal = new JournalWindow(120, 30);
+            var journal = new JournalWindow(centralWindowSize.X, centralWindowSize.Y);
 
             return new MapModeMenuProvider(inventory, death, pop, spellSelect, commands, journal);
         }

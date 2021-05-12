@@ -69,7 +69,7 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(Structure.StructureId_AlwardsTower, gameModeMaster);
             var level = structure.GetLevel(LevelId.AlwardsTower1, player, new SpawnConditions(Spawn.Default, 0));
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, new TimeMaster(), _uiManager);
 
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
@@ -123,7 +123,7 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(save.MapState.StructureId, gameModeMaster);
             var level = structure.GetLevel(save);
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, save.TimeMaster);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, save.TimeMaster, _uiManager);
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
@@ -142,7 +142,7 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(Structure.StructureId_SaraniDesert_Highlands, gameModeMaster);
             var level = structure.GetLevel(LevelId.SaraniHighlands, player, new SpawnConditions(Spawn.Default, 0));
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, new TimeMaster(), _uiManager);
 
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
@@ -160,7 +160,7 @@ namespace MovingCastles.GameSystems
             var structure = _structureFactory.CreateById(Structure.StructureId_MapgenDemo, gameModeMaster);
             var level = structure.GetLevel(LevelId.MapgenTest, player, new SpawnConditions(Spawn.Default, 0));
 
-            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory);
+            DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, new TimeMaster(), _uiManager);
 
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 

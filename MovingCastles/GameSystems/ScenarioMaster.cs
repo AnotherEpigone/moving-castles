@@ -1,5 +1,6 @@
 ﻿using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Scenarios;
+using MovingCastles.Ui;
 using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Windows;
 using SadConsole;
@@ -10,6 +11,12 @@ namespace MovingCastles.GameSystems
     public class ScenarioMaster : IScenarioMaster
     {
         private ScenarioWindow _window;
+        private readonly IUiManager _uiManager;
+
+        public ScenarioMaster(IUiManager uiManager)
+        {
+            _uiManager = uiManager;
+        }
 
         public void Show(
             IScenario scenario,
@@ -19,13 +26,10 @@ namespace MovingCastles.GameSystems
         {
             var firstStep = scenario.Encounter(dungeonMaster, rng);
 
-            var mapConsole = ((MainConsole)Global.CurrentScreen).MapConsole;
-
-            float widthFactor = mapConsole.Font.Size.X / (float)Global.FontDefault.Size.X;
-            float heightFactor = mapConsole.Font.Size.Y / (float)Global.FontDefault.Size.Y;
+            var mapConsoleSize = _uiManager.GetCentralWindowSize();
             _window = new ScenarioWindow(
-                (int)(mapConsole.ViewportWidth * widthFactor) - 32,
-                (int)(mapConsole.ViewportHeight * heightFactor) - 8,
+                mapConsoleSize.X,
+                mapConsoleSize.Y,
                 firstStep,
                 dungeonMaster,
                 logManager);

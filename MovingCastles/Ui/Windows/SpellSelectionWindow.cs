@@ -21,8 +21,8 @@ namespace MovingCastles.Ui.Windows
         private System.Action<SpellTemplate> _onCast;
         private float _availableEndowment;
 
-        public SpellSelectionWindow()
-            : base(120, 30)
+        public SpellSelectionWindow(int width, int height)
+            : base(width, height)
         {
             _hotkeys = new Dictionary<char, SpellTemplate>();
 

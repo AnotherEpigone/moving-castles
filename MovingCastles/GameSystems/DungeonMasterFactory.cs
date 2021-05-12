@@ -2,6 +2,7 @@
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
+using MovingCastles.Ui;
 
 namespace MovingCastles.GameSystems
 {
@@ -13,7 +14,8 @@ namespace MovingCastles.GameSystems
             Structure structure,
             IGameModeMaster gameModeMaster,
             IStructureFactory structureFactory,
-            ITimeMaster timeMaster)
+            ITimeMaster timeMaster,
+            IUiManager uiManager)
         {
             var levelMaster = new LevelMaster(structureFactory, gameModeMaster)
             {
@@ -22,7 +24,7 @@ namespace MovingCastles.GameSystems
             };
 
             var factionMaster = new FactionMaster();
-            var scenarioMaster = new ScenarioMaster();
+            var scenarioMaster = new ScenarioMaster(uiManager);
 
             return new DungeonMaster(
                 player,
@@ -32,19 +34,5 @@ namespace MovingCastles.GameSystems
                 gameModeMaster,
                 scenarioMaster);
         }
-
-        public IDungeonMaster Create(
-            Wizard player,
-            Level level,
-            Structure structure,
-            IGameModeMaster gameModeMaster,
-            IStructureFactory structureFactory)
-            => Create(
-                player,
-                level,
-                structure,
-                gameModeMaster,
-                structureFactory,
-                new TimeMaster());
     }
 }

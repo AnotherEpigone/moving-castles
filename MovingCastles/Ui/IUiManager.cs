@@ -1,4 +1,5 @@
-﻿using MovingCastles.GameSystems;
+﻿using GoRogue;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.TurnBased;
 using MovingCastles.Maps;
 using MovingCastles.Ui.Consoles;
@@ -23,5 +24,11 @@ namespace MovingCastles.Ui
         void ToggleFullScreen();
 
         void SetViewport(int width, int height);
+
+        int GetSidePanelWidth();
+
+        Coord GetMapConsoleSize();
+
+        Coord GetCentralWindowSize();
     }
 }
