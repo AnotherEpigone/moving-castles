@@ -17,6 +17,7 @@ namespace MovingCastles.Ui.Consoles
     public class MainConsole : ContainerConsole, System.IDisposable
     {
         private const int InfoPanelHeight = 8;
+        private const int EquipmentPanelHeight = 25;
 
         private readonly IDungeonMaster _dungeonMaster;
 
@@ -24,7 +25,8 @@ namespace MovingCastles.Ui.Consoles
         private ProgressBar _endowmentBar;
         private Console _statOverlay;
         private Console _infoPanel;
-        private Console _characterPanel;
+        private Console _rightPanel;
+        private Console _equipmentPanel;
         private int _leftPaneWidth;
         private int _rightPaneWidth;
         private bool disposedValue;
@@ -66,6 +68,13 @@ namespace MovingCastles.Ui.Consoles
             CreateInfoPanel();
             CreateCharacterPanel(width, height);
 
+            _equipmentPanel = new Console(_leftPaneWidth, EquipmentPanelHeight)
+            {
+                Position = new Point(0, InfoPanelHeight),
+                DefaultBackground = ColorHelper.ControlBackDark,
+            };
+            PrintEquipmentPanel();
+
             var combatEventLog = new MessageLogConsole(
                 _leftPaneWidth,
                 (height - InfoPanelHeight) / 2,
@@ -77,9 +86,9 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(_leftPaneWidth, UiManager.TopPaneHeight),
             };
             logManager.RegisterEventListener(LogType.Combat, (s, h) => combatEventLog.Add(s, h));
-            var storyEventLog = new MessageLogConsole(_leftPaneWidth, height - InfoPanelHeight, Global.FontDefault)
+            var storyEventLog = new MessageLogConsole(_leftPaneWidth, height - InfoPanelHeight - EquipmentPanelHeight, Global.FontDefault)
             {
-                Position = new Point(0, InfoPanelHeight),
+                Position = new Point(0, InfoPanelHeight + EquipmentPanelHeight),
             };
             logManager.RegisterEventListener(LogType.Story, (s, h) => storyEventLog.Add(s, h));
 
@@ -90,7 +99,8 @@ namespace MovingCastles.Ui.Consoles
             Children.Add(combatEventLog);
             Children.Add(storyEventLog);
             Children.Add(_infoPanel);
-            Children.Add(_characterPanel);
+            Children.Add(_equipmentPanel);
+            Children.Add(_rightPanel);
         }
 
         public void SetMap(McMap map)
@@ -205,7 +215,7 @@ namespace MovingCastles.Ui.Consoles
 
         private Console CreateCharacterPanel(int viewportWidth, int viewportHeight)
         {
-            _characterPanel = new Console(_rightPaneWidth, viewportHeight)
+            _rightPanel = new Console(_rightPaneWidth, viewportHeight)
             {
                 DefaultBackground = ColorHelper.ControlBack,
                 Position = new Point(viewportWidth - _rightPaneWidth, 0),
@@ -250,10 +260,10 @@ namespace MovingCastles.Ui.Consoles
 
             PrintStatOverlays(healthComponent, endowmentComponent);
 
-            _characterPanel.Children.Add(controlPanel);
-            _characterPanel.Children.Add(_statOverlay);
+            _rightPanel.Children.Add(controlPanel);
+            _rightPanel.Children.Add(_statOverlay);
 
-            return _characterPanel;
+            return _rightPanel;
         }
 
         private Console CreateInfoPanel()
@@ -271,13 +281,23 @@ namespace MovingCastles.Ui.Consoles
 
         private void PrintCharacterPanel()
         {
-            var defaultCell = new Cell(_characterPanel.DefaultForeground, _characterPanel.DefaultBackground);
-            _characterPanel.Clear();
-            _characterPanel.Cursor.Position = new Point(0, 0);
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n\n\n\n\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _characterPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            var defaultCell = new Cell(_rightPanel.DefaultForeground, _rightPanel.DefaultBackground);
+            _rightPanel.Clear();
+            _rightPanel.Cursor.Position = new Point(0, 0);
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n\n\n\n\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+        }
+
+        private void PrintEquipmentPanel()
+        {
+            var defaultCell = new Cell(_equipmentPanel.DefaultForeground, _equipmentPanel.DefaultBackground);
+            _equipmentPanel.Clear();
+            _equipmentPanel.Cursor.Position = new Point(0, 0);
+            _equipmentPanel.Cursor.Print("\n");
+            _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Staff:", Color.DarkGray)} Ancient oak staff\r\n", defaultCell));
+            _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Cloak:", Color.DarkGray)} Homespun cloth cloak\r\n\n", defaultCell));
         }
 
         private void PrintInfoPanel()

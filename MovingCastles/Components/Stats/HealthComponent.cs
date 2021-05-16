@@ -66,6 +66,7 @@ namespace MovingCastles.Components.Stats
             if (Dead && Parent is McEntity mcParent)
             {
                 logManager.CombatLog($"{mcParent.ColoredName} was slain.");
+                logManager.StoryLog($"{mcParent.ColoredName} was slain.");
                 mcParent.Remove();
             }
         }

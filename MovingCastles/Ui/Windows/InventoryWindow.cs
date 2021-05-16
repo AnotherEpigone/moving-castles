@@ -11,6 +11,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using MovingCastles.GameSystems.Logging;
+using MovingCastles.Entities;
 
 namespace MovingCastles.Ui.Windows
 {
@@ -123,6 +124,7 @@ namespace MovingCastles.Ui.Windows
         private void Drop()
         {
             _inventory.RemoveItem(_selectedItem, _dungeonMaster, _logManager);
+            _logManager.StoryLog($"{((McEntity)_inventory.Parent).ColoredName} dropped {_selectedItem.ColoredName}.");
 
             var mapConsoleResult = _dungeonMaster.GetCurrentMapConsole();
             if (_dungeonMaster.ModeMaster.Mode == GameMode.Dungeon

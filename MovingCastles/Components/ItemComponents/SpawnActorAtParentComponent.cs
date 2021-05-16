@@ -58,6 +58,11 @@ namespace MovingCastles.Components.ItemComponents
 
         public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster)
         {
+            if (!(Parent is McEntity mcParent))
+            {
+                return;
+            }
+
             if (_startTime == long.MinValue)
             {
                 _startTime = time.Ticks;
@@ -71,7 +76,6 @@ namespace MovingCastles.Components.ItemComponents
             }
 
             var parentPos = Parent.Position;
-            var parent = Parent;
             Parent.RemoveComponent(this);
 
             var mapConsole = dungeonMaster.GetCurrentMapConsole().ValueOr(() => null);
@@ -94,7 +98,7 @@ namespace MovingCastles.Components.ItemComponents
 
                 // attempt to find a spot for multi-tile entities by pushing them back if they
                 // overlap a non-walkable spawner
-                while (!parent.IsWalkable && actorTemplate.SubTiles.Any(st => pos + st.Offset == parentPos))
+                while (!mcParent.IsWalkable && actorTemplate.SubTiles.Any(st => pos + st.Offset == parentPos))
                 {
                     pos += direction;
                 }
@@ -113,6 +117,8 @@ namespace MovingCastles.Components.ItemComponents
 
             var actor = dungeonMaster.ModeMaster.EntityFactory.CreateActor(spawnPosition, actorTemplate);
             mapConsole.AddEntity(actor);
+
+            logManager.StoryLog($"{actor.ColoredName} spawned from {mcParent.ColoredName}.");
         }
 
         public ComponentSerializable GetSerializable()
