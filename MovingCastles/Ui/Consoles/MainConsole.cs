@@ -9,6 +9,7 @@ using MovingCastles.Maps;
 using MovingCastles.Serialization.Settings;
 using SadConsole;
 using SadConsole.Controls;
+using SadConsole.Themes;
 using System.Diagnostics;
 
 namespace MovingCastles.Ui.Consoles
@@ -73,7 +74,7 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(0, InfoPanelHeight),
                 DefaultBackground = ColorHelper.ControlBackDark,
             };
-            PrintEquipmentPanel();
+            PrintEquipmentPanel(menuProvider);
 
             var combatEventLog = new MessageLogConsole(
                 _leftPaneWidth,
@@ -134,29 +135,16 @@ namespace MovingCastles.Ui.Consoles
             var popupMenuButton = new Button(popupMenuButtonWidth)
             {
                 Text = popupMenuText,
-                Position = new Point((rightSectionWidth / 6) - (popupMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth / 5) - (popupMenuButtonWidth / 2), 0),
             };
             popupMenuButton.Click += (_, __) => menuProvider.Pop.Show();
-
-            const string inventoryMenuText = "Inventory (I)";
-            var inventoryMenuButtonWidth = inventoryMenuText.Length + 4;
-            var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
-            {
-                Text = inventoryMenuText,
-                Position = new Point((rightSectionWidth * 2 / 6) - (inventoryMenuButtonWidth / 2), 0),
-            };
-            inventoryMenuButton.Click += (_, __) =>
-            {
-                var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
-                menuProvider.Inventory.Show(inventory);
-            };
 
             const string spellMenuText = "Spells (S)";
             var spellMenuButtonWidth = spellMenuText.Length + 4;
             var spellMenuButton = new Button(spellMenuButtonWidth)
             {
                 Text = spellMenuText,
-                Position = new Point((rightSectionWidth * 3 / 6) - (spellMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 2 / 5) - (spellMenuButtonWidth / 2), 0),
             };
             spellMenuButton.Click += (_, __) =>
             {
@@ -171,7 +159,7 @@ namespace MovingCastles.Ui.Consoles
             var journalMenuButton = new Button(journalMenuButtonWidth)
             {
                 Text = journalMenuText,
-                Position = new Point((rightSectionWidth * 4 / 6) - (journalMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 3 / 5) - (journalMenuButtonWidth / 2), 0),
             };
             journalMenuButton.Click += (_, __) =>
             {
@@ -183,7 +171,7 @@ namespace MovingCastles.Ui.Consoles
             var commandMenuButton = new Button(commandMenuButtonWidth)
             {
                 Text = commandMenuText,
-                Position = new Point((rightSectionWidth * 5 / 6) - (commandMenuButtonWidth / 2), 0),
+                Position = new Point((rightSectionWidth * 4 / 5) - (commandMenuButtonWidth / 2), 0),
             };
             commandMenuButton.Click += (_, __) =>
             {
@@ -204,7 +192,6 @@ namespace MovingCastles.Ui.Consoles
             };
 
             console.Add(popupMenuButton);
-            console.Add(inventoryMenuButton);
             console.Add(spellMenuButton);
             console.Add(commandMenuButton);
             console.Add(journalMenuButton);
@@ -290,14 +277,42 @@ namespace MovingCastles.Ui.Consoles
             _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
-        private void PrintEquipmentPanel()
+        private void PrintEquipmentPanel(IMapModeMenuProvider menuProvider)
         {
             var defaultCell = new Cell(_equipmentPanel.DefaultForeground, _equipmentPanel.DefaultBackground);
             _equipmentPanel.Clear();
             _equipmentPanel.Cursor.Position = new Point(0, 0);
             _equipmentPanel.Cursor.Print("\n");
             _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Staff:", Color.DarkGray)} Ancient oak staff\r\n", defaultCell));
-            _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Cloak:", Color.DarkGray)} Homespun cloth cloak\r\n\n", defaultCell));
+            _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Cloak:", Color.DarkGray)} Homespun cloth cloak\r\n", defaultCell));
+
+            _equipmentPanel.Cursor.Position = new Point(0, 24);
+            _equipmentPanel.Cursor.Print(new ColoredString($"                0/10", defaultCell));
+
+            var controlPanel = new ControlsConsole(_equipmentPanel.Width, _equipmentPanel.Height)
+            {
+                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent)
+            };
+
+            const string inventoryMenuText = "Inventory (I):";
+            var inventoryMenuButtonWidth = inventoryMenuText.Length;
+            var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
+            {
+                Text = inventoryMenuText,
+                Position = new Point(1, 24),
+            };
+            inventoryMenuButton.Click += (_, __) =>
+            {
+                var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
+                menuProvider.Inventory.Show(inventory);
+            };
+            var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
+            buttonTheme.ShowEnds = false;
+            inventoryMenuButton.Theme = buttonTheme;
+
+            controlPanel.Add(inventoryMenuButton);
+
+            _equipmentPanel.Children.Add(controlPanel);
         }
 
         private void PrintInfoPanel()

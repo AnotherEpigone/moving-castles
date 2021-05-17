@@ -61,9 +61,11 @@ namespace MovingCastles.Ui
         {
             var colors = Library.Default.Colors.Clone();
 
+            // SadConsole v8 bug
+            colors.TextFocused = Library.Default.Colors.TextFocused;
+
             colors.ControlBack = bgColor;
             colors.ControlBackLight = bgColor;
-            colors.ControlBackSelected = bgColor;
             colors.ControlBackDark = bgColor;
             colors.ControlHostBack = bgColor;
 
@@ -75,6 +77,9 @@ namespace MovingCastles.Ui
         public static Colors GetProgressBarThemeColors(Color back, Color fore)
         {
             var colors = Library.Default.Colors.Clone();
+
+            // SadConsole v8 bug
+            colors.TextFocused = Library.Default.Colors.TextFocused;
 
             colors.Text = fore;
 

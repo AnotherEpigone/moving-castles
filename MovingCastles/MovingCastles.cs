@@ -76,7 +76,7 @@ namespace MovingCastles
             colors.TextSelected = ColorHelper.TextBright;
             colors.TextSelectedDark = ColorHelper.TextBright;
             colors.TextLight = ColorHelper.SelectedBackground;
-            colors.TextDark = colors.Green;
+            colors.TextDark = ColorHelper.TextBright;
             colors.TextFocused = ColorHelper.TextBright;
 
             colors.Lines = colors.Gray;
@@ -86,7 +86,7 @@ namespace MovingCastles
             colors.ControlBackSelected = ColorHelper.SelectedBackground;
             colors.ControlBackDark = ColorHelper.ControlBack;
             colors.ControlHostBack = ColorHelper.ControlBack;
-            colors.ControlHostFore = colors.Text;
+            colors.ControlHostFore = ColorHelper.Text;
 
             colors.RebuildAppearances();
         }
