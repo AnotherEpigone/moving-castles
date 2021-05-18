@@ -11,6 +11,7 @@ namespace MovingCastles.GameSystems.Items
             string name,
             string description,
             int glyph,
+            EquipCategoryId equipCategoryId,
             Func<List<ISerializableComponent>> createComponents)
         {
             Id = id;
@@ -18,6 +19,7 @@ namespace MovingCastles.GameSystems.Items
             Description = description;
             Glyph = glyph;
             CreateComponents = createComponents;
+            EquipCategoryId = equipCategoryId;
         }
 
         public string Id { get; }
@@ -27,6 +29,8 @@ namespace MovingCastles.GameSystems.Items
         public string Description { get; }
 
         public int Glyph { get; }
+
+        public EquipCategoryId EquipCategoryId { get; }
 
         public Func<List<ISerializableComponent>> CreateComponents { get; }
     }

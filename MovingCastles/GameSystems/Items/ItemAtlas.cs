@@ -29,24 +29,35 @@ namespace MovingCastles.GameSystems.Items
             name: "Steel longsword",
             description: Gui.Item_SteelLongsword_Desc,
             glyph: 11,
+            equipCategoryId: EquipCategoryId.Weapon,
             createComponents: () => new List<ISerializableComponent>());
         public static ItemTemplate EtheriumShard => new ItemTemplate(
             id: "ITEM_ETHERIUM_SHARD",
             name: "Etherium shard",
             description: Gui.Item_EtheriumShard_Desc,
             glyph: 10,
+            equipCategoryId: EquipCategoryId.None,
             createComponents: () => new List<ISerializableComponent>());
         public static ItemTemplate StarterOakStaff => new ItemTemplate(
             id: "ITEM_STARTER_OAKSTAFF",
             name: "Oak staff",
             description: Gui.Item_StarterOakStaff_Desc,
             glyph: 11,
+            equipCategoryId: EquipCategoryId.Staff,
+            createComponents: () => new List<ISerializableComponent>());
+        public static ItemTemplate StarterHomespunCloak => new ItemTemplate(
+            id: "ITEM_STARTER_HOMESPUN_CLOAK",
+            name: "Homespun cloak",
+            description: "Todo desc",
+            glyph: 11,
+            equipCategoryId: EquipCategoryId.Cloak,
             createComponents: () => new List<ISerializableComponent>());
         public static ItemTemplate TrollShroom => new ItemTemplate(
             id: "ITEM_TROLLSHROOM",
             name: "Trollshroom",
             description: Gui.Item_TrollShroom_Desc,
             glyph: DungeonModeSpriteAtlas.Trollshroom_Small,
+            equipCategoryId: EquipCategoryId.None,
             createComponents: () => new List<ISerializableComponent>
             {
                 new ApplyInInventoryEffectsComponent(new List<ISerializableComponent>

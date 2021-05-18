@@ -5,8 +5,10 @@ namespace MovingCastles.GameSystems.Items
 {
     public enum EquipCategoryId
     {
+        None,
         Staff,
         Cloak,
+        Weapon,
     }
 
     [DataContract]
