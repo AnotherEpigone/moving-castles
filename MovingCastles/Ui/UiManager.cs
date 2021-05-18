@@ -95,14 +95,13 @@ namespace MovingCastles.Ui
         {
             var centralWindowSize = GetCentralWindowSize();
 
-            var inventory = new InventoryWindow(centralWindowSize.X, centralWindowSize.Y, dungeonMaster, _logManager);
             var death = new DeathWindow(this, gameManager);
             var pop = new PopupMenuWindow(this, gameManager);
             var spellSelect = new SpellSelectionWindow(centralWindowSize.X, centralWindowSize.Y);
             var commands = new CommandWindow();
             var journal = new JournalWindow(centralWindowSize.X, centralWindowSize.Y);
 
-            return new MapModeMenuProvider(inventory, death, pop, spellSelect, commands, journal);
+            return new MapModeMenuProvider(death, pop, spellSelect, commands, journal);
         }
     }
 }

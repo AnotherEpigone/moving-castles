@@ -2,7 +2,6 @@
 using MovingCastles.Components;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
-using MovingCastles.Ui.Consoles;
 using MovingCastles.Ui.Controls;
 using SadConsole;
 using SadConsole.Controls;
@@ -13,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Entities;
 
-namespace MovingCastles.Ui.Windows
+namespace MovingCastles.Ui.Consoles
 {
     public class InventoryConsole : McControlsConsole
     {
@@ -23,10 +22,11 @@ namespace MovingCastles.Ui.Windows
         private readonly Button _dropButton;
         private readonly Button _closeButton;
         private readonly int _itemButtonWidth;
+        private readonly ILogManager _logManager;
 
         private Item _selectedItem;
         private IInventoryComponent _inventory;
-        private readonly ILogManager _logManager;
+        private System.Action _hideCallback;
 
         public InventoryConsole(
             int width,
@@ -40,6 +40,8 @@ namespace MovingCastles.Ui.Windows
 
             _dungeonMaster = dungeonMaster;
             _logManager = logManager;
+
+            IsVisible = false;
 
             _itemButtonWidth = width / 3;
 
@@ -62,7 +64,7 @@ namespace MovingCastles.Ui.Windows
                 Text = "Close (Esc)",
                 Position = new Point(width - 16, height - 2),
             };
-            _closeButton.Click += (_, __) => Hide();
+            _closeButton.Click += (_, __) => _hideCallback();
 
             _descriptionArea = new Console(width - _itemButtonWidth - 3, height - 4)
             {
@@ -80,8 +82,9 @@ namespace MovingCastles.Ui.Windows
             _selectedItem = null;
         }
 
-        public void Show(IInventoryComponent inventory)
+        public void Show(IInventoryComponent inventory, System.Action hideCallback)
         {
+            _hideCallback = hideCallback;
             _inventory = inventory;
             RefreshControls(BuildItemControls(_inventory.GetItems()));
 
@@ -90,6 +93,12 @@ namespace MovingCastles.Ui.Windows
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
         {
+            if (info.IsKeyPressed(Keys.Escape))
+            {
+                _hideCallback();
+                return true;
+            }
+
             if (info.IsKeyPressed(Keys.D))
             {
                 Drop();

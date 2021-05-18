@@ -1,26 +1,27 @@
-﻿using MovingCastles.Ui.Windows;
+﻿using MovingCastles.Components;
+using MovingCastles.Ui.Consoles;
+using MovingCastles.Ui.Windows;
+using SadConsole;
 
 namespace MovingCastles.Ui
 {
     public class MapModeMenuProvider : IMapModeMenuProvider
     {
+        private InventoryConsole _inventory;
+
         public MapModeMenuProvider(
-            InventoryWindow inventory,
             DeathWindow death,
             PopupMenuWindow pop,
             SpellSelectionWindow spellSelect,
             CommandWindow command,
             JournalWindow journal)
         {
-            Inventory = inventory;
             Death = death;
             Pop = pop;
             SpellSelect = spellSelect;
             Command = command;
             Journal = journal;
         }
-
-        public InventoryWindow Inventory { get; }
 
         public DeathWindow Death { get; }
 
@@ -31,5 +32,33 @@ namespace MovingCastles.Ui
         public CommandWindow Command { get; }
 
         public JournalWindow Journal { get; }
+
+        public void HideInventoryPanel()
+        {
+            if (_inventory == null)
+            {
+                return;
+            }
+
+            _inventory.Hide();
+            var mapConsole = (Console)((MainConsole)Global.CurrentScreen).MapConsole;
+            mapConsole.IsFocused = true;
+        }
+
+        public void SetInventoryPanel(InventoryConsole inventoryConsole)
+        {
+            _inventory = inventoryConsole;
+        }
+
+        public void ShowInventoryPanel(IInventoryComponent inventory)
+        {
+            if (_inventory == null)
+            {
+                return;
+            }
+
+            _inventory.Show(inventory, () => HideInventoryPanel());
+            _inventory.IsFocused = true;
+        }
     }
 }

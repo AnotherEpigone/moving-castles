@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GoRogue;
+using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Components.Stats;
 using MovingCastles.GameSystems;
@@ -28,6 +29,7 @@ namespace MovingCastles.Ui.Consoles
         private Console _infoPanel;
         private Console _rightPanel;
         private Console _equipmentPanel;
+        private InventoryConsole _inventoryPanel;
         private int _leftPaneWidth;
         private int _rightPaneWidth;
         private bool disposedValue;
@@ -70,6 +72,17 @@ namespace MovingCastles.Ui.Consoles
             CreateCharacterPanel(width, height);
             CreateEquipmentPanel(menuProvider);
 
+            var centralWindowSize = uiManager.GetCentralWindowSize();
+            _inventoryPanel = new InventoryConsole(
+                centralWindowSize.X,
+                centralWindowSize.Y,
+                _dungeonMaster,
+                logManager)
+            {
+                Position = new Coord(_leftPaneWidth, UiManager.TopPaneHeight + 1),
+            };
+            menuProvider.SetInventoryPanel(_inventoryPanel);
+
             var combatEventLog = new MessageLogConsole(
                 _leftPaneWidth,
                 (height - InfoPanelHeight) / 2,
@@ -95,6 +108,7 @@ namespace MovingCastles.Ui.Consoles
             Children.Add(storyEventLog);
             Children.Add(_infoPanel);
             Children.Add(_equipmentPanel);
+            Children.Add(_inventoryPanel);
             Children.Add(_rightPanel);
         }
 
@@ -132,7 +146,7 @@ namespace MovingCastles.Ui.Consoles
             inventoryMenuButton.Click += (_, __) =>
             {
                 var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
-                menuProvider.Inventory.Show(inventory);
+                menuProvider.ShowInventoryPanel(inventory);
             };
             var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
             buttonTheme.ShowEnds = false;

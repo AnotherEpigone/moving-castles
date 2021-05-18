@@ -273,7 +273,7 @@ namespace MovingCastles.Ui.Consoles
             if (info.IsKeyPressed(Keys.I))
             {
                 EndTargettingMode();
-                _menuProvider.Inventory.Show(Player.GetGoRogueComponent<IInventoryComponent>());
+                _menuProvider.ShowInventoryPanel(Player.GetGoRogueComponent<IInventoryComponent>());
                 return true;
             }
 
