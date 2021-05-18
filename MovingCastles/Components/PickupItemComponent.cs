@@ -35,6 +35,12 @@ namespace MovingCastles.Components
                 return;
             }
 
+            if (inventory.Capacity - inventory.FilledCapacity < Items.Count)
+            {
+                logManager.CombatLog($"{steppingEntity.ColoredName} can't pick up {string.Join(", ", Items.Select(i => i.ColoredName))}. Inventory full.");
+                return;
+            }
+
             foreach (var item in Items)
             {
                 inventory.AddItem(item, dungeonMaster, logManager);
@@ -42,7 +48,7 @@ namespace MovingCastles.Components
 
             Parent.CurrentMap.RemoveEntity(Parent);
 
-            logManager.StoryLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.Name))}.");
+            logManager.StoryLog($"{steppingEntity.ColoredName} picked up {string.Join(", ", Items.Select(i => i.ColoredName))}.");
         }
 
         public ComponentSerializable GetSerializable()

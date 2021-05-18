@@ -183,7 +183,7 @@ namespace MovingCastles.Entities
                 SpellAtlas.Haste));
             wizard.AddGoRogueComponent(new HealthComponent(playerInfo.MaxHealth, playerInfo.Health, 0));
             wizard.AddGoRogueComponent(new EndowmentPoolComponent(playerInfo.MaxEndowment, playerInfo.Endowment, 0.5f));
-            wizard.AddGoRogueComponent(new InventoryComponent(playerInfo.Items.Select(i => Item.FromTemplate(i)).ToArray()));
+            wizard.AddGoRogueComponent(new InventoryComponent(5, playerInfo.Items.Select(i => Item.FromTemplate(i)).ToArray()));
             wizard.AddGoRogueComponent(new ActorStatComponent(1f, 1f, 1f));
 
             return wizard;

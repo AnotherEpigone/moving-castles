@@ -68,13 +68,7 @@ namespace MovingCastles.Ui.Consoles
 
             CreateInfoPanel();
             CreateCharacterPanel(width, height);
-
-            _equipmentPanel = new Console(_leftPaneWidth, EquipmentPanelHeight)
-            {
-                Position = new Point(0, InfoPanelHeight),
-                DefaultBackground = ColorHelper.ControlBackDark,
-            };
-            PrintEquipmentPanel(menuProvider);
+            CreateEquipmentPanel(menuProvider);
 
             var combatEventLog = new MessageLogConsole(
                 _leftPaneWidth,
@@ -118,6 +112,44 @@ namespace MovingCastles.Ui.Consoles
         public void UnsetMap()
         {
             MapConsole.UnsetMap();
+        }
+
+        private void CreateEquipmentPanel(IMapModeMenuProvider menuProvider)
+        {
+            _equipmentPanel = new Console(_leftPaneWidth, EquipmentPanelHeight)
+            {
+                Position = new Point(0, InfoPanelHeight),
+                DefaultBackground = ColorHelper.ControlBackDark,
+            };
+
+            const string inventoryMenuText = "Inventory (I):";
+            var inventoryMenuButtonWidth = inventoryMenuText.Length;
+            var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
+            {
+                Text = inventoryMenuText,
+                Position = new Point(1, 24),
+            };
+            inventoryMenuButton.Click += (_, __) =>
+            {
+                var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
+                menuProvider.Inventory.Show(inventory);
+            };
+            var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
+            buttonTheme.ShowEnds = false;
+            inventoryMenuButton.Theme = buttonTheme;
+
+            var controlPanel = new ControlsConsole(_equipmentPanel.Width, _equipmentPanel.Height)
+            {
+                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent)
+            };
+
+            controlPanel.Add(inventoryMenuButton);
+
+            _equipmentPanel.Children.Add(controlPanel);
+
+            var inventoryComponent = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
+            PrintEquipmentPanel(inventoryComponent);
+            inventoryComponent.ContentsChanged += (_, __) => PrintEquipmentPanel(inventoryComponent);
         }
 
         private ControlsConsole CreateTopPane(
@@ -277,7 +309,7 @@ namespace MovingCastles.Ui.Consoles
             _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
-        private void PrintEquipmentPanel(IMapModeMenuProvider menuProvider)
+        private void PrintEquipmentPanel(IInventoryComponent inventory)
         {
             var defaultCell = new Cell(_equipmentPanel.DefaultForeground, _equipmentPanel.DefaultBackground);
             _equipmentPanel.Clear();
@@ -287,32 +319,7 @@ namespace MovingCastles.Ui.Consoles
             _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Cloak:", Color.DarkGray)} Homespun cloth cloak\r\n", defaultCell));
 
             _equipmentPanel.Cursor.Position = new Point(0, 24);
-            _equipmentPanel.Cursor.Print(new ColoredString($"                0/10", defaultCell));
-
-            var controlPanel = new ControlsConsole(_equipmentPanel.Width, _equipmentPanel.Height)
-            {
-                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent)
-            };
-
-            const string inventoryMenuText = "Inventory (I):";
-            var inventoryMenuButtonWidth = inventoryMenuText.Length;
-            var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
-            {
-                Text = inventoryMenuText,
-                Position = new Point(1, 24),
-            };
-            inventoryMenuButton.Click += (_, __) =>
-            {
-                var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
-                menuProvider.Inventory.Show(inventory);
-            };
-            var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
-            buttonTheme.ShowEnds = false;
-            inventoryMenuButton.Theme = buttonTheme;
-
-            controlPanel.Add(inventoryMenuButton);
-
-            _equipmentPanel.Children.Add(controlPanel);
+            _equipmentPanel.Cursor.Print(new ColoredString($"                {inventory.FilledCapacity}/{inventory.Capacity}", defaultCell));
         }
 
         private void PrintInfoPanel()
