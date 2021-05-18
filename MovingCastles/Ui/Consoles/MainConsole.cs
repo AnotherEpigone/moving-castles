@@ -146,7 +146,8 @@ namespace MovingCastles.Ui.Consoles
             inventoryMenuButton.Click += (_, __) =>
             {
                 var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
-                menuProvider.ShowInventoryPanel(inventory);
+                var equipment = MapConsole.Player.GetGoRogueComponent<IEquipmentComponent>();
+                menuProvider.ShowInventoryPanel(inventory, equipment);
             };
             var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
             buttonTheme.ShowEnds = false;

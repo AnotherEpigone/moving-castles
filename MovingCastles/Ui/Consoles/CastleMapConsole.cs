@@ -74,7 +74,9 @@ namespace MovingCastles.Ui.Consoles
 
             if (info.IsKeyPressed(Keys.I))
             {
-                _menuProvider.ShowInventoryPanel(Player.GetGoRogueComponent<IInventoryComponent>());
+                _menuProvider.ShowInventoryPanel(
+                    Player.GetGoRogueComponent<IInventoryComponent>(),
+                    Player.GetGoRogueComponent<IEquipmentComponent>());
                 return true;
             }
 

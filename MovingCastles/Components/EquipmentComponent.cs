@@ -45,6 +45,12 @@ namespace MovingCastles.Components
             return true;
         }
 
+        public bool CanEquip(Item item, EquipCategoryId categoryId)
+        {
+            return _equipCategories.TryGetValue(categoryId, out var category)
+                && category.Slots - category.Items.Count >= 1;
+        }
+
         public bool Unequip(Item item, EquipCategoryId categoryId, ILogManager logManager)
         {
             if (!_equipCategories.TryGetValue(categoryId, out var category))

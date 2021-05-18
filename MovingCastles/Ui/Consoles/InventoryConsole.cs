@@ -20,12 +20,14 @@ namespace MovingCastles.Ui.Consoles
         private readonly Console _descriptionArea;
         private readonly Button _useButton;
         private readonly Button _dropButton;
+        private readonly Button _equipButton;
         private readonly Button _closeButton;
         private readonly int _itemButtonWidth;
         private readonly ILogManager _logManager;
 
         private Item _selectedItem;
         private IInventoryComponent _inventory;
+        private IEquipmentComponent _equipment;
         private System.Action _hideCallback;
 
         public InventoryConsole(
@@ -49,7 +51,7 @@ namespace MovingCastles.Ui.Consoles
             {
                 Text = "Use",
                 IsEnabled = false,
-                Position = new Point(_itemButtonWidth + 2, height - 2),
+                Position = new Point(2, height - 2),
             };
 
             _dropButton = new Button(12)
@@ -58,6 +60,13 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(_useButton.Position.X + _useButton.Width + 2, height - 2),
             };
             _dropButton.Click += (_, __) => Drop();
+
+            _equipButton = new Button(13)
+            {
+                Text = "Equip (E)",
+                Position = new Point(_dropButton.Position.X + _dropButton.Width + 2, height - 2),
+            };
+            _equipButton.Click += (_, __) => Equip();
 
             _closeButton = new Button(15)
             {
@@ -82,10 +91,14 @@ namespace MovingCastles.Ui.Consoles
             _selectedItem = null;
         }
 
-        public void Show(IInventoryComponent inventory, System.Action hideCallback)
+        public void Show(
+            IInventoryComponent inventory,
+            IEquipmentComponent equipment,
+            System.Action hideCallback)
         {
             _hideCallback = hideCallback;
             _inventory = inventory;
+            _equipment = equipment;
             RefreshControls(BuildItemControls(_inventory.GetItems()));
 
             IsVisible = true;
@@ -105,13 +118,23 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
+            if (info.IsKeyPressed(Keys.E))
+            {
+                Equip();
+                return true;
+            }
+
             return base.ProcessKeyboard(info);
         }
 
         private void OnItemSelected(Item item)
         {
             _selectedItem = item;
+
             _dropButton.IsEnabled = true;
+            var categoryId = ItemAtlas.ItemsById[_selectedItem.TemplateId].EquipCategoryId;
+            _equipButton.IsEnabled = _equipment.CanEquip(_selectedItem, categoryId);
+
             _descriptionArea.Clear();
             _descriptionArea.Cursor.Position = new Point(0, 0);
             _descriptionArea.Cursor.Print(
@@ -133,6 +156,22 @@ namespace MovingCastles.Ui.Consoles
                     };
                 },
                 i => (System.Action)(() => OnItemSelected(i)));
+        }
+
+        private void Equip()
+        {
+            var categoryId = ItemAtlas.ItemsById[_selectedItem.TemplateId].EquipCategoryId;
+            if (!_equipment.CanEquip(_selectedItem, categoryId))
+            {
+                return;
+            }
+
+            _inventory.RemoveItem(_selectedItem, _dungeonMaster, _logManager);
+            _logManager.StoryLog($"{((McEntity)_inventory.Parent).ColoredName} equipped {_selectedItem.ColoredName}.");
+
+            _equipment.Equip(_selectedItem, categoryId, _logManager);
+
+            RefreshControls(BuildItemControls(_inventory.GetItems()));
         }
 
         private void Drop()
@@ -162,8 +201,10 @@ namespace MovingCastles.Ui.Consoles
             Add(_useButton);
             Add(_closeButton);
             Add(_dropButton);
+            Add(_equipButton);
 
             _dropButton.IsEnabled = false;
+            _equipButton.IsEnabled = false;
 
             SetupSelectionButtons(buttons);
         }

@@ -185,6 +185,12 @@ namespace MovingCastles.Entities
             wizard.AddGoRogueComponent(new EndowmentPoolComponent(playerInfo.MaxEndowment, playerInfo.Endowment, 0.5f));
             wizard.AddGoRogueComponent(new InventoryComponent(5, playerInfo.Items.Select(i => Item.FromTemplate(i)).ToArray()));
             wizard.AddGoRogueComponent(new ActorStatComponent(1f, 1f, 1f));
+            wizard.AddGoRogueComponent(new EquipmentComponent(new EquipCategory[]
+            {
+                new EquipCategory(EquipCategoryId.Staff, "Staff", 1),
+                new EquipCategory(EquipCategoryId.Weapon, "Weapon", 1),
+                new EquipCategory(EquipCategoryId.Cloak, "Cloak", 1),
+            }));
 
             return wizard;
         }

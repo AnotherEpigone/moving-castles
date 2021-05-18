@@ -11,6 +11,8 @@ namespace MovingCastles.Components
 
         bool Equip(Item item, EquipCategoryId categoryId, ILogManager logManager);
 
+        bool CanEquip(Item item, EquipCategoryId categoryId);
+
         bool Unequip(Item item, EquipCategoryId categoryId, ILogManager logManager);
     }
 }

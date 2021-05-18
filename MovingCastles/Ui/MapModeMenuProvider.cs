@@ -50,14 +50,14 @@ namespace MovingCastles.Ui
             _inventory = inventoryConsole;
         }
 
-        public void ShowInventoryPanel(IInventoryComponent inventory)
+        public void ShowInventoryPanel(IInventoryComponent inventory, IEquipmentComponent equipment)
         {
             if (_inventory == null)
             {
                 return;
             }
 
-            _inventory.Show(inventory, () => HideInventoryPanel());
+            _inventory.Show(inventory, equipment, () => HideInventoryPanel());
             _inventory.IsFocused = true;
         }
     }

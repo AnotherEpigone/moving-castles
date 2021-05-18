@@ -14,6 +14,14 @@ namespace MovingCastles.GameSystems.Items
     [DataContract]
     public class EquipCategory
     {
+        public EquipCategory(EquipCategoryId id, string name, int slots)
+        {
+            Id = id;
+            Name = name;
+            Slots = slots;
+            Items = new List<Item>();
+        }
+
         [DataMember]
         public EquipCategoryId Id { get; init; }
 

@@ -8,7 +8,7 @@ namespace MovingCastles.Ui
     {
         void SetInventoryPanel(InventoryConsole inventoryConsole);
 
-        void ShowInventoryPanel(IInventoryComponent inventory);
+        void ShowInventoryPanel(IInventoryComponent inventory, IEquipmentComponent equipment);
 
         void HideInventoryPanel();
 
