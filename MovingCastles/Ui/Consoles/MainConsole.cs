@@ -12,6 +12,7 @@ using SadConsole;
 using SadConsole.Controls;
 using SadConsole.Themes;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MovingCastles.Ui.Consoles
 {
@@ -136,6 +137,8 @@ namespace MovingCastles.Ui.Consoles
                 DefaultBackground = ColorHelper.ControlBackDark,
             };
 
+            var inventoryComponent = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
+            var equipmentComponent = MapConsole.Player.GetGoRogueComponent<IEquipmentComponent>();
             const string inventoryMenuText = "Inventory (I):";
             var inventoryMenuButtonWidth = inventoryMenuText.Length;
             var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
@@ -145,9 +148,7 @@ namespace MovingCastles.Ui.Consoles
             };
             inventoryMenuButton.Click += (_, __) =>
             {
-                var inventory = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
-                var equipment = MapConsole.Player.GetGoRogueComponent<IEquipmentComponent>();
-                menuProvider.ShowInventoryPanel(inventory, equipment);
+                menuProvider.ShowInventoryPanel(inventoryComponent, equipmentComponent);
             };
             var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
             buttonTheme.ShowEnds = false;
@@ -162,9 +163,9 @@ namespace MovingCastles.Ui.Consoles
 
             _equipmentPanel.Children.Add(controlPanel);
 
-            var inventoryComponent = MapConsole.Player.GetGoRogueComponent<IInventoryComponent>();
-            PrintEquipmentPanel(inventoryComponent);
-            inventoryComponent.ContentsChanged += (_, __) => PrintEquipmentPanel(inventoryComponent);
+            PrintEquipmentPanel(inventoryComponent, equipmentComponent);
+            inventoryComponent.ContentsChanged += (_, __) => PrintEquipmentPanel(inventoryComponent, equipmentComponent);
+            equipmentComponent.EquipmentChanged += (_, __) => PrintEquipmentPanel(inventoryComponent, equipmentComponent);
         }
 
         private ControlsConsole CreateTopPane(
@@ -324,14 +325,19 @@ namespace MovingCastles.Ui.Consoles
             _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
-        private void PrintEquipmentPanel(IInventoryComponent inventory)
+        private void PrintEquipmentPanel(IInventoryComponent inventory, IEquipmentComponent equipment)
         {
             var defaultCell = new Cell(_equipmentPanel.DefaultForeground, _equipmentPanel.DefaultBackground);
             _equipmentPanel.Clear();
             _equipmentPanel.Cursor.Position = new Point(0, 0);
             _equipmentPanel.Cursor.Print("\n");
-            _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Staff:", Color.DarkGray)} Ancient oak staff\r\n", defaultCell));
-            _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Cloak:", Color.DarkGray)} Homespun cloth cloak\r\n", defaultCell));
+
+            var categories = equipment.Equipment.Values.ToList();
+            foreach (var category in categories)
+            {
+                var itemName = category.Items.FirstOrDefault()?.ColoredName ?? string.Empty;
+                _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"{category.Name}:", Color.DarkGray)} {itemName}\r\n", defaultCell));
+            }
 
             _equipmentPanel.Cursor.Position = new Point(0, 24);
             _equipmentPanel.Cursor.Print(new ColoredString($"                {inventory.FilledCapacity}/{inventory.Capacity}", defaultCell));

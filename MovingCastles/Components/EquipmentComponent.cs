@@ -4,6 +4,7 @@ using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,6 +24,8 @@ namespace MovingCastles.Components
         public EquipmentComponent(SerializedObject state)
             : this(JsonConvert.DeserializeObject<EquipCategory[]>(state.Value)) { }
 
+        public event System.EventHandler EquipmentChanged;
+
         public IGameObject Parent { get; set; }
 
         public IReadOnlyDictionary<EquipCategoryId, EquipCategory> Equipment => _equipCategories;
@@ -41,6 +44,8 @@ namespace MovingCastles.Components
 
             logManager.StoryLog($"Equipped {item.ColoredName}.");
             category.Items.Add(item);
+
+            EquipmentChanged?.Invoke(this, EventArgs.Empty);
 
             return true;
         }
@@ -63,6 +68,8 @@ namespace MovingCastles.Components
             {
                 logManager.StoryLog($"Unequipped {item.ColoredName}.");
             }
+
+            EquipmentChanged?.Invoke(this, EventArgs.Empty);
 
             return success;
         }
