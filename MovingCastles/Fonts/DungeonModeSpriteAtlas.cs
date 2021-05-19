@@ -27,6 +27,8 @@
         // Items
         public const int EtheriumShard = 10;
         public const int SteelLongsword = 11;
+        public const int Trollshroom_Small = 46;
+        public const int Staff_Oak = 47;
 
         // Doodads
         public const int Door_Wood_Closed = 23;
@@ -43,7 +45,6 @@
         public const int Barrel_Small = 43;
         public const int Chest_Small = 44;
         public const int Door_Banded_Closed = 45;
-        public const int Trollshroom_Small = 46;
 
         // GUI
         public const int BlueArrow_Right = 12;

@@ -22,6 +22,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
         {
             ItemAtlas.EtheriumShard,
             ItemAtlas.SteelLongsword,
+            ItemAtlas.StarterOakStaff,
         };
 
         public AlwardsTowerLevelGenerator(IGameModeMaster gameModeMaster)
