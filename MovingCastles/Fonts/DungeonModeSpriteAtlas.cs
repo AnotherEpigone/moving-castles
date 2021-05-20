@@ -29,6 +29,7 @@
         public const int SteelLongsword = 11;
         public const int Trollshroom_Small = 46;
         public const int Staff_Oak = 47;
+        public const int Cloak_Homespun = 53;
 
         // Doodads
         public const int Door_Wood_Closed = 23;

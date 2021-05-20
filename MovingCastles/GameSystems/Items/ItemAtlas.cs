@@ -49,7 +49,7 @@ namespace MovingCastles.GameSystems.Items
             id: "ITEM_STARTER_HOMESPUN_CLOAK",
             name: "Homespun cloak",
             description: "Todo desc",
-            glyph: 11,
+            glyph: DungeonModeSpriteAtlas.Cloak_Homespun,
             equipCategoryId: EquipCategoryId.Cloak,
             createComponents: () => new List<ISerializableComponent>());
         public static ItemTemplate TrollShroom => new ItemTemplate(
