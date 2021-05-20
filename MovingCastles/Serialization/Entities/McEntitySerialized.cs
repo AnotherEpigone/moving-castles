@@ -30,6 +30,7 @@ namespace MovingCastles.Serialization.Entities
         [DataMember] public List<ComponentSerializable> Components;
         [DataMember] public string FactionName;
         [DataMember] public Guid Id;
+        [DataMember] public int Glyph;
 
         public static implicit operator McEntitySerialized(McEntity entity)
         {
@@ -50,6 +51,7 @@ namespace MovingCastles.Serialization.Entities
                 DefaultBackground = entity.DefaultBackground,
                 DefaultForeground = entity.DefaultForeground,
                 Font = entity.Font,
+                Glyph = entity.Glyph,
                 Components = entity.GetGoRogueComponents<ISerializableComponent>()
                                 .Select(c => c.GetSerializable())
                                 .ToList(),
@@ -73,7 +75,7 @@ namespace MovingCastles.Serialization.Entities
                 serializedObject.Name,
                 serializedObject.DefaultForeground,
                 serializedObject.DefaultBackground,
-                0,
+                serializedObject.Glyph,
                 (Point)serializedObject.Position,
                 serializedObject.Layer,
                 serializedObject.IsWalkable,

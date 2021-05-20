@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MovingCastles.Components;
 using MovingCastles.Components.Stats;
 using MovingCastles.GameSystems;
+using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.GameSystems.TurnBased;
@@ -23,6 +24,7 @@ namespace MovingCastles.Ui.Consoles
         private const int EquipmentPanelHeight = 25;
 
         private readonly IDungeonMaster _dungeonMaster;
+        private readonly ILogManager _logManager;
 
         private ProgressBar _healthBar;
         private ProgressBar _endowmentBar;
@@ -30,6 +32,8 @@ namespace MovingCastles.Ui.Consoles
         private Console _infoPanel;
         private Console _rightPanel;
         private Console _equipmentPanel;
+        private ControlsConsole _equipmentPanelOverlay;
+        private Button _inventoryMenuButton;
         private InventoryConsole _inventoryPanel;
         private int _leftPaneWidth;
         private int _rightPaneWidth;
@@ -50,6 +54,7 @@ namespace MovingCastles.Ui.Consoles
             UseMouse = false;
 
             _dungeonMaster = dungeonMaster;
+            _logManager = logManager;
 
             _leftPaneWidth = uiManager.GetSidePanelWidth();
             _rightPaneWidth = uiManager.GetSidePanelWidth();
@@ -141,27 +146,23 @@ namespace MovingCastles.Ui.Consoles
             var equipmentComponent = MapConsole.Player.GetGoRogueComponent<IEquipmentComponent>();
             const string inventoryMenuText = "Inventory (I):";
             var inventoryMenuButtonWidth = inventoryMenuText.Length;
-            var inventoryMenuButton = new Button(inventoryMenuButtonWidth)
+            _inventoryMenuButton = new Button(inventoryMenuButtonWidth)
             {
                 Text = inventoryMenuText,
                 Position = new Point(1, 24),
+                Theme = ThemeHelper.ButtonThemeNoEnds(),
             };
-            inventoryMenuButton.Click += (_, __) =>
+            _inventoryMenuButton.Click += (_, __) =>
             {
                 menuProvider.ShowInventoryPanel(inventoryComponent, equipmentComponent);
             };
-            var buttonTheme = (ButtonTheme)inventoryMenuButton.Theme;
-            buttonTheme.ShowEnds = false;
-            inventoryMenuButton.Theme = buttonTheme;
 
-            var controlPanel = new ControlsConsole(_equipmentPanel.Width, _equipmentPanel.Height)
+            _equipmentPanelOverlay = new ControlsConsole(_equipmentPanel.Width, _equipmentPanel.Height)
             {
-                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent)
+                ThemeColors = ColorHelper.GetThemeColorsForBackgroundColor(Color.Transparent),
             };
 
-            controlPanel.Add(inventoryMenuButton);
-
-            _equipmentPanel.Children.Add(controlPanel);
+            _equipmentPanel.Children.Add(_equipmentPanelOverlay);
 
             PrintEquipmentPanel(inventoryComponent, equipmentComponent);
             inventoryComponent.ContentsChanged += (_, __) => PrintEquipmentPanel(inventoryComponent, equipmentComponent);
@@ -332,15 +333,41 @@ namespace MovingCastles.Ui.Consoles
             _equipmentPanel.Cursor.Position = new Point(0, 0);
             _equipmentPanel.Cursor.Print("\n");
 
+            _equipmentPanelOverlay.RemoveAll();
+
             var categories = equipment.Equipment.Values.ToList();
             foreach (var category in categories)
             {
-                var itemName = category.Items.FirstOrDefault()?.ColoredName ?? string.Empty;
-                _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"{category.Name}:", Color.DarkGray)} {itemName}\r\n", defaultCell));
+                var item = category.Items.FirstOrDefault();
+                var itemName = item?.Name ?? string.Empty;
+                _equipmentPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"{category.Name}:", Color.DarkGray)} ", defaultCell));
+                if (item == null)
+                {
+                    _equipmentPanel.Cursor.Print("\r\n");
+                    continue;
+                }
+
+                var itemTemplate = ItemAtlas.ItemsById[item.TemplateId];
+                var itemButton = new Button(itemName.Length)
+                {
+                    Text = itemName,
+                    Position = new Point(_equipmentPanel.Cursor.Column + 1, _equipmentPanel.Cursor.Row),
+                    Theme = ThemeHelper.ButtonThemeNoEnds(),
+                };
+                itemButton.Click += (_, __) =>
+                {
+                    equipment.Unequip(item, itemTemplate.EquipCategoryId, _logManager);
+                    inventory.AddItem(item, _dungeonMaster, _logManager);
+                };
+                _equipmentPanelOverlay.Add(itemButton);
+
+                _equipmentPanel.Cursor.Print("\r\n");
             }
 
             _equipmentPanel.Cursor.Position = new Point(0, 24);
             _equipmentPanel.Cursor.Print(new ColoredString($"                {inventory.FilledCapacity}/{inventory.Capacity}", defaultCell));
+
+            _equipmentPanelOverlay.Add(_inventoryMenuButton);
         }
 
         private void PrintInfoPanel()

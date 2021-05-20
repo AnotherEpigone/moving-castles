@@ -89,6 +89,8 @@ namespace MovingCastles.Ui.Consoles
         {
             IsVisible = false;
             _selectedItem = null;
+
+            _inventory.ContentsChanged -= Inventory_ContentsChanged;
         }
 
         public void Show(
@@ -101,7 +103,14 @@ namespace MovingCastles.Ui.Consoles
             _equipment = equipment;
             RefreshControls(BuildItemControls(_inventory.GetItems()));
 
+            _inventory.ContentsChanged += Inventory_ContentsChanged;
+
             IsVisible = true;
+        }
+
+        private void Inventory_ContentsChanged(object sender, System.EventArgs e)
+        {
+            RefreshControls(BuildItemControls(_inventory.GetItems()));
         }
 
         public override bool ProcessKeyboard(SadConsole.Input.Keyboard info)
@@ -112,13 +121,15 @@ namespace MovingCastles.Ui.Consoles
                 return true;
             }
 
-            if (info.IsKeyPressed(Keys.D))
+            if (info.IsKeyPressed(Keys.D)
+                && _dropButton.IsEnabled)
             {
                 Drop();
                 return true;
             }
 
-            if (info.IsKeyPressed(Keys.E))
+            if (info.IsKeyPressed(Keys.E)
+                && _equipButton.IsEnabled)
             {
                 Equip();
                 return true;
@@ -166,24 +177,26 @@ namespace MovingCastles.Ui.Consoles
                 return;
             }
 
-            _inventory.RemoveItem(_selectedItem, _dungeonMaster, _logManager);
             _logManager.StoryLog($"{((McEntity)_inventory.Parent).ColoredName} equipped {_selectedItem.ColoredName}.");
 
-            _equipment.Equip(_selectedItem, categoryId, _logManager);
+            var item = _selectedItem;
+            _inventory.RemoveItem(item, _dungeonMaster, _logManager);
+            _equipment.Equip(item, categoryId, _logManager);
 
             RefreshControls(BuildItemControls(_inventory.GetItems()));
         }
 
         private void Drop()
         {
-            _inventory.RemoveItem(_selectedItem, _dungeonMaster, _logManager);
-            _logManager.StoryLog($"{((McEntity)_inventory.Parent).ColoredName} dropped {_selectedItem.ColoredName}.");
+            var item = _selectedItem;
+            _inventory.RemoveItem(item, _dungeonMaster, _logManager);
+            _logManager.StoryLog($"{((McEntity)_inventory.Parent).ColoredName} dropped {item.ColoredName}.");
 
             var mapConsoleResult = _dungeonMaster.GetCurrentMapConsole();
             if (_dungeonMaster.ModeMaster.Mode == GameMode.Dungeon
                 && mapConsoleResult.HasValue)
             {
-                var droppedItem = _dungeonMaster.ModeMaster.EntityFactory.CreateItem(_dungeonMaster.Player.Position, _selectedItem);
+                var droppedItem = _dungeonMaster.ModeMaster.EntityFactory.CreateItem(_dungeonMaster.Player.Position, item);
                 var mapConsole = mapConsoleResult.ValueOr(default(DungeonMapConsole));
                 mapConsole.AddEntity(droppedItem);
             }

@@ -36,6 +36,7 @@ namespace MovingCastles.Serialization.Entities
                 DefaultBackground = entity.DefaultBackground,
                 DefaultForeground = entity.DefaultForeground,
                 Font = entity.Font,
+                Glyph = entity.Glyph,
                 Components = entity.GetGoRogueComponents<ISerializableComponent>()
                                 .Select(c => c.GetSerializable())
                                 .ToList(),
@@ -57,7 +58,7 @@ namespace MovingCastles.Serialization.Entities
             var entity = new Item(
                 serialized.TemplateId,
                 serialized.Name,
-                0,
+                serialized.Glyph,
                 serialized.NameColor,
                 serialized.Id,
                 serialized.Description);
