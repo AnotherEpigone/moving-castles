@@ -8,6 +8,7 @@ using MovingCastles.GameSystems.Time;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components.Effects
 {
@@ -33,7 +34,7 @@ namespace MovingCastles.Components.Effects
 
         public IGameObject Parent { get; set; }
 
-        public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster)
+        public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             var mcParent = (McEntity)Parent;
             logManager.CombatLog($"{mcParent.ColoredName} burned for {_dps} damage.");

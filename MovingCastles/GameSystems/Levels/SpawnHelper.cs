@@ -1,6 +1,8 @@
 ﻿using GoRogue;
 using GoRogue.MapViews;
 using MovingCastles.Entities;
+using MovingCastles.Extensions;
+using MovingCastles.Maps;
 using System;
 using System.Linq;
 using Troschuetz.Random;
@@ -21,6 +23,20 @@ namespace MovingCastles.GameSystems.Levels
                 Spawn.Door => throw new NotSupportedException(conditions.Spawn.ToString()),
                 _ => throw new ArgumentException(conditions.Spawn.ToString()),
             };
+        }
+
+        public static Coord GetAdjacentSpawnPosition(Level level, DungeonMapLayer layer, Coord anchorPosition, IGenerator rng)
+        {
+            var spawnView = MapViewHelper.WalkableEmptyLayerView(level.Map, layer);
+            foreach (var position in AdjacencyRule.EIGHT_WAY.Neighbors(anchorPosition).Randomize(rng))
+            {
+                if (spawnView[position])
+                {
+                    return position;
+                }
+            }
+
+            return Coord.NONE;
         }
 
         private static McEntity GetEntityWithTemplateId(Level level, string id, int index)

@@ -380,7 +380,7 @@ namespace MovingCastles.GameSystems.TurnBased
                 var effects = entity.GetGoRogueComponents<ITimedEffect>();
                 foreach (var effect in effects.ToArray())
                 {
-                    effect.OnTick(time, _logManager, _dungeonMaster);
+                    effect.OnTick(time, _logManager, _dungeonMaster, _rng);
                 }
             }
 

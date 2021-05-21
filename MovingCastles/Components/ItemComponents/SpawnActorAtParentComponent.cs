@@ -3,6 +3,7 @@ using GoRogue.GameFramework;
 using MovingCastles.Components.Effects;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
+using MovingCastles.Extensions;
 using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
@@ -11,6 +12,7 @@ using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Runtime.Serialization;
+using Troschuetz.Random;
 
 namespace MovingCastles.Components.ItemComponents
 {
@@ -56,7 +58,7 @@ namespace MovingCastles.Components.ItemComponents
             }
         }
 
-        public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster)
+        public void OnTick(McTimeSpan time, ILogManager logManager, IDungeonMaster dungeonMaster, IGenerator rng)
         {
             if (!(Parent is McEntity mcParent))
             {
@@ -92,7 +94,7 @@ namespace MovingCastles.Components.ItemComponents
                 actorTemplate.SubTiles.Select(st => (Coord)st.Offset));
 
             Coord spawnPosition = Coord.NONE;
-            foreach (var direction in AdjacencyRule.EIGHT_WAY.DirectionsOfNeighbors())
+            foreach (var direction in AdjacencyRule.EIGHT_WAY.DirectionsOfNeighbors().Randomize(rng))
             {
                 var pos = parentPos + direction;
 

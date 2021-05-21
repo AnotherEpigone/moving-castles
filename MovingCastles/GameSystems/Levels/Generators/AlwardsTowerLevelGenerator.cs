@@ -22,8 +22,6 @@ namespace MovingCastles.GameSystems.Levels.Generators
         {
             ItemAtlas.EtheriumShard,
             ItemAtlas.SteelLongsword,
-            ItemAtlas.StarterOakStaff,
-            ItemAtlas.StarterHomespunCloak,
         };
 
         public AlwardsTowerLevelGenerator(IGameModeMaster gameModeMaster)
@@ -39,6 +37,23 @@ namespace MovingCastles.GameSystems.Levels.Generators
             // spawn player
             player.Position = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
             level.Map.AddEntity(player);
+
+            if (id == LevelId.AlwardsTower1)
+            {
+                var staffPosition = SpawnHelper.GetAdjacentSpawnPosition(level, DungeonMapLayer.ITEMS, player.Position, rng);
+                if (staffPosition != Coord.NONE)
+                {
+                    var staff = GameModeMaster.EntityFactory.CreateItem(staffPosition, ItemAtlas.StarterOakStaff);
+                    level.Map.AddEntity(staff);
+                }
+
+                var cloakPosition = SpawnHelper.GetAdjacentSpawnPosition(level, DungeonMapLayer.ITEMS, player.Position, rng);
+                if (staffPosition != Coord.NONE)
+                {
+                    var cloak = GameModeMaster.EntityFactory.CreateItem(cloakPosition, ItemAtlas.StarterHomespunCloak);
+                    level.Map.AddEntity(cloak);
+                }
+            }
 
             return level;
         }
