@@ -1,6 +1,7 @@
 ﻿using GoRogue.MapViews;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Saving;
+using MovingCastles.Maps;
 using MovingCastles.Serialization.Map;
 using Troschuetz.Random;
 using Troschuetz.Random.Generators;
@@ -59,11 +60,15 @@ namespace MovingCastles.GameSystems.Levels.Generators
 
             foreach (var entity in mapState.Entities)
             {
+                // TODO remove this terrain hack after terrain serialization is fixed
+                level.Map.SetTerrain(TerrainSpawning.SpawnDungeonTerrain(entity.Position, true));
                 level.Map.AddEntity(entity);
             }
 
             foreach (var door in mapState.Doors)
             {
+                // TODO remove this terrain hack after terrain serialization is fixed
+                level.Map.SetTerrain(TerrainSpawning.SpawnDungeonTerrain(door.Position, true));
                 level.Map.AddEntity(door);
             }
 
