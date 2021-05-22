@@ -45,12 +45,16 @@ namespace MovingCastles.GameSystems.Levels
 
             Structure = _structureFactory.CreateById(structureId, _gameModeMaster);
 
-            Level = Structure.GetLevel(targetMapId, player, spawnConditions);
-            LevelChanged?.Invoke(this, EventArgs.Empty);
-
             if (Structure.Mode != _gameModeMaster.Mode)
             {
-                _gameModeMaster.SetGameMode(Structure.Mode);
+                _gameModeMaster.SetGameMode(
+                    Structure.Mode,
+                    () => Level = Structure.GetLevel(targetMapId, player, spawnConditions));
+            }
+            else
+            {
+                Level = Structure.GetLevel(targetMapId, player, spawnConditions);
+                LevelChanged?.Invoke(this, EventArgs.Empty);
             }
 
             logManager.StoryLog($"Entered {Level.Name}.");

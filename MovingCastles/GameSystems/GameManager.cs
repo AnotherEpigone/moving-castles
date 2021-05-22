@@ -181,6 +181,7 @@ namespace MovingCastles.GameSystems
         private void GameModeMaster_ModeChanged(object sender, EventArgs e)
         {
             var oldConsole = (MainConsole)Global.CurrentScreen;
+            oldConsole.IsPaused = true;
             oldConsole.Dispose();
 
             DungeonMaster.Player.Font = DungeonMaster.ModeMaster.Font;

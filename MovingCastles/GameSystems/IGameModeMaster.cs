@@ -23,6 +23,6 @@ namespace MovingCastles.GameSystems
 
         ITurnBasedGameConsoleFactory GameConsoleFactory { get; }
 
-        void SetGameMode(GameMode gameMode);
+        void SetGameMode(GameMode gameMode, Action levelLoadAction);
     }
 }

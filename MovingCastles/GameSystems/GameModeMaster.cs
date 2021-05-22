@@ -53,7 +53,7 @@ namespace MovingCastles.GameSystems
             _ => throw new ArgumentException($"Unsupported gamemode: {Mode}"),
         };
 
-        public void SetGameMode(GameMode gameMode)
+        public void SetGameMode(GameMode gameMode, Action levelLoadAction)
         {
             if (Mode == gameMode)
             {
@@ -61,6 +61,7 @@ namespace MovingCastles.GameSystems
             }
 
             Mode = gameMode;
+            levelLoadAction();
             ModeChanged?.Invoke(this, EventArgs.Empty);
         }
     }
