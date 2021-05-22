@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActDesc_AlwardsTower_Enter" xml:space="preserve">
+    <value>Enter the tower.</value>
+  </data>
+  <data name="ActDesc_AlwardsTower_MoveOn" xml:space="preserve">
+    <value>Move on.</value>
+  </data>
   <data name="ActDesc_HermitTent_Empty" xml:space="preserve">
     <value>Commend the soul of the dead to Ael and go your way.</value>
   </data>
@@ -128,6 +134,13 @@
   </data>
   <data name="Entry_AlwardsTower_Quest" xml:space="preserve">
     <value>Old Alward's Tower, known as the Watcher over the Desert, is the traditional destination of pilgrims from the east. Like the fathers of centuries ago, you must cross the desert and find it before your journey to become a mage can truly begin.</value>
+  </data>
+  <data name="ScenDesc_AlwardsTower" xml:space="preserve">
+    <value>A solitary stone tower appears on the horizon. It stands far above the landscape, alone amid the untamed highlands, leaving no doubt that this is the Watcher over the Desert, known to the magi as Old Alward's Tower.
+
+On the ancient maps available to Kurisau monastery, this is the northernmost outpost of the Order of the Magi. Tradition holds that it was the home of Alward the Wise, one of the three founders of the order. This is where you should be able to make contact with the Order and find out what you've been called here to do.
+
+But as you approach you begin to wonder, why is the tower so quiet? The surrounds are badly overgrown and the stonework crumbling, as if long years have passed without maintenance.</value>
   </data>
   <data name="ScenDesc_HermitTent_Empty" xml:space="preserve">
     <value>You stumble across the rough campsite of a hermit. An air of supernatural quiet pervades the area. Inside the ragged tent you find the long-dead bones of a man. Of his earthly possessions, nothing remains.</value>

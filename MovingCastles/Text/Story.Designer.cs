@@ -61,6 +61,24 @@ namespace MovingCastles.Text {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the tower..
+        /// </summary>
+        internal static string ActDesc_AlwardsTower_Enter {
+            get {
+                return ResourceManager.GetString("ActDesc_AlwardsTower_Enter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move on..
+        /// </summary>
+        internal static string ActDesc_AlwardsTower_MoveOn {
+            get {
+                return ResourceManager.GetString("ActDesc_AlwardsTower_MoveOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commend the soul of the dead to Ael and go your way..
         /// </summary>
         internal static string ActDesc_HermitTent_Empty {
@@ -93,6 +111,17 @@ namespace MovingCastles.Text {
         internal static string Entry_AlwardsTower_Quest {
             get {
                 return ResourceManager.GetString("Entry_AlwardsTower_Quest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A solitary stone tower appears on the horizon. It stands far above the landscape, alone amid the untamed highlands, leaving no doubt that this is the Watcher over the Desert, known to the magi as Old Alward&apos;s Tower.
+        ///
+        ///On the ancient maps available to Kurisau monastery, this is the northernmost outpost of the Order of the Magi. Tradition holds that it was the home of Alward the Wise, one of the three founders of the order. This is where you should be able to make contact with the Order and find out what you [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ScenDesc_AlwardsTower {
+            get {
+                return ResourceManager.GetString("ScenDesc_AlwardsTower", resourceCulture);
             }
         }
         

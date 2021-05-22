@@ -16,6 +16,7 @@ namespace MovingCastles.GameSystems.Scenarios
         {
             _byId = new Lazy<Dictionary<string, IScenario>>(() => typeof(ScenarioAtlas)
                 .GetProperties(BindingFlags.Public | BindingFlags.Static)
+                .Where(p => p.PropertyType == typeof(IScenario))
                 .Select(p => p.GetValue(null))
                 .OfType<IScenario>()
                 .ToDictionary(
@@ -37,11 +38,11 @@ namespace MovingCastles.GameSystems.Scenarios
         public static IScenario OldAlwardsTower => new SimpleScenario(
             id: "SCENARIO_OLD_ALWARDS",
             firstStep: new SimpleScenarioStep(
-                description: "Big ol castle",
+                description: Story.ScenDesc_AlwardsTower,
                 actions: new List<ScenarioStepAction>
                 {
                     new ScenarioStepAction(
-                        "Go in.",
+                        Story.ActDesc_AlwardsTower_Enter,
                         (dm, lm) =>
                         {
                             dm.LevelMaster.ChangeStructure(
@@ -52,7 +53,7 @@ namespace MovingCastles.GameSystems.Scenarios
                                 lm);
                         },
                         Option.None<IScenarioStep>()),
-                    ScenarioStepAction.End("Don't go in."),
+                    ScenarioStepAction.End(Story.ActDesc_AlwardsTower_MoveOn),
                 }));
     }
 }
