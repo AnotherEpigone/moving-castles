@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Components.Serialization;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using System;
@@ -12,10 +13,10 @@ namespace MovingCastles.Components
 
         IReadOnlyDictionary<EquipCategoryId, EquipCategory> Equipment { get; }
 
-        bool Equip(Item item, EquipCategoryId categoryId, ILogManager logManager);
-
         bool CanEquip(Item item, EquipCategoryId categoryId);
 
-        bool Unequip(Item item, EquipCategoryId categoryId, ILogManager logManager);
+        bool Equip(Item item, EquipCategoryId categoryId, IDungeonMaster dungeonMaster, ILogManager logManager);
+
+        bool Unequip(Item item, EquipCategoryId categoryId, IDungeonMaster dungeonMaster, ILogManager logManager);
     }
 }

@@ -1,5 +1,8 @@
 ﻿using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Components.Triggers;
+using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Items;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
@@ -30,7 +33,13 @@ namespace MovingCastles.Components
 
         public IReadOnlyDictionary<EquipCategoryId, EquipCategory> Equipment => _equipCategories;
 
-        public bool Equip(Item item, EquipCategoryId categoryId, ILogManager logManager)
+        public bool CanEquip(Item item, EquipCategoryId categoryId)
+        {
+            return _equipCategories.TryGetValue(categoryId, out var category)
+                && category.Slots - category.Items.Count >= 1;
+        }
+
+        public bool Equip(Item item, EquipCategoryId categoryId, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             if (!_equipCategories.TryGetValue(categoryId, out var category))
             {
@@ -46,17 +55,15 @@ namespace MovingCastles.Components
             category.Items.Add(item);
 
             EquipmentChanged?.Invoke(this, EventArgs.Empty);
+            foreach (var triggeredComponent in item.GetGoRogueComponents<IEquipTriggeredComponent>())
+            {
+                triggeredComponent.OnEquip((McEntity)Parent, dungeonMaster, logManager);
+            }
 
             return true;
         }
 
-        public bool CanEquip(Item item, EquipCategoryId categoryId)
-        {
-            return _equipCategories.TryGetValue(categoryId, out var category)
-                && category.Slots - category.Items.Count >= 1;
-        }
-
-        public bool Unequip(Item item, EquipCategoryId categoryId, ILogManager logManager)
+        public bool Unequip(Item item, EquipCategoryId categoryId, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             if (!_equipCategories.TryGetValue(categoryId, out var category))
             {
@@ -70,6 +77,10 @@ namespace MovingCastles.Components
             }
 
             EquipmentChanged?.Invoke(this, EventArgs.Empty);
+            foreach (var triggeredComponent in item.GetGoRogueComponents<IEquipTriggeredComponent>())
+            {
+                triggeredComponent.OnUnequip((McEntity)Parent, dungeonMaster, logManager);
+            }
 
             return success;
         }

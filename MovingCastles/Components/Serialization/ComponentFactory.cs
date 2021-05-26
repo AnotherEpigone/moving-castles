@@ -37,8 +37,11 @@ namespace MovingCastles.Components.Serialization
                 { nameof(ChangeLevelComponent), s => new ChangeLevelComponent(new SerializedObject() { Value = s }) },
                 { nameof(ChangeStructureComponent), s => new ChangeStructureComponent(new SerializedObject() { Value = s }) },
                 { nameof(EndowmentPoolComponent), s => new EndowmentPoolComponent(new SerializedObject() { Value = s }) },
+
+                // Item
                 { nameof(SpawnActorAtParentComponent), s => new SpawnActorAtParentComponent(new SerializedObject() { Value = s }) },
                 { nameof(ApplyInInventoryEffectsComponent), s => new ApplyInInventoryEffectsComponent(new SerializedObject() { Value = s }) },
+                { nameof(ApplyWhenEquippedComponent), s => new ApplyWhenEquippedComponent(new SerializedObject() { Value = s }) },
 
                 // Story
                 { nameof(StoryMessageComponent), s => new StoryMessageComponent(new SerializedObject() { Value = s }) },
@@ -46,6 +49,8 @@ namespace MovingCastles.Components.Serialization
 
                 // Effects
                 { nameof(BurningTimedEffect), s => new BurningTimedEffect(new SerializedObject() { Value = s }) },
+                { nameof(SpeedChangeTimedEffect), s => new SpeedChangeTimedEffect(new SerializedObject() { Value = s }) },
+                { nameof(DeflectEffect), s => new DeflectEffect(new SerializedObject() { Value = s }) },
             };
         }
 

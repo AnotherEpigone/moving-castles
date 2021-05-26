@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
@@ -20,6 +21,7 @@ namespace MovingCastles.GameSystems
         ITimeMaster TimeMaster { get; }
 
         IScenarioMaster ScenarioMaster { get; }
+        IHitMan HitMan { get; }
 
         Option<DungeonMapConsole> GetCurrentMapConsole();
     }

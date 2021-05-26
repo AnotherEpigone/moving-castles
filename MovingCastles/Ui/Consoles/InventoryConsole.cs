@@ -181,7 +181,7 @@ namespace MovingCastles.Ui.Consoles
 
             var item = _selectedItem;
             _inventory.RemoveItem(item, _dungeonMaster, _logManager);
-            _equipment.Equip(item, categoryId, _logManager);
+            _equipment.Equip(item, categoryId, _dungeonMaster, _logManager);
 
             RefreshControls(BuildItemControls(_inventory.GetItems()));
         }

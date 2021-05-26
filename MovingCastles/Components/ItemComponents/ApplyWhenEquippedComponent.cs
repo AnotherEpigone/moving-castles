@@ -11,41 +11,41 @@ using System.Linq;
 
 namespace MovingCastles.Components.ItemComponents
 {
-    public class ApplyInInventoryEffectsComponent : IInventoryTriggeredComponent
+    public class ApplyWhenEquippedComponent : IEquipTriggeredComponent
     {
         private readonly IEnumerable<ISerializableComponent> _components;
 
-        public ApplyInInventoryEffectsComponent(IEnumerable<ISerializableComponent> components)
+        public ApplyWhenEquippedComponent(IEnumerable<ISerializableComponent> components)
         {
             _components = components;
         }
 
-        public ApplyInInventoryEffectsComponent(SerializedObject serialized)
+        public ApplyWhenEquippedComponent(SerializedObject serialized)
             : this(JsonConvert.DeserializeObject<List<ComponentSerializable>>(serialized.Value).Select(cs => ComponentFactory.Create(cs)))
         {
         }
 
         public IGameObject Parent { get; set; }
 
-        public void OnAddedToInventory(McEntity inventoryOwner, IDungeonMaster dungeonMaster, ILogManager logManager)
+        public void OnEquip(McEntity equipmentOwner, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             foreach (var component in _components)
             {
-                inventoryOwner.AddGoRogueComponent(component);
+                equipmentOwner.AddGoRogueComponent(component);
             }
         }
 
-        public void OnRemovedFromInventory(McEntity inventoryOwner, IDungeonMaster dungeonMaster, ILogManager logManager)
+        public void OnUnequip(McEntity equipmentOwner, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             foreach (var component in _components)
             {
-                inventoryOwner.RemoveGoRogueComponent(component);
+                equipmentOwner.RemoveGoRogueComponent(component);
             }
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            Id = nameof(ApplyInInventoryEffectsComponent),
+            Id = nameof(ApplyWhenEquippedComponent),
             State = JsonConvert.SerializeObject(_components.Select(c => c.GetSerializable()).ToList()),
         };
     }

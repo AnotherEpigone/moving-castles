@@ -356,7 +356,7 @@ namespace MovingCastles.Ui.Consoles
                 };
                 itemButton.Click += (_, __) =>
                 {
-                    equipment.Unequip(item, itemTemplate.EquipCategoryId, _logManager);
+                    equipment.Unequip(item, itemTemplate.EquipCategoryId, _dungeonMaster, _logManager);
                     inventory.AddItem(item, _dungeonMaster, _logManager);
                 };
                 _equipmentPanelOverlay.Add(itemButton);

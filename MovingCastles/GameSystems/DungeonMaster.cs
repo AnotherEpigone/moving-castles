@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
@@ -15,7 +16,8 @@ namespace MovingCastles.GameSystems
             IFactionMaster factionMaster,
             ITimeMaster timeMaster,
             IGameModeMaster modeMaster,
-            IScenarioMaster scenarioMaster)
+            IScenarioMaster scenarioMaster,
+            IHitMan hitMan)
         {
             Player = player;
             LevelMaster = levelMaster;
@@ -23,6 +25,7 @@ namespace MovingCastles.GameSystems
             TimeMaster = timeMaster;
             ModeMaster = modeMaster;
             ScenarioMaster = scenarioMaster;
+            HitMan = hitMan;
         }
 
         public Wizard Player { get; }
@@ -31,6 +34,7 @@ namespace MovingCastles.GameSystems
         public IFactionMaster FactionMaster { get; }
         public ITimeMaster TimeMaster { get; }
         public IScenarioMaster ScenarioMaster { get; }
+        public IHitMan HitMan { get; }
 
         public Option<DungeonMapConsole> GetCurrentMapConsole()
         {

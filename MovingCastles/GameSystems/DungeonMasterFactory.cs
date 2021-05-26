@@ -1,4 +1,5 @@
 ﻿using MovingCastles.Entities;
+using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Levels;
 using MovingCastles.GameSystems.Time;
@@ -25,6 +26,7 @@ namespace MovingCastles.GameSystems
 
             var factionMaster = new FactionMaster();
             var scenarioMaster = new ScenarioMaster(uiManager);
+            var hitMan = new HitMan();
 
             return new DungeonMaster(
                 player,
@@ -32,7 +34,8 @@ namespace MovingCastles.GameSystems
                 factionMaster,
                 timeMaster,
                 gameModeMaster,
-                scenarioMaster);
+                scenarioMaster,
+                hitMan);
         }
     }
 }

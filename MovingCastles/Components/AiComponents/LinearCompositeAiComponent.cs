@@ -1,5 +1,6 @@
 ﻿using GoRogue.GameFramework;
 using MovingCastles.Components.Serialization;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
 using MovingCastles.Serialization;
@@ -46,11 +47,11 @@ namespace MovingCastles.Components.AiComponents
             }
         }
 
-        public (bool success, int ticks) Run(McMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(McMap map, IGenerator rng, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             foreach (var component in _components)
             {
-                var (success, time) = component.Run(map, rng, logManager);
+                var (success, time) = component.Run(map, rng, dungeonMaster, logManager);
                 if (success)
                 {
                     return (success, time);

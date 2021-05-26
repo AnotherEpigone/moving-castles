@@ -243,9 +243,22 @@ namespace MovingCastles.GameSystems.TurnBased
 
         public void SpellTargetSelected(Coord mapCoord)
         {
-            var hitResult = TargettingSpell.TargettingStyle.CanMiss
-                ? HitMan.Get(_rng)
-                : HitResult.Hit;
+            HitResult hitResult;
+            if (TargettingSpell.TargettingStyle.CanMiss)
+            {
+                var target = Map.GetActor(mapCoord);
+                if (target == null)
+                {
+                    return;
+                }
+
+                hitResult = _dungeonMaster.HitMan.Get(_player, target, _rng);
+            }
+            else
+            {
+                hitResult = HitResult.Hit;
+            }
+
             _logManager.CombatLog($"{_player.ColoredName} cast {TargettingSpell.Name}.", true);
 
             var endowmentComponent = _player.GetGoRogueComponent<IEndowmentPoolComponent>();
@@ -297,7 +310,7 @@ namespace MovingCastles.GameSystems.TurnBased
             }
 
             var ai = entity.GetGoRogueComponent<IAiComponent>();
-            var (success, ticks) = ai?.Run(Map, _rng, _logManager) ?? (false, -1);
+            var (success, ticks) = ai?.Run(Map, _rng, _dungeonMaster, _logManager) ?? (false, -1);
             if (!success || ticks < 1)
             {
                 return;
@@ -390,12 +403,13 @@ namespace MovingCastles.GameSystems.TurnBased
 
         private void MeleeAttack(
             McEntity attacker,
+            McEntity defender,
             IMeleeAttackerComponent meleeAttackComponent,
             IHealthComponent healthComponent)
         {
-            var hitResult = HitMan.Get(_rng);
+            var hitResult = _dungeonMaster.HitMan.Get(attacker, defender, _rng);
             var damage = meleeAttackComponent.GetDamage();
-            var targetName = (healthComponent.Parent as McEntity)?.ColoredName ?? "something";
+            var targetName = defender.ColoredName;
             switch (hitResult)
             {
                 case HitResult.Hit:
@@ -448,12 +462,12 @@ namespace MovingCastles.GameSystems.TurnBased
                         return entity.GetGoRogueComponents<IHealthComponent>();
                     })
                     .FirstOrDefault();
-                var attackee = healthComponent?.Parent as McEntity;
-                if (attackee != null
-                    && _dungeonMaster.FactionMaster.AreEnemies(attacker.FactionName, attackee.FactionName))
+                var defender = healthComponent?.Parent as McEntity;
+                if (defender != null
+                    && _dungeonMaster.FactionMaster.AreEnemies(attacker.FactionName, defender.FactionName))
                 {
                     e.MadeMeleeAttack = true;
-                    MeleeAttack(e.BumpingEntity, meleeAttackComponent, healthComponent);
+                    MeleeAttack(e.BumpingEntity, defender, meleeAttackComponent, healthComponent);
                 }
             }
         }

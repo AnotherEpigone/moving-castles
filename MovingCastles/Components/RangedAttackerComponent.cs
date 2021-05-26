@@ -4,6 +4,7 @@ using GoRogue.GameFramework.Components;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Combat;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Maps;
@@ -35,7 +36,7 @@ namespace MovingCastles.Components
 
         public IGameObject Parent { get; set; }
 
-        public bool TryAttack(McMap map, IGenerator rng, ILogManager logManager)
+        public bool TryAttack(McMap map, IGenerator rng, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent
                 || map.DistanceMeasurement.Calculate(Parent.Position, map.Player.Position) > _range)
@@ -53,7 +54,7 @@ namespace MovingCastles.Components
             }
 
             var targetHealth = map.Player.GetGoRogueComponent<IHealthComponent>();
-            var hitResult = HitMan.Get(rng);
+            var hitResult = dungeonMaster.HitMan.Get(mcParent, map.Player, rng);
             var targetName = (targetHealth.Parent as McEntity)?.ColoredName ?? "something";
             var damage = _damage;
             switch (hitResult)

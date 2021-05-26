@@ -6,6 +6,7 @@ using MovingCastles.Components.Serialization;
 using MovingCastles.Fonts;
 using MovingCastles.Components.ItemComponents;
 using MovingCastles.Entities;
+using MovingCastles.Components.Effects;
 
 namespace MovingCastles.GameSystems.Items
 {
@@ -51,7 +52,13 @@ namespace MovingCastles.GameSystems.Items
             description: "Todo desc",
             glyph: DungeonModeSpriteAtlas.Cloak_Homespun,
             equipCategoryId: EquipCategoryId.Cloak,
-            createComponents: () => new List<ISerializableComponent>());
+            createComponents: () => new List<ISerializableComponent>
+            {
+                new ApplyWhenEquippedComponent(new List<ISerializableComponent>
+                {
+                    new DeflectEffect(30),
+                })
+            });
         public static ItemTemplate TrollShroom => new ItemTemplate(
             id: "ITEM_TROLLSHROOM",
             name: "Trollshroom",

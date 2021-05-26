@@ -4,6 +4,7 @@ using GoRogue.Pathing;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Components.Stats;
 using MovingCastles.Entities;
+using MovingCastles.GameSystems;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.GameSystems.Time;
 using MovingCastles.Maps;
@@ -33,7 +34,7 @@ namespace MovingCastles.Components.AiComponents
 
         public IGameObject Parent { get; set; }
 
-        public (bool success, int ticks) Run(McMap map, IGenerator rng, ILogManager logManager)
+        public (bool success, int ticks) Run(McMap map, IGenerator rng, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
             if (Parent is not McEntity mcParent)
             {
