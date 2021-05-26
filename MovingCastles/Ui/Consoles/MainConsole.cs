@@ -120,11 +120,13 @@ namespace MovingCastles.Ui.Consoles
 
         public void SetMap(McMap map)
         {
+            MapConsole.Player.ComponentsChanged -= Player_ComponentsChanged;
             var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged -= Player_HealthChanged;
 
             MapConsole.SetMap(map, _dungeonMaster.ModeMaster.Font);
 
+            MapConsole.Player.ComponentsChanged += Player_ComponentsChanged;
             healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
             healthComponent.HealthChanged += Player_HealthChanged;
         }
@@ -257,6 +259,7 @@ namespace MovingCastles.Ui.Consoles
                 Position = new Point(viewportWidth - _rightPaneWidth, 0),
             };
 
+            MapConsole.Player.ComponentsChanged += Player_ComponentsChanged;
             PrintCharacterPanel();
 
             // stat bar panel setup
@@ -321,9 +324,10 @@ namespace MovingCastles.Ui.Consoles
             _rightPanel.Clear();
             _rightPanel.Cursor.Position = new Point(0, 0);
             _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString("Vede of Tattersail", Color.Gainsboro)}\r\n\n\n\n\n", defaultCell));
-            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
-            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f2}", Color.Gainsboro)}\r\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Walk speed: {TimeHelper.GetWalkSpeed(MapConsole.Player):f1}", Color.Gainsboro)}\r\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Attack speed: {TimeHelper.GetAttackSpeed(MapConsole.Player):f1}", Color.Gainsboro)}\r\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Cast speed: {TimeHelper.GetCastSpeed(MapConsole.Player):f1}", Color.Gainsboro)}\r\n", defaultCell));
+            _rightPanel.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString($"Deflect: {_dungeonMaster.HitMan.GetDeflect(MapConsole.Player)}", Color.Gainsboro)}\r\n", defaultCell));
         }
 
         private void PrintEquipmentPanel(IInventoryComponent inventory, IEquipmentComponent equipment)
@@ -413,6 +417,11 @@ namespace MovingCastles.Ui.Consoles
             PrintStatOverlays(healthComponent, endowmentComponent);
         }
 
+        private void Player_ComponentsChanged(object sender, System.EventArgs e)
+        {
+            PrintCharacterPanel();
+        }
+
         private void TimeMaster_TimeUpdated(object sender, McTimeSpan args)
         {
             PrintInfoPanel();
@@ -442,6 +451,8 @@ namespace MovingCastles.Ui.Consoles
 
                     var healthComponent = MapConsole.Player.GetGoRogueComponent<IHealthComponent>();
                     healthComponent.HealthChanged -= Player_HealthChanged;
+
+                    MapConsole.Player.ComponentsChanged -= Player_ComponentsChanged;
 
                     MapConsole.Dispose();
                 }

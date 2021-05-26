@@ -21,7 +21,7 @@ namespace MovingCastles.Components.Effects
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
-            Id = nameof(BurningTimedEffect),
+            Id = nameof(DeflectEffect),
             State = JsonConvert.SerializeObject(DeflectModifier),
         };
     }

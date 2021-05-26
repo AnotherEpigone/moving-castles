@@ -25,8 +25,10 @@ namespace MovingCastles.GameSystems.Combat
             var glanceChance = BaseGlanceChance;
             foreach (var deflectEffect in defender.GetGoRogueComponents<IDeflectEffect>())
             {
-                glanceChance = Math.Max(0, glanceChance + deflectEffect.DeflectModifier);
+                glanceChance += deflectEffect.DeflectModifier;
             }
+
+            glanceChance = Math.Max(0, glanceChance);
 
             var totalChance = BaseHitChance + BaseMissChance;
             var result = rng.Next(totalChance);
@@ -48,6 +50,17 @@ namespace MovingCastles.GameSystems.Combat
             }
 
             return HitResult.Miss;
+        }
+
+        public int GetDeflect(McEntity entity)
+        {
+            var deflect = BaseGlanceChance;
+            foreach (var deflectEffect in entity.GetGoRogueComponents<IDeflectEffect>())
+            {
+                deflect += deflectEffect.DeflectModifier;
+            }
+
+            return Math.Max(0, deflect);
         }
     }
 }

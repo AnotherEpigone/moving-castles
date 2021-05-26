@@ -53,6 +53,7 @@ namespace MovingCastles.Entities
 
         public event EventHandler<EntityBumpedEventArgs> Bumped;
         public event EventHandler RemovedFromMap;
+        public event EventHandler ComponentsChanged;
 
         public string FactionName { get; }
 
@@ -153,6 +154,7 @@ namespace MovingCastles.Entities
             else
             {
                 base.AddGoRogueComponent(component);
+                ComponentsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -165,6 +167,7 @@ namespace MovingCastles.Entities
             else
             {
                 base.RemoveGoRogueComponent(component);
+                ComponentsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -177,6 +180,7 @@ namespace MovingCastles.Entities
             else
             {
                 base.RemoveGoRogueComponents(components);
+                ComponentsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
