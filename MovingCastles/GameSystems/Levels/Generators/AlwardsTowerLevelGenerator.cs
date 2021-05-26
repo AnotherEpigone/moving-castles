@@ -38,7 +38,7 @@ namespace MovingCastles.GameSystems.Levels.Generators
             player.Position = SpawnHelper.GetSpawnPosition(level, playerSpawnConditions, rng);
             level.Map.AddEntity(player);
 
-            if (id == LevelId.AlwardsTower1)
+            if (id == LevelId.AlwardsTower1 && playerSpawnConditions.Spawn == Spawn.NewGame)
             {
                 var staffPosition = SpawnHelper.GetAdjacentSpawnPosition(level, DungeonMapLayer.ITEMS, player.Position, rng);
                 if (staffPosition != Coord.NONE)

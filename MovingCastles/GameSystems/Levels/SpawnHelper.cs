@@ -15,6 +15,7 @@ namespace MovingCastles.GameSystems.Levels
         {
             return conditions.Spawn switch
             {
+                Spawn.NewGame => level.Map.WalkabilityView.RandomPosition(true, rng),
                 Spawn.Default => level.Map.WalkabilityView.RandomPosition(true, rng),
                 Spawn.Stairdown => GetEntityWithTemplateId(level, DungeonModeDoodadAtlas.StaircaseDown.Id, conditions.LandmarkId)
                                         .Position,

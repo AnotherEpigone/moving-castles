@@ -3,6 +3,7 @@
     public enum Spawn
     {
         Default,
+        NewGame,
         Stairdown,
         StairUp,
         Door,
