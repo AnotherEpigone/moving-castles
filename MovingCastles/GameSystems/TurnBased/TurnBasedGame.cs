@@ -408,7 +408,7 @@ namespace MovingCastles.GameSystems.TurnBased
             IHealthComponent healthComponent)
         {
             var hitResult = _dungeonMaster.HitMan.Get(attacker, defender, _rng);
-            var damage = meleeAttackComponent.GetDamage();
+            var damage = meleeAttackComponent.GetDamage(_rng);
             var targetName = defender.ColoredName;
             switch (hitResult)
             {

@@ -175,7 +175,7 @@ namespace MovingCastles.Entities
         {
             var wizard = new Wizard(position, playerInfo, _font);
 
-            wizard.AddGoRogueComponent(new MeleeAttackerComponent(5));
+            wizard.AddGoRogueComponent(new MeleeAttackerComponent(1));
             wizard.AddGoRogueComponent(new SpellCastingComponent(
                 SpellAtlas.ConjureFlame,
                 SpellAtlas.RayOfFrost,

@@ -42,6 +42,7 @@ namespace MovingCastles.Components.Serialization
                 { nameof(SpawnActorAtParentComponent), s => new SpawnActorAtParentComponent(new SerializedObject() { Value = s }) },
                 { nameof(ApplyInInventoryEffectsComponent), s => new ApplyInInventoryEffectsComponent(new SerializedObject() { Value = s }) },
                 { nameof(ApplyWhenEquippedComponent), s => new ApplyWhenEquippedComponent(new SerializedObject() { Value = s }) },
+                { nameof(EquippedMeleeWeaponComponent), s => new EquippedMeleeWeaponComponent(new SerializedObject() { Value = s }) },
 
                 // Story
                 { nameof(StoryMessageComponent), s => new StoryMessageComponent(new SerializedObject() { Value = s }) },

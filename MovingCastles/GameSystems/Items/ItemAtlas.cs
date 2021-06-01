@@ -31,7 +31,13 @@ namespace MovingCastles.GameSystems.Items
             description: Gui.Item_SteelLongsword_Desc,
             glyph: DungeonModeSpriteAtlas.SteelLongsword,
             equipCategoryId: EquipCategoryId.Weapon,
-            createComponents: () => new List<ISerializableComponent>());
+            createComponents: () => new List<ISerializableComponent>
+            {
+                new ApplyWhenEquippedComponent(new List<ISerializableComponent>
+                {
+                    new EquippedMeleeWeaponComponent("1d6+2", 0),
+                }),
+            });
         public static ItemTemplate EtheriumShard => new ItemTemplate(
             id: "ITEM_ETHERIUM_SHARD",
             name: "Etherium shard",
