@@ -1,5 +1,6 @@
 ﻿using GoRogue;
 using Microsoft.Xna.Framework;
+using MovingCastles.Components.Effects;
 using MovingCastles.Fonts;
 using MovingCastles.GameSystems.Factions;
 using MovingCastles.GameSystems.Journal;
@@ -37,8 +38,6 @@ namespace MovingCastles.Entities
                   Faction.Player,
                   id)
         {
-            FovRadius = 10;
-
             // workaround Entity construction bugs by setting font afterward
             Font = font;
             OnCalculateRenderPosition();
@@ -49,7 +48,22 @@ namespace MovingCastles.Entities
                     je => je);
         }
 
-        public int FovRadius { get; }
+        public int FovRadius
+        {
+            get
+            {
+                var radius = 10;
+                var effects = GetGoRogueComponents<IFovRangeEffect>();
+                foreach (var effect in effects)
+                {
+                    radius += effect.Modifier;
+                }
+
+                radius = Math.Max(0, radius);
+
+                return radius;
+            }
+        }
 
         public ILookup<string, JournalEntry> JournalEntries { get; }
 

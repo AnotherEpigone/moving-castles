@@ -203,7 +203,13 @@ namespace MovingCastles.GameSystems.TurnBased
             // game always starts in the playerturn state!
             _player.Moved += Entity_Moved;
             _player.Bumped += Entity_Bumped;
-            _player.RemovedFromMap += (_, __) => UnregisterEntity(_player);
+            _player.ComponentsChanged += Player_ComponentsChanged;
+            _player.RemovedFromMap += (_, __) => UnregisterPlayer(_player);
+        }
+
+        private void Player_ComponentsChanged(object sender, EventArgs e)
+        {
+            Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
         }
 
         public void RegisterEntity(McEntity entity)
@@ -227,6 +233,13 @@ namespace MovingCastles.GameSystems.TurnBased
             entity.Moved += Entity_Moved;
             entity.Bumped += Entity_Bumped;
             entity.RemovedFromMap += (_, __) => UnregisterEntity(entity);
+        }
+
+        public void UnregisterPlayer(McEntity entity)
+        {
+            entity.Moved -= Entity_Moved;
+            entity.Bumped -= Entity_Bumped;
+            _player.ComponentsChanged -= Player_ComponentsChanged;
         }
 
         public void UnregisterEntity(McEntity entity)
@@ -508,7 +521,7 @@ namespace MovingCastles.GameSystems.TurnBased
             {
                 if (disposing)
                 {
-                    UnregisterEntity(_player);
+                    UnregisterPlayer(_player);
 
                     foreach (var entity in _registeredEntities.Values)
                     {

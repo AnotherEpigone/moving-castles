@@ -58,7 +58,13 @@ namespace MovingCastles.GameSystems.Items
             description: Gui.Item_StarterOakStaff_Desc,
             glyph: DungeonModeSpriteAtlas.Staff_Oak,
             equipCategoryId: EquipCategoryId.Staff,
-            createComponents: () => new List<ISerializableComponent>());
+            createComponents: () => new List<ISerializableComponent>
+            {
+                new ApplyWhenEquippedComponent(new List<ISerializableComponent>
+                {
+                    new FovRangeEffect(3),
+                }),
+            });
         public static ItemTemplate StarterHomespunCloak => new ItemTemplate(
             id: "ITEM_STARTER_HOMESPUN_CLOAK",
             name: "Homespun cloak",
