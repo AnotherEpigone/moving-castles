@@ -43,8 +43,15 @@ namespace MovingCastles.GameSystems.Items
             name: "Etherium shard",
             description: Gui.Item_EtheriumShard_Desc,
             glyph: DungeonModeSpriteAtlas.EtheriumShard,
-            equipCategoryId: EquipCategoryId.None,
-            createComponents: () => new List<ISerializableComponent>());
+            equipCategoryId: EquipCategoryId.Trinket,
+            createComponents: () => new List<ISerializableComponent>
+            {
+                new ApplyWhenEquippedComponent(new List<ISerializableComponent>
+                {
+                    new HealthRegenEffect(0.1f),
+                    new EndowmentRegenEffect(1),
+                })
+            });
         public static ItemTemplate StarterOakStaff => new ItemTemplate(
             id: "ITEM_STARTER_OAKSTAFF",
             name: "Oak staff",

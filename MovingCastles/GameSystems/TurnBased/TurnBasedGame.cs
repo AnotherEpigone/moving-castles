@@ -354,8 +354,6 @@ namespace MovingCastles.GameSystems.TurnBased
                 _dungeonMaster.TimeMaster.JourneyTime.Ticks + playerTurnTicks);
             _dungeonMaster.TimeMaster.Enqueue(playerTurnNode);
 
-            _player.GetGoRogueComponent<IEndowmentPoolComponent>()?.ApplyBaseRegen();
-
             Map.CalculateFOV(_player.Position, _player.FovRadius, Radius.SQUARE);
 
             State = State.Processing;
@@ -396,6 +394,9 @@ namespace MovingCastles.GameSystems.TurnBased
                     effect.OnTick(time, _logManager, _dungeonMaster, _rng);
                 }
             }
+
+            _player.GetGoRogueComponent<IEndowmentPoolComponent>()?.ApplyRegen();
+            _player.GetGoRogueComponent<IHealthComponent>()?.ApplyRegen();
 
             var secondMarkerNode = new SecondMarkerNode(time.Ticks + 100);
             _dungeonMaster.TimeMaster.Enqueue(secondMarkerNode);

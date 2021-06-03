@@ -1,10 +1,12 @@
 ﻿using GoRogue.GameFramework;
 using GoRogue.GameFramework.Components;
+using MovingCastles.Components.Effects;
 using MovingCastles.Components.Serialization;
 using MovingCastles.Entities;
 using MovingCastles.GameSystems.Logging;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
 
 namespace MovingCastles.Components.Stats
@@ -73,12 +75,25 @@ namespace MovingCastles.Components.Stats
 
         public void ApplyHealing(float healing)
         {
-            Health = System.Math.Min(MaxHealth, Health + healing);
+            Health = Math.Min(MaxHealth, Health + healing);
         }
 
-        public void ApplyBaseRegen()
+        public void ApplyRegen()
         {
-            ApplyHealing(BaseRegen);
+            var regen = BaseRegen;
+            if (Parent is McEntity mcParent)
+            {
+                var regenEffects = mcParent.GetGoRogueComponents<IHealthRegenEffect>();
+                foreach (var effect in regenEffects)
+                {
+                    regen += effect.Value;
+                }
+
+            }
+
+            regen = Math.Max(0, regen);
+
+            ApplyHealing(regen);
         }
 
         public ComponentSerializable GetSerializable() => new ComponentSerializable()

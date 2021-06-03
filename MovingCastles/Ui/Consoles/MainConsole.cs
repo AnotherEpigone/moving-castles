@@ -391,9 +391,9 @@ namespace MovingCastles.Ui.Consoles
             _statOverlay.Cursor.Position = new Point(0, 0);
 
             var overlayDefaultCell = new Cell(_statOverlay.DefaultForeground, _statOverlay.DefaultBackground);
-            var healthString = $"{healthComponent.Health} / {healthComponent.MaxHealth}";
+            var healthString = $"{healthComponent.Health:f1} / {healthComponent.MaxHealth}";
             _statOverlay.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString(healthString, Color.Gainsboro)}\r\n", overlayDefaultCell));
-            var endowmentString = $"{endowmentComponent.Value} / {endowmentComponent.MaxValue}";
+            var endowmentString = $"{endowmentComponent.Value:f1} / {endowmentComponent.MaxValue}";
             _statOverlay.Cursor.Print(new ColoredString($" {ColorHelper.GetParserString(endowmentString, Color.Gainsboro)}\r\n", overlayDefaultCell));
         }
 

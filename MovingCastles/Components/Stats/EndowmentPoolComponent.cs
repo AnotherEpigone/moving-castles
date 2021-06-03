@@ -1,5 +1,7 @@
 ﻿using GoRogue.GameFramework;
+using MovingCastles.Components.Effects;
 using MovingCastles.Components.Serialization;
+using MovingCastles.Entities;
 using MovingCastles.Serialization;
 using Newtonsoft.Json;
 using System;
@@ -50,9 +52,22 @@ namespace MovingCastles.Components.Stats
 
         public float BaseRegen { get; }
 
-        public void ApplyBaseRegen()
+        public void ApplyRegen()
         {
-            ApplyRestore(BaseRegen);
+            var regen = BaseRegen;
+            if (Parent is McEntity mcParent)
+            {
+                var regenEffects = mcParent.GetGoRogueComponents<IEndowmentRegenEffect>();
+                foreach (var effect in regenEffects)
+                {
+                    regen += effect.Value;
+                }
+
+            }
+
+            regen = Math.Max(0, regen);
+
+            ApplyRestore(regen);
         }
 
         public void ApplyDrain(float damage)

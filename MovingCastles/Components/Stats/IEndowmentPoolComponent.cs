@@ -12,6 +12,6 @@ namespace MovingCastles.Components.Stats
 
         void ApplyDrain(float damage);
         void ApplyRestore(float healing);
-        void ApplyBaseRegen();
+        void ApplyRegen();
     }
 }

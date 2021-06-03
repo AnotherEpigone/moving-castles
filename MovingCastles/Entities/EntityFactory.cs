@@ -190,6 +190,7 @@ namespace MovingCastles.Entities
                 new EquipCategory(EquipCategoryId.Staff, "Staff", 1),
                 new EquipCategory(EquipCategoryId.Weapon, "Weapon", 1),
                 new EquipCategory(EquipCategoryId.Cloak, "Cloak", 1),
+                new EquipCategory(EquipCategoryId.Trinket, "Trinket", 1),
             }));
 
             return wizard;

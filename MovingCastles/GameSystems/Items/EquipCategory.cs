@@ -9,6 +9,7 @@ namespace MovingCastles.GameSystems.Items
         Staff,
         Cloak,
         Weapon,
+        Trinket,
     }
 
     [DataContract]
