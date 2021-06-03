@@ -128,6 +128,15 @@ namespace MovingCastles.Text {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Although this simple cloak of blue, homespun cloth appears ordinary enough, in the hands of a true Magi it seems to take on a power of its own. It may well turn aside a blade or gout of flame that iron plate would not..
+        /// </summary>
+        internal static string Item_HomespunCloak_Desc {
+            get {
+                return ResourceManager.GetString("Item_HomespunCloak_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cut from the sacred woods of the Kurisau Oasis, this staff has served you since you first learned to sense the Wellspring..
         /// </summary>
         internal static string Item_StarterOakStaff_Desc {

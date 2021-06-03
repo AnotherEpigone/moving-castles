@@ -154,6 +154,9 @@ Wait to regain health or wait for the right time to strike, but remember that th
   <data name="Item_EtheriumShard_Desc" xml:space="preserve">
     <value>Crystalized by the precise artistry of master artificers, etherium is the closest thing you can get to the pure substance of the Torrent.</value>
   </data>
+  <data name="Item_HomespunCloak_Desc" xml:space="preserve">
+    <value>Although this simple cloak of blue, homespun cloth appears ordinary enough, in the hands of a true Magi it seems to take on a power of its own. It may well turn aside a blade or gout of flame that iron plate would not.</value>
+  </data>
   <data name="Item_StarterOakStaff_Desc" xml:space="preserve">
     <value>Cut from the sacred woods of the Kurisau Oasis, this staff has served you since you first learned to sense the Wellspring.</value>
   </data>

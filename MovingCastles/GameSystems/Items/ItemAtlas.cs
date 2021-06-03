@@ -62,7 +62,7 @@ namespace MovingCastles.GameSystems.Items
         public static ItemTemplate StarterHomespunCloak => new ItemTemplate(
             id: "ITEM_STARTER_HOMESPUN_CLOAK",
             name: "Homespun cloak",
-            description: "Todo desc",
+            description: Gui.Item_HomespunCloak_Desc,
             glyph: DungeonModeSpriteAtlas.Cloak_Homespun,
             equipCategoryId: EquipCategoryId.Cloak,
             createComponents: () => new List<ISerializableComponent>
