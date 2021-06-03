@@ -2,7 +2,7 @@
 
 namespace MovingCastles.Components.Effects
 {
-    public interface IHealthRegenEffect : ISerializableComponent
+    public interface IHealthRegenEffect : ISerializableComponent, IDescribableEffect
     {
         float Value { get; }
     }

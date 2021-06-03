@@ -19,6 +19,8 @@ namespace MovingCastles.Components.Effects
 
         public IGameObject Parent { get; set; }
 
+        public string GetDescription() => $"Vision range {Modifier}";
+
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
             Id = nameof(FovRangeEffect),

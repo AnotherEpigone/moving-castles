@@ -13,11 +13,9 @@ namespace MovingCastles.Components.ItemComponents
 {
     public class ApplyWhenEquippedComponent : IEquipTriggeredComponent
     {
-        private readonly IEnumerable<ISerializableComponent> _components;
-
         public ApplyWhenEquippedComponent(IEnumerable<ISerializableComponent> components)
         {
-            _components = components;
+            Components = components;
         }
 
         public ApplyWhenEquippedComponent(SerializedObject serialized)
@@ -27,9 +25,11 @@ namespace MovingCastles.Components.ItemComponents
 
         public IGameObject Parent { get; set; }
 
+        public IEnumerable<ISerializableComponent> Components { get; }
+
         public void OnEquip(McEntity equipmentOwner, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
-            foreach (var component in _components)
+            foreach (var component in Components)
             {
                 equipmentOwner.AddGoRogueComponent(component);
             }
@@ -37,7 +37,7 @@ namespace MovingCastles.Components.ItemComponents
 
         public void OnUnequip(McEntity equipmentOwner, IDungeonMaster dungeonMaster, ILogManager logManager)
         {
-            foreach (var component in _components)
+            foreach (var component in Components)
             {
                 equipmentOwner.RemoveGoRogueComponent(component);
             }
@@ -46,7 +46,7 @@ namespace MovingCastles.Components.ItemComponents
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
             Id = nameof(ApplyWhenEquippedComponent),
-            State = JsonConvert.SerializeObject(_components.Select(c => c.GetSerializable()).ToList()),
+            State = JsonConvert.SerializeObject(Components.Select(c => c.GetSerializable()).ToList()),
         };
     }
 }

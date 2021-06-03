@@ -2,7 +2,7 @@
 
 namespace MovingCastles.Components.Effects
 {
-    public interface IFovRangeEffect : ISerializableComponent
+    public interface IFovRangeEffect : ISerializableComponent, IDescribableEffect
     {
         int Modifier { get; }
     }

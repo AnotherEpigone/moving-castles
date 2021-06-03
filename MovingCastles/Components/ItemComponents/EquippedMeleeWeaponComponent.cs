@@ -33,6 +33,8 @@ namespace MovingCastles.Components.ItemComponents
 
         public IGameObject Parent { get; set; }
 
+        public string GetDescription() => $"Melee damage {_damage}";
+
         public ComponentSerializable GetSerializable()
         {
             return new ComponentSerializable()

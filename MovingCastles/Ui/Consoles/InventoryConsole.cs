@@ -150,7 +150,7 @@ namespace MovingCastles.Ui.Consoles
             _descriptionArea.Cursor.Position = new Point(0, 0);
             _descriptionArea.Cursor.Print(
                 new ColoredString(
-                    _selectedItem?.Description ?? string.Empty,
+                    _selectedItem?.GetFullDescription() ?? string.Empty,
                     new Cell(_descriptionArea.DefaultForeground, _descriptionArea.DefaultBackground)));
         }
 

@@ -2,7 +2,7 @@
 
 namespace MovingCastles.Components.Effects
 {
-    interface IDeflectEffect : ISerializableComponent
+    interface IDeflectEffect : ISerializableComponent, IDescribableEffect
     {
         int DeflectModifier { get; }
     }

@@ -19,6 +19,8 @@ namespace MovingCastles.Components.Effects
 
         public IGameObject Parent { get; set; }
 
+        public string GetDescription() => $"Endowment regen {Value}";
+
         public ComponentSerializable GetSerializable() => new ComponentSerializable()
         {
             Id = nameof(EndowmentRegenEffect),

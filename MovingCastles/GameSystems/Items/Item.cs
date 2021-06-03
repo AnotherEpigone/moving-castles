@@ -6,6 +6,10 @@ using System.Diagnostics;
 using System;
 using MovingCastles.Ui;
 using Newtonsoft.Json;
+using System.Text;
+using MovingCastles.Components.ItemComponents;
+using System.Linq;
+using MovingCastles.Components.Effects;
 
 namespace MovingCastles.GameSystems.Items
 {
@@ -53,6 +57,25 @@ namespace MovingCastles.GameSystems.Items
         }
 
         public string Description { get; }
+
+        // includes component info
+        public string GetFullDescription()
+        {
+            var descriptionBuilder = new StringBuilder(Description).AppendLine().AppendLine();
+            descriptionBuilder.AppendLine($"Equip: {GetTemplate().EquipCategoryId}");
+            var equippedEffects = GetGoRogueComponent<ApplyWhenEquippedComponent>()?.Components;
+            if (equippedEffects != null)
+            {
+                foreach (var effect in equippedEffects.OfType<IDescribableEffect>())
+                {
+                    descriptionBuilder.AppendLine(effect.GetDescription());
+                }
+            }
+
+            return descriptionBuilder.ToString();
+        }
+
+        public ItemTemplate GetTemplate() => ItemAtlas.ItemsById[TemplateId];
 
         private string DebuggerDisplay
         {
