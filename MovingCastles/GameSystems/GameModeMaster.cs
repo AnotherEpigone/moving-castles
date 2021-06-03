@@ -28,6 +28,8 @@ namespace MovingCastles.GameSystems
             Mode = mode;
         }
 
+        public event EventHandler ModeChanging;
+
         public event EventHandler ModeChanged;
 
         public GameMode Mode { get; private set; }
@@ -60,6 +62,7 @@ namespace MovingCastles.GameSystems
                 return;
             }
 
+            ModeChanging?.Invoke(this, EventArgs.Empty);
             Mode = gameMode;
             levelLoadAction();
             ModeChanged?.Invoke(this, EventArgs.Empty);

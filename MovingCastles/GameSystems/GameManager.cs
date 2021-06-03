@@ -71,6 +71,7 @@ namespace MovingCastles.GameSystems
 
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, new TimeMaster(), _uiManager);
 
+            gameModeMaster.ModeChanging += GameModeMaster_ModeChanging;
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
@@ -124,6 +125,7 @@ namespace MovingCastles.GameSystems
             var level = structure.GetLevel(save);
 
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, save.TimeMaster, _uiManager);
+            gameModeMaster.ModeChanging += GameModeMaster_ModeChanging;
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
@@ -144,6 +146,7 @@ namespace MovingCastles.GameSystems
 
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, new TimeMaster(), _uiManager);
 
+            gameModeMaster.ModeChanging += GameModeMaster_ModeChanging;
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
@@ -162,6 +165,7 @@ namespace MovingCastles.GameSystems
 
             DungeonMaster = _dungeonMasterFactory.Create(player, level, structure, gameModeMaster, _structureFactory, new TimeMaster(), _uiManager);
 
+            gameModeMaster.ModeChanging += GameModeMaster_ModeChanging;
             gameModeMaster.ModeChanged += GameModeMaster_ModeChanged;
 
             var game = new TurnBasedGame(_logManager, DungeonMaster);
@@ -178,12 +182,15 @@ namespace MovingCastles.GameSystems
             ((MainConsole)Global.CurrentScreen).UnsetMap();
         }
 
-        private void GameModeMaster_ModeChanged(object sender, EventArgs e)
+        private void GameModeMaster_ModeChanging(object sender, EventArgs e)
         {
             var oldConsole = (MainConsole)Global.CurrentScreen;
             oldConsole.IsPaused = true;
             oldConsole.Dispose();
+        }
 
+        private void GameModeMaster_ModeChanged(object sender, EventArgs e)
+        {
             DungeonMaster.Player.Font = DungeonMaster.ModeMaster.Font;
             DungeonMaster.Player.OnCalculateRenderPosition();
 
